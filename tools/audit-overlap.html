@@ -1,0 +1,41 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe id="fr" style="width:1920px;height:1080px;border:0"></iframe><pre id="out">pending</pre>
+<script>
+const page=new URLSearchParams(location.search).get('p')||'lecture-1';
+const fr=document.getElementById('fr'); fr.src=new URL('../'+page+'.html',location.href);
+const lum=c=>{const m=/rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(c||'');if(!m)return null;
+  const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};
+  return .2126*f(+m[1])+.7152*f(+m[2])+.0722*f(+m[3]);};
+const ratio=(a,b)=>{if(a==null||b==null)return null;const [h,l]=a>b?[a,b]:[b,a];return (h+.05)/(l+.05);};
+fr.onload=()=>setTimeout(()=>{
+ const d=fr.contentDocument,w=fr.contentWindow,out=[];
+ const vis=e=>{const s=w.getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0.05;};
+ const R=e=>e.getBoundingClientRect();
+ const ov=(A,B)=>{const a=R(A),b=R(B);const x=Math.min(a.right,b.right)-Math.max(a.left,b.left),
+   y=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);return(x>1&&y>1)?[x,y]:null;};
+ [...d.querySelectorAll('.slide')].forEach((sl,si)=>{
+  [...sl.querySelectorAll('svg')].forEach((svg,vi)=>{
+   const T=[...svg.querySelectorAll('text')].filter(vis);
+   for(let i=0;i<T.length;i++)for(let j=i+1;j<T.length;j++){
+     const o=ov(T[i],T[j]); if(o&&o[0]*o[1]>10)
+       out.push(`[겹침] s${si+1}: "${T[i].textContent.trim().slice(0,22)}" X "${T[j].textContent.trim().slice(0,22)}" ${Math.round(o[0])}x${Math.round(o[1])}px`);
+   }
+   const S=[...svg.querySelectorAll('rect,circle,ellipse,path,polygon')].filter(e=>{
+     if(!vis(e))return false; const f=w.getComputedStyle(e).fill; return f&&f!=='none'&&!/,\s*0\)$/.test(f);});
+   for(const t of T){
+     const tf=w.getComputedStyle(t).fill, tl=lum(tf);
+     const tr=R(t); const cx=tr.left+tr.width/2, cy=tr.top+tr.height/2;
+     for(const s of S){
+       const sr=R(s);
+       // 텍스트 중심이 도형 안에 있을 때만 = 실제로 그 위에 얹힘
+       if(cx<sr.left||cx>sr.right||cy<sr.top||cy>sr.bottom) continue;
+       const cr=ratio(tl,lum(w.getComputedStyle(s).fill));
+       if(cr!==null&&cr<4.5)
+         out.push(`[대비] s${si+1}: "${t.textContent.trim().slice(0,22)}" on ${s.tagName.toLowerCase()} 대비 ${cr.toFixed(2)}:1`);
+     }
+   }
+  });
+ });
+ document.getElementById('out').textContent=out.length?[...new Set(out)].join('\n'):'CLEAN';
+},1500);
+</script>

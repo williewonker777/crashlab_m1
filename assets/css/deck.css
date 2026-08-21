@@ -208,6 +208,8 @@ button {
 .deck-svg .svg-label { fill: var(--hy-gray); font-size: 24px; font-weight: 600; }
 .deck-svg .svg-small { fill: var(--muted); font-size: 20px; }
 .deck-svg .svg-white { fill: #fff; font-size: 24px; font-weight: 700; }
+.deck-svg .svg-blue { fill: var(--hy-blue); font-size: 24px; font-weight: 700; }
+.deck-svg .svg-on-blue { fill: #fff; }
 .deck-svg .svg-green { fill: #416A22; font-size: 24px; font-weight: 700; }
 .deck-svg .svg-warn { fill: #9A4C00; font-size: 22px; font-weight: 700; }
 .deck-svg .dim { opacity: 0.18; }
