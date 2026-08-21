@@ -11,6 +11,8 @@
   const helpOpen = document.querySelector("[data-help-open]");
   const helpClose = document.querySelector("[data-help-close]");
   const fullscreenButton = document.querySelector("[data-fullscreen]");
+  const previousDeck = deck.dataset.prevDeck;
+  const nextDeck = deck.dataset.nextDeck;
   let currentIndex = 0;
   let scrollFrame = 0;
 
@@ -47,6 +49,19 @@
     slides[target].scrollIntoView({ block: "start", behavior: "auto" });
     updateChrome(target);
     if (updateHash) history.replaceState(null, "", `#slide-${target + 1}`);
+  };
+
+  const goRelative = (offset) => {
+    const target = currentIndex + offset;
+    if (target < 0 && previousDeck) {
+      location.href = previousDeck;
+      return;
+    }
+    if (target >= slides.length && nextDeck) {
+      location.href = nextDeck;
+      return;
+    }
+    goTo(target);
   };
 
   const toggleFullscreen = async () => {
@@ -86,10 +101,10 @@
 
     if (nextKeys.includes(event.key)) {
       event.preventDefault();
-      goTo(currentIndex + 1);
+      goRelative(1);
     } else if (previousKeys.includes(event.key)) {
       event.preventDefault();
-      goTo(currentIndex - 1);
+      goRelative(-1);
     } else if (event.key === "Home") {
       event.preventDefault();
       goTo(0);
