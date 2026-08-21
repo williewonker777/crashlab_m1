@@ -39,13 +39,66 @@
  <circle class="leader-dot" cx="200" cy="435" r="5"/><path class="leader" d="M200 435L620 260"/><rect class="fill-soft" x="650" y="175" width="250" height="78" rx="14"/><text class="svg-green" x="775" y="223" text-anchor="middle">보정 후 닫힘</text>
  <rect class="fill-tint" x="500" y="285" width="350" height="76" rx="16"/><text class="svg-title" x="675" y="333" text-anchor="middle">끝점 오차 3.2 m → 0.2 m</text>
  <text class="svg-title" x="115" y="525">출발</text>
-</svg></div><ul class="slide-bullets"><li>여기 아까 지나온 자리다.</li><li>벌어진 경로를 다시 맞춰 본다.</li><li>그 순간 쌓인 오차가 줄어든다.</li></ul></div></section><section class="slide layout-diagram" id="slide-8" data-title="SLAM 한 바퀴" aria-label="슬라이드 8 / 18: SLAM 한 바퀴" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>SLAM 한 바퀴</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="추정 매칭 보정 지도 갱신이 계속 순환하는 SLAM">
+</svg></div><ul class="slide-bullets"><li>여기 아까 지나온 자리다.</li><li>벌어진 경로를 다시 맞춰 본다.</li><li>그 순간 쌓인 오차가 줄어든다.</li></ul></div></section><section class="slide layout-diagram" id="slide-8" data-title="SLAM 한 바퀴" aria-label="슬라이드 8 / 18: SLAM 한 바퀴" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>SLAM 한 바퀴</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1600 620" role="img" aria-label="추정, 매칭, 보정, 지도가 하나의 닫힌 궤도로 순환하는 SLAM">
   <title>SLAM 순환</title>
   <defs>
-    <marker id="l2s8-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
-    <marker id="l2s8-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="ah-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/>
+    </marker>
+    <marker id="ah-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#75B446"/>
+    </marker>
+    <marker id="ah-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#3F3D42"/>
+    </marker>
   </defs>
-  <g class=""><rect class="node" x="155" y="85" width="280" height="125" rx="18"/><text class="svg-title" x="295.0" y="155.5" text-anchor="middle">추정</text></g><g class=""><rect class="node" x="765" y="85" width="280" height="125" rx="18"/><text class="svg-title" x="905.0" y="155.5" text-anchor="middle">매칭</text></g><g class=""><rect class="node-green" x="765" y="350" width="280" height="125" rx="18"/><text class="svg-title" x="905.0" y="420.5" text-anchor="middle">보정</text></g><g class=""><rect class="node" x="155" y="350" width="280" height="125" rx="18"/><text class="svg-title" x="295.0" y="420.5" text-anchor="middle">지도</text></g><path class="stroke-blue" d="M435 147 L755 147" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M905 210 L905 340" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M765 412 L445 412" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M295 350 L295 220" marker-end="url(#l2s8-blue)"/><text class="svg-title" x="600" y="285" text-anchor="middle">SLAM</text>
+
+  <!-- 네 단계를 끊김 없이 잇는 하나의 닫힌 궤도 -->
+  <path d="M 300 135 H 440 Q 440 180 500 180 H 640 Q 700 180 700 135
+           H 840 Q 840 180 900 180 H 1040 Q 1100 180 1100 135
+           H 1240 Q 1240 180 1300 180 H 1440 Q 1500 180 1500 135
+           H 1520 Q 1540 135 1540 155 V 520 Q 1540 540 1520 540
+           H 80 Q 60 540 60 520 V 155 Q 60 135 80 135 H 40
+           Q 40 180 100 180 H 240 Q 300 180 300 135 Z"
+        fill="none" stroke="#1D2475" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 같은 길이의 방향 표시가 순환 리듬을 만든다 -->
+  <path d="M 320 135 H 420" fill="none" stroke="#1D2475" stroke-width="5"
+        stroke-linecap="round" marker-end="url(#ah-blue)"/>
+  <path d="M 720 135 H 820" fill="none" stroke="#1D2475" stroke-width="5"
+        stroke-linecap="round" marker-end="url(#ah-blue)"/>
+  <path d="M 1120 135 H 1220" fill="none" stroke="#1D2475" stroke-width="5"
+        stroke-linecap="round" marker-end="url(#ah-blue)"/>
+  <path d="M 860 540 H 760" fill="none" stroke="#1D2475" stroke-width="5"
+        stroke-linecap="round" marker-end="url(#ah-blue)"/>
+
+  <!-- 중앙 개념 라벨은 원판에 결속한다 -->
+  <circle cx="800" cy="380" r="100" fill="#E1F5F7"/>
+  <text x="800" y="380" text-anchor="middle" dominant-baseline="central"
+        font-size="36" font-weight="700" fill="#1D2475">SLAM</text>
+
+  <!-- 동일한 층위의 단계는 같은 노드 규격과 색으로 통일한다 -->
+  <g class="node-primary">
+    <rect x="40" y="80" width="260" height="110" rx="16" fill="#1D2475"/>
+    <text x="170" y="135" text-anchor="middle" dominant-baseline="central"
+          font-size="30" font-weight="700" fill="#FFFFFF">추정</text>
+  </g>
+  <g class="node-primary">
+    <rect x="440" y="80" width="260" height="110" rx="16" fill="#1D2475"/>
+    <text x="570" y="135" text-anchor="middle" dominant-baseline="central"
+          font-size="30" font-weight="700" fill="#FFFFFF">매칭</text>
+  </g>
+  <g class="node-primary">
+    <rect x="840" y="80" width="260" height="110" rx="16" fill="#1D2475"/>
+    <text x="970" y="135" text-anchor="middle" dominant-baseline="central"
+          font-size="30" font-weight="700" fill="#FFFFFF">보정</text>
+  </g>
+  <g class="node-primary">
+    <rect x="1240" y="80" width="260" height="110" rx="16" fill="#1D2475"/>
+    <text x="1370" y="135" text-anchor="middle" dominant-baseline="central"
+          font-size="30" font-weight="700" fill="#FFFFFF">지도</text>
+  </g>
 </svg></div><p class="key-line">추정하고 맞추고 고치며 지도와 위치를 갱신한다.</p></div></section><section class="slide layout-compare" id="slide-9" data-title="Visual SLAM vs LiDAR SLAM" aria-label="슬라이드 9 / 18: Visual SLAM vs LiDAR SLAM" data-layout="L5"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">COMPARE</p><h2>Visual SLAM vs LiDAR SLAM</h2></header><div class="comparison-grid"><article class="comparison-card"><h3>Visual SLAM</h3><ul><li>색과 모서리로 위치를 찾는다.</li><li>조명이 바뀌면 흔들리기 쉽다.</li></ul></article><article class="comparison-card"><h3>LiDAR SLAM</h3><ul><li>거리와 모양으로 위치를 잡는다.</li><li>유리나 반사면에는 약한 편이다.</li></ul></article></div></div></section><section class="slide slide--question layout-question" id="slide-10" data-title="질문" aria-label="슬라이드 10 / 18: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>지도가 생겼다. 이제 어디로 갈지 어떻게 정하나?</h2></div></section><section class="slide layout-diagram" id="slide-11" data-title="코스트맵" aria-label="슬라이드 11 / 18: 코스트맵" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>코스트맵</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="장애물 주변 비용을 네 단계로 표시하고 로봇에서 목표까지 안전 우회 경로와 최단 관통 경로의 비용을 비교">
   <title>비용 4단계 코스트맵</title>
   <defs><marker id="l2s11-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker><marker id="l2s11-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker></defs>
