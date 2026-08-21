@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="모터와 바퀴를 제어하고 좌표 사이의 움직임을 변환할 수 있습니다.">
+  <title>강의 03 · 조작 — 주행 · 모터 제어 | 크래쉬랩 M1</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문 바로가기</a>
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a class="wordmark" href="index.html">크래쉬랩 M1</a>
+    <nav class="primary-nav" aria-label="강의 탐색">
+      <ul><li><a href="lecture-1.html" aria-label="강의 1">01</a></li><li><a href="lecture-2.html" aria-label="강의 2">02</a></li><li><a href="lecture-3.html" aria-current="page" aria-label="강의 3">03</a></li><li><a href="lecture-4.html" aria-label="강의 4">04</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero">
+    <div class="hero__grid container">
+      <div><p class="eyebrow">LECTURE 03</p><h1>조작 — 주행 · 모터 제어</h1><p class="hero__summary">모터와 바퀴를 제어하고 좌표 사이의 움직임을 변환할 수 있습니다.</p></div>
+      <dl class="hero__meta"><div><dt>Date</dt><dd><time datetime="2026-10-02">10/2</time></dd></div><div><dt>Duration</dt><dd>240분</dd></div></dl>
+    </div>
+  </section>
+  <section class="time-allocation container" aria-labelledby="time-heading">
+  <div class="time-allocation__header">
+    <h2 id="time-heading">240분 시간 배분</h2>
+    <p class="time-allocation__total">TOTAL 240 MIN</p>
+  </div>
+  <div class="time-bar" data-total-minutes="240">
+      <div class="time-segment-wrap" style="--minutes: 60" data-minutes="60">
+        <button class="time-segment time-segment--theory" type="button" aria-describedby="l3-theory-tip" aria-label="이론 60분, 세부 항목 보기">
+          <span class="time-segment__label">이론</span><strong>60분</strong>
+        </button>
+        <div class="time-tooltip" id="l3-theory-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · 모터 제어 기초</li><li>15분 · 휠 주행 원리</li><li>25분 · 기구학</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 100" data-minutes="100">
+        <button class="time-segment time-segment--practice" type="button" aria-describedby="l3-practice-tip" aria-label="실습 100분, 세부 항목 보기">
+          <span class="time-segment__label">실습</span><strong>100분</strong>
+        </button>
+        <div class="time-tooltip" id="l3-practice-tip" role="tooltip"><ul class="tooltip-list"><li>30분 · /cmd_vel</li><li>40분 · 관절·그리퍼</li><li>30분 · 좌표 변환</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 15" data-minutes="15">
+        <button class="time-segment time-segment--operation" type="button" aria-describedby="l3-operation-tip" aria-label="운영 15분, 세부 항목 보기">
+          <span class="time-segment__label">운영</span><strong>15분</strong>
+        </button>
+        <div class="time-tooltip" id="l3-operation-tip" role="tooltip"><ul class="tooltip-list"><li>15분 · VLA 미션 예고 · 픽앤플레이스 안내</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 45" data-minutes="45">
+        <button class="time-segment time-segment--autonomy" type="button" aria-describedby="l3-autonomy-tip" aria-label="자율 45분, 세부 항목 보기">
+          <span class="time-segment__label">자율</span><strong>45분</strong>
+        </button>
+        <div class="time-tooltip" id="l3-autonomy-tip" role="tooltip"><ul class="tooltip-list"><li>45분 · —</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 20" data-minutes="20">
+        <button class="time-segment time-segment--break" type="button" aria-describedby="l3-break-tip" aria-label="휴식 20분, 세부 항목 보기">
+          <span class="time-segment__label">휴식</span><strong>20분</strong>
+        </button>
+        <div class="time-tooltip" id="l3-break-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · 휴식</li></ul></div>
+      </div>
+  </div>
+</section>
+  <section class="schedule" aria-labelledby="schedule-heading">
+    <div class="container">
+      <div class="schedule-heading"><p class="eyebrow">CURRICULUM</p><h2 id="schedule-heading">강의 구성</h2></div>
+      <div class="schedule-list"><article class="lesson-card" data-minutes="20">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>20분</span><span class="lesson-card__type">이론</span></div>
+      <h3>모터 제어 기초</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">01</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 430" role="img" aria-label="위치 속도 토크 제어 비교 막대와 PID 제어 블록도">
+  <title>모터 제어 방식 비교와 PID 피드백 구조</title>
+  <defs><marker id="motor-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
+  <g transform="translate(55 42)">
+    <text class="text-label" x="0" y="24">위치</text><rect class="fill-primary" x="80" y="5" width="490" height="28" rx="6"/><text class="text-white" x="325" y="25" text-anchor="middle">어디까지</text>
+    <text class="text-label" x="0" y="82">속도</text><rect class="fill-accent" x="80" y="63" width="365" height="28" rx="6"/><text class="text-white" x="262" y="83" text-anchor="middle">얼마나 빠르게</text>
+    <text class="text-label" x="0" y="140">토크</text><rect class="fill-muted" x="80" y="121" width="245" height="28" rx="6"/><text class="text-label" x="202" y="141" text-anchor="middle">얼마나 세게</text>
+  </g>
+  <path class="line-muted" d="M55 230 H665"/>
+  <g transform="translate(42 275)">
+    <rect class="node" x="0" y="22" width="105" height="64" rx="10"/><rect class="node" x="190" y="0" width="72" height="44" rx="8"/><rect class="node" x="190" y="54" width="72" height="44" rx="8"/><rect class="node" x="190" y="108" width="72" height="44" rx="8"/><rect class="node-accent" x="360" y="22" width="120" height="64" rx="10"/><rect class="node" x="560" y="22" width="90" height="64" rx="10"/>
+    <text class="text-main" x="52" y="60" text-anchor="middle">오차</text><text class="text-main" x="226" y="28" text-anchor="middle">P</text><text class="text-main" x="226" y="82" text-anchor="middle">I</text><text class="text-main" x="226" y="136" text-anchor="middle">D</text><text class="text-main" x="420" y="60" text-anchor="middle">합산</text><text class="text-main" x="605" y="60" text-anchor="middle">모터</text>
+    <path class="line-primary" d="M105 54 H174 V22 H188 M174 54 H188 M174 54 V130 H188 M262 22 H315 V54 H358 M262 76 H358 M262 130 H315 V76 H358 M480 54 H558" marker-end="url(#motor-arrow)"/>
+  </g>
+</svg></div>
+  <ul class="key-points"><li>위치·속도·토크는 제어 목표가 다르다</li><li><abbr title="비례·적분·미분 피드백 제어">PID</abbr>는 오차를 줄이는 입력을 만든다</li><li>피드백이 목표와 현재값을 비교한다</li></ul>
+</article><article class="lesson-card" data-minutes="15">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>15분</span><span class="lesson-card__type">이론</span></div>
+      <h3>휠 주행 원리</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">02</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 390" role="img" aria-label="좌우 바퀴 속도 차이가 선속도와 각속도를 만드는 차동 구동 원리">
+  <title>차동 구동 로봇의 좌우 바퀴와 속도 벡터</title>
+  <defs><marker id="drive-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker><marker id="drive-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-accent" d="M0 0 L10 5 L0 10z"/></marker></defs>
+  <g transform="translate(210 55)">
+    <rect class="node" x="65" y="45" width="170" height="220" rx="26"/>
+    <rect class="fill-primary" x="30" y="75" width="35" height="80" rx="9"/><rect class="fill-primary" x="235" y="75" width="35" height="80" rx="9"/>
+    <rect class="fill-primary" x="30" y="175" width="35" height="80" rx="9"/><rect class="fill-primary" x="235" y="175" width="35" height="80" rx="9"/>
+    <circle class="fill-accent" cx="150" cy="155" r="18"/><path class="line-muted" d="M150 137 V83 M132 155 H88"/>
+    <text class="text-main" x="150" y="294" text-anchor="middle">차동 구동 베이스</text>
+    <path class="line-primary" d="M47 65 V15" marker-end="url(#drive-blue)"/><path class="line-primary" d="M252 65 V-5" marker-end="url(#drive-blue)"/>
+    <text class="text-label" x="47" y="8" text-anchor="middle">vL</text><text class="text-label" x="252" y="-12" text-anchor="middle">vR</text>
+    <path class="line-accent" d="M150 45 V-35" marker-end="url(#drive-green)"/><text class="text-main" x="163" y="-18">v</text>
+    <path class="line-accent" d="M85 30 A85 85 0 0 1 218 32" marker-end="url(#drive-green)"/><text class="text-main" x="150" y="10" text-anchor="middle">ω</text>
+  </g>
+  <rect class="fill-grid" x="38" y="300" width="644" height="58" rx="10"/>
+  <text class="text-label" x="360" y="336" text-anchor="middle">vL = vR → 직진　·　vL ≠ vR → 회전</text>
+</svg></div>
+  <ul class="key-points"><li>좌우 바퀴 속도가 같으면 직진한다</li><li>속도 차이가 회전 각속도를 만든다</li><li>선속도 v와 각속도 ω로 움직임을 쓴다</li></ul>
+</article><article class="lesson-card" data-minutes="25">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>25분</span><span class="lesson-card__type">이론</span></div>
+      <h3>기구학</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">03</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 410" role="img" aria-label="관절각과 엔드이펙터 자세 사이의 정기구학 역기구학 관계와 작업공간 특이점">
+  <title>정기구학과 역기구학의 양방향 변환</title>
+  <defs><marker id="kin-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker><marker id="kin-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-accent" d="M0 0 L10 5 L0 10z"/></marker></defs>
+  <rect class="node" x="35" y="105" width="205" height="185" rx="14"/>
+  <circle class="fill-primary" cx="92" cy="230" r="12"/><circle class="fill-primary" cx="151" cy="175" r="12"/><circle class="fill-accent" cx="205" cy="137" r="12"/>
+  <path class="line-primary" d="M92 230 L151 175 L205 137"/>
+  <path class="line-muted" d="M58 250 H218"/>
+  <text class="text-main" x="137" y="82" text-anchor="middle">관절각 q</text><text class="text-small" x="137" y="320" text-anchor="middle">로봇의 각 관절 상태</text>
+  <path class="line-primary" d="M260 158 H455" marker-end="url(#kin-blue)"/><text class="text-label" x="357" y="145" text-anchor="middle">정기구학</text>
+  <path class="line-accent" d="M455 235 H260" marker-end="url(#kin-green)"/><text class="text-label" x="357" y="260" text-anchor="middle">역기구학</text>
+  <rect class="node-accent" x="480" y="105" width="205" height="185" rx="14"/>
+  <ellipse class="fill-accent-soft" cx="582" cy="198" rx="75" ry="58"/>
+  <path class="line-primary" d="M548 236 V166 M548 236 H620"/>
+  <circle class="fill-accent" cx="620" cy="166" r="9"/>
+  <path class="line-warn" d="M625 225 l22 22 M647 225 l-22 22"/>
+  <text class="text-main" x="582" y="82" text-anchor="middle">툴 자세 x</text><text class="text-small" x="582" y="320" text-anchor="middle">음영: 작업공간　×: 특이점</text>
+</svg></div>
+  <ul class="key-points"><li>정기구학은 관절각에서 툴 자세를 구한다</li><li>역기구학은 목표 자세의 관절각을 찾는다</li><li>작업공간 경계에서 특이점을 확인한다</li></ul>
+</article><article class="practice-card" data-minutes="30">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">30분 · 실습</p>
+      <h3>/cmd_vel</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="practice-card" data-minutes="40">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">40분 · 실습</p>
+      <h3>관절·그리퍼</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="practice-card" data-minutes="30">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">30분 · 실습</p>
+      <h3>좌표 변환</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="operation-card" data-minutes="15">
+  <div><p class="operation-card__meta">운영</p><h3>VLA 미션 예고 · 픽앤플레이스 안내</h3></div>
+  <span class="operation-card__minutes">15분</span>
+</article><article class="practice-card" data-minutes="45">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">45분 · 자율</p>
+      <h3>—</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="break-card" data-minutes="20">
+  <div><p class="operation-card__meta">휴식</p><h3>휴식</h3></div>
+  <span class="operation-card__minutes">20분</span>
+</article></div>
+    </div>
+  </section>
+  <nav class="pager container" aria-label="이전 및 다음 강의"><div class="pager__grid"><a class="pager-card" href="lecture-2.html"><span class="pager-card__label">Previous</span><strong>← 강의 02 · VSLAM · 내비게이션</strong></a><a class="pager-card" href="lecture-4.html"><span class="pager-card__label">Next</span><strong>강의 04 · VLA 이론 →</strong></a></div></nav>
+</main>
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <p>2026 크래쉬랩 M1 로봇 AI 교육</p>
+    <a href="index.html">과정 개요</a>
+  </div>
+</footer>
+</body>
+</html>

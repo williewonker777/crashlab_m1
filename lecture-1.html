@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="로봇의 기본 구조를 읽고 ROS2와 시뮬레이터를 연결할 수 있습니다.">
+  <title>강의 01 · 로보틱스 기초 · ROS2 · 개발환경 구축 | 크래쉬랩 M1</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">본문 바로가기</a>
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a class="wordmark" href="index.html">크래쉬랩 M1</a>
+    <nav class="primary-nav" aria-label="강의 탐색">
+      <ul><li><a href="lecture-1.html" aria-current="page" aria-label="강의 1">01</a></li><li><a href="lecture-2.html" aria-label="강의 2">02</a></li><li><a href="lecture-3.html" aria-label="강의 3">03</a></li><li><a href="lecture-4.html" aria-label="강의 4">04</a></li></ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="hero">
+    <div class="hero__grid container">
+      <div><p class="eyebrow">LECTURE 01</p><h1>로보틱스 기초 · ROS2 · 개발환경 구축</h1><p class="hero__summary">로봇의 기본 구조를 읽고 ROS2와 시뮬레이터를 연결할 수 있습니다.</p></div>
+      <dl class="hero__meta"><div><dt>Date</dt><dd><time datetime="2026-09-11">9/11</time></dd></div><div><dt>Duration</dt><dd>240분</dd></div></dl>
+    </div>
+  </section>
+  <section class="time-allocation container" aria-labelledby="time-heading">
+  <div class="time-allocation__header">
+    <h2 id="time-heading">240분 시간 배분</h2>
+    <p class="time-allocation__total">TOTAL 240 MIN</p>
+  </div>
+  <div class="time-bar" data-total-minutes="240">
+      <div class="time-segment-wrap" style="--minutes: 60" data-minutes="60">
+        <button class="time-segment time-segment--theory" type="button" aria-describedby="l1-theory-tip" aria-label="이론 60분, 세부 항목 보기">
+          <span class="time-segment__label">이론</span><strong>60분</strong>
+        </button>
+        <div class="time-tooltip" id="l1-theory-tip" role="tooltip"><ul class="tooltip-list"><li>25분 · 로봇 구조와 좌표계</li><li>15분 · 센서 개요</li><li>20분 · ROS2 개념</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 100" data-minutes="100">
+        <button class="time-segment time-segment--practice" type="button" aria-describedby="l1-practice-tip" aria-label="실습 100분, 세부 항목 보기">
+          <span class="time-segment__label">실습</span><strong>100분</strong>
+        </button>
+        <div class="time-tooltip" id="l1-practice-tip" role="tooltip"><ul class="tooltip-list"><li>35분 · 개발환경 구축</li><li>30분 · ROS2 도구</li><li>35분 · ROS2 ↔ Isaac Sim 브리지</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 15" data-minutes="15">
+        <button class="time-segment time-segment--operation" type="button" aria-describedby="l1-operation-tip" aria-label="운영 15분, 세부 항목 보기">
+          <span class="time-segment__label">운영</span><strong>15분</strong>
+        </button>
+        <div class="time-tooltip" id="l1-operation-tip" role="tooltip"><ul class="tooltip-list"><li>15분 · 팀 편성 · 에셋 배부 · 평가 기준</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 45" data-minutes="45">
+        <button class="time-segment time-segment--autonomy" type="button" aria-describedby="l1-autonomy-tip" aria-label="자율 45분, 세부 항목 보기">
+          <span class="time-segment__label">자율</span><strong>45분</strong>
+        </button>
+        <div class="time-tooltip" id="l1-autonomy-tip" role="tooltip"><ul class="tooltip-list"><li>45분 · 팀 자율 실습</li></ul></div>
+      </div>
+      <div class="time-segment-wrap" style="--minutes: 20" data-minutes="20">
+        <button class="time-segment time-segment--break" type="button" aria-describedby="l1-break-tip" aria-label="휴식 20분, 세부 항목 보기">
+          <span class="time-segment__label">휴식</span><strong>20분</strong>
+        </button>
+        <div class="time-tooltip" id="l1-break-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · 휴식</li></ul></div>
+      </div>
+  </div>
+</section>
+  <section class="schedule" aria-labelledby="schedule-heading">
+    <div class="container">
+      <div class="schedule-heading"><p class="eyebrow">CURRICULUM</p><h2 id="schedule-heading">강의 구성</h2></div>
+      <div class="schedule-list"><article class="lesson-card" data-minutes="25">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>25분</span><span class="lesson-card__type">이론</span></div>
+      <h3>로봇 구조와 좌표계</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">01</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 340" role="img" aria-label="월드 좌표계에서 베이스와 툴 좌표계로 이어지는 TF 트리">
+  <title>월드에서 베이스와 툴로 이어지는 TF 트리</title>
+  <defs>
+    <marker id="tf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fill-primary" d="M 0 0 L 10 5 L 0 10 z"/></marker>
+  </defs>
+  <path class="line-primary" d="M205 170 H277" marker-end="url(#tf-arrow)"/>
+  <path class="line-accent" d="M445 170 H517" marker-end="url(#tf-arrow)"/>
+  <rect class="node" x="35" y="115" width="170" height="110" rx="14"/>
+  <rect class="node" x="275" y="115" width="170" height="110" rx="14"/>
+  <rect class="node-accent" x="515" y="115" width="170" height="110" rx="14"/>
+  <text class="text-main" x="120" y="153" text-anchor="middle">월드</text>
+  <text class="text-small" x="120" y="178" text-anchor="middle">고정 기준</text>
+  <text class="text-main" x="360" y="153" text-anchor="middle">베이스</text>
+  <text class="text-small" x="360" y="178" text-anchor="middle">로봇 기준</text>
+  <text class="text-main" x="600" y="153" text-anchor="middle">툴</text>
+  <text class="text-small" x="600" y="178" text-anchor="middle">작업 기준</text>
+  <g transform="translate(120 202)"><path class="line-primary" d="M0 0 V-20 M0 0 H24"/><text class="text-small" x="28" y="4">x</text><text class="text-small" x="-5" y="-25">z</text></g>
+  <g transform="translate(360 202)"><path class="line-primary" d="M0 0 V-20 M0 0 H24"/><text class="text-small" x="28" y="4">x</text><text class="text-small" x="-5" y="-25">z</text></g>
+  <g transform="translate(600 202)"><path class="line-accent" d="M0 0 V-20 M0 0 H24"/><text class="text-small" x="28" y="4">x</text><text class="text-small" x="-5" y="-25">z</text></g>
+  <text class="text-label" x="240" y="145" text-anchor="middle">변환</text>
+  <text class="text-label" x="480" y="145" text-anchor="middle">변환</text>
+  <path class="line-muted dash" d="M120 245 V280 H600 V245"/>
+  <text class="text-small" x="360" y="307" text-anchor="middle">TF 트리가 모든 좌표 관계를 연결</text>
+</svg></div>
+  <ul class="key-points"><li>링크와 관절이 자유도를 만든다</li><li>좌표계는 월드→베이스→툴로 잇는다</li><li><abbr title="좌표계 연결을 트리로 관리하는 ROS 기능">TF</abbr> 트리가 좌표 관계를 관리한다</li></ul>
+</article><article class="lesson-card" data-minutes="15">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>15분</span><span class="lesson-card__type">이론</span></div>
+      <h3>센서 개요</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">02</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 410" role="img" aria-label="카메라 LiDAR IMU 엔코더가 측정하는 정보를 보여주는 4분할 카드">
+  <title>센서 네 종류와 각 센서의 측정값</title>
+  <g transform="translate(25 25)">
+    <rect class="node" width="320" height="165" rx="14"/>
+    <rect class="line-primary" x="35" y="42" width="72" height="50" rx="7"/>
+    <circle class="line-accent" cx="71" cy="67" r="15"/>
+    <path class="line-primary" d="M107 55 l22 -12 v49 l-22 -12"/>
+    <text class="text-main" x="160" y="55">카메라</text>
+    <text class="text-label" x="160" y="88">영상</text>
+    <text class="text-small" x="35" y="132">빛의 색과 형태</text>
+  </g>
+  <g transform="translate(375 25)">
+    <rect class="node" width="320" height="165" rx="14"/>
+    <circle class="line-primary" cx="72" cy="68" r="25"/>
+    <circle class="fill-accent" cx="72" cy="68" r="7"/>
+    <path class="line-accent" d="M72 31 V17 M72 119 V105 M35 68 H21 M123 68 H109 M46 42 L35 31 M109 105 L98 94 M98 42 L109 31 M35 105 L46 94"/>
+    <text class="text-main" x="160" y="55">LiDAR</text>
+    <text class="text-label" x="160" y="88">거리</text>
+    <text class="text-small" x="35" y="132">반사된 빛의 시간</text>
+  </g>
+  <g transform="translate(25 220)">
+    <rect class="node" width="320" height="165" rx="14"/>
+    <rect class="line-primary" x="38" y="36" width="68" height="68" rx="10"/>
+    <path class="line-accent" d="M72 70 V27 M72 70 H119 M72 70 L44 99"/>
+    <circle class="fill-primary" cx="72" cy="70" r="5"/>
+    <text class="text-main" x="160" y="55">IMU</text>
+    <text class="text-label" x="160" y="88">가속도</text>
+    <text class="text-small" x="35" y="132">움직임과 회전</text>
+  </g>
+  <g transform="translate(375 220)">
+    <rect class="node" width="320" height="165" rx="14"/>
+    <circle class="line-primary" cx="72" cy="70" r="31"/>
+    <circle class="line-accent" cx="72" cy="70" r="14"/>
+    <path class="line-primary" d="M72 31 V42 M72 98 V109 M33 70 H44 M100 70 H111 M45 43 L53 51 M91 89 L99 97 M99 43 L91 51 M53 89 L45 97"/>
+    <text class="text-main" x="160" y="55">엔코더</text>
+    <text class="text-label" x="160" y="88">회전량</text>
+    <text class="text-small" x="35" y="132">축의 위치와 속도</text>
+  </g>
+</svg></div>
+  <ul class="key-points"><li>카메라는 영상, LiDAR는 거리를 잰다</li><li><abbr title="관성 측정 장치">IMU</abbr>는 움직임과 회전을 감지한다</li><li>엔코더는 축의 회전량을 센다</li></ul>
+</article><article class="lesson-card" data-minutes="20">
+  <header class="lesson-card__header">
+    <div>
+      <div class="lesson-card__meta"><span>20분</span><span class="lesson-card__type">이론</span></div>
+      <h3>ROS2 개념</h3>
+    </div>
+    <span class="lesson-card__number" aria-hidden="true">03</span>
+  </header>
+  <div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 720 360" role="img" aria-label="두 ROS2 노드가 토픽으로 연결되고 서비스와 액션이 점선으로 연결된 그래프">
+  <title>ROS2 노드 토픽 서비스 액션 연결 구조</title>
+  <defs><marker id="ros-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
+  <rect class="node" x="45" y="115" width="175" height="100" rx="50"/>
+  <rect class="node-accent" x="500" y="115" width="175" height="100" rx="50"/>
+  <rect class="fill-primary" x="280" y="125" width="160" height="80" rx="12"/>
+  <text class="text-main" x="132" y="162" text-anchor="middle">센서 노드</text>
+  <text class="text-small" x="132" y="186" text-anchor="middle">Publisher</text>
+  <text class="text-white" x="360" y="160" text-anchor="middle">토픽</text>
+  <text class="text-white" x="360" y="184" text-anchor="middle">/scan</text>
+  <text class="text-main" x="587" y="162" text-anchor="middle">제어 노드</text>
+  <text class="text-small" x="587" y="186" text-anchor="middle">Subscriber</text>
+  <path class="line-primary" d="M220 165 H278" marker-end="url(#ros-arrow)"/>
+  <path class="line-primary" d="M440 165 H498" marker-end="url(#ros-arrow)"/>
+  <path class="line-muted dash" d="M132 110 C180 25 540 25 587 110"/>
+  <path class="line-accent dash" d="M132 220 C180 315 540 315 587 220"/>
+  <rect class="fill-bg" x="305" y="42" width="110" height="34" rx="17"/>
+  <text class="text-label" x="360" y="64" text-anchor="middle">서비스 · 응답</text>
+  <rect class="fill-bg" x="305" y="277" width="110" height="34" rx="17"/>
+  <text class="text-label" x="360" y="299" text-anchor="middle">액션 · 진행</text>
+</svg></div>
+  <ul class="key-points"><li>노드는 한 가지 역할을 수행한다</li><li>토픽은 데이터를 비동기로 전달한다</li><li>서비스와 액션은 요청 흐름을 만든다</li></ul>
+</article><article class="practice-card" data-minutes="35">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">35분 · 실습</p>
+      <h3>개발환경 구축</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="practice-card" data-minutes="30">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">30분 · 실습</p>
+      <h3>ROS2 도구</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="practice-card" data-minutes="35">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">35분 · 실습</p>
+      <h3>ROS2 ↔ Isaac Sim 브리지</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="operation-card" data-minutes="15">
+  <div><p class="operation-card__meta">운영</p><h3>팀 편성 · 에셋 배부 · 평가 기준</h3></div>
+  <span class="operation-card__minutes">15분</span>
+</article><article class="practice-card" data-minutes="45">
+  <header class="practice-card__header">
+    <div>
+      <p class="practice-card__meta">45분 · 자율</p>
+      <h3>팀 자율 실습</h3>
+    </div>
+    <span class="status-badge">작성 예정</span>
+  </header>
+  <dl class="practice-slots">
+    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
+    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
+  </dl>
+</article><article class="break-card" data-minutes="20">
+  <div><p class="operation-card__meta">휴식</p><h3>휴식</h3></div>
+  <span class="operation-card__minutes">20분</span>
+</article></div>
+    </div>
+  </section>
+  <nav class="pager container" aria-label="이전 및 다음 강의"><div class="pager__grid"><a class="pager-card" href="index.html"><span class="pager-card__label">Previous</span><strong>← 과정 개요</strong></a><a class="pager-card" href="lecture-2.html"><span class="pager-card__label">Next</span><strong>강의 02 · VSLAM · 내비게이션 →</strong></a></div></nav>
+</main>
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <p>2026 크래쉬랩 M1 로봇 AI 교육</p>
+    <a href="index.html">과정 개요</a>
+  </div>
+</footer>
+</body>
+</html>
