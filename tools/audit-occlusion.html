@@ -1,0 +1,48 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe id="fr" style="width:1920px;height:1080px;border:0"></iframe><pre id="out">pending</pre>
+<script>
+const page=new URLSearchParams(location.search).get('p')||'lecture-1';
+const fr=document.getElementById('fr'); fr.src=new URL('../'+page+'.html',location.href);
+fr.onload=()=>setTimeout(()=>{
+ const d=fr.contentDocument,w=fr.contentWindow,out=[];
+ const vis=e=>{const s=w.getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0.05;};
+ const R=e=>e.getBoundingClientRect();
+ [...d.querySelectorAll('.slide')].forEach((sl,si)=>{
+  [...sl.querySelectorAll('svg')].forEach(svg=>{
+   const all=[...svg.querySelectorAll('*')];
+   const idx=new Map(all.map((e,i)=>[e,i]));
+   const texts=all.filter(e=>e.tagName.toLowerCase()==='text'&&vis(e)&&e.textContent.trim());
+   // 텍스트보다 문서 순서가 뒤 = 텍스트 위에 그려짐
+   const painters=all.filter(e=>{
+     const t=e.tagName.toLowerCase();
+     if(!['line','path','polyline','polygon','rect','circle','ellipse'].includes(t))return false;
+     if(!vis(e))return false;
+     const s=w.getComputedStyle(e);
+     const hasStroke=s.stroke&&s.stroke!=='none'&&parseFloat(s.strokeWidth)>0;
+     const hasFill=s.fill&&s.fill!=='none'&&!/,\s*0\)$/.test(s.fill);
+     return hasStroke||hasFill;
+   });
+   for(const t of texts){
+     const tr=R(t); if(tr.width<1)continue;
+     for(const p of painters){
+       if(idx.get(p)<idx.get(t))continue;        // 텍스트보다 앞 = 아래에 깔림, 무시
+       if(p.contains(t)||t.contains(p))continue;
+       const pr=R(p);
+       const ox=Math.min(tr.right,pr.right)-Math.max(tr.left,pr.left);
+       const oy=Math.min(tr.bottom,pr.bottom)-Math.max(tr.top,pr.top);
+       if(ox<=1||oy<=1)continue;
+       const s=w.getComputedStyle(p);
+       const st=parseFloat(s.strokeWidth)||0;
+       const filled=s.fill&&s.fill!=='none'&&!/,\s*0\)$/.test(s.fill);
+       // 큰 배경 박스가 텍스트를 완전히 감싸면서 fill 있으면 실제로 가림
+       const covers = filled && pr.left<=tr.left && pr.right>=tr.right && pr.top<=tr.top && pr.bottom>=tr.bottom;
+       const crosses = st>0 && ox>3 && oy>3;
+       if(covers) out.push(`s${si+1} [덮임] "${t.textContent.trim().slice(0,22)}" ← ${p.tagName.toLowerCase()} fill=${s.fill} (문서순서 뒤)`);
+       else if(crosses) out.push(`s${si+1} [선 관통] "${t.textContent.trim().slice(0,22)}" ← ${p.tagName.toLowerCase()} stroke=${s.stroke} w=${st} 교차 ${Math.round(ox)}x${Math.round(oy)}`);
+     }
+   }
+  });
+ });
+ document.getElementById('out').textContent=out.length?[...new Set(out)].join('\n'):'CLEAN';
+},1500);
+</script>
