@@ -20,12 +20,19 @@ fr.onload=()=>setTimeout(()=>{
      const o=ov(T[i],T[j]); if(o&&o[0]*o[1]>10)
        out.push(`[겹침] s${si+1}: "${T[i].textContent.trim().slice(0,22)}" X "${T[j].textContent.trim().slice(0,22)}" ${Math.round(o[0])}x${Math.round(o[1])}px`);
    }
+   const C=[...svg.querySelectorAll('g.chip')].filter(vis);
+   for(let i=0;i<C.length;i++)for(let j=i+1;j<C.length;j++){
+     const o=ov(C[i],C[j]); if(o&&o[0]*o[1]>10)
+       out.push(`[칩 겹침] s${si+1}: "${C[i].textContent.trim().slice(0,22)}" X "${C[j].textContent.trim().slice(0,22)}" ${Math.round(o[0])}x${Math.round(o[1])}px`);
+   }
    const S=[...svg.querySelectorAll('rect,circle,ellipse,path,polygon')].filter(e=>{
      if(!vis(e))return false; const f=w.getComputedStyle(e).fill; return f&&f!=='none'&&!/,\s*0\)$/.test(f);});
    for(const t of T){
      const tf=w.getComputedStyle(t).fill, tl=lum(tf);
      const tr=R(t); const cx=tr.left+tr.width/2, cy=tr.top+tr.height/2;
-     for(const s of S){
+     const chip=t.closest('g.chip');
+     const backgrounds=chip?[chip.querySelector('rect')]:S;
+     for(const s of backgrounds){
        const sr=R(s);
        // 텍스트 중심이 도형 안에 있을 때만 = 실제로 그 위에 얹힘
        if(cx<sr.left||cx>sr.right||cy<sr.top||cy>sr.bottom) continue;
