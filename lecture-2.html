@@ -1,226 +1,71 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="센서 데이터로 위치와 지도를 추정하고 이동 루프를 설명할 수 있습니다.">
-  <title>강의 02 · VSLAM · 내비게이션 | 크래쉬랩 M1</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/main.js" defer></script>
-</head>
-<body>
-<a class="skip-link" href="#main">본문 바로가기</a>
-<header class="site-header">
-  <div class="site-header__inner container">
-    <a class="wordmark" href="index.html">크래쉬랩 M1</a>
-    <nav class="primary-nav" aria-label="강의 탐색">
-      <ul><li><a href="lecture-1.html" aria-label="강의 1">01</a></li><li><a href="lecture-2.html" aria-current="page" aria-label="강의 2">02</a></li><li><a href="lecture-3.html" aria-label="강의 3">03</a></li><li><a href="lecture-4.html" aria-label="강의 4">04</a></li></ul>
-    </nav>
-  </div>
-</header>
-<main id="main">
-  <section class="hero">
-    <div class="hero__grid container">
-      <div><p class="eyebrow">LECTURE 02</p><h1>VSLAM · 내비게이션</h1><p class="hero__summary">센서 데이터로 위치와 지도를 추정하고 이동 루프를 설명할 수 있습니다.</p></div>
-      <dl class="hero__meta"><div><dt>Date</dt><dd><time datetime="2026-09-18">9/18</time></dd></div><div><dt>Duration</dt><dd>240분</dd></div></dl>
-    </div>
-  </section>
-  <section class="time-allocation container" aria-labelledby="time-heading">
-  <div class="time-allocation__header">
-    <h2 id="time-heading">240분 시간 배분</h2>
-    <p class="time-allocation__total">TOTAL 240 MIN</p>
-  </div>
-  <div class="time-bar" data-total-minutes="240">
-      <div class="time-segment-wrap" style="--minutes: 60" data-minutes="60">
-        <button class="time-segment time-segment--theory" type="button" aria-describedby="l2-theory-tip" aria-label="이론 60분, 세부 항목 보기">
-          <span class="time-segment__label">이론</span><strong>60분</strong>
-        </button>
-        <div class="time-tooltip" id="l2-theory-tip" role="tooltip"><ul class="tooltip-list"><li>25분 · SLAM 원리</li><li>15분 · 위치 추정 오차</li><li>20분 · 내비게이션</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 100" data-minutes="100">
-        <button class="time-segment time-segment--practice" type="button" aria-describedby="l2-practice-tip" aria-label="실습 100분, 세부 항목 보기">
-          <span class="time-segment__label">실습</span><strong>100분</strong>
-        </button>
-        <div class="time-tooltip" id="l2-practice-tip" role="tooltip"><ul class="tooltip-list"><li>40분 · rosbag·RViz</li><li>35분 · 드리프트 측정</li><li>25분 · 평가 환경</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 15" data-minutes="15">
-        <button class="time-segment time-segment--operation" type="button" aria-describedby="l2-operation-tip" aria-label="운영 15분, 세부 항목 보기">
-          <span class="time-segment__label">운영</span><strong>15분</strong>
-        </button>
-        <div class="time-tooltip" id="l2-operation-tip" role="tooltip"><ul class="tooltip-list"><li>15분 · 미션 설명 · 직접 개발 범위</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 45" data-minutes="45">
-        <button class="time-segment time-segment--autonomy" type="button" aria-describedby="l2-autonomy-tip" aria-label="자율 45분, 세부 항목 보기">
-          <span class="time-segment__label">자율</span><strong>45분</strong>
-        </button>
-        <div class="time-tooltip" id="l2-autonomy-tip" role="tooltip"><ul class="tooltip-list"><li>45분 · —</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 20" data-minutes="20">
-        <button class="time-segment time-segment--break" type="button" aria-describedby="l2-break-tip" aria-label="휴식 20분, 세부 항목 보기">
-          <span class="time-segment__label">휴식</span><strong>20분</strong>
-        </button>
-        <div class="time-tooltip" id="l2-break-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · 휴식</li></ul></div>
-      </div>
-  </div>
-</section>
-  <section class="schedule" aria-labelledby="schedule-heading">
-    <div class="container">
-      <div class="schedule-heading"><p class="eyebrow">CURRICULUM</p><h2 id="schedule-heading">강의 구성</h2></div>
-      <div class="schedule-list"><article class="lesson-card" data-minutes="25">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>25분</span><span class="lesson-card__type">이론</span></div>
-      <h3>SLAM 원리</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">01</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 400" role="img" aria-label="오도메트리 특징점 매칭 루프 클로저 보정이 순환하는 SLAM 루프">
-  <title>SLAM의 측정과 보정 순환 루프</title>
-  <defs><marker id="slam-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <circle class="fill-grid" cx="360" cy="200" r="85"/>
-  <path class="line-muted" d="M322 230 l20 -52 35 22 24 -39"/>
-  <circle class="fill-accent" cx="322" cy="230" r="6"/><circle class="fill-primary" cx="342" cy="178" r="6"/><circle class="fill-accent" cx="377" cy="200" r="6"/><circle class="fill-primary" cx="401" cy="161" r="6"/>
-  <text class="text-main" x="360" y="268" text-anchor="middle">지도 + 위치</text>
-  <rect class="node" x="50" y="50" width="175" height="72" rx="12"/>
-  <rect class="node" x="495" y="50" width="175" height="72" rx="12"/>
-  <rect class="node-accent" x="495" y="278" width="175" height="72" rx="12"/>
-  <rect class="node-accent" x="50" y="278" width="175" height="72" rx="12"/>
-  <text class="text-main" x="137" y="92" text-anchor="middle">오도메트리</text>
-  <text class="text-main" x="582" y="92" text-anchor="middle">특징점 매칭</text>
-  <text class="text-main" x="582" y="320" text-anchor="middle">루프 클로저</text>
-  <text class="text-main" x="137" y="320" text-anchor="middle">보정</text>
-  <path class="line-primary" d="M225 86 H493" marker-end="url(#slam-arrow)"/>
-  <path class="line-primary" d="M582 122 V276" marker-end="url(#slam-arrow)"/>
-  <path class="line-primary" d="M495 314 H227" marker-end="url(#slam-arrow)"/>
-  <path class="line-primary" d="M137 278 V124" marker-end="url(#slam-arrow)"/>
-</svg></div>
-  <ul class="key-points"><li>이동량과 특징점으로 위치를 추정한다</li><li>루프 클로저가 누적 오차를 찾는다</li><li>보정 결과가 지도와 위치를 갱신한다</li></ul>
-</article><article class="lesson-card" data-minutes="15">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>15분</span><span class="lesson-card__type">이론</span></div>
-      <h3>위치 추정 오차</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">02</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 380" role="img" aria-label="실제 경로와 추정 경로가 시간에 따라 벌어지는 드리프트 누적 그래프">
-  <title>시간에 따라 누적되는 위치 추정 드리프트</title>
-  <defs><marker id="drift-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <path class="line-muted" d="M85 35 V315 H665" marker-end="url(#drift-arrow)"/>
-  <text class="text-small" x="54" y="45">위치</text><text class="text-small" x="626" y="345">시간</text>
-  <path class="line-accent" d="M95 290 C190 260 230 235 300 200 S430 140 650 72"/>
-  <path class="line-primary dash" d="M95 290 C190 260 240 226 310 182 S450 105 650 30"/>
-  <path class="line-warn" d="M650 72 V30"/>
-  <circle class="fill-accent" cx="95" cy="290" r="6"/><circle class="fill-primary" cx="650" cy="30" r="6"/>
-  <rect class="fill-bg" x="460" y="180" width="176" height="78" rx="10"/>
-  <path class="line-accent" d="M480 205 H515"/><text class="text-label" x="527" y="210">실제 경로</text>
-  <path class="line-primary dash" d="M480 235 H515"/><text class="text-label" x="527" y="240">추정 경로</text>
-  <text class="text-warn" x="638" y="54" text-anchor="end">누적 오차</text>
-</svg></div>
-  <ul class="key-points"><li>작은 측정 오차도 이동마다 누적된다</li><li>추정 경로는 실제 경로에서 벌어진다</li><li>외부 기준과 루프 보정이 오차를 줄인다</li></ul>
-</article><article class="lesson-card" data-minutes="20">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>20분</span><span class="lesson-card__type">이론</span></div>
-      <h3>내비게이션</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">03</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 400" role="img" aria-label="측위 계획 제어 순환 루프와 장애물 코스트맵 격자">
-  <title>로봇 내비게이션 순환 구조와 코스트맵</title>
-  <defs><marker id="nav-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <circle class="node" cx="130" cy="95" r="62"/><circle class="node" cx="290" cy="200" r="62"/><circle class="node-accent" cx="130" cy="305" r="62"/>
-  <text class="text-main" x="130" y="101" text-anchor="middle">측위</text><text class="text-main" x="290" y="206" text-anchor="middle">계획</text><text class="text-main" x="130" y="311" text-anchor="middle">제어</text>
-  <path class="line-primary" d="M184 126 L244 166" marker-end="url(#nav-arrow)"/><path class="line-primary" d="M244 234 L184 274" marker-end="url(#nav-arrow)"/><path class="line-primary" d="M130 243 V159" marker-end="url(#nav-arrow)"/>
-  <g transform="translate(415 55)">
-    <rect class="fill-grid" width="250" height="290" rx="10"/>
-    <g class="line-muted" opacity=".35"><path d="M50 0 V290 M100 0 V290 M150 0 V290 M200 0 V290 M0 58 H250 M0 116 H250 M0 174 H250 M0 232 H250"/></g>
-    <rect class="fill-primary" x="50" y="58" width="50" height="58" opacity=".9"/><rect class="fill-primary" x="150" y="116" width="50" height="58" opacity=".65"/><rect class="fill-primary" x="200" y="174" width="50" height="58" opacity=".8"/>
-    <circle class="fill-accent" cx="25" cy="261" r="12"/><path class="line-accent" d="M30 251 C65 215 82 205 120 203 S165 244 225 255"/>
-    <text class="text-small" x="125" y="24" text-anchor="middle">코스트맵</text>
-  </g>
-</svg></div>
-  <ul class="key-points"><li>측위→계획→제어가 계속 순환한다</li><li>코스트맵은 이동 위험도를 격자로 표시한다</li><li>계획기는 안전한 경로를 다시 계산한다</li></ul>
-</article><article class="practice-card" data-minutes="40">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">40분 · 실습</p>
-      <h3>rosbag·RViz</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="practice-card" data-minutes="35">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">35분 · 실습</p>
-      <h3>드리프트 측정</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="practice-card" data-minutes="25">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">25분 · 실습</p>
-      <h3>평가 환경</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="operation-card" data-minutes="15">
-  <div><p class="operation-card__meta">운영</p><h3>미션 설명 · 직접 개발 범위</h3></div>
-  <span class="operation-card__minutes">15분</span>
-</article><article class="practice-card" data-minutes="45">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">45분 · 자율</p>
-      <h3>—</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="break-card" data-minutes="20">
-  <div><p class="operation-card__meta">휴식</p><h3>휴식</h3></div>
-  <span class="operation-card__minutes">20분</span>
-</article></div>
-    </div>
-  </section>
-  <nav class="pager container" aria-label="이전 및 다음 강의"><div class="pager__grid"><a class="pager-card" href="lecture-1.html"><span class="pager-card__label">Previous</span><strong>← 강의 01 · 로보틱스 기초 · ROS2</strong></a><a class="pager-card" href="lecture-3.html"><span class="pager-card__label">Next</span><strong>강의 03 · 조작 — 주행 · 모터 제어 →</strong></a></div></nav>
-</main>
-<footer class="site-footer">
-  <div class="site-footer__inner container">
-    <p>2026 크래쉬랩 M1 로봇 AI 교육</p>
-    <a href="index.html">과정 개요</a>
-  </div>
-</footer>
-</body>
-</html>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="지도가 없는 곳에서 길을 찾는 법"><title>강의 02 · VSLAM · 내비게이션 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css"><script src="assets/js/deck.js" defer></script></head><body class="deck-page"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 18</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="18"><section class="slide slide--title" id="slide-1" data-title="지도가 없는 곳에서 길을 찾는 법" aria-label="슬라이드 1 / 18: 지도가 없는 곳에서 길을 찾는 법"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 02</p><h1>VSLAM · 내비게이션</h1><p class="slide__lead">지도가 없는 곳에서 길을 찾는 법</p><div class="title-meta"><span>9/18</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">02</div></div></section><section class="slide slide--question" id="slide-2" data-title="질문" aria-label="슬라이드 2 / 18: 질문"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>눈을 감고 방을 걸으면 몇 걸음 만에 길을 잃을까?</h2></div></section><section class="slide" id="slide-3" data-title="오도메트리" aria-label="슬라이드 3 / 18: 오도메트리"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>오도메트리</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="바퀴 회전량을 이동 거리와 위치로 바꾸는 오도메트리">
+  <title>오도메트리</title>
+  <defs>
+    <marker id="l2s3-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s3-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <circle class="node" cx="260" cy="300" r="105"/><circle class="fill-blue" cx="260" cy="300" r="18"/><path class="stroke-green" d="M185 235A105 105 0 0 1 335 235"/><text class="svg-title" x="260" y="455" text-anchor="middle">바퀴 회전</text><path class="stroke-blue" d="M390 300 L530 300" marker-end="url(#l2s3-blue)"/><rect class="node-green" x="550" y="190" width="260" height="220" rx="24"/><text class="svg-title" x="680" y="270" text-anchor="middle">Δs = r·Δθ</text><text class="svg-label" x="680" y="325" text-anchor="middle">이동량 계산</text><path class="stroke-blue" d="M830 300 L950 300" marker-end="url(#l2s3-blue)"/><circle class="fill-green" cx="1010" cy="300" r="24"/><path class="stroke-gray dashed" d="M940 380Q1010 330 1080 250"/><text class="svg-title" x="1010" y="455" text-anchor="middle">위치 추정</text>
+</svg></div><ul class="slide-bullets"><li>바퀴 회전량 측정</li><li>이동 거리로 변환</li><li>현재 위치를 누적</li></ul></div></section><section class="slide" id="slide-4" data-title="드리프트" aria-label="슬라이드 4 / 18: 드리프트"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">BUILD</p><h2>드리프트</h2></header><span class="slide__build-tag">BUILD 1 / 2</span><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="이동 오차가 여러 걸음 뒤 누적되어 실제 경로와 추정 경로가 벌어짐">
+  <title>드리프트 한 걸음</title>
+  <defs>
+    <marker id="l2s4-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s4-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-gray" d="M130 410H1070"/><circle class="fill-blue" cx="200" cy="360" r="22"/><circle class="fill-green" cx="820" cy="360" r="22"/><path class="stroke-blue" d="M200 360H830"/><path class="stroke-green dashed" d="M200 330H824"/><path class="stroke-warn" d="M824 315V375"/><text class="svg-title" x="510" y="270" text-anchor="middle">실제 1.00m</text><text class="svg-title" x="510" y="455" text-anchor="middle">추정 0.99m</text><text class="svg-warn" x="845" y="300">1% 오차</text>
+</svg></div><ul class="slide-bullets"><li>1걸음 오차 1%</li></ul></div></section><section class="slide" id="slide-5" data-title="드리프트" aria-label="슬라이드 5 / 18: 드리프트"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">BUILD</p><h2>드리프트</h2></header><span class="slide__build-tag">BUILD 2 / 2</span><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="이동 오차가 여러 걸음 뒤 누적되어 실제 경로와 추정 경로가 벌어짐">
+  <title>드리프트 누적</title>
+  <defs>
+    <marker id="l2s5-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s5-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-gray" d="M105 470V70M105 470H1110"/><path class="stroke-green" d="M130 430C330 385 470 325 640 245S900 145 1080 105"/><path class="stroke-blue dashed" d="M130 430C330 390 485 345 660 285S920 220 1080 205"/><path class="stroke-warn" d="M1080 105V205"/><text class="svg-label" x="860" y="95">실제 경로</text><text class="svg-label" x="860" y="250">추정 경로</text><text class="svg-warn" x="1045" y="165" text-anchor="end">누적 오차</text>
+</svg></div><ul class="slide-bullets"><li>100걸음 뒤 큰 차이</li></ul></div></section><section class="slide" id="slide-6" data-title="해법: 바깥을 본다" aria-label="슬라이드 6 / 18: 해법: 바깥을 본다"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>해법: 바깥을 본다</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="연속된 두 카메라 프레임에서 같은 특징점을 연결">
+  <title>특징점 매칭</title>
+  <defs>
+    <marker id="l2s6-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s6-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="node" x="55" y="70" width="460" height="400" rx="22"/><rect class="node-green" x="685" y="70" width="460" height="400" rx="22"/><text class="svg-title" x="285" y="125" text-anchor="middle">프레임 A</text><text class="svg-title" x="915" y="125" text-anchor="middle">프레임 B</text><circle class="fill-blue" cx="150" cy="200" r="14"/><circle class="fill-green" cx="770" cy="190" r="14"/><path class="stroke-gray dashed thin" d="M164 200L756 190"/><circle class="fill-blue" cx="260" cy="170" r="14"/><circle class="fill-green" cx="880" cy="185" r="14"/><path class="stroke-gray dashed thin" d="M274 170L866 185"/><circle class="fill-blue" cx="390" cy="245" r="14"/><circle class="fill-green" cx="1010" cy="235" r="14"/><path class="stroke-gray dashed thin" d="M404 245L996 235"/><circle class="fill-blue" cx="220" cy="350" r="14"/><circle class="fill-green" cx="840" cy="365" r="14"/><path class="stroke-gray dashed thin" d="M234 350L826 365"/><circle class="fill-blue" cx="420" cy="375" r="14"/><circle class="fill-green" cx="1040" cy="365" r="14"/><path class="stroke-gray dashed thin" d="M434 375L1026 365"/><text class="svg-label" x="600" y="525" text-anchor="middle">같은 특징점을 다시 찾아 위치 보정</text>
+</svg></div><ul class="slide-bullets"><li>같은 특징점을 다시 찾기</li><li>프레임 사이 이동 추정</li><li>외부 기준으로 오차 보정</li></ul></div></section><section class="slide" id="slide-7" data-title="루프 클로저" aria-label="슬라이드 7 / 18: 루프 클로저"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>루프 클로저</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="출발 지점을 다시 알아보고 닫힌 경로의 오차를 보정">
+  <title>루프 클로저</title>
+  <defs>
+    <marker id="l2s7-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s7-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-blue" d="M250 410C120 300 220 100 470 120S990 80 990 300S720 455 520 350S270 235 250 410"/><circle class="fill-green" cx="250" cy="410" r="25"/><circle class="fill-warn" cx="285" cy="392" r="18"/><path class="stroke-warn" d="M285 392L250 410"/><text class="svg-title" x="245" y="485" text-anchor="middle">출발</text><text class="svg-title" x="600" y="285" text-anchor="middle">아까 그 자리!</text><path class="stroke-green dashed" d="M300 370C440 270 690 250 890 315"/><text class="svg-label" x="650" y="520" text-anchor="middle">닫힌 경로가 전체 오차를 다시 맞춤</text>
+</svg></div><ul class="slide-bullets"><li>아까 그 자리 인식</li><li>닫힌 경로 발견</li><li>전체 오차 재보정</li></ul></div></section><section class="slide" id="slide-8" data-title="SLAM 한 바퀴" aria-label="슬라이드 8 / 18: SLAM 한 바퀴"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>SLAM 한 바퀴</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="추정 매칭 보정 지도 갱신이 계속 순환하는 SLAM">
+  <title>SLAM 순환</title>
+  <defs>
+    <marker id="l2s8-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s8-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <g class=""><rect class="node" x="155" y="85" width="280" height="125" rx="18"/><text class="svg-title" x="295.0" y="155.5" text-anchor="middle">추정</text></g><g class=""><rect class="node" x="765" y="85" width="280" height="125" rx="18"/><text class="svg-title" x="905.0" y="155.5" text-anchor="middle">매칭</text></g><g class=""><rect class="node-green" x="765" y="350" width="280" height="125" rx="18"/><text class="svg-title" x="905.0" y="420.5" text-anchor="middle">보정</text></g><g class=""><rect class="node" x="155" y="350" width="280" height="125" rx="18"/><text class="svg-title" x="295.0" y="420.5" text-anchor="middle">지도</text></g><path class="stroke-blue" d="M435 147 L755 147" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M905 210 L905 340" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M765 412 L445 412" marker-end="url(#l2s8-blue)"/><path class="stroke-blue" d="M295 350 L295 220" marker-end="url(#l2s8-blue)"/><text class="svg-title" x="600" y="285" text-anchor="middle">SLAM</text>
+</svg></div><ul class="slide-bullets"><li>추정→매칭→보정</li><li>지도와 위치 갱신</li><li>순환하며 정확도 개선</li></ul></div></section><section class="slide" id="slide-9" data-title="Visual SLAM vs LiDAR SLAM" aria-label="슬라이드 9 / 18: Visual SLAM vs LiDAR SLAM"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">COMPARE</p><h2>Visual SLAM vs LiDAR SLAM</h2></header><div class="comparison-grid"><article class="comparison-card"><h3>Visual SLAM</h3><ul><li>색·특징점 활용</li><li>조명 변화에 취약</li></ul></article><article class="comparison-card"><h3>LiDAR SLAM</h3><ul><li>거리·형상 활용</li><li>반사면에 취약</li></ul></article></div></div></section><section class="slide slide--question" id="slide-10" data-title="질문" aria-label="슬라이드 10 / 18: 질문"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>지도가 생겼다. 이제 어디로 갈지 어떻게 정하나?</h2></div></section><section class="slide" id="slide-11" data-title="코스트맵" aria-label="슬라이드 11 / 18: 코스트맵"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>코스트맵</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="격자 지도에서 장애물 주변 비용을 넓혀 안전 거리를 표시">
+  <title>코스트맵</title>
+  <defs>
+    <marker id="l2s11-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s11-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="fill-tint" x="210" y="35" width="780" height="490" rx="20"/><path class="stroke-gray thin" opacity=".25" d="M210 35V525"/><path class="stroke-gray thin" opacity=".25" d="M280 35V525"/><path class="stroke-gray thin" opacity=".25" d="M350 35V525"/><path class="stroke-gray thin" opacity=".25" d="M420 35V525"/><path class="stroke-gray thin" opacity=".25" d="M490 35V525"/><path class="stroke-gray thin" opacity=".25" d="M560 35V525"/><path class="stroke-gray thin" opacity=".25" d="M630 35V525"/><path class="stroke-gray thin" opacity=".25" d="M700 35V525"/><path class="stroke-gray thin" opacity=".25" d="M770 35V525"/><path class="stroke-gray thin" opacity=".25" d="M840 35V525"/><path class="stroke-gray thin" opacity=".25" d="M910 35V525"/><path class="stroke-gray thin" opacity=".25" d="M980 35V525"/><path class="stroke-gray thin" opacity=".25" d="M210 35H990"/><path class="stroke-gray thin" opacity=".25" d="M210 105H990"/><path class="stroke-gray thin" opacity=".25" d="M210 175H990"/><path class="stroke-gray thin" opacity=".25" d="M210 245H990"/><path class="stroke-gray thin" opacity=".25" d="M210 315H990"/><path class="stroke-gray thin" opacity=".25" d="M210 385H990"/><path class="stroke-gray thin" opacity=".25" d="M210 455H990"/><path class="stroke-gray thin" opacity=".25" d="M210 525H990"/><circle class="fill-soft" cx="350" cy="175" r="80"/><rect class="fill-blue" x="320" y="145" width="60" height="60" rx="8"/><circle class="fill-soft" cx="700" cy="245" r="80"/><rect class="fill-blue" x="670" y="215" width="60" height="60" rx="8"/><circle class="fill-soft" cx="840" cy="385" r="80"/><rect class="fill-blue" x="810" y="355" width="60" height="60" rx="8"/><circle class="fill-green" cx="280" cy="455" r="22"/><text class="svg-label" x="600" y="555" text-anchor="middle">진할수록 높은 이동 비용</text>
+</svg></div><ul class="slide-bullets"><li>장애물에 높은 비용</li><li>주변까지 안전 거리</li><li>비용 낮은 칸으로 이동</li></ul></div></section><section class="slide" id="slide-12" data-title="전역 플래너" aria-label="슬라이드 12 / 18: 전역 플래너"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>전역 플래너</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="장애물을 피해 시작에서 목표까지 이어지는 전역 경로 탐색">
+  <title>A 스타 경로 계획</title>
+  <defs>
+    <marker id="l2s12-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s12-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="fill-tint" x="140" y="30" width="920" height="500" rx="20"/><path class="stroke-gray thin" opacity=".22" d="M140 30V530"/><path class="stroke-gray thin" opacity=".22" d="M220 30V530"/><path class="stroke-gray thin" opacity=".22" d="M300 30V530"/><path class="stroke-gray thin" opacity=".22" d="M380 30V530"/><path class="stroke-gray thin" opacity=".22" d="M460 30V530"/><path class="stroke-gray thin" opacity=".22" d="M540 30V530"/><path class="stroke-gray thin" opacity=".22" d="M620 30V530"/><path class="stroke-gray thin" opacity=".22" d="M700 30V530"/><path class="stroke-gray thin" opacity=".22" d="M780 30V530"/><path class="stroke-gray thin" opacity=".22" d="M860 30V530"/><path class="stroke-gray thin" opacity=".22" d="M940 30V530"/><path class="stroke-gray thin" opacity=".22" d="M1020 30V530"/><path class="stroke-gray thin" opacity=".22" d="M140 30H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 110H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 190H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 270H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 350H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 430H1060"/><path class="stroke-gray thin" opacity=".22" d="M140 510H1060"/><rect class="fill-blue" x="460" y="110" width="80" height="80"/><rect class="fill-blue" x="460" y="190" width="80" height="80"/><rect class="fill-blue" x="460" y="270" width="80" height="80"/><rect class="fill-blue" x="700" y="270" width="80" height="80"/><rect class="fill-blue" x="780" y="270" width="80" height="80"/><rect class="fill-blue" x="860" y="270" width="80" height="80"/><path class="stroke-green" d="M220 450H380V350H620V190H940"/><circle class="fill-green" cx="220" cy="450" r="20"/><circle class="fill-warn" cx="940" cy="190" r="20"/><text class="svg-title" x="215" y="505">시작</text><text class="svg-title" x="915" y="150">목표</text>
+</svg></div><ul class="slide-bullets"><li>멀리 보는 전체 경로</li><li>A*로 비용 비교</li><li>목표까지 경로 생성</li></ul></div></section><section class="slide" id="slide-13" data-title="지역 플래너" aria-label="슬라이드 13 / 18: 지역 플래너"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>지역 플래너</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="전역 경로 위 갑작스런 장애물을 지역 플래너가 우회">
+  <title>지역 플래너</title>
+  <defs>
+    <marker id="l2s13-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s13-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-gray" d="M90 450H1110"/><rect class="node-green" x="145" y="330" width="190" height="100" rx="24"/><circle class="fill-blue" cx="190" cy="445" r="32"/><circle class="fill-blue" cx="290" cy="445" r="32"/><path class="stroke-green dashed" d="M335 380C540 380 765 350 1030 300"/><rect class="fill-warn" x="610" y="300" width="95" height="150" rx="15"/><path class="stroke-green" d="M335 380C500 270 745 220 1030 300"/><text class="svg-title" x="655" y="270" text-anchor="middle">갑작스런 장애물</text><text class="svg-label" x="745" y="510" text-anchor="middle">지역 경로가 즉시 우회</text>
+</svg></div><ul class="slide-bullets"><li>눈앞 장애물 감지</li><li>전역 경로에서 잠시 우회</li><li>짧은 주기로 다시 계산</li></ul></div></section><section class="slide" id="slide-14" data-title="측위→계획→제어 루프" aria-label="슬라이드 14 / 18: 측위→계획→제어 루프"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>측위→계획→제어 루프</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="측위 계획 제어가 서로 다른 주기로 순환하는 내비게이션">
+  <title>내비게이션 루프</title>
+  <defs>
+    <marker id="l2s14-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l2s14-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <g class=""><rect class="node" x="110" y="200" width="280" height="150" rx="18"/><text class="svg-title" x="250.0" y="261.0" text-anchor="middle">측위</text><text class="svg-small" x="250.0" y="304.0" text-anchor="middle">10–30 Hz</text></g><g class=""><rect class="node" x="460" y="70" width="280" height="150" rx="18"/><text class="svg-title" x="600.0" y="131.0" text-anchor="middle">계획</text><text class="svg-small" x="600.0" y="174.0" text-anchor="middle">1–10 Hz</text></g><g class=""><rect class="node-green" x="810" y="200" width="280" height="150" rx="18"/><text class="svg-title" x="950.0" y="261.0" text-anchor="middle">제어</text><text class="svg-small" x="950.0" y="304.0" text-anchor="middle">10–50 Hz</text></g><path class="stroke-blue" d="M390 245 L460 165" marker-end="url(#l2s14-blue)"/><path class="stroke-blue" d="M740 165 L810 245" marker-end="url(#l2s14-blue)"/><path class="stroke-green" d="M950 365C950 510 250 510 250 365" marker-end="url(#l2s14-green)"/>
+</svg></div><ul class="slide-bullets"><li>측위: 현재 위치</li><li>계획: 다음 경로</li><li>제어: 속도 명령</li></ul></div></section><section class="slide practice-slide" id="slide-15" data-title="rosbag·RViz" aria-label="슬라이드 15 / 18: 실습 rosbag·RViz"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>rosbag·RViz</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide practice-slide" id="slide-16" data-title="드리프트 측정" aria-label="슬라이드 16 / 18: 실습 드리프트 측정"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>드리프트 측정</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide practice-slide" id="slide-17" data-title="평가 환경" aria-label="슬라이드 17 / 18: 실습 평가 환경"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>평가 환경</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide" id="slide-18" data-title="정리" aria-label="슬라이드 18 / 18: 정리"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">RECAP</p><h2>오늘의 세 문장</h2></header><ol class="summary-list"><li>오차는 계속 누적</li><li>바깥을 봐야 보정</li><li>계획은 전역+지역</li></ol></div></section></main></body></html>

@@ -1,234 +1,71 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="시각과 언어를 행동으로 바꾸는 데이터·학습·추론 흐름을 설명할 수 있습니다.">
-  <title>강의 04 · VLA 이론 | 크래쉬랩 M1</title>
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/main.js" defer></script>
-</head>
-<body>
-<a class="skip-link" href="#main">본문 바로가기</a>
-<header class="site-header">
-  <div class="site-header__inner container">
-    <a class="wordmark" href="index.html">크래쉬랩 M1</a>
-    <nav class="primary-nav" aria-label="강의 탐색">
-      <ul><li><a href="lecture-1.html" aria-label="강의 1">01</a></li><li><a href="lecture-2.html" aria-label="강의 2">02</a></li><li><a href="lecture-3.html" aria-label="강의 3">03</a></li><li><a href="lecture-4.html" aria-current="page" aria-label="강의 4">04</a></li></ul>
-    </nav>
-  </div>
-</header>
-<main id="main">
-  <section class="hero">
-    <div class="hero__grid container">
-      <div><p class="eyebrow">LECTURE 04</p><h1>VLA 이론</h1><p class="hero__summary">시각과 언어를 행동으로 바꾸는 데이터·학습·추론 흐름을 설명할 수 있습니다.</p></div>
-      <dl class="hero__meta"><div><dt>Date</dt><dd><time datetime="2026-10-16">10/16</time></dd></div><div><dt>Duration</dt><dd>240분</dd></div></dl>
-    </div>
-  </section>
-  <section class="time-allocation container" aria-labelledby="time-heading">
-  <div class="time-allocation__header">
-    <h2 id="time-heading">240분 시간 배분</h2>
-    <p class="time-allocation__total">TOTAL 240 MIN</p>
-  </div>
-  <div class="time-bar" data-total-minutes="240">
-      <div class="time-segment-wrap" style="--minutes: 60" data-minutes="60">
-        <button class="time-segment time-segment--theory" type="button" aria-describedby="l4-theory-tip" aria-label="이론 60분, 세부 항목 보기">
-          <span class="time-segment__label">이론</span><strong>60분</strong>
-        </button>
-        <div class="time-tooltip" id="l4-theory-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · VLA 개념</li><li>15분 · 에피소드 데이터 구조</li><li>15분 · 학습 파이프라인</li><li>10분 · 추론 파이프라인</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 100" data-minutes="100">
-        <button class="time-segment time-segment--practice" type="button" aria-describedby="l4-practice-tip" aria-label="실습 100분, 세부 항목 보기">
-          <span class="time-segment__label">실습</span><strong>100분</strong>
-        </button>
-        <div class="time-tooltip" id="l4-practice-tip" role="tooltip"><ul class="tooltip-list"><li>45분 · 수집 파이프라인</li><li>30분 · 품질 점검</li><li>25분 · 랜덤화 반복</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 15" data-minutes="15">
-        <button class="time-segment time-segment--operation" type="button" aria-describedby="l4-operation-tip" aria-label="운영 15분, 세부 항목 보기">
-          <span class="time-segment__label">운영</span><strong>15분</strong>
-        </button>
-        <div class="time-tooltip" id="l4-operation-tip" role="tooltip"><ul class="tooltip-list"><li>15분 · 평가 형식 · 학습 의뢰 마감</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 45" data-minutes="45">
-        <button class="time-segment time-segment--autonomy" type="button" aria-describedby="l4-autonomy-tip" aria-label="자율 45분, 세부 항목 보기">
-          <span class="time-segment__label">자율</span><strong>45분</strong>
-        </button>
-        <div class="time-tooltip" id="l4-autonomy-tip" role="tooltip"><ul class="tooltip-list"><li>45분 · —</li></ul></div>
-      </div>
-      <div class="time-segment-wrap" style="--minutes: 20" data-minutes="20">
-        <button class="time-segment time-segment--break" type="button" aria-describedby="l4-break-tip" aria-label="휴식 20분, 세부 항목 보기">
-          <span class="time-segment__label">휴식</span><strong>20분</strong>
-        </button>
-        <div class="time-tooltip" id="l4-break-tip" role="tooltip"><ul class="tooltip-list"><li>20분 · 휴식</li></ul></div>
-      </div>
-  </div>
-</section>
-  <section class="schedule" aria-labelledby="schedule-heading">
-    <div class="container">
-      <div class="schedule-heading"><p class="eyebrow">CURRICULUM</p><h2 id="schedule-heading">강의 구성</h2></div>
-      <div class="schedule-list"><article class="lesson-card" data-minutes="20">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>20분</span><span class="lesson-card__type">이론</span></div>
-      <h3>VLA 개념</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">01</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 390" role="img" aria-label="비전과 언어 입력이 행동으로 변환되는 VLA 흐름과 모방학습 강화학습 비교">
-  <title>Vision Language Action 모델의 입력과 출력</title>
-  <defs><marker id="vla-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <rect class="node" x="35" y="65" width="175" height="110" rx="14"/><rect class="node" x="273" y="65" width="175" height="110" rx="14"/><rect class="node-accent" x="510" y="65" width="175" height="110" rx="14"/>
-  <text class="text-main" x="122" y="113" text-anchor="middle">Vision</text><text class="text-label" x="122" y="142" text-anchor="middle">장면 보기</text>
-  <text class="text-main" x="360" y="113" text-anchor="middle">Language</text><text class="text-label" x="360" y="142" text-anchor="middle">명령 이해</text>
-  <text class="text-main" x="597" y="113" text-anchor="middle">Action</text><text class="text-label" x="597" y="142" text-anchor="middle">행동 생성</text>
-  <path class="line-primary" d="M210 120 H271" marker-end="url(#vla-arrow)"/><path class="line-primary" d="M448 120 H508" marker-end="url(#vla-arrow)"/>
-  <rect class="fill-grid" x="35" y="235" width="650" height="100" rx="12"/>
-  <text class="text-main" x="86" y="276">모방</text><text class="text-label" x="160" y="276">전문가 행동을 따라 학습</text>
-  <text class="text-main" x="86" y="311">강화</text><text class="text-label" x="160" y="311">보상을 높이는 행동을 탐색</text>
-  <path class="line-accent" d="M390 270 H642"/><path class="line-primary dash" d="M390 305 H642"/>
-</svg></div>
-  <ul class="key-points"><li>Vision과 Language가 행동 조건이 된다</li><li>Action은 로봇의 연속 동작을 만든다</li><li>모방은 시범, 강화는 보상으로 학습한다</li></ul>
-</article><article class="lesson-card" data-minutes="15">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>15분</span><span class="lesson-card__type">이론</span></div>
-      <h3>에피소드 데이터 구조</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">02</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 390" role="img" aria-label="이미지 관절 명령 데이터가 같은 시간축에 동기화된 에피소드 타임라인">
-  <title>에피소드 데이터의 세 개 동기화 트랙</title>
-  <defs><marker id="episode-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <path class="line-primary" d="M130 330 H665" marker-end="url(#episode-arrow)"/><text class="text-small" x="650" y="355">시간</text>
-  <text class="text-main" x="45" y="105">이미지</text><text class="text-main" x="45" y="195">관절</text><text class="text-main" x="45" y="285">명령</text>
-  <path class="line-muted" d="M130 100 H640 M130 190 H640 M130 280 H640"/>
-  <g class="fill-primary"><circle cx="180" cy="100" r="8"/><circle cx="320" cy="100" r="8"/><circle cx="460" cy="100" r="8"/><circle cx="600" cy="100" r="8"/></g>
-  <g class="fill-accent"><circle cx="180" cy="190" r="8"/><circle cx="320" cy="190" r="8"/><circle cx="460" cy="190" r="8"/><circle cx="600" cy="190" r="8"/></g>
-  <g class="fill-primary"><rect x="164" y="272" width="32" height="16" rx="5"/><rect x="304" y="272" width="32" height="16" rx="5"/><rect x="444" y="272" width="32" height="16" rx="5"/><rect x="584" y="272" width="32" height="16" rx="5"/></g>
-  <g class="line-accent dash"><path d="M180 70 V310 M320 70 V310 M460 70 V310 M600 70 V310"/></g>
-  <text class="text-label" x="390" y="45" text-anchor="middle">같은 시점의 관측과 행동을 한 묶음으로 저장</text>
-</svg></div>
-  <ul class="key-points"><li>이미지·관절·명령을 같은 시각에 맞춘다</li><li>한 작업 시퀀스가 하나의 에피소드다</li><li>동기화 품질이 학습 결과를 좌우한다</li></ul>
-</article><article class="lesson-card" data-minutes="15">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>15분</span><span class="lesson-card__type">이론</span></div>
-      <h3>학습 파이프라인</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">03</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 330" role="img" aria-label="수집 전처리 파인튜닝 체크포인트로 이어지는 VLA 학습 파이프라인">
-  <title>VLA 모델 학습의 네 단계 파이프라인</title>
-  <defs><marker id="train-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <rect class="node" x="28" y="105" width="145" height="100" rx="14"/><rect class="node" x="201" y="105" width="145" height="100" rx="14"/><rect class="node" x="374" y="105" width="145" height="100" rx="14"/><rect class="node-accent" x="547" y="105" width="145" height="100" rx="14"/>
-  <text class="text-main" x="100" y="150" text-anchor="middle">수집</text><text class="text-small" x="100" y="178" text-anchor="middle">에피소드</text>
-  <text class="text-main" x="273" y="150" text-anchor="middle">전처리</text><text class="text-small" x="273" y="178" text-anchor="middle">정렬 · 정제</text>
-  <text class="text-main" x="446" y="150" text-anchor="middle">파인튜닝</text><text class="text-small" x="446" y="178" text-anchor="middle">가중치 학습</text>
-  <text class="text-main" x="619" y="150" text-anchor="middle">체크포인트</text><text class="text-small" x="619" y="178" text-anchor="middle">모델 저장</text>
-  <path class="line-primary" d="M173 155 H199 M346 155 H372 M519 155 H545" marker-end="url(#train-arrow)"/>
-  <path class="line-accent dash" d="M619 215 C619 280 100 280 100 207" marker-end="url(#train-arrow)"/>
-  <text class="text-label" x="360" y="305" text-anchor="middle">품질 확인 후 다시 수집</text>
-</svg></div>
-  <ul class="key-points"><li>수집 데이터는 정렬과 정제를 거친다</li><li>파인튜닝으로 행동 정책을 학습한다</li><li>체크포인트는 검증 가능한 모델 상태다</li></ul>
-</article><article class="lesson-card" data-minutes="10">
-  <header class="lesson-card__header">
-    <div>
-      <div class="lesson-card__meta"><span>10분</span><span class="lesson-card__type">이론</span></div>
-      <h3>추론 파이프라인</h3>
-    </div>
-    <span class="lesson-card__number" aria-hidden="true">04</span>
-  </header>
-  <div class="diagram-wrap">
-<svg class="diagram" viewBox="0 0 720 320" role="img" aria-label="명령 입력 추론 노드 로봇 제어로 이어지는 VLA 추론 흐름">
-  <title>명령이 로봇 행동으로 바뀌는 추론 파이프라인</title>
-  <defs><marker id="infer-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="fill-primary" d="M0 0 L10 5 L0 10z"/></marker></defs>
-  <rect class="node" x="40" y="95" width="185" height="120" rx="14"/><rect class="node" x="268" y="75" width="185" height="160" rx="14"/><rect class="node-accent" x="496" y="95" width="185" height="120" rx="14"/>
-  <text class="text-main" x="132" y="145" text-anchor="middle">명령 입력</text><text class="text-label" x="132" y="178" text-anchor="middle">“빨간 블록 집기”</text>
-  <text class="text-main" x="360" y="130" text-anchor="middle">추론 노드</text><text class="text-small" x="360" y="160" text-anchor="middle">관측 + 명령</text><text class="text-small" x="360" y="185" text-anchor="middle">→ 행동 시퀀스</text>
-  <text class="text-main" x="588" y="145" text-anchor="middle">로봇 제어</text><text class="text-label" x="588" y="178" text-anchor="middle">관절 명령 실행</text>
-  <path class="line-primary" d="M225 155 H266" marker-end="url(#infer-arrow)"/><path class="line-primary" d="M453 155 H494" marker-end="url(#infer-arrow)"/>
-</svg></div>
-  <ul class="key-points"><li>명령과 현재 관측이 함께 입력된다</li><li>추론 노드가 다음 행동을 예측한다</li><li>제어 노드가 행동을 로봇에 전달한다</li></ul>
-</article><article class="practice-card" data-minutes="45">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">45분 · 실습</p>
-      <h3>수집 파이프라인</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="practice-card" data-minutes="30">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">30분 · 실습</p>
-      <h3>품질 점검</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="practice-card" data-minutes="25">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">25분 · 실습</p>
-      <h3>랜덤화 반복</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="operation-card" data-minutes="15">
-  <div><p class="operation-card__meta">운영</p><h3>평가 형식 · 학습 의뢰 마감</h3></div>
-  <span class="operation-card__minutes">15분</span>
-</article><article class="practice-card" data-minutes="45">
-  <header class="practice-card__header">
-    <div>
-      <p class="practice-card__meta">45분 · 자율</p>
-      <h3>—</h3>
-    </div>
-    <span class="status-badge">작성 예정</span>
-  </header>
-  <dl class="practice-slots">
-    <div class="practice-slot"><dt>목표</dt><dd><!-- FILL: 목표 — 한 문장으로 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>준비물</dt><dd><!-- FILL: 준비물 — 장비·소프트웨어·파일 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>단계</dt><dd><ol class="fill-steps"><li><!-- FILL: 단계 1 — 시작 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 2 — 핵심 수행 절차 작성 -->작성 예정</li><li><!-- FILL: 단계 3 — 완료 절차 작성 -->작성 예정</li></ol></dd></div>
-    <div class="practice-slot"><dt>체크포인트</dt><dd><!-- FILL: 체크포인트 — 성공 여부를 확인할 기준 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-    <div class="practice-slot"><dt>트러블슈팅</dt><dd><!-- FILL: 트러블슈팅 — 예상 오류와 해결 방법 작성 --><span class="fill-slot">작성 예정</span></dd></div>
-  </dl>
-</article><article class="break-card" data-minutes="20">
-  <div><p class="operation-card__meta">휴식</p><h3>휴식</h3></div>
-  <span class="operation-card__minutes">20분</span>
-</article></div>
-    </div>
-  </section>
-  <nav class="pager container" aria-label="이전 및 다음 강의"><div class="pager__grid"><a class="pager-card" href="lecture-3.html"><span class="pager-card__label">Previous</span><strong>← 강의 03 · 조작 — 주행 · 모터 제어</strong></a><div class="pager-card pager-card--notice"><span class="pager-card__label">Next</span><strong>자율개발 기간 안내</strong></div></div></nav>
-</main>
-<footer class="site-footer">
-  <div class="site-footer__inner container">
-    <p>2026 크래쉬랩 M1 로봇 AI 교육</p>
-    <a href="index.html">과정 개요</a>
-  </div>
-</footer>
-</body>
-</html>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="말로 시키면 움직이는 로봇"><title>강의 04 · VLA 이론 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css"><script src="assets/js/deck.js" defer></script></head><body class="deck-page"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 18</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="18"><section class="slide slide--title" id="slide-1" data-title="말로 시키면 움직이는 로봇" aria-label="슬라이드 1 / 18: 말로 시키면 움직이는 로봇"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 04</p><h1>VLA 이론</h1><p class="slide__lead">말로 시키면 움직이는 로봇</p><div class="title-meta"><span>10/16</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">04</div></div></section><section class="slide slide--question" id="slide-2" data-title="질문" aria-label="슬라이드 2 / 18: 질문"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>‘빨간 컵을 집어’를 로봇이 어떻게 알아듣나?</h2></div></section><section class="slide" id="slide-3" data-title="VLA 세 글자" aria-label="슬라이드 3 / 18: VLA 세 글자"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>VLA 세 글자</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="VLA 세 글자">
+  <title>VLA 세 글자</title>
+  <defs>
+    <marker id="l4s3-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s3-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <g class=""><rect class="node" x="215.0" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="325.0" y="251.0" text-anchor="middle">Vision</text><text class="svg-small" x="325.0" y="294.0" text-anchor="middle">장면 보기</text></g><path class="stroke-blue" d="M435.0 265 L482.0 265" marker-end="url(#l4s3-blue)"/><g class=""><rect class="node" x="490.0" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="600.0" y="251.0" text-anchor="middle">Language</text><text class="svg-small" x="600.0" y="294.0" text-anchor="middle">명령 이해</text></g><path class="stroke-blue" d="M710.0 265 L757.0 265" marker-end="url(#l4s3-blue)"/><g class=""><rect class="node-green" x="765.0" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="875.0" y="251.0" text-anchor="middle">Action</text><text class="svg-small" x="875.0" y="294.0" text-anchor="middle">행동 생성</text></g>
+</svg></div><ul class="slide-bullets"><li>Vision: 장면 보기</li><li>Language: 명령 이해</li><li>Action: 행동 생성</li></ul></div></section><section class="slide" id="slide-4" data-title="기존 방식과의 차이" aria-label="슬라이드 4 / 18: 기존 방식과의 차이"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>기존 방식과의 차이</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="사람이 조건을 쓰는 기존 방식과 데이터로 배우는 학습 방식 비교">
+  <title>규칙 코딩과 학습</title>
+  <defs>
+    <marker id="l4s4-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s4-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="node" x="45" y="80" width="510" height="400" rx="24"/><text class="svg-title" x="300" y="135" text-anchor="middle">규칙 코딩</text><rect class="fill-tint" x="110" y="185" width="380" height="75" rx="15"/><text class="svg-label" x="300" y="232" text-anchor="middle">조건문 → 동작</text><path class="stroke-blue" d="M160 320H440M160 365H385M160 410H470"/><text class="svg-small" x="300" y="455" text-anchor="middle">상황마다 사람이 작성</text><rect class="node-green" x="645" y="80" width="510" height="400" rx="24"/><text class="svg-title" x="900" y="135" text-anchor="middle">학습</text><circle class="fill-green" cx="770" cy="245" r="30"/><circle class="fill-blue" cx="900" cy="215" r="30"/><circle class="fill-green" cx="1030" cy="275" r="30"/><path class="stroke-gray" d="M770 245L900 215L1030 275L900 365Z"/><circle class="fill-blue" cx="900" cy="365" r="30"/><text class="svg-small" x="900" y="455" text-anchor="middle">데이터에서 규칙 발견</text>
+</svg></div><ul class="slide-bullets"><li>규칙: 사람이 조건 작성</li><li>학습: 데이터에서 발견</li><li>새 상황 대응 방식 차이</li></ul></div></section><section class="slide" id="slide-5" data-title="모방학습 vs 강화학습" aria-label="슬라이드 5 / 18: 모방학습 vs 강화학습"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">COMPARE</p><h2>모방학습 vs 강화학습</h2></header><div class="comparison-grid"><article class="comparison-card"><h3>모방학습</h3><ul><li>전문가 행동 보여주기</li><li>좋은 시범이 핵심</li></ul></article><article class="comparison-card"><h3>강화학습</h3><ul><li>시행착오로 탐색</li><li>보상 설계가 핵심</li></ul></article></div></div></section><section class="slide slide--question" id="slide-6" data-title="질문" aria-label="슬라이드 6 / 18: 질문"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>무엇을 얼마나 보여줘야 배우나?</h2></div></section><section class="slide" id="slide-7" data-title="에피소드 = 한 번의 시도" aria-label="슬라이드 7 / 18: 에피소드 = 한 번의 시도"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>에피소드 = 한 번의 시도</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="작업 시작부터 끝까지 이어지는 한 번의 로봇 시도 타임라인">
+  <title>에피소드</title>
+  <defs>
+    <marker id="l4s7-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s7-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-blue" d="M125 300H1075"/><circle class="fill-green" cx="170" cy="300" r="28"/><circle class="fill-blue" cx="1030" cy="300" r="28"/><text class="svg-title" x="170" y="235" text-anchor="middle">시작</text><text class="svg-title" x="1030" y="235" text-anchor="middle">끝</text><circle class="fill-tint" cx="330" cy="300" r="42"/><text class="svg-title" x="330" y="310" text-anchor="middle">1</text><circle class="fill-tint" cx="490" cy="300" r="42"/><text class="svg-title" x="490" y="310" text-anchor="middle">2</text><circle class="fill-tint" cx="650" cy="300" r="42"/><text class="svg-title" x="650" y="310" text-anchor="middle">3</text><circle class="fill-tint" cx="810" cy="300" r="42"/><text class="svg-title" x="810" y="310" text-anchor="middle">4</text><text class="svg-label" x="600" y="430" text-anchor="middle">한 번의 시도 = 하나의 에피소드</text>
+</svg></div><ul class="slide-bullets"><li>시작부터 끝까지 한 묶음</li><li>관측과 행동을 함께 저장</li><li>성공 여부도 기록</li></ul></div></section><section class="slide" id="slide-8" data-title="에피소드 데이터" aria-label="슬라이드 8 / 18: 에피소드 데이터"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">BUILD</p><h2>에피소드 데이터</h2></header><span class="slide__build-tag">BUILD 1 / 3</span><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="카메라 관절 언어 명령 트랙을 1단계로 시간 동기화">
+  <title>에피소드 트랙 1</title>
+  <defs>
+    <marker id="l4s8-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s8-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-blue" d="M220 485H1110"/><g class=""><text class="svg-title" x="55" y="158">카메라</text><path class="stroke-gray" d="M220 150H1060"/><circle class="fill-blue" cx="300" cy="150" r="18"/><circle class="fill-blue" cx="500" cy="150" r="18"/><circle class="fill-blue" cx="700" cy="150" r="18"/><circle class="fill-blue" cx="900" cy="150" r="18"/></g><g class="dim"><text class="svg-title" x="55" y="293">관절 값</text><path class="stroke-gray" d="M220 285H1060"/><circle class="fill-green" cx="300" cy="285" r="18"/><circle class="fill-green" cx="500" cy="285" r="18"/><circle class="fill-green" cx="700" cy="285" r="18"/><circle class="fill-green" cx="900" cy="285" r="18"/></g><g class="dim"><text class="svg-title" x="55" y="428">언어 명령</text><path class="stroke-gray" d="M220 420H1060"/><circle class="fill-blue" cx="300" cy="420" r="18"/><circle class="fill-blue" cx="500" cy="420" r="18"/><circle class="fill-blue" cx="700" cy="420" r="18"/><circle class="fill-blue" cx="900" cy="420" r="18"/></g><path class="stroke-green dashed thin" d="M300 110V455"/><path class="stroke-green dashed thin" d="M500 110V455"/><path class="stroke-green dashed thin" d="M700 110V455"/><path class="stroke-green dashed thin" d="M900 110V455"/><text class="svg-label" x="650" y="535" text-anchor="middle">영상의 시간</text>
+</svg></div><ul class="slide-bullets"><li>트랙 1: 카메라 영상</li></ul></div></section><section class="slide" id="slide-9" data-title="에피소드 데이터" aria-label="슬라이드 9 / 18: 에피소드 데이터"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">BUILD</p><h2>에피소드 데이터</h2></header><span class="slide__build-tag">BUILD 2 / 3</span><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="카메라 관절 언어 명령 트랙을 2단계로 시간 동기화">
+  <title>에피소드 트랙 2</title>
+  <defs>
+    <marker id="l4s9-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s9-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-blue" d="M220 485H1110"/><g class=""><text class="svg-title" x="55" y="158">카메라</text><path class="stroke-gray" d="M220 150H1060"/><circle class="fill-blue" cx="300" cy="150" r="18"/><circle class="fill-blue" cx="500" cy="150" r="18"/><circle class="fill-blue" cx="700" cy="150" r="18"/><circle class="fill-blue" cx="900" cy="150" r="18"/></g><g class=""><text class="svg-title" x="55" y="293">관절 값</text><path class="stroke-gray" d="M220 285H1060"/><circle class="fill-green" cx="300" cy="285" r="18"/><circle class="fill-green" cx="500" cy="285" r="18"/><circle class="fill-green" cx="700" cy="285" r="18"/><circle class="fill-green" cx="900" cy="285" r="18"/></g><g class="dim"><text class="svg-title" x="55" y="428">언어 명령</text><path class="stroke-gray" d="M220 420H1060"/><circle class="fill-blue" cx="300" cy="420" r="18"/><circle class="fill-blue" cx="500" cy="420" r="18"/><circle class="fill-blue" cx="700" cy="420" r="18"/><circle class="fill-blue" cx="900" cy="420" r="18"/></g><path class="stroke-green dashed thin" d="M300 110V455"/><path class="stroke-green dashed thin" d="M500 110V455"/><path class="stroke-green dashed thin" d="M700 110V455"/><path class="stroke-green dashed thin" d="M900 110V455"/><text class="svg-label" x="650" y="535" text-anchor="middle">관절 값까지 동기화</text>
+</svg></div><ul class="slide-bullets"><li>트랙 2: 관절 값</li></ul></div></section><section class="slide" id="slide-10" data-title="에피소드 데이터" aria-label="슬라이드 10 / 18: 에피소드 데이터"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">BUILD</p><h2>에피소드 데이터</h2></header><span class="slide__build-tag">BUILD 3 / 3</span><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="카메라 관절 언어 명령 트랙을 3단계로 시간 동기화">
+  <title>에피소드 트랙 3</title>
+  <defs>
+    <marker id="l4s10-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s10-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <path class="stroke-blue" d="M220 485H1110"/><g class=""><text class="svg-title" x="55" y="158">카메라</text><path class="stroke-gray" d="M220 150H1060"/><circle class="fill-blue" cx="300" cy="150" r="18"/><circle class="fill-blue" cx="500" cy="150" r="18"/><circle class="fill-blue" cx="700" cy="150" r="18"/><circle class="fill-blue" cx="900" cy="150" r="18"/></g><g class=""><text class="svg-title" x="55" y="293">관절 값</text><path class="stroke-gray" d="M220 285H1060"/><circle class="fill-green" cx="300" cy="285" r="18"/><circle class="fill-green" cx="500" cy="285" r="18"/><circle class="fill-green" cx="700" cy="285" r="18"/><circle class="fill-green" cx="900" cy="285" r="18"/></g><g class=""><text class="svg-title" x="55" y="428">언어 명령</text><path class="stroke-gray" d="M220 420H1060"/><circle class="fill-blue" cx="300" cy="420" r="18"/><circle class="fill-blue" cx="500" cy="420" r="18"/><circle class="fill-blue" cx="700" cy="420" r="18"/><circle class="fill-blue" cx="900" cy="420" r="18"/></g><path class="stroke-green dashed thin" d="M300 110V455"/><path class="stroke-green dashed thin" d="M500 110V455"/><path class="stroke-green dashed thin" d="M700 110V455"/><path class="stroke-green dashed thin" d="M900 110V455"/><text class="svg-label" x="650" y="535" text-anchor="middle">세 트랙의 시간 일치</text>
+</svg></div><ul class="slide-bullets"><li>트랙 3: 언어 명령</li><li>셋의 시간축 일치</li></ul></div></section><section class="slide" id="slide-11" data-title="나쁜 데이터의 조건" aria-label="슬라이드 11 / 18: 나쁜 데이터의 조건"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>나쁜 데이터의 조건</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="동기화 성공 편향 배치 반복으로 생기는 나쁜 학습 데이터">
+  <title>나쁜 데이터</title>
+  <defs>
+    <marker id="l4s11-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s11-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="node" x="35" y="95" width="350" height="370" rx="24"/><path class="stroke-warn" d="M145 180L275 310M275 180L145 310"/><text class="svg-title" x="210" y="375" text-anchor="middle">동기화 어긋남</text><text class="svg-small" x="210" y="420" text-anchor="middle">시간 불일치</text><rect class="node" x="425" y="95" width="350" height="370" rx="24"/><path class="stroke-warn" d="M535 180L665 310M665 180L535 310"/><text class="svg-title" x="600" y="375" text-anchor="middle">성공만 수집</text><text class="svg-small" x="600" y="420" text-anchor="middle">실패 맥락 없음</text><rect class="node" x="815" y="95" width="350" height="370" rx="24"/><path class="stroke-warn" d="M925 180L1055 310M1055 180L925 310"/><text class="svg-title" x="990" y="375" text-anchor="middle">같은 배치 반복</text><text class="svg-small" x="990" y="420" text-anchor="middle">환경 편향</text>
+</svg></div><ul class="slide-bullets"><li>어긋난 동기화</li><li>성공만 모은 데이터</li><li>같은 배치 반복</li></ul></div></section><section class="slide" id="slide-12" data-title="학습 파이프라인" aria-label="슬라이드 12 / 18: 학습 파이프라인"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>학습 파이프라인</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="학습 파이프라인">
+  <title>학습 파이프라인</title>
+  <defs>
+    <marker id="l4s12-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s12-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <g class=""><rect class="node" x="77.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="187.5" y="251.0" text-anchor="middle">수집</text><text class="svg-small" x="187.5" y="294.0" text-anchor="middle">에피소드</text></g><path class="stroke-blue" d="M297.5 265 L344.5 265" marker-end="url(#l4s12-blue)"/><g class=""><rect class="node" x="352.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="462.5" y="251.0" text-anchor="middle">전처리</text><text class="svg-small" x="462.5" y="294.0" text-anchor="middle">정렬·정제</text></g><path class="stroke-blue" d="M572.5 265 L619.5 265" marker-end="url(#l4s12-blue)"/><g class=""><rect class="node" x="627.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="737.5" y="251.0" text-anchor="middle">파인튜닝</text><text class="svg-small" x="737.5" y="294.0" text-anchor="middle">가중치 학습</text></g><path class="stroke-blue" d="M847.5 265 L894.5 265" marker-end="url(#l4s12-blue)"/><g class=""><rect class="node-green" x="902.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="1012.5" y="251.0" text-anchor="middle">체크포인트</text><text class="svg-small" x="1012.5" y="294.0" text-anchor="middle">모델 저장</text></g><path class="stroke-green dashed" d="M1012.5 365 C1012.5 475 187.5 475 187.5 365" marker-end="url(#l4s12-green)"/>
+</svg></div><ul class="slide-bullets"><li>수집→전처리</li><li>파인튜닝→저장</li><li>검증 후 다시 수집</li></ul></div></section><section class="slide" id="slide-13" data-title="추론 파이프라인" aria-label="슬라이드 13 / 18: 추론 파이프라인"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>추론 파이프라인</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="추론 파이프라인">
+  <title>추론 파이프라인</title>
+  <defs>
+    <marker id="l4s13-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s13-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <g class=""><rect class="node" x="77.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="187.5" y="251.0" text-anchor="middle">명령+영상</text><text class="svg-small" x="187.5" y="294.0" text-anchor="middle">입력</text></g><path class="stroke-blue" d="M297.5 265 L344.5 265" marker-end="url(#l4s13-blue)"/><g class=""><rect class="node" x="352.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="462.5" y="251.0" text-anchor="middle">VLA 모델</text><text class="svg-small" x="462.5" y="294.0" text-anchor="middle">추론</text></g><path class="stroke-blue" d="M572.5 265 L619.5 265" marker-end="url(#l4s13-blue)"/><g class=""><rect class="node" x="627.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="737.5" y="251.0" text-anchor="middle">관절 목표</text><text class="svg-small" x="737.5" y="294.0" text-anchor="middle">행동</text></g><path class="stroke-blue" d="M847.5 265 L894.5 265" marker-end="url(#l4s13-blue)"/><g class=""><rect class="node-green" x="902.5" y="190" width="220" height="150" rx="18"/><text class="svg-title" x="1012.5" y="251.0" text-anchor="middle">제어</text><text class="svg-small" x="1012.5" y="294.0" text-anchor="middle">실행</text></g>
+</svg></div><ul class="slide-bullets"><li>명령+영상 입력</li><li>관절 목표 생성</li><li>제어 노드가 실행</li></ul></div></section><section class="slide" id="slide-14" data-title="시뮬과 실물의 간극" aria-label="슬라이드 14 / 18: 시뮬과 실물의 간극"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>시뮬과 실물의 간극</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="시뮬레이션의 깨끗한 환경과 실물의 노이즈 차이">
+  <title>시뮬과 실물의 간극</title>
+  <defs>
+    <marker id="l4s14-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
+    <marker id="l4s14-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker>
+  </defs>
+  <rect class="node" x="55" y="75" width="450" height="410" rx="24"/><text class="svg-title" x="280" y="135" text-anchor="middle">시뮬레이션</text><circle class="fill-blue" cx="280" cy="270" r="100"/><path class="stroke-green" d="M210 270H350M280 200V340"/><text class="svg-label" x="280" y="440" text-anchor="middle">깨끗한 센서 · 일정한 물리</text><rect class="node-green" x="695" y="75" width="450" height="410" rx="24"/><text class="svg-title" x="920" y="135" text-anchor="middle">실물</text><circle class="fill-gray" cx="920" cy="270" r="100"/><path class="stroke-warn" d="M845 215L995 325M995 215L845 325"/><text class="svg-label" x="920" y="440" text-anchor="middle">노이즈 · 마찰 · 조명 변화</text><path class="stroke-warn dashed" d="M530 280H670"/><text class="svg-warn" x="600" y="245" text-anchor="middle">간극</text>
+</svg></div><ul class="slide-bullets"><li>센서 노이즈 차이</li><li>마찰·지연의 차이</li><li>조명과 배경 변화</li></ul></div></section><section class="slide practice-slide" id="slide-15" data-title="수집 파이프라인" aria-label="슬라이드 15 / 18: 실습 수집 파이프라인"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>수집 파이프라인</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide practice-slide" id="slide-16" data-title="품질 점검" aria-label="슬라이드 16 / 18: 실습 품질 점검"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>품질 점검</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide practice-slide" id="slide-17" data-title="랜덤화 반복" aria-label="슬라이드 17 / 18: 실습 랜덤화 반복"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">PRACTICE</p><h2>랜덤화 반복</h2></header><div class="practice-shell"><span class="practice-label">실습</span><div class="practice-task"><strong>이번 실습에서 할 것</strong><!-- FILL: 이번 실습에서 할 것을 한 줄로 작성 --><span class="fill-line">작성 예정</span></div><ol class="practice-steps"><li><!-- FILL: 단계 1 작성 -->작성 예정</li><li><!-- FILL: 단계 2 작성 -->작성 예정</li><li><!-- FILL: 단계 3 작성 -->작성 예정</li></ol><div class="practice-help"><strong>막히면</strong><!-- FILL: 막혔을 때 확인할 한 줄 작성 --><span class="fill-line">작성 예정</span></div></div></div></section><section class="slide" id="slide-18" data-title="정리" aria-label="슬라이드 18 / 18: 정리"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">RECAP</p><h2>오늘의 세 문장</h2></header><ol class="summary-list"><li>VLA는 보고 듣고 행동</li><li>데이터 품질이 성능</li><li>실물 환경은 다름</li></ol></div></section></main></body></html>
