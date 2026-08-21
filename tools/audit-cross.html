@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe id="fr" style="width:1920px;height:1080px;border:0"></iframe><pre id="out">pending</pre>
+<script>
+const q=new URLSearchParams(location.search); const page=q.get('p')||'lecture-1';
+const fr=document.getElementById('fr'); fr.src='/'+page+'.html';
+fr.onload=()=>setTimeout(()=>{
+ const d=fr.contentDocument,w=fr.contentWindow,out=[];
+ const vis=e=>{const s=w.getComputedStyle(e);return s.display!=='none'&&s.visibility!=='hidden'&&+s.opacity>0.05;};
+ [...d.querySelectorAll('.slide')].forEach((sl,si)=>{
+  [...sl.querySelectorAll('svg')].forEach(svg=>{
+   const texts=[...svg.querySelectorAll('text')].filter(e=>vis(e)&&e.textContent.trim());
+   const strokes=[...svg.querySelectorAll('path,line,polyline,circle,ellipse,rect,polygon')].filter(e=>{
+     if(!vis(e))return false; const s=w.getComputedStyle(e);
+     return s.stroke&&s.stroke!=='none'&&parseFloat(s.strokeWidth)>=2;});
+   for(const t of texts){
+     const r=t.getBoundingClientRect();
+     if(r.width<3||r.height<3)continue;
+     // 글자 안쪽 영역만 (가장자리 스침은 제외)
+     const M=parseFloat(q.get('m')||'12');   // 글자 경계에서 확보해야 할 여백(px)
+     const x0=r.left-M, x1=r.right+M, y0=r.top-M, y1=r.bottom+M;
+     for(const p of strokes){
+       if(typeof p.isPointInStroke!=='function')continue;
+       let ctm; try{ctm=p.getScreenCTM();if(!ctm)continue;ctm=ctm.inverse();}catch(e){continue;}
+       let hit=0, samples=0;
+       for(let i=0;i<=16;i++)for(let j=0;j<=8;j++){
+         const sx=x0+(x1-x0)*i/16, sy=y0+(y1-y0)*j/8;
+         const pt=new DOMPoint(sx,sy).matrixTransform(ctm);
+         samples++;
+         try{ if(p.isPointInStroke(pt)) hit++; }catch(e){}
+       }
+       if(hit>0){
+         const s=w.getComputedStyle(p);
+         out.push(`s${si+1} "${t.textContent.trim().slice(0,24)}" ← ${p.tagName.toLowerCase()} stroke=${s.stroke} w=${parseFloat(s.strokeWidth)} 여백침범 ${hit}/${samples}점 (기준 ${M}px)`);
+       }
+     }
+   }
+  });
+ });
+ const dbg=`[진단] 슬라이드 ${d.querySelectorAll('.slide').length} · svg ${d.querySelectorAll('svg').length} · text ${d.querySelectorAll('svg text').length} · stroke후보 ${d.querySelectorAll('svg path,svg line,svg polyline,svg circle,svg ellipse,svg rect,svg polygon').length}`;
+ document.getElementById('out').textContent=dbg+'\n'+(out.length?[...new Set(out)].join('\n'):'CLEAN');
+},1500);
+</script>
