@@ -164,13 +164,14 @@ button {
 
 .slide__visual {
   display: grid;
-  min-height: 0;
+  width: 100%;
+  min-height: 480px;
   place-items: center;
 }
 
 .deck-svg {
-  width: min(100%, 1280px);
-  max-height: 53vh;
+  width: min(100%, 1500px);
+  max-height: 55vh;
 }
 
 .deck-svg text {
@@ -322,10 +323,30 @@ button {
 }
 
 .comparison-grid {
+  position: relative;
   display: grid;
   min-height: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 44px);
+  gap: clamp(48px, 5vw, 82px);
+}
+
+.comparison-grid::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  width: 62px;
+  height: 62px;
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  place-items: center;
+  background: #fff;
+  color: var(--hy-blue);
+  content: "VS";
+  font-size: 20px;
+  font-weight: 700;
+  transform: translate(-50%, -50%);
 }
 
 .comparison-card {
@@ -342,10 +363,12 @@ button {
 
 .comparison-card:first-child {
   border-top-color: var(--hy-blue);
+  background: var(--bg-tint);
 }
 
 .comparison-card:last-child {
   border-top-color: var(--accent);
+  background: #F5FAEF;
 }
 
 .comparison-card ul {
@@ -849,6 +872,14 @@ button {
 
   .deck-svg {
     max-height: 46vh;
+  }
+
+  .slide__visual {
+    min-height: 0;
+  }
+
+  .comparison-grid::before {
+    display: none;
   }
 
   .slide-bullets,
