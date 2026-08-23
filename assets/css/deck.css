@@ -475,7 +475,7 @@ button { color: inherit; }
 .photo-sequence::before,
 .photo-sequence::after {
   position: absolute;
-  top: 50%;
+  top: 38%;
   z-index: 4;
   width: 42px;
   height: 42px;
