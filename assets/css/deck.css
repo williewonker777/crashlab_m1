@@ -1540,3 +1540,13 @@ button { color: inherit; }
   .shortcut-help,
   .skip-link { display: none !important; }
 }
+
+.slide__header h2 .h2-en {
+  margin-left: 14px;
+  color: var(--hy-gray, #3F3D42);
+  font-size: 0.52em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.72;
+  vertical-align: 0.18em;
+}
