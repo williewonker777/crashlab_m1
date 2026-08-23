@@ -133,7 +133,9 @@
     fullscreenButton.setAttribute("aria-pressed", String(Boolean(document.fullscreenElement)));
   });
 
-  const hashMatch = location.hash.match(/^#slide-(\d+)$/);
-  const initial = hashMatch ? clamp(Number(hashMatch[1]) - 1) : 0;
+  const hashMatch = location.hash.match(/^#slide-(\d+|last)$/);
+  const initial = hashMatch
+    ? (hashMatch[1] === "last" ? slides.length - 1 : clamp(Number(hashMatch[1]) - 1))
+    : 0;
   requestAnimationFrame(() => goTo(initial, false));
 })();
