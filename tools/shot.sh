@@ -6,7 +6,7 @@
 #       tools/shot.sh index 1 1920 1080
 set -euo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
-PAGE="${1:?page 필요 (index|lecture-1..4|instructor)}"
+PAGE="${1:?page 필요 (index|lecture-1..4)}"
 SLIDE="${2:-all}"
 W="${3:-1920}"; H="${4:-1080}"
 OUT="$ROOT/.shots"; mkdir -p "$OUT"

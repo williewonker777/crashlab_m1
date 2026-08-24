@@ -7,7 +7,6 @@
 - `lecture-2.html`: VSLAM · 내비게이션 (18장)
 - `lecture-3.html`: 조작: 주행 · 모터 제어 (19장)
 - `lecture-4.html`: VLA 이론 (18장)
-- `instructor.html`: 강사용 시간·운영 정보
 
 ## 조작
 
