@@ -1594,3 +1594,173 @@ button { color: inherit; }
   opacity: 0.72;
   vertical-align: 0.18em;
 }
+
+/* v10 · lecture 03 readability and media-first review pass */
+.lecture-3 .comparison-card {
+  padding: 42px 48px;
+  align-content: start;
+  gap: 28px;
+}
+
+.lecture-3 .comparison-card h3 {
+  min-height: 54px;
+}
+
+.lecture-3 .comparison-card ul {
+  align-content: start;
+}
+
+.lecture-3 .deck-svg .svg-title { font-size: 31px; }
+.lecture-3 .deck-svg .svg-label { font-size: 25px; }
+.lecture-3 .deck-svg .svg-small { font-size: 22px; }
+.lecture-3 .deck-svg .chip text { font-size: 24px; }
+
+#slide-14 .photo-aside strong {
+  font-size: clamp(38px, 2.5vw, 50px);
+}
+
+#slide-18 .slide__visual,
+#slide-23 .slide__visual,
+#slide-24 .slide__visual,
+#slide-29 .slide__visual,
+#slide-41 .slide__visual {
+  padding: 0;
+}
+
+#slide-30 .slide__visual,
+#slide-46 .slide__visual {
+  display: grid;
+  padding: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 28px;
+}
+
+#slide-30 .slide__visual > figure,
+#slide-46 .slide__visual > figure {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+}
+
+#slide-30 .slide__visual > figure > svg,
+#slide-46 .slide__visual > figure > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+}
+
+#slide-30 figcaption,
+#slide-46 figcaption {
+  display: grid;
+  padding: 18px 24px 20px;
+  border-top: 2px solid var(--accent);
+  gap: 5px;
+}
+
+#slide-30 figcaption strong,
+#slide-46 figcaption strong {
+  color: var(--hy-blue);
+  font-size: 27px;
+}
+
+#slide-30 figcaption span,
+#slide-46 figcaption span {
+  color: var(--hy-gray);
+  font-size: 21px;
+}
+
+#slide-31 .slide__visual {
+  padding: 12px 16px;
+  overflow: hidden;
+  background: #11131a;
+}
+
+#slide-31 video {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 50%;
+  display: block;
+  width: auto;
+  height: calc(100% - 24px);
+  max-width: calc(100% - 32px);
+  aspect-ratio: 1200 / 1816;
+  border-radius: 12px;
+  object-fit: contain;
+  transform: translateX(-50%);
+  background: #11131a;
+}
+
+#slide-31 .slide__inner {
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.75fr);
+  grid-template-rows: 140px minmax(0, 1fr);
+  gap: 16px 32px;
+}
+
+#slide-31 .slide__header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+#slide-31 .slide__visual {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#slide-38 .concept-table,
+#slide-47 .concept-table {
+  border-spacing: 0 12px;
+}
+
+#slide-38 .concept-table th,
+#slide-38 .concept-table td,
+#slide-47 .concept-table th,
+#slide-47 .concept-table td {
+  padding-block: 22px;
+}
+
+#slide-38 .concept-table th { width: 29%; }
+#slide-47 .concept-table th { width: 23%; }
+
+#slide-14 .key-line,
+#slide-21 .key-line,
+#slide-31 .key-line {
+  width: 100%;
+  max-width: 1600px;
+  font-size: clamp(27px, 1.65vw, 32px);
+  white-space: nowrap;
+}
+
+#slide-31 .key-line {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: center;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 36px;
+  border-radius: 16px;
+  font-size: clamp(31px, 2vw, 39px);
+  line-height: 1.4;
+  white-space: normal;
+  background: var(--bg-alt);
+}
+
+#slide-31 .key-line::before {
+  display: block;
+  width: 58px;
+  margin: 0 0 24px;
+}
+
+#slide-30 .slide__inner {
+  grid-template-rows: 200px minmax(0, 1fr) 50px;
+  gap: 20px;
+}

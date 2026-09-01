@@ -3,10 +3,11 @@
 2026 크래쉬랩 강의 ①~④를 위한 **PPT 대체형 정적 슬라이드 덱**이다.
 
 - `index.html`: 네 개 강의 덱 진입
-- `lecture-1.html`: 로보틱스 기초 · ROS2 · 개발환경 (20장)
-- `lecture-2.html`: VSLAM · 내비게이션 (18장)
-- `lecture-3.html`: 조작: 주행 · 모터 제어 (19장)
-- `lecture-4.html`: VLA 이론 (18장)
+- `lecture-1.html`: 로보틱스 기초 · ROS2 · 개발환경 (21장)
+- `lecture-2.html`: 조작 — 주행 · 모터 제어 (16장)
+- `lecture-3.html`: VSLAM · 내비게이션 (47장)
+- `lecture-4.html`: VLA 이론 (14장)
+- 전체: 4개 강의, 총 98장
 
 ## 조작
 

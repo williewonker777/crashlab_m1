@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>px</title>
+<style>html,body{margin:0;padding:0;overflow:hidden}iframe{border:0;display:block;width:1920px;height:1080px}</style>
+<body><iframe id="fr"></iframe>
+<script>
+const q=new URLSearchParams(location.search);
+const page=q.get('p'), s=q.get('s'), mode=q.get('m');
+const fr=document.getElementById('fr');
+fr.src=`${page}.html#slide-${s}`;
+fr.onload=()=>{
+  const d=fr.contentDocument;
+  const st=d.createElement('style');
+  // 모든 SVG 텍스트를 고유색으로. 헤일로(paint-order stroke)도 제거해 순수 비교
+  st.textContent=`svg text,svg tspan{fill:#FF00FE!important;stroke:none!important;paint-order:normal!important}`;
+  d.head.appendChild(st);
+  if(mode==='only'){
+    [...d.querySelectorAll('svg *')].forEach(e=>{
+      const t=e.tagName.toLowerCase();
+      if(!['text','tspan','defs','title','desc','g','marker'].includes(t))
+        e.style.setProperty('visibility','hidden','important');
+    });
+  }
+  setTimeout(()=>{document.title='RDY';},500);
+};
+</script>
