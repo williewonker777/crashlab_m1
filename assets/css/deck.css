@@ -1782,3 +1782,6 @@ button { color: inherit; }
   grid-template-rows: 200px minmax(0, 1fr) 50px;
   gap: 20px;
 }
+
+/* OT 표지: 리드 문장이 강의 덱보다 길어 로봇과 겹치므로 이 덱만 살짝 축소·이동 */
+.lecture-ot .title-robot { right: 400px; bottom: -130px; width: clamp(240px, 17vw, 330px); }
