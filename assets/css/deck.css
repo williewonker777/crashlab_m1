@@ -29,6 +29,7 @@
 .lecture-2 { --accent: #00A0B0; --accent-on-blue: #47CFDA; --accent-tint: #E6F7F8; --accent-ink: #006874; }
 .lecture-3 { --accent: #F7931E; --accent-on-blue: #F7931E; --accent-tint: #FFF1E2; --accent-ink: #874000; }
 .lecture-4 { --accent: #7B5EA7; --accent-on-blue: #CDB8F0; --accent-tint: #F1ECF7; --accent-ink: #513B73; }
+.lecture-ot { --accent: #F0B323; --accent-on-blue: #FFD86B; --accent-tint: #FFF6DB; --accent-ink: #7A4D00; }
 
 *,
 *::before,
@@ -924,6 +925,7 @@ button { color: inherit; }
 
 .comparison-card:first-child { background: #F5F7FA; }
 .comparison-card:last-child { background: #EDF6E3; }
+.lecture-ot .comparison-card:last-child { background: var(--accent-tint); }
 
 .comparison-card ul {
   display: grid;
@@ -1434,6 +1436,16 @@ button { color: inherit; }
 .deck-link:nth-child(2) { --card-accent: #00A0B0; --card-accent-ink: #006874; --card-tint: #E6F7F8; }
 .deck-link:nth-child(3) { --card-accent: #F7931E; --card-accent-ink: #874000; --card-tint: #FFF1E2; }
 .deck-link:nth-child(4) { --card-accent: #7B5EA7; --card-accent-ink: #513B73; --card-tint: #F1ECF7; }
+.deck-link--orientation { --card-accent: #F0B323; --card-accent-ink: #7A4D00; --card-tint: #FFF6DB; min-height: 210px; grid-column: 1 / -1; grid-template-columns: 76px minmax(0, 1fr) 260px; grid-template-rows: auto auto; column-gap: 26px; }
+.deck-link--orientation .deck-link__top { grid-column: 1; grid-row: 1 / -1; align-self: start; }
+.deck-link--orientation .deck-link__verb { display: none; }
+.deck-link--orientation h2 { grid-column: 2; grid-row: 1; margin-top: 0; align-self: end; }
+.deck-link--orientation > p { grid-column: 2; grid-row: 2; margin-bottom: 0; align-self: start; }
+.deck-link--orientation .deck-link__meta { grid-column: 3; grid-row: 1 / -1; align-self: center; }
+.deck-link--build { --card-accent: #75B446; --card-accent-ink: #416A22; --card-tint: #EDF6E3; }
+.deck-link--control { --card-accent: #00A0B0; --card-accent-ink: #006874; --card-tint: #E6F7F8; }
+.deck-link--perceive { --card-accent: #F7931E; --card-accent-ink: #874000; --card-tint: #FFF1E2; }
+.deck-link--learn { --card-accent: #7B5EA7; --card-accent-ink: #513B73; --card-tint: #F1ECF7; }
 .deck-link::before { position: absolute; top: 0; right: 0; left: 0; height: 6px; background: var(--card-accent); content: ""; }
 .deck-link::after { position: absolute; top: -76px; right: -70px; width: 180px; height: 180px; border: 24px solid var(--card-accent); border-radius: 50%; content: ""; opacity: 0.08; }
 .deck-link:hover { box-shadow: 0 26px 60px rgba(29, 36, 117, 0.16); transform: translateY(-6px); }
@@ -1559,6 +1571,12 @@ button { color: inherit; }
   .landing__section-head h2 { margin-top: 6px; }
   .deck-links { grid-template-columns: 1fr; }
   .deck-link { min-height: 270px; }
+  .deck-link--orientation { min-height: 270px; grid-column: auto; grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto; }
+  .deck-link--orientation .deck-link__top,
+  .deck-link--orientation h2,
+  .deck-link--orientation > p,
+  .deck-link--orientation .deck-link__meta { grid-column: 1; grid-row: auto; }
+  .deck-link--orientation .deck-link__verb { display: inline; }
   .shortcut-help dl { grid-template-columns: 1fr; gap: 4px; }
   .shortcut-help dd { margin-bottom: 12px; }
 }
