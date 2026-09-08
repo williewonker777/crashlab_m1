@@ -1,0 +1,215 @@
+/* 강의 ② 챕터 3 · 차동 구동 기구학, odom, frame, TF, quaternion */
+.lecture-2 .mobile-slide .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 24px; }
+.lecture-2 .mobile-slide h2 { font-size: clamp(34px, 2.8vw, 54px); }
+.lecture-2 .mobile-slide h3 { margin: 0; color: var(--hy-blue); font-size: 30px; line-height: 1.3; }
+.lecture-2 .mobile-slide sub { font-size: .65em; line-height: 0; }
+.lecture-2 .mobile-grid { display: grid; min-height: 0; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 36px; }
+.lecture-2 .mobile-copy { display: grid; min-width: 0; min-height: 0; align-content: center; gap: 24px; }
+.lecture-2 .mobile-stack { display: grid; min-height: 0; grid-template-rows: minmax(0, 1fr) auto; gap: 24px; }
+.lecture-2 .mobile-formula { padding: 22px 26px; border-radius: 16px; background: var(--hy-blue); color: #fff; font-size: clamp(26px, 1.7vw, 33px); font-weight: 600; line-height: 1.45; }
+.lecture-2 .mobile-formula small { display: block; margin-top: 12px; color: #DDE5F5; font-size: 19px; font-weight: 400; line-height: 1.4; }
+.lecture-2 .mobile-result { display: grid; gap: 10px; padding: 20px 24px; border-radius: 14px; background: var(--accent-tint); }
+.lecture-2 .mobile-result span { color: var(--accent-ink); font-size: 20px; line-height: 1.4; }
+.lecture-2 .mobile-result strong { color: var(--hy-blue); font-size: clamp(24px, 1.55vw, 30px); line-height: 1.45; }
+.lecture-2 .mobile-notes { display: grid; gap: 16px; margin: 0; }
+.lecture-2 .mobile-notes > div { display: grid; grid-template-columns: 142px minmax(0, 1fr); gap: 16px; padding-top: 12px; border-top: 1px solid #D8DEE9; align-items: baseline; }
+.lecture-2 .mobile-notes dt { color: var(--hy-blue); font-size: 23px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .mobile-notes dd { margin: 0; color: var(--hy-gray); font-size: 23px; line-height: 1.45; }
+.lecture-2 .mobile-visual { display: grid; grid-template-rows: minmax(0, 1fr); min-width: 0; min-height: 0; margin: 0; padding: 22px; border-radius: 20px; background: #F5F7FA; }
+.lecture-2 .mobile-visual:has(figcaption) { grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
+.lecture-2 .mobile-svg { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .mobile-visual figcaption { color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-scroll-hint { display: none; }
+.lecture-2 .mobile-takeaway { margin: 0; padding-top: 16px; border-top: 2px solid #D8DEE9; color: var(--hy-blue); font-size: clamp(23px, 1.5vw, 29px); font-weight: 600; line-height: 1.35; }
+.lecture-2 .mobile-cards { display: grid; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.lecture-2 .mobile-cards--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lecture-2 .mobile-card { display: flex; min-width: 0; min-height: 0; flex-direction: column; justify-content: center; gap: 22px; padding: 26px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .mobile-card:nth-child(2) { background: var(--accent-tint); }
+.lecture-2 .mobile-card p { margin: 0; color: var(--hy-gray); font-size: 24px; line-height: 1.45; }
+.lecture-2 .mobile-card .mobile-card-lead { color: var(--accent-ink); font-size: 27px; font-weight: 600; }
+.lecture-2 .mobile-card .mobile-card-formula { color: var(--hy-blue); font-size: 32px; font-weight: 600; }
+.lecture-2 .mobile-card > .mobile-svg { height: 220px; flex: 0 1 220px; }
+.lecture-2 .mobile-card .mobile-notes > div { grid-template-columns: 1fr; gap: 6px; }
+.lecture-2 .mobile-card .mobile-notes dt, .lecture-2 .mobile-card .mobile-notes dd { font-size: 22px; }
+.lecture-2 .mobile-inline-notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.lecture-2 .mobile-inline-notes .mobile-card { padding: 20px 24px; gap: 12px; }
+.lecture-2 .mobile-inline-notes h3 { font-size: 26px; }
+.lecture-2 .mobile-inline-notes p { font-size: 22px; }
+.lecture-2 .mobile-code-note { padding: 20px 24px; border: 2px solid #D8DEE9; border-radius: 14px; }
+.lecture-2 .mobile-code-note h3 { margin-bottom: 12px; font-size: 24px; }
+.lecture-2 .mobile-code-note code { font-size: 26px; color: var(--accent-ink); line-height: 1.5; }
+.lecture-2 .mobile-code-note p { margin: 12px 0 0; color: #647080; font-size: 18px; }
+.lecture-2 .mobile-numbered { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none; counter-reset: mobile-step; }
+.lecture-2 .mobile-numbered li { position: relative; display: grid; gap: 8px; padding-left: 44px; counter-increment: mobile-step; }
+.lecture-2 .mobile-numbered li::before { content: counter(mobile-step); position: absolute; left: 0; top: 1px; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-tint); color: var(--accent-ink); font-size: 22px; font-weight: 700; text-align: center; line-height: 30px; }
+.lecture-2 .mobile-numbered strong { color: var(--hy-blue); font-size: 25px; }
+.lecture-2 .mobile-numbered span { color: var(--hy-gray); font-size: 22px; line-height: 1.45; }
+.lecture-2 .mobile-numbered b { color: var(--hy-blue); }
+.lecture-2 .mobile-grid--message { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.lecture-2 .mobile-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.lecture-2 .mobile-table th, .lecture-2 .mobile-table td { padding: 14px 10px; border-bottom: 1px solid #D8DEE9; text-align: left; font-size: 21px; line-height: 1.4; overflow-wrap: anywhere; }
+.lecture-2 .mobile-table th { width: 43%; color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .mobile-table td { color: var(--hy-gray); }
+.lecture-2 .mobile-table code { font-size: .9em; }
+
+/* 바퀴 속도 및 quaternion 조작 */
+.lecture-2 .mobile-lab-grid { display: grid; min-height: 0; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: 30px; }
+.lecture-2 .mobile-lab-controls { display: grid; min-height: 0; align-content: center; gap: 16px; padding: 24px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .mobile-lab-geometry { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-lab-controls label, .lecture-2 .mobile-yaw-control label { display: flex; justify-content: space-between; gap: 12px; color: var(--hy-blue); font-size: 23px; font-weight: 600; }
+.lecture-2 .mobile-slide output { color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.lecture-2 .mobile-slide input[type="range"] { display: block; width: 100%; height: 28px; margin: 0; accent-color: var(--accent-ink); cursor: pointer; }
+.lecture-2 .mobile-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+.lecture-2 .mobile-buttons button { padding: 9px 16px; border: 2px solid #D8DEE9; border-radius: 10px; background: #fff; color: var(--hy-blue); font: inherit; font-size: 21px; font-weight: 600; line-height: 1.3; cursor: pointer; }
+.lecture-2 .mobile-buttons button[aria-pressed="true"] { background: var(--hy-blue); border-color: var(--hy-blue); color: #fff; }
+.lecture-2 .mobile-buttons button:focus-visible, .lecture-2 .mobile-slide input:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.lecture-2 .mobile-lab-readouts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.lecture-2 .mobile-lab-readouts > div { display: grid; gap: 6px; }
+.lecture-2 .mobile-lab-readouts span { color: #647080; font-size: 18px; }
+.lecture-2 .mobile-lab-readouts strong { color: var(--hy-blue); font-size: 23px; font-variant-numeric: tabular-nums; }
+.lecture-2 .mobile-lab-status { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-lab-view { display: grid; min-height: 0; grid-template-rows: minmax(0, 1fr) auto auto; gap: 16px; padding: 22px; border: 2px solid #D8DEE9; border-radius: 18px; }
+.lecture-2 .mobile-lab-svg { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .mobile-lab-view > p { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-pose-readout { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--hy-blue); font-size: 24px; }
+.lecture-2 .mobile-pose-readout span { color: var(--accent-ink); }
+.lecture-2 .mobile-pose-readout strong { font-weight: 500; font-variant-numeric: tabular-nums; }
+.lecture-2 .mobile-yaw-control { display: grid; gap: 18px; padding: 22px; border-radius: 16px; background: #F5F7FA; }
+.lecture-2 .mobile-quaternion-view { display: grid; min-height: 0; grid-template-rows: minmax(0, 1fr) auto auto; gap: 18px; padding: 24px; border-radius: 20px; background: var(--accent-tint); }
+.lecture-2 .mobile-compass { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .mobile-quaternion-values { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.lecture-2 .mobile-quaternion-values > div { display: grid; gap: 8px; padding: 14px 8px; border-radius: 10px; text-align: center; background: #fff; }
+.lecture-2 .mobile-quaternion-values span { color: var(--accent-ink); font-size: 24px; }
+.lecture-2 .mobile-quaternion-values strong { color: var(--hy-blue); font-size: 27px; font-variant-numeric: tabular-nums; }
+.lecture-2 .mobile-quaternion-view > p { margin: 0; color: var(--hy-blue); font-size: 23px; }
+
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .mobile-slide .slide__inner { grid-template-rows: 95px minmax(0, 1fr) auto; gap: 14px; }
+  .lecture-2 .mobile-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-slide .slide__header::after { margin-top: 8px; }
+  .lecture-2 .mobile-slide h2 { font-size: 34px; }
+  .lecture-2 .mobile-slide h3 { font-size: 25px; }
+  .lecture-2 .mobile-grid { gap: 26px; }
+  .lecture-2 .mobile-copy, .lecture-2 .mobile-stack { gap: 12px; }
+  .lecture-2 .mobile-formula { padding: 14px 18px; font-size: 25px; line-height: 1.4; }
+  .lecture-2 .mobile-formula small { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-result { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .mobile-result span { font-size: 16px; }
+  .lecture-2 .mobile-result strong { font-size: 23px; }
+  .lecture-2 .mobile-notes { gap: 10px; }
+  .lecture-2 .mobile-notes > div { grid-template-columns: 112px minmax(0, 1fr); gap: 10px; padding-top: 8px; }
+  .lecture-2 .mobile-notes dt, .lecture-2 .mobile-notes dd { font-size: 18px; }
+  .lecture-2 .mobile-visual { padding: 14px; }
+  .lecture-2 .mobile-visual figcaption { font-size: 15px; }
+  .lecture-2 .mobile-takeaway { padding-top: 10px; font-size: 21px; }
+  .lecture-2 .mobile-cards, .lecture-2 .mobile-inline-notes { gap: 22px; }
+  .lecture-2 .mobile-card { padding: 18px; gap: 12px; }
+  .lecture-2 .mobile-card p { font-size: 19px; }
+  .lecture-2 .mobile-card .mobile-card-lead { font-size: 23px; }
+  .lecture-2 .mobile-card .mobile-card-formula { font-size: 26px; }
+  .lecture-2 .mobile-card > .mobile-svg { height: 150px; flex-basis: 150px; }
+  .lecture-2 .mobile-card .mobile-notes dt, .lecture-2 .mobile-card .mobile-notes dd { font-size: 18px; }
+  .lecture-2 .mobile-inline-notes .mobile-card { padding: 14px 18px; gap: 8px; }
+  .lecture-2 .mobile-inline-notes h3 { font-size: 21px; }
+  .lecture-2 .mobile-inline-notes p { font-size: 18px; }
+  .lecture-2 .mobile-code-note { padding: 14px 18px; }
+  .lecture-2 .mobile-code-note h3 { margin-bottom: 6px; font-size: 21px; }
+  .lecture-2 .mobile-code-note code { font-size: 22px; }
+  .lecture-2 .mobile-code-note p { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-numbered { gap: 14px; }
+  .lecture-2 .mobile-numbered li { padding-left: 36px; gap: 4px; }
+  .lecture-2 .mobile-numbered li::before { width: 26px; height: 26px; font-size: 18px; line-height: 26px; }
+  .lecture-2 .mobile-numbered strong { font-size: 21px; }
+  .lecture-2 .mobile-numbered span { font-size: 18px; }
+  .lecture-2 .mobile-table th, .lecture-2 .mobile-table td { padding: 8px 7px; font-size: 17px; }
+  .lecture-2 .mobile-lab-grid { gap: 24px; }
+  .lecture-2 .mobile-lab-controls { padding: 16px; gap: 10px; }
+  .lecture-2 .mobile-lab-geometry, .lecture-2 .mobile-lab-status { font-size: 15px; }
+  .lecture-2 .mobile-lab-controls label, .lecture-2 .mobile-yaw-control label { font-size: 19px; }
+  .lecture-2 .mobile-slide input[type="range"] { height: 24px; }
+  .lecture-2 .mobile-buttons { gap: 8px; }
+  .lecture-2 .mobile-buttons button { padding: 6px 12px; font-size: 17px; }
+  .lecture-2 .mobile-lab-readouts { gap: 8px; }
+  .lecture-2 .mobile-lab-readouts span { font-size: 15px; }
+  .lecture-2 .mobile-lab-readouts strong { font-size: 18px; }
+  .lecture-2 .mobile-lab-view { padding: 14px; gap: 10px; }
+  .lecture-2 .mobile-lab-view > p { font-size: 15px; }
+  .lecture-2 .mobile-pose-readout { font-size: 18px; }
+  .lecture-2 .mobile-yaw-control { padding: 16px; gap: 12px; }
+  .lecture-2 .mobile-quaternion-view { padding: 18px; gap: 12px; }
+  .lecture-2 .mobile-quaternion-values { gap: 8px; }
+  .lecture-2 .mobile-quaternion-values > div { padding: 10px 4px; gap: 4px; }
+  .lecture-2 .mobile-quaternion-values span { font-size: 20px; }
+  .lecture-2 .mobile-quaternion-values strong { font-size: 21px; }
+  .lecture-2 .mobile-quaternion-view > p { font-size: 18px; }
+}
+
+@media (min-width: 801px) and (max-height: 730px) {
+  .lecture-2 .mobile-slide .slide__inner { grid-template-rows: 85px minmax(0, 1fr) auto; gap: 12px; }
+  .lecture-2 .mobile-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-quaternion-slide .mobile-yaw-control { padding: 12px 16px; gap: 8px; }
+  .lecture-2 .mobile-quaternion-slide .mobile-notes { gap: 8px; }
+  .lecture-2 .mobile-quaternion-slide .mobile-formula { padding-block: 12px; }
+  .lecture-2 .mobile-grid--message .mobile-result { padding-block: 10px; }
+}
+
+@media (max-width: 800px) {
+  .lecture-2 .mobile-slide .slide__inner { grid-template-rows: auto auto auto; gap: 26px; }
+  .lecture-2 .mobile-slide h2 { font-size: 36px; }
+  .lecture-2 .mobile-slide h3 { font-size: 25px; }
+  .lecture-2 .mobile-grid, .lecture-2 .mobile-grid--message, .lecture-2 .mobile-lab-grid, .lecture-2 .mobile-cards, .lecture-2 .mobile-inline-notes { grid-template-columns: 1fr; gap: 24px; }
+  .lecture-2 .mobile-stack { grid-template-rows: auto auto; gap: 24px; }
+  .lecture-2 .mobile-copy { gap: 22px; }
+  .lecture-2 .mobile-formula { padding: 20px; font-size: 24px; overflow-wrap: anywhere; }
+  .lecture-2 .mobile-formula small { font-size: 17px; }
+  .lecture-2 .mobile-result { padding: 20px; }
+  .lecture-2 .mobile-result span { font-size: 17px; }
+  .lecture-2 .mobile-result strong { font-size: 24px; overflow-wrap: anywhere; }
+  .lecture-2 .mobile-notes { gap: 18px; }
+  .lecture-2 .mobile-notes > div { grid-template-columns: 1fr; gap: 6px; padding-top: 12px; }
+  .lecture-2 .mobile-notes dt { font-size: 21px; }
+  .lecture-2 .mobile-notes dd { font-size: 20px; }
+  .lecture-2 .mobile-visual { display: block; padding: 16px; overflow-x: auto; }
+  .lecture-2 .mobile-visual > .mobile-svg { width: 600px; max-width: none; height: auto; }
+  .lecture-2 .mobile-visual figcaption { position: sticky; left: 0; width: calc(100vw - 80px); margin-top: 14px; font-size: 16px; }
+  .lecture-2 .mobile-scroll-hint { position: sticky; left: 0; display: block; width: calc(100vw - 80px); margin: 0 0 14px; color: var(--accent-ink); font-size: 16px; }
+  .lecture-2 .mobile-takeaway { padding-top: 16px; font-size: 23px; }
+  .lecture-2 .mobile-card { padding: 22px; gap: 20px; }
+  .lecture-2 .mobile-card p { font-size: 20px; }
+  .lecture-2 .mobile-card > .mobile-svg { height: auto; flex: none; }
+  .lecture-2 .mobile-card .mobile-card-lead { font-size: 24px; }
+  .lecture-2 .mobile-card .mobile-card-formula { font-size: 27px; }
+  .lecture-2 .mobile-card .mobile-notes dt, .lecture-2 .mobile-card .mobile-notes dd { font-size: 20px; }
+  .lecture-2 .mobile-inline-notes .mobile-card { padding: 20px; }
+  .lecture-2 .mobile-inline-notes h3 { font-size: 24px; }
+  .lecture-2 .mobile-inline-notes p { font-size: 20px; }
+  .lecture-2 .mobile-code-note { padding: 20px; }
+  .lecture-2 .mobile-code-note h3 { font-size: 22px; }
+  .lecture-2 .mobile-code-note code { font-size: 22px; }
+  .lecture-2 .mobile-code-note p { font-size: 17px; }
+  .lecture-2 .mobile-numbered li { padding-left: 34px; }
+  .lecture-2 .mobile-numbered strong { font-size: 22px; }
+  .lecture-2 .mobile-numbered span { font-size: 20px; }
+  .lecture-2 .mobile-numbered li::before { width: 26px; height: 26px; font-size: 18px; line-height: 26px; }
+  .lecture-2 .mobile-table, .lecture-2 .mobile-table tbody, .lecture-2 .mobile-table tr, .lecture-2 .mobile-table th, .lecture-2 .mobile-table td { display: block; width: 100%; }
+  .lecture-2 .mobile-table th { padding: 16px 0 6px; border-bottom: 0; font-size: 19px; }
+  .lecture-2 .mobile-table td { padding: 0 0 16px; font-size: 20px; }
+  .lecture-2 .mobile-lab-controls { padding: 20px; gap: 16px; }
+  .lecture-2 .mobile-lab-geometry, .lecture-2 .mobile-lab-status { font-size: 16px; }
+  .lecture-2 .mobile-lab-controls label, .lecture-2 .mobile-yaw-control label { font-size: 20px; }
+  .lecture-2 .mobile-buttons { gap: 8px; }
+  .lecture-2 .mobile-buttons button { padding: 9px 12px; font-size: 17px; }
+  .lecture-2 .mobile-lab-readouts { gap: 10px; }
+  .lecture-2 .mobile-lab-readouts span { font-size: 16px; }
+  .lecture-2 .mobile-lab-readouts strong { font-size: 18px; }
+  .lecture-2 .mobile-lab-view { padding: 12px; gap: 12px; }
+  .lecture-2 .mobile-lab-svg { height: auto; }
+  .lecture-2 .mobile-lab-view > p { font-size: 16px; }
+  .lecture-2 .mobile-pose-readout { font-size: 18px; }
+  .lecture-2 .mobile-yaw-control { padding: 20px; }
+  .lecture-2 .mobile-quaternion-view { grid-template-rows: auto auto auto; padding: 20px; }
+  .lecture-2 .mobile-compass { height: auto; }
+  .lecture-2 .mobile-quaternion-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lecture-2 .mobile-quaternion-values strong { font-size: 24px; }
+  .lecture-2 .mobile-quaternion-view > p { font-size: 18px; }
+}
