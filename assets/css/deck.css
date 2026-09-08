@@ -672,6 +672,29 @@ button { color: inherit; }
   z-index: 2;
 }
 
+@media (min-width: 801px) {
+  .lecture-2 .slide--title .slide__inner {
+    grid-template-columns: clamp(56px, 7vw, 120px) minmax(0, 1fr) clamp(150px, 18vw, 340px) clamp(200px, 20vw, 360px);
+    grid-template-rows: minmax(0, 1fr);
+    column-gap: clamp(20px, 2.6vw, 40px);
+  }
+  .lecture-2 .slide--title .slide__inner > div:first-child { padding-left: clamp(24px, 2.1vw, 40px); }
+  .lecture-2 .slide--title .title-number { font-size: clamp(56px, 6vw, 96px); }
+  .lecture-2 .title-robot {
+    position: relative;
+    grid-column: 3;
+    grid-row: 1;
+    right: auto;
+    bottom: -92px;
+    align-self: end;
+    width: 100%;
+  }
+  .lecture-2 .slide--title .title-index { grid-column: 4; }
+  .lecture-2 .slide--title .title-index li { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; }
+  .lecture-2 .slide--title .title-meta { flex-wrap: wrap; gap: 10px 14px; font-size: clamp(16px, 1.15vw, 22px); }
+  .lecture-2 .slide--title .title-meta span + span { padding-left: 14px; }
+}
+
 /* L2 · question */
 .slide--question {
   background: #fff;
@@ -717,6 +740,71 @@ button { color: inherit; }
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.18em;
+}
+
+/* 강의 ② 질문 페이지는 표지와 같은 네 항목으로 현재 단원을 안내한다. */
+.lecture-2 .question-index {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lecture-2 .question-index li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 3px solid #D8DEE9;
+  color: #626774;
+}
+
+.lecture-2 .question-index li > span {
+  padding-top: 3px;
+  font-size: clamp(18px, 1.25vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.lecture-2 .question-index strong {
+  display: block;
+  font-size: clamp(22px, 1.5vw, 28px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.lecture-2 .question-index small {
+  display: block;
+  margin-top: 8px;
+  color: #626774;
+  font-size: clamp(16px, 1.05vw, 20px);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.lecture-2 .question-index li[aria-current="step"] {
+  border-color: var(--hy-blue);
+  color: var(--hy-blue);
+}
+.lecture-2 .question-index li[aria-current="step"] strong { font-weight: 700; }
+.lecture-2 .question-index li[aria-current="step"] > span { color: var(--accent-ink); }
+
+@media (max-width: 800px) {
+  .lecture-2 .question-index {
+    grid-column: 1;
+    grid-row: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 20px;
+  }
+  .lecture-2 .question-index li { gap: 10px; padding-top: 14px; }
+  .lecture-2 .question-index strong { font-size: 21px; }
+  .lecture-2 .question-index small { margin-top: 6px; font-size: 16px; }
 }
 
 /* L3 · diagram dominant */
@@ -967,6 +1055,23 @@ button { color: inherit; }
   padding: 25px 34px;
   border: 0;
   text-align: left;
+}
+
+/* 6행 이상일 때 세로로 넘치지 않도록 행 높이를 줄인다 (번호가 아니라 클래스로 지정) */
+.concept-table.is-dense th,
+.concept-table.is-dense td {
+  padding: 15px 34px;
+}
+
+.concept-table td small {
+  margin-left: 6px;
+  opacity: 0.62;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.concept-table.is-dense {
+  border-spacing: 0 11px;
 }
 
 .concept-table th {
@@ -1633,20 +1738,20 @@ button { color: inherit; }
 .lecture-3 .deck-svg .svg-small { font-size: 22px; }
 .lecture-3 .deck-svg .chip text { font-size: 24px; }
 
-#slide-14 .photo-aside strong {
+.lecture-3 #slide-14 .photo-aside strong {
   font-size: clamp(38px, 2.5vw, 50px);
 }
 
-#slide-18 .slide__visual,
-#slide-23 .slide__visual,
-#slide-24 .slide__visual,
-#slide-29 .slide__visual,
-#slide-41 .slide__visual {
+.lecture-3 #slide-18 .slide__visual,
+.lecture-3 #slide-23 .slide__visual,
+.lecture-3 #slide-24 .slide__visual,
+.lecture-3 #slide-29 .slide__visual,
+.lecture-3 #slide-41 .slide__visual {
   padding: 0;
 }
 
-#slide-30 .slide__visual,
-#slide-46 .slide__visual {
+.lecture-3 #slide-30 .slide__visual,
+.lecture-3 #slide-46 .slide__visual {
   display: grid;
   padding: 22px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1654,8 +1759,8 @@ button { color: inherit; }
   gap: 28px;
 }
 
-#slide-30 .slide__visual > figure,
-#slide-46 .slide__visual > figure {
+.lecture-3 #slide-30 .slide__visual > figure,
+.lecture-3 #slide-46 .slide__visual > figure {
   display: grid;
   min-width: 0;
   min-height: 0;
@@ -1666,8 +1771,8 @@ button { color: inherit; }
   background: #fff;
 }
 
-#slide-30 .slide__visual > figure > svg,
-#slide-46 .slide__visual > figure > svg {
+.lecture-3 #slide-30 .slide__visual > figure > svg,
+.lecture-3 #slide-46 .slide__visual > figure > svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -1675,33 +1780,33 @@ button { color: inherit; }
   background: #fff;
 }
 
-#slide-30 figcaption,
-#slide-46 figcaption {
+.lecture-3 #slide-30 figcaption,
+.lecture-3 #slide-46 figcaption {
   display: grid;
   padding: 18px 24px 20px;
   border-top: 2px solid var(--accent);
   gap: 5px;
 }
 
-#slide-30 figcaption strong,
-#slide-46 figcaption strong {
+.lecture-3 #slide-30 figcaption strong,
+.lecture-3 #slide-46 figcaption strong {
   color: var(--hy-blue);
   font-size: 27px;
 }
 
-#slide-30 figcaption span,
-#slide-46 figcaption span {
+.lecture-3 #slide-30 figcaption span,
+.lecture-3 #slide-46 figcaption span {
   color: var(--hy-gray);
   font-size: 21px;
 }
 
-#slide-31 .slide__visual {
+.lecture-3 #slide-31 .slide__visual {
   padding: 12px 16px;
   overflow: hidden;
   background: #11131a;
 }
 
-#slide-31 video {
+.lecture-3 #slide-31 video {
   position: absolute;
   top: 12px;
   bottom: 12px;
@@ -1717,47 +1822,47 @@ button { color: inherit; }
   background: #11131a;
 }
 
-#slide-31 .slide__inner {
+.lecture-3 #slide-31 .slide__inner {
   grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.75fr);
   grid-template-rows: 140px minmax(0, 1fr);
   gap: 16px 32px;
 }
 
-#slide-31 .slide__header {
+.lecture-3 #slide-31 .slide__header {
   grid-column: 1 / -1;
   grid-row: 1;
 }
 
-#slide-31 .slide__visual {
+.lecture-3 #slide-31 .slide__visual {
   grid-column: 1;
   grid-row: 2;
 }
 
-#slide-38 .concept-table,
-#slide-47 .concept-table {
+.lecture-3 #slide-38 .concept-table,
+.lecture-3 #slide-47 .concept-table {
   border-spacing: 0 12px;
 }
 
-#slide-38 .concept-table th,
-#slide-38 .concept-table td,
-#slide-47 .concept-table th,
-#slide-47 .concept-table td {
+.lecture-3 #slide-38 .concept-table th,
+.lecture-3 #slide-38 .concept-table td,
+.lecture-3 #slide-47 .concept-table th,
+.lecture-3 #slide-47 .concept-table td {
   padding-block: 22px;
 }
 
-#slide-38 .concept-table th { width: 29%; }
-#slide-47 .concept-table th { width: 23%; }
+.lecture-3 #slide-38 .concept-table th { width: 29%; }
+.lecture-3 #slide-47 .concept-table th { width: 23%; }
 
-#slide-14 .key-line,
-#slide-21 .key-line,
-#slide-31 .key-line {
+.lecture-3 #slide-14 .key-line,
+.lecture-3 #slide-21 .key-line,
+.lecture-3 #slide-31 .key-line {
   width: 100%;
   max-width: 1600px;
   font-size: clamp(27px, 1.65vw, 32px);
   white-space: nowrap;
 }
 
-#slide-31 .key-line {
+.lecture-3 #slide-31 .key-line {
   grid-column: 2;
   grid-row: 2;
   align-self: center;
@@ -1772,13 +1877,13 @@ button { color: inherit; }
   background: var(--bg-alt);
 }
 
-#slide-31 .key-line::before {
+.lecture-3 #slide-31 .key-line::before {
   display: block;
   width: 58px;
   margin: 0 0 24px;
 }
 
-#slide-30 .slide__inner {
+.lecture-3 #slide-30 .slide__inner {
   grid-template-rows: 200px minmax(0, 1fr) 50px;
   gap: 20px;
 }
@@ -1788,3 +1893,459 @@ button { color: inherit; }
 
 /* OT 11p: 준비 항목이 2개라 3열 그리드에 빈 칸이 생기므로 이 덱만 2열 */
 .lecture-ot .summary-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* 강의 ②: 같은 관절에 주는 위치·속도·토크 명령 비교 */
+.lecture-2 .motor-modes .slide__visual {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+  padding: 0;
+  background: transparent;
+}
+
+.lecture-2 .motor-modes .deck-svg {
+  position: static;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.lecture-2 .motor-demo-controls {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  display: flex;
+  gap: 12px;
+}
+
+.lecture-2 .motor-demo-controls button {
+  padding: 10px 18px;
+  border: 2px solid var(--accent-ink);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--accent-ink);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lecture-2 .motor-demo-controls button:first-child {
+  background: var(--accent-ink);
+  color: #fff;
+}
+
+.lecture-2 .motor-demo-controls button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.lecture-2 .position-example-arm,
+.lecture-2 .velocity-example-wheel,
+.lecture-2 .torque-example-arm,
+.lecture-2 .torque-example-label-orbit,
+.lecture-2 .torque-example-label-upright {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  animation-play-state: paused;
+}
+
+.lecture-2 .motor-modes[data-demo-started] .position-example-arm {
+  animation-name: motor-position-example;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.lecture-2 .motor-modes[data-demo-started] .velocity-example-wheel {
+  animation-name: motor-velocity-example;
+  animation-duration: 12s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* 일정한 순토크·관성에서 각도는 시간의 제곱에 비례한다.
+   4초 동안의 초기 가속을 반복하며, 역회전 라벨도 같은 시간 함수를 쓴다. */
+.lecture-2 .motor-modes[data-demo-started] .torque-example-arm,
+.lecture-2 .motor-modes[data-demo-started] .torque-example-label-orbit,
+.lecture-2 .motor-modes[data-demo-started] .torque-example-label-upright {
+  animation-name: motor-torque-example;
+  animation-duration: 4s;
+  animation-timing-function: cubic-bezier(0.3333333333, 0, 0.6666666667, 0.3333333333);
+  animation-iteration-count: infinite;
+}
+
+.lecture-2 .motor-modes[data-demo-started] .torque-example-label-upright {
+  animation-name: motor-torque-label;
+}
+
+.lecture-2 .motor-modes[data-demo-playing="true"][aria-current="true"] .position-example-arm,
+.lecture-2 .motor-modes[data-demo-playing="true"][aria-current="true"] .velocity-example-wheel,
+.lecture-2 .motor-modes[data-demo-playing="true"][aria-current="true"] .torque-example-arm,
+.lecture-2 .motor-modes[data-demo-playing="true"][aria-current="true"] .torque-example-label-orbit,
+.lecture-2 .motor-modes[data-demo-playing="true"][aria-current="true"] .torque-example-label-upright {
+  animation-play-state: running;
+}
+
+@keyframes motor-position-example {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-30deg); }
+}
+
+@keyframes motor-velocity-example {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes motor-torque-example {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes motor-torque-label {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .motor-modes .slide__inner {
+    grid-template-rows: 120px minmax(0, 1fr) 40px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  .lecture-2 .motor-demo-controls { position: static; margin-top: 12px; }
+  .lecture-2 .motor-modes .slide__visual { grid-template-columns: minmax(0, 1fr); }
+  .lecture-2 .motor-modes .deck-svg { height: auto; }
+}
+
+.lecture-2 .loop-comparison .slide__inner { grid-template-rows: 125px auto minmax(0, 1fr) auto; gap: 22px; }
+.lecture-2 .loop-scenario { display: flex; align-items: center; gap: 26px; margin: 0; color: var(--hy-gray); font-size: 25px; line-height: 1.6; }
+.lecture-2 .loop-scenario strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .loop-example-tag { flex-shrink: 0; padding: 10px 18px; border-radius: 10px; background: var(--accent-tint); color: var(--accent-ink); font-size: 20px; font-weight: 600; }
+.lecture-2 .loop-comparison .comparison-grid { grid-row: 3; gap: 82px; }
+.lecture-2 .loop-comparison .comparison-card { min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto; align-content: stretch; padding: 32px; gap: 18px; }
+.lecture-2 .loop-comparison .comparison-card:last-child { background: var(--accent-tint); }
+.lecture-2 .loop-comparison h3 { margin: 0; font-size: 38px; line-height: 1.3; }
+.lecture-2 .loop-definition { margin: 12px 0 0; color: var(--hy-gray); font-size: 24px; line-height: 1.45; }
+.lecture-2 .loop-flow { display: block; width: 100%; height: 100%; min-height: 0; align-self: center; }
+.lecture-2 .loop-input, .lecture-2 .loop-output { fill: white; }
+.lecture-2 .loop-motor { fill: var(--hy-blue); }
+.lecture-2 .loop-label { fill: var(--hy-gray); font-size: 25px; }
+.lecture-2 .loop-value { fill: var(--hy-blue); font-size: 31px; font-weight: 700; }
+.lecture-2 .loop-motor-label { fill: white; font-size: 32px; font-weight: 600; }
+.lecture-2 .loop-forward { fill: none; stroke: var(--hy-blue); stroke-width: 5; }
+.lecture-2 .loop-feedback { fill: none; stroke: #008696; stroke-width: 5; }
+.lecture-2 .loop-feedback-label { fill: var(--accent-ink); font-size: 27px; font-weight: 600; }
+.lecture-2 .loop-no-feedback { fill: #6F7888; font-size: 27px; }
+.lecture-2 .loop-outcome { margin: 0; padding-top: 18px; border-top: 1px solid #CCD6E0; color: var(--hy-gray); font-size: 26px; line-height: 1.45; }
+.lecture-2 .loop-outcome strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .loop-note { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+
+.lecture-2 .drive-gains-slide .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; row-gap: 26px; }
+.lecture-2 .drive-gains-slide .slide-bullets { gap: 26px; padding: 0; }
+.lecture-2 .drive-gains-slide .slide-bullets li { padding-left: 28px; font-size: 25px; }
+.lecture-2 .drive-gains-slide .slide-bullets li::after { width: 8px; }
+.lecture-2 .drive-gains-slide .slide-bullets strong { display: block; margin-bottom: 8px; color: var(--hy-blue); font-size: 26px; font-weight: 600; }
+.lecture-2 .drive-gains-slide .slide__visual { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 18px; margin: 0; padding: 28px; min-height: 0; }
+.lecture-2 .drive-model { color: var(--accent-ink); font-size: 23px; font-weight: 600; }
+.lecture-2 .drive-gains-slide .deck-svg { position: static; width: 100%; height: 100%; min-height: 0; }
+.lecture-2 .drive-input, .lecture-2 .drive-output { fill: var(--hy-blue); }
+.lecture-2 .drive-error { fill: white; font-size: 28px; font-weight: 600; }
+.lecture-2 .drive-gain { fill: white; font-size: 27px; }
+.lecture-2 .drive-sum { fill: var(--accent-tint); }
+.lecture-2 .drive-plus { fill: var(--hy-blue); font-size: 44px; font-weight: 600; }
+.lecture-2 .drive-torque { fill: white; font-size: 32px; font-weight: 600; }
+.lecture-2 .drive-limit { fill: white; font-size: 24px; }
+.lecture-2 .drive-arrow { fill: none; stroke: var(--hy-blue); stroke-width: 5; }
+.lecture-2 .drive-takeaway { grid-column: 1 / -1; grid-row: 3; margin: 0; padding-top: 20px; border-top: 1px solid #D8DEE9; color: var(--hy-gray); font-size: 28px; line-height: 1.4; }
+.lecture-2 .drive-takeaway strong { color: var(--hy-blue); font-weight: 600; }
+
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .loop-comparison .slide__inner { grid-template-rows: 105px auto minmax(0, 1fr) auto; gap: 16px; }
+  .lecture-2 .loop-scenario { gap: 20px; font-size: 20px; line-height: 1.45; }
+  .lecture-2 .loop-example-tag { font-size: 17px; padding: 8px 14px; }
+  .lecture-2 .loop-comparison .comparison-grid { gap: 66px; }
+  .lecture-2 .loop-comparison .comparison-grid::before { width: 54px; height: 54px; font-size: 17px; }
+  .lecture-2 .loop-comparison .comparison-card { padding: 20px 24px; gap: 10px; }
+  .lecture-2 .loop-comparison h3 { font-size: 30px; }
+  .lecture-2 .loop-definition { margin-top: 6px; font-size: 19px; }
+  .lecture-2 .loop-outcome { padding-top: 12px; font-size: 21px; }
+  .lecture-2 .loop-note { font-size: 16px; }
+  .lecture-2 .drive-gains-slide .slide__inner { grid-template-rows: 105px minmax(0, 1fr) auto; row-gap: 20px; }
+  .lecture-2 .drive-gains-slide .slide-bullets { gap: 18px; }
+  .lecture-2 .drive-gains-slide .slide-bullets li { font-size: 20px; }
+  .lecture-2 .drive-gains-slide .slide-bullets strong { font-size: 21px; margin-bottom: 5px; }
+  .lecture-2 .drive-gains-slide .slide__visual { padding: 20px; gap: 12px; }
+  .lecture-2 .drive-model { font-size: 19px; }
+  .lecture-2 .drive-takeaway { padding-top: 14px; font-size: 23px; }
+}
+
+@media (max-width: 800px) {
+  .lecture-2 .loop-comparison .slide__inner, .lecture-2 .drive-gains-slide .slide__inner { grid-template-columns: 1fr; grid-template-rows: auto; gap: 26px; }
+  .lecture-2 .loop-scenario { align-items: flex-start; flex-direction: column; gap: 12px; font-size: 20px; }
+  .lecture-2 .loop-example-tag { font-size: 16px; padding: 8px 12px; }
+  .lecture-2 .loop-comparison .comparison-grid { grid-row: auto; gap: 20px; }
+  .lecture-2 .loop-comparison .comparison-card { padding: 24px 18px; gap: 20px; }
+  .lecture-2 .loop-comparison h3 { font-size: 30px; }
+  .lecture-2 .loop-definition, .lecture-2 .loop-outcome { font-size: 20px; }
+  .lecture-2 .loop-flow { height: auto; }
+  .lecture-2 .loop-note { font-size: 16px; }
+  .lecture-2 .drive-gains-slide .slide-bullets { gap: 24px; }
+  .lecture-2 .drive-gains-slide .slide-bullets li { font-size: 20px; }
+  .lecture-2 .drive-gains-slide .slide-bullets strong { font-size: 22px; }
+  .lecture-2 .drive-gains-slide .slide-bullets br { display: none; }
+  .lecture-2 .drive-gains-slide .slide__visual { padding: 16px; }
+  .lecture-2 .drive-gains-slide .deck-svg { height: auto; }
+  .lecture-2 .drive-model { font-size: 18px; }
+  .lecture-2 .drive-takeaway { grid-column: 1; grid-row: auto; font-size: 23px; }
+}
+
+/* 강의 ② 모터 제어 기초: 구동 과정, 엔코더, 반복 주기 */
+.lecture-2 .motor-basics .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 26px; }
+.lecture-2 .motor-basics h2 { font-size: clamp(38px, 3vw, 58px); }
+.lecture-2 .motor-basics-panel { display: grid; min-width: 0; min-height: 0; margin: 0; padding: 24px; border-radius: 20px; background: #F5F7FA; }
+.lecture-2 .motor-basics-svg { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .motor-basics-arrow { fill: none; stroke: var(--hy-blue); stroke-width: 5; }
+.lecture-2 .motor-basics-feedback { fill: none; stroke: var(--accent-ink); stroke-width: 5; }
+.lecture-2 .motor-flow-scroll { display: none; }
+.lecture-2 .motor-actuation .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 22px; }
+.lecture-2 .motor-actuation-flow { padding: 12px 24px; }
+.lecture-2 .motor-current-detail { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; min-width: 0; }
+.lecture-2 .motor-current-explanation h3 { margin: 0 0 18px; font-size: 29px; }
+.lecture-2 .motor-current-steps { display: grid; gap: 17px; margin: 0; padding: 0; list-style: none; counter-reset: motor-current; }
+.lecture-2 .motor-current-steps li { display: flex; align-items: flex-start; gap: 14px; counter-increment: motor-current; }
+.lecture-2 .motor-current-steps li::before { flex: 0 0 32px; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--accent-tint); color: var(--accent-ink); font-size: 20px; font-weight: 700; content: counter(motor-current); }
+.lecture-2 .motor-current-steps strong { display: block; color: var(--hy-blue); font-size: 24px; font-weight: 600; line-height: 1.35; }
+.lecture-2 .motor-current-steps p { margin: 5px 0 0; color: var(--hy-gray); font-size: 22px; line-height: 1.45; }
+.lecture-2 .motor-current-detail sub { font-size: .7em; line-height: 0; }
+.lecture-2 .motor-current-detail abbr { text-decoration: none; }
+.lecture-2 .motor-current-example { display: grid; align-content: start; gap: 12px; min-width: 0; margin: 0; padding: 22px 28px; border-left: 5px solid var(--accent); background: #F5F7FA; border-radius: 0 16px 16px 0; }
+.lecture-2 .motor-current-example figcaption { color: var(--accent-ink); font-size: 19px; }
+.lecture-2 .motor-current-equation { display: grid; gap: 4px; margin: 0; }
+.lecture-2 .motor-current-equation span { color: var(--hy-gray); font-size: 21px; }
+.lecture-2 .motor-current-equation strong { color: var(--hy-blue); font-size: 28px; font-weight: 600; line-height: 1.35; }
+.lecture-2 .motor-current-equation b { color: var(--accent-ink); }
+.lecture-2 .motor-current-wave { display: block; width: 100%; height: auto; font-family: inherit; }
+.lecture-2 .motor-current-caption { margin: 0; color: var(--hy-gray); font-size: 18px; line-height: 1.45; }
+.lecture-2 .motor-basics-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px; }
+.lecture-2 .motor-basics-notes article { min-width: 0; padding-top: 20px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .motor-basics-notes h3 { margin: 0 0 12px; font-size: 27px; line-height: 1.35; }
+.lecture-2 .motor-basics-notes p { margin: 0; color: var(--hy-gray); font-size: 24px; line-height: 1.5; }
+.lecture-2 .motor-basics-context { margin: 0; color: var(--hy-gray); font-size: 24px; line-height: 1.4; }
+.lecture-2 .motor-basics-takeaway { margin: 0; padding-top: 20px; border-top: 1px solid #D8DEE9; color: var(--hy-gray); font-size: 28px; line-height: 1.4; }
+.lecture-2 .motor-basics-takeaway strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .motor-encoder .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto; gap: 20px; }
+.lecture-2 .motor-encoder .slide__header::after { display: none; }
+.lecture-2 .motor-encoder-definition { margin: 0; color: var(--hy-gray); font-size: 28px; line-height: 1.35; }
+.lecture-2 .motor-encoder-definition strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .motor-encoder-grid { display: grid; min-height: 0; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 36px; }
+.lecture-2 .motor-encoder-principle { display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+.lecture-2 .motor-encoder-optical { min-width: 0; flex: 0 0 auto; }
+.lecture-2 .motor-encoder-optical-svg { display: block; width: 100%; height: 185px; font-family: inherit; }
+.lecture-2 .motor-encoder-optical-hint { display: none; }
+.lecture-2 .motor-encoder-quadrature { display: block; width: 100%; height: 135px; flex: 0 0 auto; font-family: inherit; }
+.lecture-2 .motor-encoder-principle figcaption { color: var(--hy-gray); font-size: 22px; line-height: 1.45; }
+.lecture-2 .motor-encoder-principle figcaption strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .motor-encoder-principle figcaption span { color: var(--accent-ink); white-space: nowrap; }
+.lecture-2 .motor-encoder-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.lecture-2 .motor-encoder-controls button { padding: 8px 18px; border: 2px solid #D8DEE9; border-radius: 10px; background: #fff; color: var(--hy-blue); font-size: 21px; font-weight: 600; line-height: 1.3; cursor: pointer; }
+.lecture-2 .motor-encoder-controls button[aria-pressed="true"] { border-color: var(--hy-blue); background: var(--hy-blue); color: #fff; }
+.lecture-2 .motor-encoder-controls button[data-encoder-lead="B"][aria-pressed="true"] { border-color: var(--accent-ink); background: var(--accent-ink); }
+.lecture-2 .motor-encoder-interaction p { margin: 8px 0 0; color: var(--hy-blue); }
+.lecture-2 .motor-encoder-resolution p { margin: 0 0 8px; color: var(--hy-blue); font-size: 27px; line-height: 1.4; }
+.lecture-2 .motor-encoder-resolution strong { font-weight: 600; white-space: nowrap; }
+.lecture-2 .motor-encoder-resolution small { color: #647080; font-size: 19px; }
+.lecture-2 .motor-encoder-types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+.lecture-2 .motor-encoder-types article { padding-top: 18px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .motor-encoder-types h3 { margin: 0 0 8px; font-size: 26px; line-height: 1.3; }
+.lecture-2 .motor-encoder-types p { margin: 0; color: var(--hy-gray); font-size: 22px; line-height: 1.45; }
+.lecture-2 .motor-encoder-readings { display: grid; min-height: 0; align-content: center; gap: 26px; }
+.lecture-2 .motor-encoder-samples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.lecture-2 .motor-encoder-samples article { display: grid; gap: 10px; padding: 24px 28px; border-radius: 16px; background: #F5F7FA; }
+.lecture-2 .motor-encoder-samples article:last-child { background: var(--accent-tint); }
+.lecture-2 .motor-encoder-samples span { color: var(--accent-ink); font-size: 25px; font-weight: 600; }
+.lecture-2 .motor-encoder-samples strong { color: var(--hy-blue); font-size: 60px; line-height: 1.1; }
+.lecture-2 .motor-encoder-samples small { color: var(--hy-gray); font-size: 21px; }
+.lecture-2 .motor-encoder-rate { display: grid; gap: 16px; padding: 20px 0 8px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .motor-encoder-equation { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 22px; }
+.lecture-2 .motor-encoder-rate span { color: var(--hy-gray); font-size: 23px; }
+.lecture-2 .motor-encoder-rate strong { color: var(--hy-blue); font-size: 33px; line-height: 1.3; font-weight: 500; }
+.lecture-2 .motor-encoder-rate b { color: var(--accent-ink); font-size: 43px; line-height: 1.2; }
+.lecture-2 .motor-cycle-main { --cycle-gap: 28px; display: grid; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: 22px; }
+.lecture-2 .motor-cycle-definition { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; padding: 18px 26px; border-radius: 16px; background: var(--accent-tint); }
+.lecture-2 .motor-cycle-definition p { margin: 0; color: var(--hy-blue); font-size: 26px; line-height: 1.4; }
+.lecture-2 .motor-cycle-definition .motor-cycle-concept { margin-bottom: 6px; color: var(--accent-ink); font-size: 30px; font-weight: 700; }
+.lecture-2 .motor-cycle-frequency { display: grid; gap: 4px; padding-left: 30px; border-left: 2px solid #B7DCE0; }
+.lecture-2 .motor-cycle-frequency strong { color: var(--accent-ink); font-size: 36px; line-height: 1.3; }
+.lecture-2 .motor-cycle-frequency span { color: var(--hy-blue); font-size: 24px; line-height: 1.3; }
+.lecture-2 .motor-cycle-example { display: grid; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: 10px; }
+.lecture-2 .motor-cycle-scale { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cycle-gap); height: 64px; }
+.lecture-2 .motor-cycle-target { position: absolute; left: 0; top: 0; display: grid; gap: 2px; margin: 0; color: var(--hy-blue); font-size: 23px; line-height: 1.3; }
+.lecture-2 .motor-cycle-target small { color: #647080; font-size: 18px; }
+.lecture-2 .motor-cycle-interval { position: relative; left: 50%; display: grid; justify-items: center; align-content: space-between; width: calc(100% + var(--cycle-gap)); padding-bottom: 4px; color: var(--accent-ink); font-size: 27px; font-weight: 700; line-height: 1.3; }
+.lecture-2 .motor-cycle-interval i { display: block; width: 100%; height: 12px; border-top: 2px solid var(--accent-ink); border-left: 2px solid var(--accent-ink); border-right: 2px solid var(--accent-ink); }
+.lecture-2 .motor-cycle-timeline { display: grid; min-height: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cycle-gap); margin: 0; padding: 0; list-style: none; }
+.lecture-2 .motor-cycle-step { position: relative; display: flex; min-width: 0; flex-direction: column; justify-content: center; gap: 22px; padding: 24px 30px; border-top: 5px solid var(--hy-blue); border-radius: 0 0 18px 18px; background: #F5F7FA; }
+.lecture-2 .motor-cycle-step:last-child { background: var(--accent-tint); }
+.lecture-2 .motor-cycle-step h3 { margin: 0; font-size: 36px; line-height: 1.3; text-align: center; }
+.lecture-2 .motor-cycle-step dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin: 0; }
+.lecture-2 .motor-cycle-step dl > div { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 12px; }
+.lecture-2 .motor-cycle-step dt { color: #647080; font-size: 22px; }
+.lecture-2 .motor-cycle-step dd { margin: 0; color: var(--hy-blue); font-size: 29px; }
+.lecture-2 .motor-cycle-step dd strong { font-weight: 700; }
+.lecture-2 .motor-cycle-output { margin: 0; padding: 16px; border-radius: 12px; background: var(--hy-blue); color: white; text-align: center; font-size: 27px; line-height: 1.3; }
+.lecture-2 .motor-cycle-output sub { font-size: 0.65em; line-height: 0; }
+.lecture-2 .motor-cycle-hold { margin: -10px 0 0; color: var(--hy-gray); text-align: center; font-size: 21px; }
+.lecture-2 .motor-cycle-next { display: none; }
+
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .motor-basics .slide__inner { grid-template-rows: 105px minmax(0, 1fr) auto; gap: 20px; }
+  .lecture-2 .motor-basics-panel { padding: 16px; }
+  .lecture-2 .motor-actuation .slide__inner { grid-template-rows: 95px minmax(0, 1fr) auto; gap: 14px; }
+  .lecture-2 .motor-actuation-flow { padding: 8px 16px; }
+  .lecture-2 .motor-current-detail { gap: 28px; }
+  .lecture-2 .motor-current-explanation h3 { margin-bottom: 12px; font-size: 24px; }
+  .lecture-2 .motor-current-steps { gap: 10px; }
+  .lecture-2 .motor-current-steps li { gap: 10px; }
+  .lecture-2 .motor-current-steps li::before { flex-basis: 27px; width: 27px; height: 27px; font-size: 18px; }
+  .lecture-2 .motor-current-steps strong { font-size: 20px; }
+  .lecture-2 .motor-current-steps p { margin-top: 3px; font-size: 18px; line-height: 1.35; }
+  .lecture-2 .motor-current-example { gap: 8px; padding: 14px 20px; }
+  .lecture-2 .motor-current-example figcaption { font-size: 16px; }
+  .lecture-2 .motor-current-equation span { font-size: 18px; }
+  .lecture-2 .motor-current-equation strong { font-size: 24px; }
+  .lecture-2 .motor-current-wave { height: 95px; }
+  .lecture-2 .motor-current-caption { font-size: 16px; }
+  .lecture-2 .motor-basics-notes { gap: 32px; }
+  .lecture-2 .motor-basics-notes article { padding-top: 14px; }
+  .lecture-2 .motor-basics-notes h3 { margin-bottom: 8px; font-size: 22px; }
+  .lecture-2 .motor-basics-notes p { font-size: 20px; line-height: 1.4; }
+  .lecture-2 .motor-basics-context { font-size: 20px; }
+  .lecture-2 .motor-basics-takeaway { padding-top: 14px; font-size: 23px; }
+  .lecture-2 .motor-encoder .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; }
+  .lecture-2 .motor-encoder .slide__header { gap: 6px; }
+  .lecture-2 .motor-encoder-definition { font-size: 21px; }
+  .lecture-2 .motor-encoder-grid { gap: 28px; }
+  .lecture-2 .motor-encoder-principle { gap: 6px; padding: 10px 18px; }
+  .lecture-2 .motor-encoder-optical-svg { height: 136px; }
+  .lecture-2 .motor-encoder-quadrature { height: 70px; }
+  .lecture-2 .motor-encoder-principle figcaption { font-size: 18px; line-height: 1.35; }
+  .lecture-2 .motor-encoder-controls { gap: 8px; }
+  .lecture-2 .motor-encoder-controls button { padding: 5px 12px; font-size: 17px; }
+  .lecture-2 .motor-encoder-interaction p { margin-top: 6px; }
+  .lecture-2 .motor-encoder-resolution p { margin-bottom: 4px; font-size: 21px; }
+  .lecture-2 .motor-encoder-resolution small { font-size: 16px; }
+  .lecture-2 .motor-encoder-readings { gap: 12px; }
+  .lecture-2 .motor-encoder-samples { gap: 18px; }
+  .lecture-2 .motor-encoder-samples article { gap: 4px; padding: 10px 18px; }
+  .lecture-2 .motor-encoder-samples span { font-size: 18px; }
+  .lecture-2 .motor-encoder-samples strong { font-size: 40px; }
+  .lecture-2 .motor-encoder-samples small { font-size: 16px; }
+  .lecture-2 .motor-encoder-rate { gap: 6px; padding: 8px 0 4px; }
+  .lecture-2 .motor-encoder-rate span { font-size: 18px; }
+  .lecture-2 .motor-encoder-rate strong { font-size: 25px; }
+  .lecture-2 .motor-encoder-rate b { font-size: 32px; }
+  .lecture-2 .motor-encoder-types { gap: 28px; }
+  .lecture-2 .motor-encoder-types article { padding-top: 10px; }
+  .lecture-2 .motor-encoder-types h3 { margin-bottom: 5px; font-size: 21px; }
+  .lecture-2 .motor-encoder-types p { font-size: 18px; line-height: 1.35; }
+  .lecture-2 .motor-cycle .slide__inner { grid-template-rows: 95px minmax(0, 1fr) auto; gap: 14px; }
+  .lecture-2 .motor-cycle .slide__header::after { margin-top: 8px; }
+  .lecture-2 .motor-cycle-main { --cycle-gap: 22px; gap: 12px; }
+  .lecture-2 .motor-cycle-definition { padding: 8px 18px; gap: 18px; }
+  .lecture-2 .motor-cycle-definition p { font-size: 20px; }
+  .lecture-2 .motor-cycle-definition .motor-cycle-concept { margin-bottom: 4px; font-size: 24px; }
+  .lecture-2 .motor-cycle-frequency { padding-left: 20px; }
+  .lecture-2 .motor-cycle-frequency strong { font-size: 28px; }
+  .lecture-2 .motor-cycle-frequency span { font-size: 19px; }
+  .lecture-2 .motor-cycle-example { gap: 8px; }
+  .lecture-2 .motor-cycle-scale { height: 44px; }
+  .lecture-2 .motor-cycle-target { font-size: 18px; }
+  .lecture-2 .motor-cycle-target small { font-size: 15px; }
+  .lecture-2 .motor-cycle-interval { font-size: 22px; }
+  .lecture-2 .motor-cycle-interval i { height: 9px; }
+  .lecture-2 .motor-cycle-step { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .motor-cycle-step h3 { font-size: 28px; }
+  .lecture-2 .motor-cycle-step dl { gap: 12px; }
+  .lecture-2 .motor-cycle-step dl > div { gap: 4px 10px; }
+  .lecture-2 .motor-cycle-step dt { font-size: 18px; }
+  .lecture-2 .motor-cycle-step dd { font-size: 23px; }
+  .lecture-2 .motor-cycle-output { padding: 8px 12px; font-size: 22px; }
+  .lecture-2 .motor-cycle-hold { margin-top: 0; font-size: 18px; }
+}
+
+@media (max-width: 800px) {
+  .lecture-2 .motor-basics .slide__inner { grid-template-columns: 1fr; grid-template-rows: auto; gap: 28px; }
+  .lecture-2 .motor-basics h2 { font-size: 38px; }
+  .lecture-2 .motor-basics-panel { padding: 16px; }
+  .lecture-2 .motor-basics-svg { height: auto; }
+  .lecture-2 .motor-actuation-flow { overflow-x: auto; }
+  .lecture-2 .motor-flow-scroll { position: sticky; left: 0; display: block; width: calc(100vw - 80px); margin-bottom: 8px; color: var(--accent-ink); font-size: 16px; }
+  .lecture-2 .motor-actuation-flow .motor-basics-svg { width: 1000px; max-width: none; }
+  .lecture-2 .motor-current-detail { grid-template-columns: 1fr; gap: 28px; }
+  .lecture-2 .motor-current-explanation h3 { font-size: 26px; }
+  .lecture-2 .motor-current-steps { gap: 20px; }
+  .lecture-2 .motor-current-steps strong { font-size: 22px; }
+  .lecture-2 .motor-current-steps p { font-size: 20px; }
+  .lecture-2 .motor-current-steps br { display: none; }
+  .lecture-2 .motor-current-example { padding: 20px 16px; }
+  .lecture-2 .motor-current-example figcaption { font-size: 17px; }
+  .lecture-2 .motor-current-equation span { font-size: 19px; }
+  .lecture-2 .motor-current-equation strong { font-size: 23px; }
+  .lecture-2 .motor-current-caption { font-size: 17px; }
+  .lecture-2 .motor-basics-notes { grid-template-columns: 1fr; gap: 24px; }
+  .lecture-2 .motor-basics-notes h3 { font-size: 23px; }
+  .lecture-2 .motor-basics-notes p { font-size: 20px; }
+  .lecture-2 .motor-basics-notes br { display: none; }
+  .lecture-2 .motor-basics-context { font-size: 20px; }
+  .lecture-2 .motor-basics-takeaway { font-size: 23px; }
+  .lecture-2 .motor-encoder-grid { grid-template-columns: 1fr; gap: 26px; }
+  .lecture-2 .motor-encoder .slide__inner { grid-template-rows: auto auto auto; gap: 28px; }
+  .lecture-2 .motor-encoder-definition { font-size: 21px; }
+  .lecture-2 .motor-encoder-principle { gap: 20px; }
+  .lecture-2 .motor-encoder-optical { overflow-x: auto; }
+  .lecture-2 .motor-encoder-optical-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .motor-encoder-optical-hint { position: sticky; left: 0; display: block; width: 280px; max-width: 100%; margin: 0 0 10px; color: var(--accent-ink); font-size: 16px; }
+  .lecture-2 .motor-encoder-quadrature { height: auto; }
+  .lecture-2 .motor-encoder-principle figcaption { font-size: 19px; }
+  .lecture-2 .motor-encoder-controls { gap: 8px; }
+  .lecture-2 .motor-encoder-controls button { flex: 1 1 120px; padding: 10px 8px; font-size: 17px; }
+  .lecture-2 .motor-encoder-resolution p { font-size: 23px; }
+  .lecture-2 .motor-encoder-resolution small { font-size: 16px; }
+  .lecture-2 .motor-encoder-types { grid-template-columns: 1fr; gap: 24px; }
+  .lecture-2 .motor-encoder-types h3 { font-size: 24px; }
+  .lecture-2 .motor-encoder-types p { font-size: 20px; }
+  .lecture-2 .motor-encoder br { display: none; }
+  .lecture-2 .motor-encoder-readings { gap: 20px; }
+  .lecture-2 .motor-encoder-samples { gap: 18px; }
+  .lecture-2 .motor-encoder-samples article { padding: 20px; }
+  .lecture-2 .motor-encoder-samples span { font-size: 20px; }
+  .lecture-2 .motor-encoder-samples strong { font-size: 44px; }
+  .lecture-2 .motor-encoder-samples small { font-size: 18px; }
+  .lecture-2 .motor-encoder-rate { padding: 16px 0 8px; gap: 14px; }
+  .lecture-2 .motor-encoder-rate span { font-size: 19px; }
+  .lecture-2 .motor-encoder-rate strong { font-size: 26px; }
+  .lecture-2 .motor-encoder-rate b { font-size: 36px; }
+  .lecture-2 .motor-cycle-main { grid-template-rows: auto auto; gap: 24px; }
+  .lecture-2 .motor-cycle-definition { grid-template-columns: 1fr; gap: 18px; padding: 20px; }
+  .lecture-2 .motor-cycle-definition p { font-size: 21px; }
+  .lecture-2 .motor-cycle-definition .motor-cycle-concept { font-size: 27px; }
+  .lecture-2 .motor-cycle-frequency { padding: 14px 0 0; border-left: 0; border-top: 2px solid #B7DCE0; }
+  .lecture-2 .motor-cycle-frequency strong { font-size: 30px; }
+  .lecture-2 .motor-cycle-frequency span { font-size: 21px; }
+  .lecture-2 .motor-cycle-example { grid-template-rows: auto auto; gap: 14px; }
+  .lecture-2 .motor-cycle-scale { display: block; height: auto; }
+  .lecture-2 .motor-cycle-target { position: static; display: flex; align-items: baseline; gap: 14px; font-size: 21px; }
+  .lecture-2 .motor-cycle-target small { font-size: 16px; }
+  .lecture-2 .motor-cycle-interval { display: none; }
+  .lecture-2 .motor-cycle-timeline { grid-template-columns: 1fr; gap: 62px; }
+  .lecture-2 .motor-cycle-step { padding: 24px; gap: 20px; }
+  .lecture-2 .motor-cycle-step h3 { font-size: 30px; }
+  .lecture-2 .motor-cycle-step dl { gap: 18px; }
+  .lecture-2 .motor-cycle-step dt { font-size: 18px; }
+  .lecture-2 .motor-cycle-step dd { font-size: 25px; }
+  .lecture-2 .motor-cycle-output { font-size: 24px; }
+  .lecture-2 .motor-cycle-hold { font-size: 19px; }
+  .lecture-2 .motor-cycle-next { position: absolute; top: -48px; left: 0; display: block; width: 100%; margin: 0; color: var(--accent-ink); font-size: 21px; font-weight: 600; text-align: center; }
+}
