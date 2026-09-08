@@ -5,10 +5,10 @@
 - `index.html`: OT와 네 개 강의 덱 진입
 - `orientation.html`: 한 학기 운영 · 프로젝트 · 평가 안내 (12장)
 - `lecture-1.html`: 로보틱스 기초 · ROS2 · 개발환경 (21장)
-- `lecture-2.html`: 제어 (23장)
+- `lecture-2.html`: 제어 (30장)
 - `lecture-3.html`: VSLAM · 내비게이션 (47장)
 - `lecture-4.html`: VLA 이론 (14장)
-- 전체: OT 12장 + 4개 강의 105장, 총 117장
+- 전체: OT 12장 + 4개 강의 112장, 총 124장
 
 ## 조작
 
