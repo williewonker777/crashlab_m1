@@ -1788,3 +1788,43 @@ button { color: inherit; }
 
 /* OT 11p: 준비 항목이 2개라 3열 그리드에 빈 칸이 생기므로 이 덱만 2열 */
 .lecture-ot .summary-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* 실습 슬라이드 — 명령어가 들어간 여러 줄 단계를 받도록 조정 */
+.practice-steps code,
+.practice-task code,
+.practice-help code {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--accent-tint);
+  color: var(--accent-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  line-height: 1.35;
+}
+
+.layout-practice-b .practice-steps { align-content: start; gap: 12px; }
+
+.layout-practice-b .practice-steps li {
+  min-height: 0;
+  padding: 12px 22px;
+  border-radius: 18px;
+  align-content: start;
+  align-items: start;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.layout-practice-b .practice-steps li::before {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 20px;
+}
+
+.practice-task p, .practice-help p { margin: 0; }
+.practice-task { align-content: center; color: var(--hy-gray); font-size: 23px; font-weight: 600; line-height: 1.55; }
+.practice-help { align-content: end; font-size: 21px; line-height: 1.5; }
