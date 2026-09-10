@@ -1,99 +1,106 @@
-.ppt-slide {
-  min-height: 0;
-  padding: 0;
-  place-items: center;
-  background: #111528;
+/* Shared deck chrome, header, palette and typography; the imported diagrams
+   use a coordinate grid whose rows can grow with their text. */
+.lecture-1 .ppt-slide {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  padding-bottom: 60px;
 }
-
-.ppt-slide::after {
-  display: none;
+.lecture-1 .ppt-slide::after { display: none; }
+.lecture-1 .ppt-slide .slide__inner {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 28px;
 }
-
+.lecture-1 .slide__header { flex: none; gap: 12px; }
+.lecture-1 .slide__header::after { margin-top: 6px; }
+.ppt-subtitle {
+  max-width: 100%;
+  margin: 6px 0 0;
+  color: var(--hy-gray);
+  font-size: var(--slide-body);
+  line-height: 1.5;
+}
+.ppt-viewport { min-width: 0; overflow-x: auto; }
 .ppt-canvas {
   position: relative;
-  width: min(100vw, calc(100vh * 1.77719));
-  height: min(100vh, calc(100vw / 1.77719));
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 0.28);
-  container-type: size;
+  display: grid;
+  grid-template-columns: repeat(384, minmax(0, 1fr));
+  grid-auto-rows: minmax(2px, auto);
+  min-height: min(56vh, 600px);
+  container-type: inline-size;
+  isolation: isolate;
 }
-
 .ppt-shape,
 .ppt-picture,
-.ppt-connector {
-  position: absolute;
+.ppt-connection {
+  position: relative;
+  min-width: 0;
   margin: 0;
   transform-origin: center;
 }
-
-.ppt-shape {
-  overflow: hidden;
-}
-
-.ppt-shape--text,
-.ppt-shape--text .ppt-text {
-  overflow: visible;
-}
-
+.ppt-shape { border-radius: 16px; }
 .ppt-text {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  line-height: 1.15;
-  white-space: normal;
+  min-height: 100%;
+  line-height: 1.45;
   word-break: keep-all;
-  overflow-wrap: normal;
+  overflow-wrap: anywhere;
 }
-
-.ppt-paragraph {
-  min-height: 1.15em;
-  margin: 0;
+.ppt-type-body { font-size: clamp(22px, 1.67cqw, 28px); }
+.ppt-type-detail { font-size: clamp(20px, 1.43cqw, 24px); }
+.ppt-type-label { font-size: clamp(18px, 1.31cqw, 22px); }
+.ppt-type-code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, "Liberation Mono", monospace;
+  font-size: clamp(18px, 1.31cqw, 22px);
 }
-
-/* The source deck intentionally fits three compact labels in a 28 pt row. */
-[data-name="Google Shape;610;p23"] .ppt-text {
-  line-height: 0.88;
+.ppt-type-code .ppt-paragraph { white-space: pre-wrap; }
+.ppt-arrow { min-width: 1em; justify-self: center; }
+.ppt-short-label { min-width: max-content; justify-self: center; }
+.ppt-slide--dense .ppt-type-body { font-size: clamp(22px, 1.43cqw, 24px); }
+.ppt-slide--dense .ppt-type-detail { font-size: 22px; }
+.ppt-slide--dense .ppt-type-code { font-size: 20px; }
+.ppt-slide--dense .ppt-text { line-height: 1.35; }
+.ppt-paragraph { margin: 0; }
+.ppt-paragraph + .ppt-paragraph { margin-top: 0.25em; }
+.ppt-type-code .ppt-paragraph + .ppt-paragraph { margin-top: 0; }
+.ppt-picture { width: 100%; align-self: center; overflow: hidden; }
+.ppt-picture img { position: absolute; display: block; }
+.ppt-connector { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.ppt-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin: auto 0 0;
+  color: var(--muted);
+  font-size: 18px;
+  padding-right: 140px;
 }
-
-/* The PPT owns the upper-left header area, so the shared wordmark would collide. */
-.lecture-1 .deck-wordmark {
-  display: none;
+.lecture-1 .slide--title .slide__inner { justify-content: center; align-items: stretch; }
+.lecture-1 .slide--title .ppt-cover { margin-block: auto; }
+.lecture-1 .slide--title .ppt-cover {
+  padding: 40px 0 40px 54px;
+  border-left: 5px solid var(--accent);
 }
-
-.ppt-picture {
-  overflow: hidden;
+.lecture-1 .slide--title h1 { max-width: 1200px; line-height: 1.25; }
+.lecture-1 .slide--title .title-meta { margin-top: 48px; font-size: 28px; }
+.lecture-1 .slide--title .ppt-footer { margin-top: 0; color: rgba(255, 255, 255, 0.75); }
+@media (max-width: 1100px) {
+  .lecture-1 .ppt-slide { padding-inline: 24px; }
+  .ppt-canvas { min-width: 1000px; }
 }
-
-.ppt-picture img {
-  position: absolute;
-  display: block;
+@media (max-width: 600px) {
+  .lecture-1 .deck-wordmark { top: 76px; left: 12px; }
+  .lecture-1 .deck-tools { right: 12px; gap: 4px; }
+  .lecture-1 .lecture-nav { left: 12px; transform: none; }
+  .lecture-1 .ppt-slide { padding-top: 132px; }
+  .lecture-1 .slide--title .ppt-cover { padding-left: 24px; border-top: 0; }
 }
-
-.ppt-connector {
-  overflow: visible;
-  pointer-events: none;
-}
-
-@media (max-aspect-ratio: 4/3) {
-  .ppt-canvas {
-    width: 100vw;
-    height: calc(100vw / 1.77719);
-  }
-}
-
 @media print {
-  .ppt-slide {
-    width: 13.333in;
-    height: 7.5in;
-    break-after: page;
-    background: #fff;
-  }
-  .ppt-canvas {
-    width: 13.333in;
-    height: 7.5in;
-    box-shadow: none;
-  }
+  .lecture-1 .lecture-nav { display: none; }
+  .lecture-1 .ppt-slide { min-height: 9in; padding: 48px; break-inside: avoid; }
+  .ppt-viewport { overflow: visible; }
+  .ppt-canvas { min-width: 0; }
 }
