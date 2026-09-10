@@ -18,6 +18,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
+from style_lecture1 import apply_template
 
 NS = {
     "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
@@ -339,7 +340,7 @@ def convert(sources: list[Path], repo: Path) -> None:
     document = f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ROS2 로봇 프로그래밍 기초"><title>ROS2 로봇 프로그래밍 기초 | 크래쉬랩 M1</title><link rel="icon" href="data:"><link rel="stylesheet" href="assets/css/deck.css?v=5"><link rel="stylesheet" href="assets/css/lecture-1-ppt.css?v=3"><script src="assets/js/deck.js?v=3" defer></script></head>
 <body class="deck-page lecture-1">{deck_chrome(len(slides))}<main class="deck" data-deck data-slide-count="{len(slides)}" data-prev-deck="orientation.html#slide-last" data-next-deck="lecture-2.html">{"".join(slides)}</main></body></html>'''
-    (repo / "lecture-1.html").write_text(document, encoding="utf-8")
+    (repo / "lecture-1.html").write_text(apply_template(document), encoding="utf-8")
 
 
 def main() -> None:
