@@ -96,6 +96,15 @@
       return;
     }
 
+    // A focused, wide diagram keeps native horizontal keyboard scrolling.
+    const viewport = event.target instanceof Element
+      ? event.target.closest(".ppt-viewport")
+      : null;
+    if (viewport && viewport.scrollWidth > viewport.clientWidth
+      && ["ArrowLeft", "ArrowRight"].includes(event.key)) {
+      return;
+    }
+
     const nextKeys = ["ArrowRight", "ArrowDown", " ", "PageDown"];
     const previousKeys = ["ArrowLeft", "ArrowUp", "PageUp"];
 
