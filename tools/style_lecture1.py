@@ -7,6 +7,8 @@ from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
 
+from layout_lecture1 import reflow_slide
+
 PALETTE = {
     "#0B1F33": "var(--hy-blue)", "#14233B": "var(--ink)",
     "#1F78D1": "var(--hy-blue)", "#00A5A5": "var(--accent-ink)",
@@ -242,6 +244,7 @@ def apply_template(document):
     headings = {slide.get("id"): text(slide.find(".//h2")) for slide in slides if slide.find(".//h2") is not None}
     for slide in slides:
         style_cover(slide, headings)
+        reflow_slide(slide)
         # The shared deck counter already supplies the page number.
         for footer in slide.findall(".//footer[@class='ppt-footer']"):
             for item in list(footer):
@@ -249,7 +252,7 @@ def apply_template(document):
                     footer.remove(item)
     rendered = iter(ET.tostring(slide, encoding="unicode", method="html") + "\n" for slide in slides)
     document = re.sub(r"<section\b.*?</section>\n?", lambda match: next(rendered), document, flags=re.S)
-    document = re.sub(r"lecture-1-ppt\.css\?v=\d+", "lecture-1-ppt.css?v=6", document)
+    document = re.sub(r"lecture-1-ppt\.css\?v=\d+", "lecture-1-ppt.css?v=7", document)
     return document.replace("deck.js?v=3", "deck.js?v=4")
 
 
