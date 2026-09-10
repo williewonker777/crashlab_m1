@@ -196,7 +196,11 @@ def text_html(sp: ET.Element, scheme: dict[str, str], slide_w: int, slide_h: int
                 face = (ea.get("typeface") if ea is not None else None) or (latin.get("typeface") if latin is not None else None)
                 if face and not face.startswith("+"): styles.append(f"font-family:{esc(face)},sans-serif")
                 if rpr.get("baseline"): styles.append(f"vertical-align:{int(rpr.get('baseline')) / 1000:.1f}%")
-            runs.append(f'<span style="{";".join(styles)}">{esc(text.text or "")}</span>')
+            value = text.text or ""
+            if re.fullmatch(r"https?://\S+", value):
+                runs.append(f'<a href="{esc(value)}" target="_blank" rel="noopener noreferrer" style="{";".join(styles)}">{esc(value)}</a>')
+            else:
+                runs.append(f'<span style="{";".join(styles)}">{esc(value)}</span>')
         if not runs:
             continue
         bullet = ""

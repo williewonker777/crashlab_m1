@@ -19,7 +19,7 @@ def group(class_name, *children):
 
 def reflow_slide(slide):
     number = int(slide.get("id", "slide-0").removeprefix("slide-"))
-    if number not in {19, 27, 37, 41, 44, 53, 54, 55, 57} or slide.get("data-reflow"):
+    if number not in {19, 27, 37, 41, 44, 53, 54, 55, 58} or slide.get("data-reflow"):
         return
     canvas = slide.find(".//div[@class='ppt-canvas']")
     elements = list(canvas)
@@ -146,8 +146,8 @@ def reflow_slide(slide):
             group("ppt-urdf-main", group("ppt-card", heading(646), diagram([647, 648, 649, 650], "ppt-diagram--urdf"), block(654)),
                   group("ppt-stack", heading(667), code(668)), card(670, 671)), block(672, "ppt-keyline"))
     else:
-        content = group("ppt-stack ppt-layout-control", heading(704), flow([705, 707, 709, 711, 713, 715]),
-                        group("ppt-columns-3", card(717, 718), card(720, 721), card(723, 724)), block(726, "ppt-keyline"))
+        content = group("ppt-stack ppt-layout-control", heading(715), flow([716, 718, 720, 722, 724, 726]),
+                        group("ppt-columns-3", card(728, 729), card(731, 732), card(734, 735)), block(737, "ppt-keyline"))
 
     required = {el for el in elements if "".join(el.itertext()).strip() or el.tag == "figure" or el in connections}
     if required - used:
