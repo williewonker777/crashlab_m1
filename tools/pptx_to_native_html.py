@@ -227,10 +227,13 @@ def connector_html(sp: ET.Element, scheme: dict[str, str], cx: int, cy: int) -> 
     stroke = color_from(line.find("a:solidFill", NS) if line is not None else None, scheme, "#555")
     width = max(1, int(line.get("w", "12700")) / 12700) if line is not None else 1
     dash = line.find("a:prstDash", NS).get("val", "solid") if line is not None and line.find("a:prstDash", NS) is not None else "solid"
-    marker = line.find("a:tailEnd", NS).get("type", "none") if line is not None and line.find("a:tailEnd", NS) is not None else "none"
-    cls = " ppt-connector--arrow" if marker != "none" else ""
+    head = line.find("a:headEnd", NS).get("type", "none") if line is not None and line.find("a:headEnd", NS) is not None else "none"
+    tail = line.find("a:tailEnd", NS).get("type", "none") if line is not None and line.find("a:tailEnd", NS) is not None else "none"
     dash_attr = ' stroke-dasharray="8 6"' if dash != "solid" else ""
-    return f'<svg class="ppt-connector{cls}" style="{style}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="0" x2="100" y2="100" stroke="{esc(stroke)}" stroke-width="{width}" vector-effect="non-scaling-stroke"{dash_attr}/></svg>'
+    ends = []
+    if head == "oval": ends.append(f'<circle cx="0" cy="0" r="2.2" fill="{esc(stroke)}" vector-effect="non-scaling-stroke"/>')
+    if tail == "oval": ends.append(f'<circle cx="100" cy="100" r="2.2" fill="{esc(stroke)}" vector-effect="non-scaling-stroke"/>')
+    return f'<svg class="ppt-connector" style="{style}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="0" x2="100" y2="100" stroke="{esc(stroke)}" stroke-width="{width}" vector-effect="non-scaling-stroke"{dash_attr}/>{"".join(ends)}</svg>'
 
 
 def picture_html(pic: ET.Element, rels: dict[str, str], cx: int, cy: int, slide_no: int,
@@ -309,7 +312,7 @@ def convert(source: Path, repo: Path) -> None:
                 elif local == "pic": elements.append(picture_html(child, rels, cx, cy, number, zf, asset_dir))
             slides.append(f'<section class="slide ppt-slide" id="slide-{number}" aria-label="슬라이드 {number} / {len(slide_names)}: {esc(title)}"><div class="ppt-canvas">{"".join(elements)}</div></section>')
     document = f'''<!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ROS2 로봇 프로그래밍 기초"><title>ROS2 로봇 프로그래밍 기초 | 크래쉬랩 M1</title><link rel="icon" href="data:"><link rel="stylesheet" href="assets/css/deck.css?v=5"><link rel="stylesheet" href="assets/css/lecture-1-ppt.css?v=1"><script src="assets/js/deck.js?v=3" defer></script></head>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ROS2 로봇 프로그래밍 기초"><title>ROS2 로봇 프로그래밍 기초 | 크래쉬랩 M1</title><link rel="icon" href="data:"><link rel="stylesheet" href="assets/css/deck.css?v=5"><link rel="stylesheet" href="assets/css/lecture-1-ppt.css?v=3"><script src="assets/js/deck.js?v=3" defer></script></head>
 <body class="deck-page lecture-1">{deck_chrome(len(slides))}<main class="deck" data-deck data-slide-count="{len(slides)}" data-prev-deck="orientation.html#slide-last" data-next-deck="lecture-2.html">{"".join(slides)}</main></body></html>'''
     (repo / "lecture-1.html").write_text(document, encoding="utf-8")
 
