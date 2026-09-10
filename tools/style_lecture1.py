@@ -242,6 +242,11 @@ def apply_template(document):
     headings = {slide.get("id"): text(slide.find(".//h2")) for slide in slides if slide.find(".//h2") is not None}
     for slide in slides:
         style_cover(slide, headings)
+        # The shared deck counter already supplies the page number.
+        for footer in slide.findall(".//footer[@class='ppt-footer']"):
+            for item in list(footer):
+                if text(item).isdigit():
+                    footer.remove(item)
     rendered = iter(ET.tostring(slide, encoding="unicode", method="html") + "\n" for slide in slides)
     document = re.sub(r"<section\b.*?</section>\n?", lambda match: next(rendered), document, flags=re.S)
     document = re.sub(r"lecture-1-ppt\.css\?v=\d+", "lecture-1-ppt.css?v=6", document)
