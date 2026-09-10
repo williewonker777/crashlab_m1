@@ -302,11 +302,18 @@ def convert(source: Path, repo: Path) -> None:
         size = presentation.find("p:sldSz", NS)
         cx, cy = int(size.get("cx")), int(size.get("cy"))
         scheme = load_scheme(zf)
-        slide_names = sorted((n for n in zf.namelist() if re.fullmatch(r"ppt/slides/slide\d+\.xml", n)), key=lambda n: int(re.search(r"\d+", n).group()))
+        presentation_rels = parse_rels(zf, "ppt/_rels/presentation.xml.rels")
+        slide_names = []
+        for slide_id in presentation.findall("p:sldIdLst/p:sldId", NS):
+            target = presentation_rels.get(slide_id.get(R_ID), "")
+            member = posixpath.normpath(posixpath.join("ppt", target))
+            if member in zf.namelist():
+                slide_names.append(member)
         slides = []
         for number, member in enumerate(slide_names, 1):
             root = ET.fromstring(zf.read(member))
-            rel_path = f"ppt/slides/_rels/slide{number}.xml.rels"
+            source_name = Path(member).name
+            rel_path = f"ppt/slides/_rels/{source_name}.rels"
             rels = parse_rels(zf, rel_path)
             title = slide_title(root, number)
             elements = []
