@@ -64,11 +64,58 @@ def text_block(element, tag, class_name):
     return result
 
 
-def shared_slide(source):
-    # The converter emits HTML void elements and named entities, not XML.
+def style_cover(slide, headings):
+    if "slide--title" not in slide.get("class", "").split():
+        return
+    inner = slide.find("div[@class='slide__inner']")
+    content = inner.find("div[@class='ppt-cover']")
+    title = content.find("h1")
+    if title.find("br") is None and len(title) and text(title[0]) == "ROS2":
+        title.insert(1, ET.Element("br"))
+    if content.find("p[@class='slide__eyebrow']") is None:
+        eyebrow = ET.Element("p", {"class": "slide__eyebrow"})
+        eyebrow.text = "LECTURE 01"
+        content.insert(0, eyebrow)
+    if inner.find("div[@class='title-number']") is None:
+        number = ET.Element("div", {"class": "title-number", "aria-hidden": "true"})
+        number.text = "01"
+        inner.insert(1, number)
+    for figure in inner.findall("figure"):
+        if "ppt-cover__robot" in figure.get("class", "").split():
+            inner.remove(figure)
+    photo = "m1-front.png" if "실습" in slide.get("data-title", "") else "m1-3q.png"
+    figure = ET.Element("figure", {"class": "title-robot ppt-cover__robot", "aria-hidden": "true"})
+    ET.SubElement(figure, "img", {"src": f"assets/img/{photo}", "alt": "", "decoding": "async"})
+    inner.insert(2, figure)
+    # Use existing slide headings for the shared cover's outline, not new prose.
+    existing_index = inner.find("ol[@class='title-index']")
+    if existing_index is not None:
+        inner.remove(existing_index)
+    outline = ET.SubElement(inner, "ol", {"class": "title-index", "aria-label": "강의 개념 목차"})
+    indices = (39, 45, 46, 51) if "실습" in slide.get("data-title", "") else (6, 10, 21, 23)
+    for number, index in enumerate(indices, 1):
+        heading = headings.get(f"slide-{index}")
+        if heading is None:
+            continue
+        item = ET.SubElement(outline, "li")
+        ET.SubElement(item, "span").text = f"{number:02d}"
+        label = ET.SubElement(item, "div")
+        ET.SubElement(label, "strong").text = heading
+    footer = inner.find("footer[@class='ppt-footer']")
+    if footer is not None:
+        inner.remove(footer)
+        slide.append(footer)
+
+
+def parse_slide(source):
     source = re.sub(r"<(img|br)\b([^>]*?)(?<!/)>", r"<\1\2/>", source)
     source = re.sub(r"&([a-zA-Z]+);", lambda m: f"&#{name2codepoint[m[1]]};", source)
-    slide = ET.fromstring(source)
+    return ET.fromstring(source)
+
+
+def shared_slide(source):
+    # The converter emits HTML void elements and named entities, not XML.
+    slide = parse_slide(source)
     if slide.get("data-template") == "shared":
         return ET.tostring(slide, encoding="unicode", method="html")
     canvas = slide.find("div")
@@ -190,8 +237,15 @@ def shared_slide(source):
 
 
 def apply_template(document):
-    document = re.sub(r"<section\b.*?</section>\n?", lambda match: shared_slide(match[0]) + "\n", document, flags=re.S)
-    return document.replace("lecture-1-ppt.css?v=3", "lecture-1-ppt.css?v=4").replace("deck.js?v=3", "deck.js?v=4")
+    sections = re.findall(r"<section\b.*?</section>\n?", document, flags=re.S)
+    slides = [parse_slide(shared_slide(section)) for section in sections]
+    headings = {slide.get("id"): text(slide.find(".//h2")) for slide in slides if slide.find(".//h2") is not None}
+    for slide in slides:
+        style_cover(slide, headings)
+    rendered = iter(ET.tostring(slide, encoding="unicode", method="html") + "\n" for slide in slides)
+    document = re.sub(r"<section\b.*?</section>\n?", lambda match: next(rendered), document, flags=re.S)
+    document = re.sub(r"lecture-1-ppt\.css\?v=\d+", "lecture-1-ppt.css?v=6", document)
+    return document.replace("deck.js?v=3", "deck.js?v=4")
 
 
 if __name__ == "__main__":
