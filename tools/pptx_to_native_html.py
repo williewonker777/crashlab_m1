@@ -293,37 +293,49 @@ def deck_chrome(count: int) -> str:
 <dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog>'''
 
 
-def convert(source: Path, repo: Path) -> None:
+def ordered_slide_names(zf: zipfile.ZipFile) -> list[str]:
+    presentation = ET.fromstring(zf.read("ppt/presentation.xml"))
+    presentation_rels = parse_rels(zf, "ppt/_rels/presentation.xml.rels")
+    names = []
+    for slide_id in presentation.findall("p:sldIdLst/p:sldId", NS):
+        target = presentation_rels.get(slide_id.get(R_ID), "")
+        member = posixpath.normpath(posixpath.join("ppt", target))
+        if member in zf.namelist():
+            names.append(member)
+    return names
+
+
+def convert(sources: list[Path], repo: Path) -> None:
     asset_dir = repo / "assets/img/lecture-1"
     if asset_dir.exists(): shutil.rmtree(asset_dir)
     asset_dir.mkdir(parents=True)
-    with zipfile.ZipFile(source) as zf:
-        presentation = ET.fromstring(zf.read("ppt/presentation.xml"))
-        size = presentation.find("p:sldSz", NS)
-        cx, cy = int(size.get("cx")), int(size.get("cy"))
-        scheme = load_scheme(zf)
-        presentation_rels = parse_rels(zf, "ppt/_rels/presentation.xml.rels")
-        slide_names = []
-        for slide_id in presentation.findall("p:sldIdLst/p:sldId", NS):
-            target = presentation_rels.get(slide_id.get(R_ID), "")
-            member = posixpath.normpath(posixpath.join("ppt", target))
-            if member in zf.namelist():
-                slide_names.append(member)
-        slides = []
-        for number, member in enumerate(slide_names, 1):
-            root = ET.fromstring(zf.read(member))
-            source_name = Path(member).name
-            rel_path = f"ppt/slides/_rels/{source_name}.rels"
-            rels = parse_rels(zf, rel_path)
-            title = slide_title(root, number)
-            elements = []
-            tree = root.find(".//p:spTree", NS)
-            for child in list(tree)[2:]:
-                local = child.tag.rsplit("}", 1)[-1]
-                if local == "sp": elements.append(shape_html(child, scheme, cx, cy))
-                elif local == "cxnSp": elements.append(connector_html(child, scheme, cx, cy))
-                elif local == "pic": elements.append(picture_html(child, rels, cx, cy, number, zf, asset_dir))
-            slides.append(f'<section class="slide ppt-slide" id="slide-{number}" aria-label="슬라이드 {number} / {len(slide_names)}: {esc(title)}"><div class="ppt-canvas">{"".join(elements)}</div></section>')
+    total = 0
+    for source in sources:
+        with zipfile.ZipFile(source) as zf:
+            total += len(ordered_slide_names(zf))
+    slides = []
+    number = 0
+    for source in sources:
+        with zipfile.ZipFile(source) as zf:
+            presentation = ET.fromstring(zf.read("ppt/presentation.xml"))
+            size = presentation.find("p:sldSz", NS)
+            cx, cy = int(size.get("cx")), int(size.get("cy"))
+            scheme = load_scheme(zf)
+            for member in ordered_slide_names(zf):
+                number += 1
+                root = ET.fromstring(zf.read(member))
+                source_name = Path(member).name
+                rel_path = f"ppt/slides/_rels/{source_name}.rels"
+                rels = parse_rels(zf, rel_path)
+                title = slide_title(root, number)
+                elements = []
+                tree = root.find(".//p:spTree", NS)
+                for child in list(tree)[2:]:
+                    local = child.tag.rsplit("}", 1)[-1]
+                    if local == "sp": elements.append(shape_html(child, scheme, cx, cy))
+                    elif local == "cxnSp": elements.append(connector_html(child, scheme, cx, cy))
+                    elif local == "pic": elements.append(picture_html(child, rels, cx, cy, number, zf, asset_dir))
+                slides.append(f'<section class="slide ppt-slide" id="slide-{number}" aria-label="슬라이드 {number} / {total}: {esc(title)}"><div class="ppt-canvas">{"".join(elements)}</div></section>')
     document = f'''<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ROS2 로봇 프로그래밍 기초"><title>ROS2 로봇 프로그래밍 기초 | 크래쉬랩 M1</title><link rel="icon" href="data:"><link rel="stylesheet" href="assets/css/deck.css?v=5"><link rel="stylesheet" href="assets/css/lecture-1-ppt.css?v=3"><script src="assets/js/deck.js?v=3" defer></script></head>
 <body class="deck-page lecture-1">{deck_chrome(len(slides))}<main class="deck" data-deck data-slide-count="{len(slides)}" data-prev-deck="orientation.html#slide-last" data-next-deck="lecture-2.html">{"".join(slides)}</main></body></html>'''
@@ -334,8 +346,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("pptx", type=Path)
     parser.add_argument("repo", type=Path)
+    parser.add_argument("--append", action="append", type=Path, default=[])
     args = parser.parse_args()
-    convert(args.pptx.resolve(), args.repo.resolve())
+    convert([args.pptx.resolve(), *(path.resolve() for path in args.append)], args.repo.resolve())
 
 
 if __name__ == "__main__":
