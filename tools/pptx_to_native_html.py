@@ -143,7 +143,7 @@ def shape_geometry(sp: ET.Element) -> tuple[str, str]:
     return radius, clip
 
 
-def text_html(sp: ET.Element, scheme: dict[str, str], slide_h: int) -> str:
+def text_html(sp: ET.Element, scheme: dict[str, str], slide_w: int, slide_h: int) -> str:
     tx = sp.find("p:txBody", NS)
     if tx is None:
         return ""
@@ -176,7 +176,11 @@ def text_html(sp: ET.Element, scheme: dict[str, str], slide_h: int) -> str:
             if rpr is None: rpr = run.find("a:endParaRPr", NS)
             styles = []
             if rpr is not None:
-                if rpr.get("sz"): styles.append(f"font-size:{int(rpr.get('sz')) / 100:.2f}pt")
+                if rpr.get("sz"):
+                    # CSS pt does not scale with the responsive slide canvas. cqw does.
+                    point_size = int(rpr.get("sz")) / 100
+                    css_px = point_size * 96 / 72
+                    styles.append(f"font-size:{100 * css_px / 1920:.5f}cqw")
                 if rpr.get("b") == "1": styles.append("font-weight:700")
                 if rpr.get("i") == "1": styles.append("font-style:italic")
                 if rpr.get("u") not in (None, "none"): styles.append("text-decoration:underline")
@@ -210,8 +214,10 @@ def shape_html(sp: ET.Element, scheme: dict[str, str], cx: int, cy: int) -> str:
     extra = f"background:{fill};border:{stroke_w:.2f}px solid {stroke};border-radius:{radius};clip-path:{clip}"
     name_el = sp.find("p:nvSpPr/p:cNvPr", NS)
     name = name_el.get("name", "shape") if name_el is not None else "shape"
-    text = text_html(sp, scheme, cy)
-    return f'<div class="ppt-shape" data-name="{esc(name)}" style="{style};{extra}">{text}</div>'
+    text = text_html(sp, scheme, cx, cy)
+    text_only = fill == "transparent" and stroke == "transparent"
+    classes = "ppt-shape ppt-shape--text" if text_only else "ppt-shape"
+    return f'<div class="{classes}" data-name="{esc(name)}" style="{style};{extra}">{text}</div>'
 
 
 def connector_html(sp: ET.Element, scheme: dict[str, str], cx: int, cy: int) -> str:
@@ -240,8 +246,17 @@ def picture_html(pic: ET.Element, rels: dict[str, str], cx: int, cy: int, slide_
     output = asset_dir / output_name
     output.write_bytes(zf.read(member))
     src_rect = pic.find("p:blipFill/a:srcRect", NS)
-    fit = "cover" if src_rect is not None else "contain"
-    return f'<figure class="ppt-picture" style="{style}"><img src="assets/img/lecture-1/{esc(output_name)}" alt="" style="object-fit:{fit}"></figure>'
+    image_style = "inset:0;width:100%;height:100%;object-fit:fill"
+    if src_rect is not None:
+        left = int(src_rect.get("l", "0")) / 1000
+        top = int(src_rect.get("t", "0")) / 1000
+        right = int(src_rect.get("r", "0")) / 1000
+        bottom = int(src_rect.get("b", "0")) / 1000
+        visible_w = max(0.01, 100 - left - right)
+        visible_h = max(0.01, 100 - top - bottom)
+        image_style = (f"left:{-left / visible_w * 100:.5f}%;top:{-top / visible_h * 100:.5f}%;"
+                       f"width:{10000 / visible_w:.5f}%;height:{10000 / visible_h:.5f}%;object-fit:fill")
+    return f'<figure class="ppt-picture" style="{style}"><img src="assets/img/lecture-1/{esc(output_name)}" alt="" style="{image_style}"></figure>'
 
 
 def slide_title(slide: ET.Element, number: int) -> str:
