@@ -8,6 +8,7 @@ are extracted as assets; slides are never flattened to screenshots.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import math
 import posixpath
@@ -186,6 +187,9 @@ def text_html(sp: ET.Element, scheme: dict[str, str], slide_w: int, slide_h: int
                 if rpr.get("u") not in (None, "none"): styles.append("text-decoration:underline")
                 fill = rpr.find("a:solidFill", NS)
                 if fill is not None: styles.append(f"color:{color_from(fill, scheme, '#222')}")
+                highlight = rpr.find("a:highlight", NS)
+                if highlight is not None:
+                    styles.append(f"background-color:{color_from(highlight, scheme, '#FFFF00')}")
                 latin = rpr.find("a:latin", NS)
                 ea = rpr.find("a:ea", NS)
                 face = (ea.get("typeface") if ea is not None else None) or (latin.get("typeface") if latin is not None else None)
@@ -247,7 +251,9 @@ def picture_html(pic: ET.Element, rels: dict[str, str], cx: int, cy: int, slide_
     suffix = Path(member).suffix.lower() or ".bin"
     output_name = f"slide-{slide_no:02d}-{Path(member).stem}{suffix}"
     output = asset_dir / output_name
-    output.write_bytes(zf.read(member))
+    image_bytes = zf.read(member)
+    output.write_bytes(image_bytes)
+    revision = hashlib.sha256(image_bytes).hexdigest()[:10]
     src_rect = pic.find("p:blipFill/a:srcRect", NS)
     image_style = "inset:0;width:100%;height:100%;object-fit:fill"
     if src_rect is not None:
@@ -259,7 +265,7 @@ def picture_html(pic: ET.Element, rels: dict[str, str], cx: int, cy: int, slide_
         visible_h = max(0.01, 100 - top - bottom)
         image_style = (f"left:{-left / visible_w * 100:.5f}%;top:{-top / visible_h * 100:.5f}%;"
                        f"width:{10000 / visible_w:.5f}%;height:{10000 / visible_h:.5f}%;object-fit:fill")
-    return f'<figure class="ppt-picture" style="{style}"><img src="assets/img/lecture-1/{esc(output_name)}" alt="" style="{image_style}"></figure>'
+    return f'<figure class="ppt-picture" style="{style}"><img src="assets/img/lecture-1/{esc(output_name)}?v={revision}" alt="" style="{image_style}"></figure>'
 
 
 def slide_title(slide: ET.Element, number: int) -> str:
