@@ -1861,3 +1861,105 @@ button { color: inherit; }
 .practice-task p, .practice-help p { margin: 0; }
 .practice-task { color: var(--hy-gray); font-size: 23px; font-weight: 600; line-height: 1.5; }
 .practice-help { font-size: 21px; line-height: 1.45; }
+
+/* 강의 ③ 구현 사례(54~67) — 실측 표와 결과 이미지 */
+.metric-wrap {
+  display: grid;
+  min-height: 0;
+  grid-row: 2;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 26px;
+}
+
+.metric-table {
+  width: 100%;
+  border-spacing: 0 12px;
+  border-collapse: separate;
+  align-self: center;
+  font-size: clamp(20px, 1.32vw, 25px);
+}
+
+.metric-table thead th {
+  padding: 0 30px 12px;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent-ink);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: left;
+}
+
+.metric-table tbody th {
+  padding: 20px 30px;
+  border-radius: 16px 0 0 16px;
+  background: var(--hy-blue);
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+}
+
+.metric-table tbody td {
+  padding: 20px 30px;
+  background: var(--bg-tint);
+  color: var(--hy-gray);
+}
+
+.metric-table tbody td:last-child { border-radius: 0 16px 16px 0; }
+
+.metric-table .num {
+  color: var(--hy-blue);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-table .off {
+  background: var(--accent-tint);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.metric-note {
+  margin: 0;
+  padding-left: 24px;
+  border-left: 3px solid var(--accent);
+  color: var(--hy-gray);
+  font-size: clamp(20px, 1.28vw, 24px);
+  line-height: 1.45;
+}
+
+.result-figure {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 16px;
+}
+
+.result-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.result-figure figcaption {
+  display: grid;
+  padding-top: 14px;
+  border-top: 2px solid var(--accent);
+  gap: 6px;
+}
+
+.result-figure figcaption strong { color: var(--hy-blue); font-size: 26px; }
+.result-figure figcaption span { color: var(--hy-gray); font-size: 21px; line-height: 1.45; }
+
+@media (max-width: 900px) {
+  .metric-table { font-size: 18px; }
+  .metric-table thead th { padding: 0 16px 10px; font-size: 17px; }
+  .metric-table tbody th,
+  .metric-table tbody td { padding: 14px 16px; }
+  .result-figure figcaption strong { font-size: 21px; }
+  .result-figure figcaption span { font-size: 17px; }
+}
