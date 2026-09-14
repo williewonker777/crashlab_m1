@@ -1641,12 +1641,12 @@ button { color: inherit; }
 #slide-26 .slide__visual,
 #slide-27 .slide__visual,
 #slide-33 .slide__visual,
-#slide-48 .slide__visual {
+#slide-49 .slide__visual {
   padding: 0;
 }
 
 #slide-34 .slide__visual,
-#slide-54 .slide__visual {
+#slide-55 .slide__visual {
   display: grid;
   padding: 22px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1655,7 +1655,7 @@ button { color: inherit; }
 }
 
 #slide-34 .slide__visual > figure,
-#slide-54 .slide__visual > figure {
+#slide-55 .slide__visual > figure {
   display: grid;
   min-width: 0;
   min-height: 0;
@@ -1667,7 +1667,7 @@ button { color: inherit; }
 }
 
 #slide-34 .slide__visual > figure > svg,
-#slide-54 .slide__visual > figure > svg {
+#slide-55 .slide__visual > figure > svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -1676,7 +1676,7 @@ button { color: inherit; }
 }
 
 #slide-34 figcaption,
-#slide-54 figcaption {
+#slide-55 figcaption {
   display: grid;
   padding: 18px 24px 20px;
   border-top: 2px solid var(--accent);
@@ -1684,13 +1684,13 @@ button { color: inherit; }
 }
 
 #slide-34 figcaption strong,
-#slide-54 figcaption strong {
+#slide-55 figcaption strong {
   color: var(--hy-blue);
   font-size: 27px;
 }
 
 #slide-34 figcaption span,
-#slide-54 figcaption span {
+#slide-55 figcaption span {
   color: var(--hy-gray);
   font-size: 21px;
 }
@@ -1733,20 +1733,20 @@ button { color: inherit; }
   grid-row: 2;
 }
 
-#slide-45 .concept-table,
-#slide-55 .concept-table {
+#slide-46 .concept-table,
+#slide-56 .concept-table {
   border-spacing: 0 12px;
 }
 
-#slide-45 .concept-table th,
-#slide-45 .concept-table td,
-#slide-55 .concept-table th,
-#slide-55 .concept-table td {
+#slide-46 .concept-table th,
+#slide-46 .concept-table td,
+#slide-56 .concept-table th,
+#slide-56 .concept-table td {
   padding-block: 22px;
 }
 
-#slide-45 .concept-table th { width: 29%; }
-#slide-55 .concept-table th { width: 23%; }
+#slide-46 .concept-table th { width: 29%; }
+#slide-56 .concept-table th { width: 23%; }
 
 #slide-16 .key-line,
 #slide-24 .key-line {
