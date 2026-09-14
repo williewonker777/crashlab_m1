@@ -1749,33 +1749,83 @@ button { color: inherit; }
 #slide-47 .concept-table th { width: 23%; }
 
 #slide-14 .key-line,
-#slide-21 .key-line,
-#slide-31 .key-line {
+#slide-21 .key-line {
   width: 100%;
   max-width: 1600px;
   font-size: clamp(27px, 1.65vw, 32px);
   white-space: nowrap;
 }
 
-#slide-31 .key-line {
+/* s31: 오른쪽에 영상 속 특징점 색 범례를 두고, 핵심 한 줄은 아래로 내린다 */
+#slide-31 .slide__inner {
+  grid-template-rows: 140px minmax(0, 1fr) auto;
+}
+
+#slide-31 .legend-card {
   grid-column: 2;
   grid-row: 2;
-  align-self: center;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 36px;
+}
+
+#slide-31 .key-line {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  font-size: clamp(27px, 1.7vw, 33px);
+}
+
+.legend-card {
+  display: grid;
+  align-content: center;
+  padding: 32px 34px;
   border-radius: 16px;
-  font-size: clamp(31px, 2vw, 39px);
-  line-height: 1.4;
-  white-space: normal;
+  gap: 24px;
   background: var(--bg-alt);
 }
 
-#slide-31 .key-line::before {
+.legend-card__eyebrow {
+  margin: 0;
+  color: var(--accent-ink);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.color-legend {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 24px;
+  list-style: none;
+}
+
+.color-legend li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.color-legend__dot {
+  width: 20px;
+  height: 20px;
+  margin-top: 9px;
+  border-radius: 50%;
+}
+
+.color-legend__dot--red { background: #D9362B; }
+.color-legend__dot--yellow { background: #D9A400; }
+.color-legend__dot--green { background: #2E9E4F; }
+
+.color-legend strong {
   display: block;
-  width: 58px;
-  margin: 0 0 24px;
+  margin-bottom: 6px;
+  color: var(--hy-blue);
+  font-size: 26px;
+}
+
+.color-legend span {
+  display: block;
+  color: var(--hy-gray);
+  font-size: clamp(19px, 1.2vw, 22px);
+  line-height: 1.45;
 }
 
 #slide-30 .slide__inner {
@@ -1862,104 +1912,17 @@ button { color: inherit; }
 .practice-task { color: var(--hy-gray); font-size: 23px; font-weight: 600; line-height: 1.5; }
 .practice-help { font-size: 21px; line-height: 1.45; }
 
-/* 강의 ③ 구현 사례(54~67) — 실측 표와 결과 이미지 */
-.metric-wrap {
-  display: grid;
-  min-height: 0;
-  grid-row: 2;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 26px;
-}
 
-.metric-table {
-  width: 100%;
-  border-spacing: 0 12px;
-  border-collapse: separate;
-  align-self: center;
-  font-size: clamp(20px, 1.32vw, 25px);
-}
+/* s31은 2열 고정이라 좁은 화면에서 영상 칸이 눌린다. 범례를 영상 아래로 내린다 */
+@media (max-width: 800px) {
+  #slide-31 .slide__inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(360px, 1fr) auto auto;
+  }
 
-.metric-table thead th {
-  padding: 0 30px 12px;
-  border-bottom: 2px solid var(--accent);
-  color: var(--accent-ink);
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-align: left;
-}
-
-.metric-table tbody th {
-  padding: 20px 30px;
-  border-radius: 16px 0 0 16px;
-  background: var(--hy-blue);
-  color: #fff;
-  font-weight: 700;
-  text-align: left;
-}
-
-.metric-table tbody td {
-  padding: 20px 30px;
-  background: var(--bg-tint);
-  color: var(--hy-gray);
-}
-
-.metric-table tbody td:last-child { border-radius: 0 16px 16px 0; }
-
-.metric-table .num {
-  color: var(--hy-blue);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
-.metric-table .off {
-  background: var(--accent-tint);
-  color: var(--accent-ink);
-  font-weight: 700;
-}
-
-.metric-note {
-  margin: 0;
-  padding-left: 24px;
-  border-left: 3px solid var(--accent);
-  color: var(--hy-gray);
-  font-size: clamp(20px, 1.28vw, 24px);
-  line-height: 1.45;
-}
-
-.result-figure {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  margin: 0;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 16px;
-}
-
-.result-figure img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  object-fit: contain;
-}
-
-.result-figure figcaption {
-  display: grid;
-  padding-top: 14px;
-  border-top: 2px solid var(--accent);
-  gap: 6px;
-}
-
-.result-figure figcaption strong { color: var(--hy-blue); font-size: 26px; }
-.result-figure figcaption span { color: var(--hy-gray); font-size: 21px; line-height: 1.45; }
-
-@media (max-width: 900px) {
-  .metric-table { font-size: 18px; }
-  .metric-table thead th { padding: 0 16px 10px; font-size: 17px; }
-  .metric-table tbody th,
-  .metric-table tbody td { padding: 14px 16px; }
-  .result-figure figcaption strong { font-size: 21px; }
-  .result-figure figcaption span { font-size: 17px; }
+  #slide-31 .legend-card,
+  #slide-31 .key-line {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
