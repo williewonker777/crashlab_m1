@@ -90,17 +90,22 @@
       return;
     }
 
+    // 게인 슬라이더의 방향키·Home·End는 입력값 조절에 사용한다.
+    if (event.target instanceof Element
+      && event.target.closest("input, textarea, select, [contenteditable='true']")) {
+      return;
+    }
+
     if (event.target instanceof Element
       && event.target.closest("button")
       && [" ", "Enter"].includes(event.key)) {
       return;
     }
 
-    // A focused, wide diagram keeps native horizontal keyboard scrolling.
-    const viewport = event.target instanceof Element
-      ? event.target.closest(".ppt-viewport")
-      : null;
-    if (viewport && viewport.scrollWidth > viewport.clientWidth
+    // 넓은 도식에 포커스가 있으면 좌우 키로 그림을 스크롤한다.
+    const scrollRegion = event.target instanceof Element
+      ? event.target.closest("[data-horizontal-scroll], .ppt-viewport") : null;
+    if (scrollRegion && scrollRegion.scrollWidth > scrollRegion.clientWidth
       && ["ArrowLeft", "ArrowRight"].includes(event.key)) {
       return;
     }

@@ -1,0 +1,220 @@
+/* 강의 ② 21–22페이지 · 시뮬레이션 배경부터 P·D와 계산 방식으로 연결 */
+.lecture-2 .sim-basics-slide .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 24px; }
+.lecture-2 .sim-basics-slide h2 { font-size: clamp(34px, 2.8vw, 54px); }
+.lecture-2 .sim-content { display: grid; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: 24px; }
+.lecture-2 .sim-definition { display: flex; align-items: center; gap: 28px; padding: 20px 24px; border-radius: 16px; background: #E6F7F8; }
+.lecture-2 .sim-definition > strong { flex: 0 0 auto; font-size: 27px; color: var(--accent-ink); }
+.lecture-2 .sim-definition p { margin: 0; font-size: 24px; color: var(--hy-gray); line-height: 1.45; }
+.lecture-2 .sim-definition b { font-weight: 600; color: var(--hy-blue); }
+.lecture-2 .sim-pd-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 28px; min-height: 0; }
+.lecture-2 .sim-joint { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-width: 0; min-height: 0; margin: 0; padding: 20px; gap: 10px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .sim-joint svg { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .sim-joint figcaption { margin: 0; font-size: 20px; color: #647080; line-height: 1.4; }
+.lecture-2 .sim-joint figcaption strong { font-weight: 600; color: var(--hy-blue); }
+.lecture-2 .sim-gains { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); min-height: 0; gap: 22px; }
+.lecture-2 .sim-gain { display: grid; align-content: center; min-width: 0; min-height: 0; padding: 22px 26px; gap: 12px; border: 2px solid #D8DEE9; border-radius: 18px; }
+.lecture-2 .sim-gain h3 { display: flex; align-items: baseline; gap: 12px; font-size: 29px; line-height: 1.3; }
+.lecture-2 .sim-gain h3 span { display: inline-grid; place-items: center; width: 36px; border-radius: 8px; background: #E6F7F8; color: var(--accent-ink); }
+.lecture-2 .sim-gain h3 small { color: #647080; font-size: 22px; font-weight: 400; }
+.lecture-2 .sim-gain p { margin: 0; color: var(--hy-gray); font-size: 22px; line-height: 1.4; }
+.lecture-2 .sim-gain .sim-gain-formula { color: var(--accent-ink); font-size: 29px; font-weight: 600; }
+.lecture-2 .sim-gain p strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .sim-takeaway { display: grid; gap: 8px; border-top: 2px solid #D8DEE9; padding-top: 16px; }
+.lecture-2 .sim-takeaway > p { margin: 0; color: var(--hy-blue); font-size: 28px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .sim-takeaway > p > small { margin-left: 20px; color: #647080; font-size: 20px; font-weight: 400; }
+.lecture-2 .sim-takeaway span { color: var(--accent-ink); }
+.lecture-2 .sim-fine, .lecture-2 .sim-takeaway .sim-fine { margin: 0; color: #647080; font-size: 18px; font-weight: 400; line-height: 1.4; }
+.lecture-2 .sim-step-panel { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 2fr); gap: 18px 28px; align-items: center; padding: 22px 26px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .sim-step-definition { display: grid; gap: 8px; }
+.lecture-2 .sim-step-definition strong { color: var(--accent-ink); font-size: 26px; }
+.lecture-2 .sim-step-definition span { color: var(--hy-gray); font-size: 22px; line-height: 1.45; }
+.lecture-2 .sim-timeline { display: grid; grid-template-columns: minmax(0, 1fr) 90px minmax(0, 1fr) 90px minmax(0, 1fr); gap: 8px; align-items: center; }
+.lecture-2 .sim-time-point { display: grid; gap: 8px; padding: 20px 8px; text-align: center; border: 2px solid #D8DEE9; border-radius: 14px; background: #FFFFFF; }
+.lecture-2 .sim-time-point strong { color: var(--hy-blue); font-size: 30px; font-variant-numeric: tabular-nums; }
+.lecture-2 .sim-time-point span { color: var(--hy-gray); font-size: 20px; }
+.lecture-2 .sim-time-hop { display: grid; justify-items: center; color: var(--accent-ink); font-size: 19px; line-height: 1.2; }
+.lecture-2 .sim-time-hop b { font-size: 34px; font-weight: 400; }
+.lecture-2 .sim-time-hop small { font-size: 18px; }
+.lecture-2 .sim-step-panel > .sim-fine { grid-column: 1 / -1; }
+.lecture-2 .sim-methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-height: 0; gap: 28px; }
+.lecture-2 .sim-method { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; gap: 18px; padding: 24px; background: #F5F7FA; border-radius: 18px; }
+.lecture-2 .sim-method:nth-child(2) { background: var(--accent-tint); }
+.lecture-2 .sim-method header { display: grid; gap: 6px; }
+.lecture-2 .sim-method h3 { font-size: 29px; line-height: 1.3; }
+.lecture-2 .sim-method header > span { color: #647080; font-size: 20px; }
+.lecture-2 .sim-method-flow { display: grid; align-items: center; min-height: 0; gap: 8px; color: var(--hy-blue); font-size: 26px; line-height: 1.3; text-align: center; }
+.lecture-2 .sim-method-flow--explicit { grid-template-columns: minmax(0, 1fr) 26px minmax(0, 1fr) 26px minmax(0, 1fr); }
+.lecture-2 .sim-method-flow--implicit { grid-template-columns: minmax(0, .8fr) 26px minmax(0, 2fr); }
+.lecture-2 .sim-method-flow--explicit > div, .lecture-2 .sim-method-start { padding: 18px 8px; border: 1px solid #D8DEE9; border-radius: 12px; background: #FFFFFF; }
+.lecture-2 .sim-method-flow small { display: block; margin-top: 6px; color: #647080; font-size: 20px; line-height: 1.4; }
+.lecture-2 .sim-method-flow > span, .lecture-2 .sim-coupled > span { color: var(--accent-ink); font-size: 30px; }
+.lecture-2 .sim-coupled { display: grid; grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); align-items: center; gap: 8px; padding: 18px 14px; border: 2px solid #7CB8BF; border-radius: 12px; background: #FFFFFF; }
+.lecture-2 .sim-method > p { margin: 0; font-size: 22px; line-height: 1.4; color: var(--hy-gray); }
+.lecture-2 .sim-method > p strong { color: var(--hy-blue); font-weight: 600; }
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .sim-basics-slide .slide__inner { grid-template-rows: 80px minmax(0, 1fr) auto; gap: 12px; }
+  .lecture-2 .sim-basics-slide h2 { font-size: 32px; }
+  .lecture-2 .sim-basics-slide .slide__header { gap: 6px; }
+  .lecture-2 .sim-basics-slide .slide__header::after { margin-top: 8px; }
+  .lecture-2 .sim-content { gap: 12px; }
+  .lecture-2 .sim-definition { padding: 12px 18px; gap: 20px; }
+  .lecture-2 .sim-definition > strong { font-size: 22px; }
+  .lecture-2 .sim-definition p { font-size: 19px; }
+  .lecture-2 .sim-pd-grid { gap: 20px; }
+  .lecture-2 .sim-joint { padding: 12px 16px; gap: 8px; }
+  .lecture-2 .sim-joint figcaption { font-size: 16px; }
+  .lecture-2 .sim-gains { gap: 12px; }
+  .lecture-2 .sim-gain { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .sim-gain h3 { font-size: 23px; gap: 10px; }
+  .lecture-2 .sim-gain h3 span { width: 30px; }
+  .lecture-2 .sim-gain h3 small { font-size: 18px; }
+  .lecture-2 .sim-gain .sim-gain-formula { font-size: 24px; }
+  .lecture-2 .sim-gain p { font-size: 18px; }
+  .lecture-2 .sim-takeaway { padding-top: 10px; gap: 4px; }
+  .lecture-2 .sim-takeaway > p { font-size: 21px; }
+  .lecture-2 .sim-takeaway > p > small { font-size: 16px; }
+  .lecture-2 .sim-fine, .lecture-2 .sim-takeaway .sim-fine { font-size: 15px; }
+  .lecture-2 .sim-step-panel { padding: 12px 18px; gap: 10px 18px; }
+  .lecture-2 .sim-step-definition { gap: 4px; }
+  .lecture-2 .sim-step-definition strong { font-size: 20px; }
+  .lecture-2 .sim-step-definition span { font-size: 17px; }
+  .lecture-2 .sim-timeline { grid-template-columns: minmax(0, 1fr) 65px minmax(0, 1fr) 65px minmax(0, 1fr); gap: 6px; }
+  .lecture-2 .sim-time-point { padding: 8px 6px; gap: 4px; }
+  .lecture-2 .sim-time-point strong { font-size: 24px; }
+  .lecture-2 .sim-time-point span { font-size: 17px; }
+  .lecture-2 .sim-time-hop { font-size: 16px; }
+  .lecture-2 .sim-time-hop b { font-size: 27px; }
+  .lecture-2 .sim-time-hop small { font-size: 15px; }
+  .lecture-2 .sim-methods { gap: 20px; }
+  .lecture-2 .sim-method { padding: 16px 18px; gap: 10px; }
+  .lecture-2 .sim-method h3 { font-size: 23px; }
+  .lecture-2 .sim-method header { gap: 4px; }
+  .lecture-2 .sim-method header > span { font-size: 16px; }
+  .lecture-2 .sim-method-flow { font-size: 21px; gap: 6px; }
+  .lecture-2 .sim-method-flow--explicit > div, .lecture-2 .sim-method-start { padding: 10px 6px; }
+  .lecture-2 .sim-method-flow small { margin-top: 3px; font-size: 16px; }
+  .lecture-2 .sim-method-flow > span, .lecture-2 .sim-coupled > span { font-size: 25px; }
+  .lecture-2 .sim-coupled { padding: 10px; }
+  .lecture-2 .sim-method > p { font-size: 18px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .sim-basics-slide .slide__inner { grid-template-rows: auto auto auto; gap: 26px; }
+  .lecture-2 .sim-basics-slide h2 { font-size: 36px; }
+  .lecture-2 .sim-content { grid-template-rows: auto auto; gap: 24px; }
+  .lecture-2 .sim-definition { display: grid; gap: 12px; padding: 20px; }
+  .lecture-2 .sim-definition > strong { font-size: 25px; }
+  .lecture-2 .sim-definition p { font-size: 21px; }
+  .lecture-2 .sim-pd-grid, .lecture-2 .sim-gains, .lecture-2 .sim-methods { grid-template-columns: 1fr; grid-template-rows: auto; gap: 24px; }
+  .lecture-2 .sim-joint { grid-template-rows: auto auto; padding: 14px; }
+  .lecture-2 .sim-joint svg { height: auto; }
+  .lecture-2 .sim-joint figcaption { font-size: 18px; }
+  .lecture-2 .sim-gain { padding: 20px; gap: 16px; }
+  .lecture-2 .sim-gain h3 { font-size: 25px; gap: 10px; }
+  .lecture-2 .sim-gain h3 small { font-size: 19px; }
+  .lecture-2 .sim-gain p { font-size: 20px; }
+  .lecture-2 .sim-gain .sim-gain-formula { font-size: 23px; }
+  .lecture-2 .sim-takeaway > p { font-size: 23px; }
+  .lecture-2 .sim-takeaway > p > small { display: block; margin: 8px 0 0; font-size: 18px; }
+  .lecture-2 .sim-fine, .lecture-2 .sim-takeaway .sim-fine { font-size: 16px; }
+  .lecture-2 .sim-step-panel { grid-template-columns: 1fr; padding: 20px; gap: 24px; }
+  .lecture-2 .sim-step-definition strong { font-size: 24px; }
+  .lecture-2 .sim-step-definition span { font-size: 20px; }
+  .lecture-2 .sim-step-definition br { display: none; }
+  .lecture-2 .sim-timeline { grid-template-columns: 1fr; gap: 12px; }
+  .lecture-2 .sim-time-point { padding: 14px; }
+  .lecture-2 .sim-time-point span { font-size: 20px; }
+  .lecture-2 .sim-time-hop { grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+  .lecture-2 .sim-time-hop b { transform: rotate(90deg); }
+  .lecture-2 .sim-method { grid-template-rows: auto auto auto; padding: 20px; gap: 20px; }
+  .lecture-2 .sim-method h3 { font-size: 25px; }
+  .lecture-2 .sim-method header > span { font-size: 18px; }
+  .lecture-2 .sim-method-flow { font-size: 22px; }
+  .lecture-2 .sim-method-flow--explicit, .lecture-2 .sim-method-flow--implicit { grid-template-columns: 1fr; gap: 12px; }
+  .lecture-2 .sim-method-flow > span { width: 36px; height: 36px; line-height: 36px; justify-self: center; transform: rotate(90deg); }
+  .lecture-2 .sim-method-flow--explicit > div, .lecture-2 .sim-method-start { padding: 14px; }
+  .lecture-2 .sim-method-flow small { font-size: 18px; }
+  .lecture-2 .sim-coupled { grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); gap: 8px; padding: 18px 10px; }
+  .lecture-2 .sim-method > p { font-size: 20px; }
+}
+
+/* 22페이지: 도식의 최소 높이를 보존하고 설명문을 별도 행에 둔다. */
+.lecture-2 .sim-step-slide {
+  --sim-step-gap: clamp(14px, 1.8vh, 22px);
+  height: auto;
+  min-height: max(680px, 100dvh);
+  overflow: visible;
+}
+.lecture-2 .sim-step-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; gap: var(--sim-step-gap); }
+.lecture-2 .sim-step-slide .slide__header { gap: 6px; }
+.lecture-2 .sim-step-slide .slide__header::after { margin-top: 8px; }
+.lecture-2 .sim-step-slide h2 { font-size: clamp(32px, min(2.8vw, 4.8vh), 54px); }
+.lecture-2 .sim-step-slide .sim-content { grid-template-rows: auto minmax(min-content, 1fr); gap: var(--sim-step-gap); }
+.lecture-2 .sim-step-slide .sim-step-panel { padding: var(--sim-step-gap) 20px; gap: 12px 24px; }
+.lecture-2 .sim-step-slide .sim-step-definition { gap: 6px; }
+.lecture-2 .sim-step-slide .sim-step-definition strong { font-size: clamp(20px, 1.6vw, 26px); line-height: 1.3; }
+.lecture-2 .sim-step-slide .sim-step-definition span { font-size: clamp(17px, 1.35vw, 21px); line-height: 1.4; }
+.lecture-2 .sim-step-slide .sim-timeline { grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) 64px minmax(0, 1fr); gap: 8px; }
+.lecture-2 .sim-step-slide .sim-time-point { padding: 10px 6px; gap: 6px; }
+.lecture-2 .sim-step-slide .sim-time-point strong { font-size: clamp(24px, 1.8vw, 32px); line-height: 1.2; }
+.lecture-2 .sim-step-slide .sim-time-point span { font-size: clamp(16px, 1.25vw, 20px); line-height: 1.4; }
+.lecture-2 .sim-step-slide .sim-time-hop { font-size: 17px; }
+.lecture-2 .sim-step-slide .sim-time-hop b { font-size: 28px; }
+.lecture-2 .sim-step-slide .sim-time-hop small { font-size: 16px; }
+.lecture-2 .sim-step-slide .sim-fine { font-size: clamp(15px, 1.1vw, 18px); }
+.lecture-2 .sim-step-slide .sim-methods { gap: var(--sim-step-gap); }
+.lecture-2 .sim-step-slide .sim-method {
+  grid-template-rows: auto minmax(min-content, 1fr) auto;
+  padding: var(--sim-step-gap) 18px;
+  gap: var(--sim-step-gap);
+}
+.lecture-2 .sim-step-slide .sim-method header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 14px; }
+.lecture-2 .sim-step-slide .sim-method h3 { font-size: clamp(21px, min(1.8vw, 2.9vh), 29px); }
+.lecture-2 .sim-step-slide .sim-method header > span { font-size: clamp(16px, 1.25vw, 20px); }
+.lecture-2 .sim-step-slide .sim-method-flow { min-height: min-content; gap: 8px; font-size: clamp(21px, 1.6vw, 27px); line-height: 1.35; }
+.lecture-2 .sim-step-slide .sim-method-flow--explicit > div,
+.lecture-2 .sim-step-slide .sim-method-start { padding: 10px 6px; }
+.lecture-2 .sim-step-slide .sim-method-flow small { margin-top: 6px; font-size: clamp(16px, 1.2vw, 20px); line-height: 1.4; }
+.lecture-2 .sim-step-slide .sim-coupled { padding: 10px; }
+.lecture-2 .sim-step-slide .sim-method > p {
+  align-self: end;
+  padding-top: 14px;
+  border-top: 1px solid #D8DEE9;
+  font-size: clamp(18px, 1.3vw, 22px);
+  line-height: 1.5;
+}
+.lecture-2 .sim-step-slide .sim-takeaway { padding-top: 12px; }
+.lecture-2 .sim-step-slide .sim-takeaway > p { font-size: clamp(21px, 1.6vw, 28px); line-height: 1.4; }
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .sim-step-slide { --sim-step-gap: 12px; }
+  .lecture-2 .sim-step-slide .sim-method > p { padding-top: 10px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .sim-step-slide .sim-methods { grid-template-columns: 1fr; }
+  .lecture-2 .sim-step-slide .sim-method { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: auto auto; gap: 18px 24px; }
+  .lecture-2 .sim-step-slide .sim-method > p { grid-column: 1 / -1; }
+  .lecture-2 .sim-step-slide .sim-step-panel { grid-template-columns: 1fr; }
+  .lecture-2 .sim-step-slide .sim-step-definition { grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
+  .lecture-2 .sim-step-slide .sim-step-definition br { display: none; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .sim-step-slide { --sim-step-gap: 24px; }
+  .lecture-2 .sim-step-slide .slide__inner, .lecture-2 .sim-step-slide .sim-content { grid-template-rows: auto; }
+  .lecture-2 .sim-step-slide h2 { font-size: 36px; }
+  .lecture-2 .sim-step-slide .sim-step-panel { grid-template-columns: 1fr; padding: 20px; gap: 24px; }
+  .lecture-2 .sim-step-slide .sim-step-definition strong { font-size: 24px; }
+  .lecture-2 .sim-step-slide .sim-step-definition span { font-size: 20px; }
+  .lecture-2 .sim-step-slide .sim-timeline { grid-template-columns: 1fr; gap: 12px; }
+  .lecture-2 .sim-step-slide .sim-time-point { padding: 14px; }
+  .lecture-2 .sim-step-slide .sim-time-point strong { font-size: 30px; }
+  .lecture-2 .sim-step-slide .sim-time-point span { font-size: 20px; }
+  .lecture-2 .sim-step-slide .sim-method { grid-template-rows: auto; padding: 20px; }
+  .lecture-2 .sim-step-slide .sim-method header { display: grid; }
+  .lecture-2 .sim-step-slide .sim-method h3 { font-size: 25px; }
+  .lecture-2 .sim-step-slide .sim-method header > span { font-size: 18px; }
+  .lecture-2 .sim-step-slide .sim-method-flow { font-size: 22px; gap: 12px; }
+  .lecture-2 .sim-step-slide .sim-method-flow small { font-size: 18px; }
+  .lecture-2 .sim-step-slide .sim-method-flow--explicit > div, .lecture-2 .sim-step-slide .sim-method-start { padding: 14px; }
+  .lecture-2 .sim-step-slide .sim-coupled { padding: 18px 10px; }
+  .lecture-2 .sim-step-slide .sim-method > p { font-size: 20px; }
+  .lecture-2 .sim-step-slide .sim-takeaway > p { font-size: 23px; }
+}

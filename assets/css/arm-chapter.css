@@ -1,0 +1,77 @@
+/* Chapter 4 reuses the formula/card components of the preceding chapter. */
+.lecture-2 .arm-photo { display:grid; grid-template-rows:minmax(0,1fr) auto; min-width:0; min-height:0; margin:0; padding:22px; gap:14px; border-radius:20px; background:#EDF0F6; }
+.lecture-2 .arm-photo .mobile-svg { filter:drop-shadow(0 6px 10px rgba(29,36,117,.12)); }
+.lecture-2 .arm-photo figcaption { color:#647080; font-size:19px; line-height:1.4; }
+.lecture-2 .arm-photo-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); min-height:0; gap:28px; }
+.lecture-2 .arm-photo-card { display:grid; grid-template-rows:auto minmax(0,1fr) auto; gap:16px; min-height:0; min-width:0; padding:24px; background:#EDF0F6; border-radius:20px; }
+.lecture-2 .arm-photo-card .arm-photo { padding:0; gap:0; grid-template-rows:minmax(0,1fr); }
+.lecture-2 .arm-photo-card p { margin:0; font-size:24px; line-height:1.45; color:var(--hy-blue); }
+.lecture-2 .arm-lab { display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.15fr); min-height:0; gap:28px; }
+.lecture-2 .arm-controls { display:grid; align-content:center; min-height:0; gap:22px; padding:26px; border-radius:18px; background:#F5F7FA; }
+.lecture-2 .arm-joint-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 24px; }
+.lecture-2 .arm-joint-control { display:grid; gap:10px; min-width:0; }
+.lecture-2 .arm-joint-control label { display:flex; align-items:baseline; gap:4px; font-size:21px; font-weight:600; color:var(--hy-blue); white-space:nowrap; }
+.lecture-2 .arm-joint-control output { margin-left:auto; }
+.lecture-2 .arm-model-view { position:relative; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:14px; min-height:0; min-width:0; border:2px solid #D8DEE9; padding:20px; border-radius:20px; }
+.lecture-2 .arm-board { display:block; width:100%; height:100%; min-height:0; font-family:inherit; }
+.lecture-2 .arm-view-buttons { position:absolute; top:12px; right:12px; z-index:1; justify-content:flex-end; }
+.lecture-2 .arm-readouts { display:grid; grid-template-columns:1fr 1.25fr; gap:18px; }
+.lecture-2 .arm-readouts > div { display:grid; grid-template-columns:minmax(0,1fr); min-width:0; gap:5px; }
+.lecture-2 .arm-readouts span { color:#647080; font-size:18px; }
+.lecture-2 .arm-readouts strong { display:block; justify-self:start; text-align:left; font-size:23px; color:var(--hy-blue); font-variant-numeric:tabular-nums; font-weight:600; line-height:1.4; }
+.lecture-2 .arm-fine { margin:0; color:#647080; font-size:18px; line-height:1.4; }
+.lecture-2 .arm-ik-view { grid-template-rows:minmax(0,1fr) auto auto auto; gap:12px; }
+.lecture-2 .arm-solver-state { margin:0; color:var(--accent-ink); font-size:25px; font-weight:600; }
+.lecture-2 .arm-solution { display:grid; gap:8px; margin:0; padding-top:12px; border-top:1px solid #D8DEE9; }
+.lecture-2 .arm-solution span { color:#647080; font-size:18px; }
+.lecture-2 .arm-solution strong { font-size:22px; line-height:1.4; color:var(--hy-blue); font-weight:600; font-variant-numeric:tabular-nums; }
+.lecture-2 .arm-joints-slide .mobile-result strong { font-size:23px; }
+.lecture-2 .arm-sequence-slide .mobile-takeaway { font-size:25px; }
+@media (min-width:801px) and (max-height:850px) {
+  .lecture-2 .arm-photo { padding:14px; gap:10px; }
+  .lecture-2 .arm-photo figcaption { font-size:15px; }
+  .lecture-2 .arm-photo-cards { gap:22px; }
+  .lecture-2 .arm-photo-card { padding:18px; gap:12px; }
+  .lecture-2 .arm-photo-card p { font-size:19px; }
+  .lecture-2 .arm-lab { gap:24px; }
+  .lecture-2 .arm-controls { padding:16px; gap:14px; }
+  .lecture-2 .arm-joint-controls { gap:15px 18px; }
+  .lecture-2 .arm-joint-control { gap:6px; }
+  .lecture-2 .arm-joint-control label { font-size:16px; }
+  .lecture-2 .arm-joint-control input[type=range] { height:20px; }
+  .lecture-2 .arm-model-view { padding:14px; gap:9px; }
+  .lecture-2 .arm-readouts { gap:8px; }
+  .lecture-2 .arm-readouts span { font-size:15px; }
+  .lecture-2 .arm-readouts strong { font-size:18px; }
+  .lecture-2 .arm-fine { font-size:15px; }
+  .lecture-2 .arm-solver-state { font-size:21px; }
+  .lecture-2 .arm-solution { padding-top:8px; gap:4px; }
+  .lecture-2 .arm-solution span { font-size:15px; }
+  .lecture-2 .arm-solution strong { font-size:18px; }
+  .lecture-2 .arm-joints-slide .mobile-result strong { font-size:18px; }
+  .lecture-2 .arm-sequence-slide .mobile-takeaway { font-size:20px; }
+}
+@media (min-width:801px) and (max-height:730px) {
+  .lecture-2 .arm-ik-slide .mobile-yaw-control { padding:12px 16px; gap:8px; }
+  .lecture-2 .arm-ik-slide .mobile-notes { gap:8px; }
+}
+@media (max-width:800px) {
+  .lecture-2 .arm-photo { grid-template-rows:auto auto; padding:14px; }
+  .lecture-2 .arm-photo .mobile-svg { height:auto; }
+  .lecture-2 .arm-photo figcaption { font-size:16px; }
+  .lecture-2 .arm-photo-cards,.lecture-2 .arm-lab { grid-template-columns:1fr; gap:24px; }
+  .lecture-2 .arm-photo-card { grid-template-rows:auto auto auto; padding:20px; }
+  .lecture-2 .arm-photo-card p { font-size:20px; }
+  .lecture-2 .arm-controls { padding:20px; gap:18px; }
+  .lecture-2 .arm-joint-controls { grid-template-columns:1fr; gap:18px; }
+  .lecture-2 .arm-joint-control label { font-size:20px; }
+  .lecture-2 .arm-model-view,.lecture-2 .arm-ik-view { grid-template-rows:auto auto auto; padding:12px; }
+  .lecture-2 .arm-board { height:auto; }
+  .lecture-2 .arm-readouts { grid-template-columns:1fr; }
+  .lecture-2 .arm-view-buttons { position:static; }
+  .lecture-2 .arm-readouts strong { font-size:21px; }
+  .lecture-2 .arm-readouts span,.lecture-2 .arm-fine { font-size:16px; }
+  .lecture-2 .arm-solution strong { font-size:20px; }
+  .lecture-2 .arm-joints-slide .mobile-result strong { font-size:20px; overflow-wrap:anywhere; }
+  .lecture-2 .arm-sequence-slide .mobile-takeaway { font-size:22px; }
+}
