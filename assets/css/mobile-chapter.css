@@ -213,3 +213,643 @@
   .lecture-2 .mobile-quaternion-values strong { font-size: 24px; }
   .lecture-2 .mobile-quaternion-view > p { font-size: 18px; }
 }
+
+/* 25페이지 · 예제 로봇의 크기와 두 길이를 재는 위치 */
+.lecture-2 .mobile-dimensions-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-dimensions-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-dimensions-slide .mobile-grid, .lecture-2 .mobile-dimensions-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-dimensions-slide .mobile-copy { gap: 24px; }
+.lecture-2 .mobile-dimension-example { display: grid; gap: 18px; }
+.lecture-2 .mobile-dimension-example header { display: grid; gap: 8px; }
+.lecture-2 .mobile-dimension-example h3 { font-size: 29px; }
+.lecture-2 .mobile-dimension-values { display: grid; gap: 16px; margin: 0; }
+.lecture-2 .mobile-dimension-values > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px; padding-top: 14px; border-top: 1px solid #D8DEE9; }
+.lecture-2 .mobile-dimension-values dt { color: var(--hy-blue); font-size: 23px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .mobile-dimension-values dt b { color: var(--accent-ink); }
+.lecture-2 .mobile-dimension-values dd { display: grid; gap: 6px; margin: 0; }
+.lecture-2 .mobile-dimension-values strong { color: var(--accent-ink); font-size: 28px; font-weight: 600; line-height: 1.3; }
+.lecture-2 .mobile-dimension-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-dimension-figure figcaption { display: grid; gap: 6px; }
+.lecture-2 .mobile-dimension-figure figcaption strong { color: var(--accent-ink); font-weight: 600; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-dimensions-slide .slide__inner { gap: 16px; }
+  .lecture-2 .mobile-dimensions-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-dimensions-slide .slide__header::after { margin-top: 8px; }
+  .lecture-2 .mobile-dimensions-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-dimensions-slide .mobile-grid { gap: 24px; }
+  .lecture-2 .mobile-dimensions-slide .mobile-copy { gap: 16px; }
+  .lecture-2 .mobile-dimensions-slide .mobile-formula { padding: 14px 18px; font-size: 25px; line-height: 1.4; }
+  .lecture-2 .mobile-dimensions-slide .mobile-formula small { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-dimension-example { gap: 10px; }
+  .lecture-2 .mobile-dimension-example header { gap: 6px; }
+  .lecture-2 .mobile-dimension-example h3 { font-size: 23px; }
+  .lecture-2 .mobile-dimension-values { gap: 10px; }
+  .lecture-2 .mobile-dimension-values > div { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding-top: 10px; }
+  .lecture-2 .mobile-dimension-values dt { font-size: 20px; }
+  .lecture-2 .mobile-dimension-values dd { gap: 4px; }
+  .lecture-2 .mobile-dimension-values strong { font-size: 24px; }
+  .lecture-2 .mobile-dimension-figure { padding: 14px; }
+  .lecture-2 .mobile-dimension-figure figcaption { font-size: 16px; }
+  .lecture-2 .mobile-dimensions-slide .mobile-takeaway { font-size: 21px; padding-top: 10px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-dimensions-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-dimensions-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-dimensions-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-dimensions-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-dimension-figure { padding: 10px; }
+  .lecture-2 .mobile-dimension-figure:has(figcaption) { gap: 8px; }
+  .lecture-2 .mobile-dimension-figure figcaption { font-size: 15px; gap: 4px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-dimensions-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-dimensions-slide .mobile-copy { grid-template-columns: 1fr 1.2fr; align-items: start; }
+  .lecture-2 .mobile-dimension-values > div { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+  .lecture-2 .mobile-dimension-values dt br { display: none; }
+  .lecture-2 .mobile-dimension-scroll .mobile-svg { max-height: 380px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-dimensions-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-dimension-example h3 { font-size: 25px; }
+  .lecture-2 .mobile-dimension-values { gap: 22px; }
+  .lecture-2 .mobile-dimension-values > div { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+  .lecture-2 .mobile-dimension-values dt { font-size: 21px; }
+  .lecture-2 .mobile-dimension-values dt br { display: none; }
+  .lecture-2 .mobile-dimension-values strong { font-size: 26px; }
+  .lecture-2 .mobile-dimension-scroll { overflow-x: auto; padding-block: 6px; }
+  .lecture-2 .mobile-dimension-scroll .mobile-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .mobile-dimension-figure { overflow: visible; }
+  .lecture-2 .mobile-dimension-figure figcaption { font-size: 17px; }
+}
+
+/* 26페이지 · 좌우 바퀴 계산과 측정 속도 환산 */
+.lecture-2 .mobile-wheel-speed-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-wheel-speed-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-wheel-speed-slide .mobile-grid,
+.lecture-2 .mobile-wheel-speed-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-wheel-formulas { display: flex; flex-wrap: wrap; gap: 8px 48px; }
+.lecture-2 .mobile-wheel-speed-slide .mobile-formula small { display: flex; flex-wrap: wrap; column-gap: 24px; }
+.lecture-2 .mobile-wheel-example dl { display: grid; gap: 10px; margin: 0; }
+.lecture-2 .mobile-wheel-example dl > div { display: grid; grid-template-columns: 138px minmax(0, 1fr); align-items: baseline; gap: 12px; }
+.lecture-2 .mobile-wheel-example dt { color: var(--accent-ink); font-size: 21px; }
+.lecture-2 .mobile-wheel-example dd { margin: 0; color: var(--hy-blue); font-size: 24px; line-height: 1.4; white-space: nowrap; }
+.lecture-2 .mobile-wheel-example dd strong { font-size: inherit; }
+.lecture-2 .mobile-wheel-notes > div { grid-template-columns: 166px minmax(0, 1fr); gap: 14px; }
+.lecture-2 .mobile-wheel-notes dt { font-size: 22px; }
+.lecture-2 .mobile-wheel-notes dd { font-size: 22px; word-break: keep-all; }
+.lecture-2 .mobile-wheel-notes small { display: block; margin-top: 4px; color: #647080; font-size: 18px; line-height: 1.4; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-wheel-speed-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-wheel-speed-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-wheel-speed-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-wheel-speed-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-wheel-speed-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-wheel-speed-slide .mobile-formula { padding: 12px 18px; font-size: 26px; line-height: 1.3; }
+  .lecture-2 .mobile-wheel-speed-slide .mobile-formula small { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-wheel-example { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .mobile-wheel-example > span { font-size: 16px; }
+  .lecture-2 .mobile-wheel-example dl { gap: 8px; }
+  .lecture-2 .mobile-wheel-example dl > div { grid-template-columns: 118px minmax(0, 1fr); gap: 8px; }
+  .lecture-2 .mobile-wheel-example dt { font-size: 18px; }
+  .lecture-2 .mobile-wheel-example dd { font-size: 21px; }
+  .lecture-2 .mobile-wheel-notes { gap: 10px; }
+  .lecture-2 .mobile-wheel-notes > div { grid-template-columns: 138px minmax(0, 1fr); padding-top: 8px; gap: 10px; }
+  .lecture-2 .mobile-wheel-notes dt, .lecture-2 .mobile-wheel-notes dd { font-size: 18px; }
+  .lecture-2 .mobile-wheel-notes small { font-size: 16px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-wheel-speed-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-wheel-speed-slide .mobile-visual .mobile-svg { height: 300px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-wheel-speed-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-wheel-formulas { gap: 10px 24px; }
+  .lecture-2 .mobile-wheel-example dl { gap: 16px; }
+  .lecture-2 .mobile-wheel-example dl > div { grid-template-columns: 1fr; gap: 4px; }
+  .lecture-2 .mobile-wheel-example dt { font-size: 18px; }
+  .lecture-2 .mobile-wheel-example dd { font-size: 21px; line-height: 1.7; }
+  .lecture-2 .mobile-wheel-notes > div { grid-template-columns: 1fr; gap: 6px; }
+  .lecture-2 .mobile-wheel-notes dt, .lecture-2 .mobile-wheel-notes dd { font-size: 20px; }
+  .lecture-2 .mobile-wheel-notes small { font-size: 17px; }
+}
+
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-wheel-speed-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-wheel-notes small { margin-top: 2px; }
+}
+
+/* 27페이지 · 바퀴 속도와 로봇의 움직임을 함께 읽기 */
+.lecture-2 .mobile-motion-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-motion-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-motion-content { display: grid; grid-template-rows: auto minmax(min-content, 1fr); gap: 12px; min-width: 0; }
+.lecture-2 .mobile-motion-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-motion-wheel-key, .lecture-2 .mobile-motion-path-key { display: inline-flex; align-items: center; gap: 8px; }
+.lecture-2 .mobile-motion-wheel-key { color: var(--hy-blue); }
+.lecture-2 .mobile-motion-path-key { color: var(--accent-ink); }
+.lecture-2 .mobile-motion-wheel-key::before, .lecture-2 .mobile-motion-path-key::before { content: ''; width: 22px; height: 4px; border-radius: 2px; background: currentColor; }
+.lecture-2 .mobile-motion-card { display: grid; grid-template-rows: auto minmax(140px, 1fr) auto auto; gap: 14px; min-width: 0; padding: 24px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .mobile-motion-card:nth-child(2) { background: var(--accent-tint); }
+.lecture-2 .mobile-motion-card .mobile-svg { min-height: 140px; max-height: 280px; align-self: center; }
+.lecture-2 .mobile-motion-copy { margin: 0; color: var(--hy-gray); font-size: 23px; line-height: 1.45; word-break: keep-all; }
+.lecture-2 .mobile-motion-equations { display: grid; gap: 6px; margin: 0; padding-top: 12px; border-top: 1px solid #CCD6E0; }
+.lecture-2 .mobile-motion-equations > div { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: baseline; gap: 12px; }
+.lecture-2 .mobile-motion-equations dt { color: #647080; font-size: 18px; }
+.lecture-2 .mobile-motion-equations dd { margin: 0; color: var(--hy-blue); font-size: 25px; line-height: 1.45; }
+.lecture-2 .mobile-motion-equations > div:last-child dd { color: var(--accent-ink); }
+.lecture-2 .mobile-motion-definitions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-motion-definitions p { margin: 0; color: var(--hy-blue); font-size: 20px; line-height: 1.7; }
+.lecture-2 .mobile-motion-definitions b { margin-right: 8px; color: var(--accent-ink); }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-motion-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-motion-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-motion-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-motion-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-motion-slide .mobile-cards { gap: 22px; }
+  .lecture-2 .mobile-motion-legend { font-size: 16px; }
+  .lecture-2 .mobile-motion-card { padding: 16px 18px; gap: 8px; grid-template-rows: auto minmax(120px, 1fr) auto auto; }
+  .lecture-2 .mobile-motion-card h3 { font-size: 25px; }
+  .lecture-2 .mobile-motion-card .mobile-svg { min-height: 120px; max-height: 200px; }
+  .lecture-2 .mobile-motion-copy { font-size: 19px; }
+  .lecture-2 .mobile-motion-equations { padding-top: 8px; gap: 2px; }
+  .lecture-2 .mobile-motion-equations dt { font-size: 16px; }
+  .lecture-2 .mobile-motion-equations dd { font-size: 22px; }
+  .lecture-2 .mobile-motion-definitions { gap: 22px; padding-top: 10px; }
+  .lecture-2 .mobile-motion-definitions p { font-size: 18px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-motion-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-motion-card .mobile-svg { max-height: 135px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-motion-card { padding-inline: 14px; }
+  .lecture-2 .mobile-motion-copy { font-size: 18px; }
+  .lecture-2 .mobile-motion-copy br { display: none; }
+  .lecture-2 .mobile-motion-equations > div { grid-template-columns: 36px minmax(0, 1fr); gap: 6px; }
+  .lecture-2 .mobile-motion-equations dd { font-size: 20px; line-height: 1.7; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-motion-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-motion-legend { gap: 8px 18px; font-size: 16px; }
+  .lecture-2 .mobile-motion-legend > span:first-child { flex-basis: 100%; }
+  .lecture-2 .mobile-motion-card { gap: 14px; padding: 22px; grid-template-rows: auto auto auto auto; }
+  .lecture-2 .mobile-motion-card .mobile-svg { width: 100%; height: auto; max-height: 260px; }
+  .lecture-2 .mobile-motion-copy { font-size: 20px; }
+  .lecture-2 .mobile-motion-equations dd { font-size: 23px; }
+  .lecture-2 .mobile-motion-definitions { grid-template-columns: 1fr; gap: 12px; }
+  .lecture-2 .mobile-motion-definitions p { font-size: 19px; }
+}
+
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-motion-slide .slide__inner { gap: 10px; }
+  .lecture-2 .mobile-motion-content { gap: 6px; }
+  .lecture-2 .mobile-motion-card { gap: 5px; padding-block: 12px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-motion-equations dd { line-height: 1.7; }
+}
+
+/* 28페이지 · 입력 조건에서 로봇 이동·회전 결과로 연결 */
+.lecture-2 .mobile-forward-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-forward-slide .slide__inner { grid-template-rows: auto auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-forward-definition { margin: 6px 0 0; color: var(--hy-gray); font-size: clamp(18px, 1.5vw, 24px); line-height: 1.5; }
+.lecture-2 .mobile-forward-definition strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-forward-inputs { display: flex; flex-wrap: wrap; gap: 6px 32px; color: #647080; font-size: 21px; line-height: 1.8; }
+.lecture-2 .mobile-forward-inputs b { margin-left: 8px; color: var(--accent-ink); font-weight: 600; white-space: nowrap; }
+.lecture-2 .mobile-forward-slide .mobile-card { min-height: min-content; }
+.lecture-2 .mobile-forward-value { font-weight: inherit; white-space: nowrap; }
+.lecture-2 .mobile-forward-slide .mobile-takeaway small { display: block; margin-top: 8px; color: #647080; font-size: 18px; font-weight: 400; line-height: 1.45; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-forward-slide .slide__inner { gap: 14px; }
+  .lecture-2 .mobile-forward-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-forward-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-forward-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-forward-inputs { font-size: 18px; }
+  .lecture-2 .mobile-forward-slide .mobile-card { padding: 18px; gap: 14px; }
+  .lecture-2 .mobile-forward-slide h3 { font-size: 25px; }
+  .lecture-2 .mobile-forward-slide .mobile-formula { padding: 14px 18px; font-size: 25px; }
+  .lecture-2 .mobile-forward-slide .mobile-result { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .mobile-forward-slide .mobile-result span { font-size: 18px; }
+  .lecture-2 .mobile-forward-slide .mobile-result strong { font-size: 23px; }
+  .lecture-2 .mobile-forward-slide .mobile-takeaway { font-size: 21px; padding-top: 10px; }
+  .lecture-2 .mobile-forward-slide .mobile-takeaway small { margin-top: 6px; font-size: 16px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-forward-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-forward-inputs { flex-direction: column; gap: 4px; font-size: 18px; }
+  .lecture-2 .mobile-forward-inputs span { display: flex; flex-wrap: wrap; column-gap: 8px; }
+  .lecture-2 .mobile-forward-inputs b { margin-left: 0; }
+  .lecture-2 .mobile-forward-slide .mobile-result strong { font-size: 21px; }
+  .lecture-2 .mobile-forward-slide .mobile-takeaway small { font-size: 17px; }
+}
+
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-forward-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-forward-slide h2 { font-size: 32px; }
+}
+
+/* 29페이지 · ICC의 뜻과 세 회전 반경 */
+.lecture-2 .mobile-icc-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-icc-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-icc-definition { margin: 0; color: var(--hy-gray); font-size: clamp(18px, 1.5vw, 24px); line-height: 1.5; }
+.lecture-2 .mobile-icc-definition strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-icc-slide .mobile-grid, .lecture-2 .mobile-icc-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-icc-radii > div { grid-template-columns: 176px minmax(0, 1fr); }
+.lecture-2 .mobile-icc-radii dd { color: var(--hy-blue); font-size: 26px; line-height: 1.7; white-space: nowrap; }
+.lecture-2 .mobile-icc-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-icc-takeaway { padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-icc-takeaway > p { margin: 0; color: var(--hy-blue); font-size: 27px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .mobile-icc-cases { display: flex; flex-wrap: wrap; gap: 6px 32px; margin-top: 8px; color: #647080; font-size: 18px; line-height: 1.5; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-icc-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-icc-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-icc-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-icc-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-icc-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-icc-slide .mobile-formula { padding: 12px 18px; font-size: 26px; }
+  .lecture-2 .mobile-icc-slide .mobile-formula small { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-icc-radii { gap: 8px; }
+  .lecture-2 .mobile-icc-radii > div { grid-template-columns: 144px minmax(0, 1fr); gap: 12px; padding-top: 8px; }
+  .lecture-2 .mobile-icc-radii dt { font-size: 18px; }
+  .lecture-2 .mobile-icc-radii dd { font-size: 22px; }
+  .lecture-2 .mobile-icc-slide .mobile-result { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .mobile-icc-slide .mobile-result span { font-size: 16px; }
+  .lecture-2 .mobile-icc-slide .mobile-result strong { font-size: 24px; }
+  .lecture-2 .mobile-icc-figure { padding: 12px; }
+  .lecture-2 .mobile-icc-takeaway > p { font-size: 22px; }
+  .lecture-2 .mobile-icc-cases { margin-top: 6px; font-size: 16px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-icc-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-icc-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-icc-figure { padding: 10px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-icc-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-icc-scroll .mobile-svg { max-height: 420px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-icc-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-icc-radii > div { grid-template-columns: 1fr; gap: 6px; }
+  .lecture-2 .mobile-icc-radii dd { font-size: 24px; }
+  .lecture-2 .mobile-icc-scroll { overflow-x: auto; padding-block: 6px; }
+  .lecture-2 .mobile-icc-scroll .mobile-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .mobile-icc-figure { overflow: visible; }
+  .lecture-2 .mobile-icc-takeaway > p { font-size: 23px; }
+  .lecture-2 .mobile-icc-cases { flex-direction: column; gap: 10px; font-size: 17px; }
+}
+
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-icc-takeaway { padding-top: 8px; }
+  .lecture-2 .mobile-icc-cases { margin-top: 4px; }
+}
+
+/* 29페이지 · 회전 반경을 곡선 주행 명령으로 활용 */
+.lecture-2 .mobile-icc-uses { display: grid; gap: 12px; margin: 0; padding: 18px 22px; border-radius: 16px; background: var(--hy-blue); color: #FFFFFF; }
+.lecture-2 .mobile-icc-uses > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; }
+.lecture-2 .mobile-icc-uses dt { font-size: 20px; line-height: 1.4; }
+.lecture-2 .mobile-icc-uses dd { margin: 0; font-size: 30px; font-weight: 600; line-height: 1.4; white-space: nowrap; }
+.lecture-2 .mobile-icc-uses > div:last-child dt { color: #B6F0F2; }
+.lecture-2 .mobile-icc-goal b { font-weight: inherit; white-space: nowrap; }
+.lecture-2 .mobile-icc-radii--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.lecture-2 .mobile-icc-radii--compact > div { grid-template-columns: 1fr; gap: 2px; }
+.lecture-2 .mobile-icc-radii--compact dt { font-size: 18px; }
+.lecture-2 .mobile-icc-radii--compact dd { font-size: 23px; }
+.lecture-2 .mobile-icc-next { display: inline-block; margin-left: 18px; color: var(--accent-ink); font-size: 20px; white-space: nowrap; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-icc-uses { padding: 12px 18px; gap: 8px; }
+  .lecture-2 .mobile-icc-uses dt { font-size: 18px; }
+  .lecture-2 .mobile-icc-uses dd { font-size: 26px; }
+  .lecture-2 .mobile-icc-goal { row-gap: 4px; }
+  .lecture-2 .mobile-icc-radii--compact { gap: 18px; }
+  .lecture-2 .mobile-icc-radii--compact > div { grid-template-columns: 1fr; gap: 2px; }
+  .lecture-2 .mobile-icc-radii--compact dt { font-size: 16px; }
+  .lecture-2 .mobile-icc-radii--compact dd { font-size: 21px; }
+  .lecture-2 .mobile-icc-next { font-size: 18px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-icc-uses { padding: 16px; gap: 14px; }
+  .lecture-2 .mobile-icc-uses > div { grid-template-columns: 1fr; gap: 4px; }
+  .lecture-2 .mobile-icc-uses dt { font-size: 17px; }
+  .lecture-2 .mobile-icc-uses dd { font-size: 25px; }
+  .lecture-2 .mobile-icc-goal strong { font-size: 22px; }
+  .lecture-2 .mobile-icc-radii--compact { grid-template-columns: 1fr; gap: 14px; }
+  .lecture-2 .mobile-icc-radii--compact dt { font-size: 18px; }
+  .lecture-2 .mobile-icc-radii--compact dd { font-size: 23px; }
+  .lecture-2 .mobile-icc-next { display: block; margin: 6px 0 0; font-size: 18px; }
+}
+
+/* 30페이지 · 로봇 속도 입력에서 두 단계로 바퀴 명령 계산 */
+.lecture-2 .mobile-inverse-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-inverse-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-inverse-slide .mobile-grid, .lecture-2 .mobile-inverse-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-inverse-definition { margin: 0; color: var(--hy-gray); font-size: 23px; line-height: 1.5; }
+.lecture-2 .mobile-inverse-definition strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-inverse-inputs > div { grid-template-columns: 160px minmax(0, 1fr); }
+.lecture-2 .mobile-inverse-inputs dt { font-size: 21px; }
+.lecture-2 .mobile-inverse-inputs dd { display: flex; flex-wrap: wrap; column-gap: 22px; font-size: 22px; }
+.lecture-2 .mobile-inverse-outputs { display: grid; grid-template-rows: repeat(2, minmax(min-content, 1fr)); min-width: 0; gap: 20px; }
+.lecture-2 .mobile-inverse-wheel { align-content: center; gap: 16px; }
+.lecture-2 .mobile-inverse-wheel h3 { font-size: 28px; }
+.lecture-2 .mobile-inverse-wheel > div { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: baseline; gap: 10px; }
+.lecture-2 .mobile-inverse-wheel p { margin: 0; color: var(--hy-blue); font-size: 25px; line-height: 1.7; }
+.lecture-2 .mobile-inverse-wheel strong { line-height: 1.7; }
+.lecture-2 .mobile-inverse-wheel b { font-weight: inherit; white-space: nowrap; }
+.lecture-2 .mobile-inverse-message { padding: 14px 18px; }
+.lecture-2 .mobile-inverse-message h3 { margin-bottom: 8px; font-size: 22px; }
+.lecture-2 .mobile-inverse-fields { display: flex; flex-wrap: wrap; gap: 6px 24px; }
+.lecture-2 .mobile-inverse-fields code { font-size: 22px; }
+.lecture-2 .mobile-inverse-message p { margin-top: 6px; font-size: 17px; }
+.lecture-2 .mobile-inverse-slide .mobile-takeaway { line-height: 1.7; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-inverse-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-inverse-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-inverse-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-inverse-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-inverse-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-inverse-definition { font-size: 20px; }
+  .lecture-2 .mobile-inverse-inputs { gap: 8px; }
+  .lecture-2 .mobile-inverse-inputs > div { grid-template-columns: 140px minmax(0, 1fr); gap: 10px; padding-top: 8px; }
+  .lecture-2 .mobile-inverse-inputs dt, .lecture-2 .mobile-inverse-inputs dd { font-size: 18px; }
+  .lecture-2 .mobile-inverse-slide .mobile-formula { padding: 12px 18px; font-size: 25px; line-height: 1.4; }
+  .lecture-2 .mobile-inverse-slide .mobile-formula small { margin-top: 6px; font-size: 16px; }
+  .lecture-2 .mobile-inverse-outputs { gap: 14px; }
+  .lecture-2 .mobile-inverse-wheel { padding: 14px 18px; gap: 10px; }
+  .lecture-2 .mobile-inverse-wheel h3 { font-size: 23px; }
+  .lecture-2 .mobile-inverse-wheel > div { grid-template-columns: 78px minmax(0, 1fr); gap: 10px; }
+  .lecture-2 .mobile-inverse-wheel span { font-size: 16px; }
+  .lecture-2 .mobile-inverse-wheel p { font-size: 21px; }
+  .lecture-2 .mobile-inverse-wheel strong { font-size: 23px; }
+  .lecture-2 .mobile-inverse-message { padding: 10px 16px; }
+  .lecture-2 .mobile-inverse-message h3 { margin-bottom: 4px; font-size: 20px; }
+  .lecture-2 .mobile-inverse-fields code { font-size: 19px; }
+  .lecture-2 .mobile-inverse-message p { margin-top: 4px; font-size: 15px; }
+  .lecture-2 .mobile-inverse-slide .mobile-takeaway { padding-top: 10px; font-size: 21px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-inverse-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-inverse-slide .slide__inner { gap: 9px; }
+  .lecture-2 .mobile-inverse-slide .mobile-copy { gap: 8px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-inverse-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-inverse-outputs { grid-template-rows: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-inverse-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-inverse-definition { font-size: 20px; }
+  .lecture-2 .mobile-inverse-inputs > div { grid-template-columns: 1fr; gap: 6px; }
+  .lecture-2 .mobile-inverse-inputs dt, .lecture-2 .mobile-inverse-inputs dd { font-size: 19px; }
+  .lecture-2 .mobile-inverse-inputs dd { gap: 4px 18px; }
+  .lecture-2 .mobile-inverse-wheel { padding: 18px; gap: 14px; }
+  .lecture-2 .mobile-inverse-wheel h3 { font-size: 24px; }
+  .lecture-2 .mobile-inverse-wheel > div { grid-template-columns: 1fr; gap: 4px; }
+  .lecture-2 .mobile-inverse-wheel span { font-size: 16px; }
+  .lecture-2 .mobile-inverse-wheel p, .lecture-2 .mobile-inverse-wheel strong { font-size: 21px; }
+  .lecture-2 .mobile-inverse-message h3 { font-size: 20px; }
+  .lecture-2 .mobile-inverse-fields code { font-size: 19px; }
+  .lecture-2 .mobile-inverse-message p { font-size: 16px; }
+  .lecture-2 .mobile-inverse-slide .mobile-takeaway { font-size: 22px; }
+}
+/* 31페이지 · 몸체 전진 속도를 바닥 좌표의 변화로 연결 */
+.lecture-2 .mobile-pose-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-pose-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-pose-slide .mobile-grid, .lecture-2 .mobile-pose-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-pose-formula dl { display: grid; gap: 8px; margin: 0; }
+.lecture-2 .mobile-pose-formula dl > div { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 18px; align-items: baseline; }
+.lecture-2 .mobile-pose-formula dt { color: #DDE5F5; font-size: 21px; font-weight: 400; }
+.lecture-2 .mobile-pose-formula dd { margin: 0; white-space: nowrap; }
+.lecture-2 .mobile-pose-reading { margin: 0; color: var(--hy-gray); font-size: 23px; line-height: 1.5; }
+.lecture-2 .mobile-pose-reading strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-pose-figure { grid-template-rows: auto minmax(0, 1fr) auto; gap: 12px; }
+.lecture-2 .mobile-pose-figure:has(figcaption) { grid-template-rows: auto minmax(0, 1fr) auto; }
+.lecture-2 .mobile-pose-figure-title { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-pose-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-pose-scroll .mobile-svg { height: 320px; }
+.lecture-2 .mobile-pose-figure figcaption { line-height: 1.5; }
+.lecture-2 .mobile-pose-figure figcaption strong { color: var(--hy-blue); }
+.lecture-2 .mobile-pose-takeaway { padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-pose-takeaway p { margin: 0; color: var(--hy-blue); font-size: 27px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .mobile-pose-takeaway small { display: block; margin-top: 6px; color: #647080; font-size: 19px; line-height: 1.5; }
+.lecture-2 .mobile-pose-takeaway strong { color: var(--accent-ink); font-weight: 600; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-pose-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-pose-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-pose-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-pose-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-pose-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-pose-slide .mobile-formula { padding: 14px 18px; font-size: 25px; line-height: 1.4; }
+  .lecture-2 .mobile-pose-formula dl { gap: 4px; }
+  .lecture-2 .mobile-pose-formula dl > div { grid-template-columns: 158px minmax(0, 1fr); gap: 12px; }
+  .lecture-2 .mobile-pose-formula dt { font-size: 18px; }
+  .lecture-2 .mobile-pose-slide .mobile-formula small { margin-top: 8px; font-size: 16px; }
+  .lecture-2 .mobile-pose-example { padding: 12px 18px; gap: 6px; }
+  .lecture-2 .mobile-pose-example span { font-size: 16px; }
+  .lecture-2 .mobile-pose-example strong { font-size: 23px; }
+  .lecture-2 .mobile-pose-reading { font-size: 19px; }
+  .lecture-2 .mobile-pose-figure { padding: 14px; gap: 8px; }
+  .lecture-2 .mobile-pose-figure:has(figcaption) { gap: 8px; }
+  .lecture-2 .mobile-pose-figure-title, .lecture-2 .mobile-pose-figure figcaption { font-size: 16px; }
+  .lecture-2 .mobile-pose-takeaway { padding-top: 10px; }
+  .lecture-2 .mobile-pose-takeaway p { font-size: 23px; }
+  .lecture-2 .mobile-pose-takeaway small { margin-top: 4px; font-size: 17px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-pose-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-pose-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-pose-slide .mobile-copy { gap: 8px; }
+  .lecture-2 .mobile-pose-slide .mobile-formula { padding-block: 10px; font-size: 23px; line-height: 1.3; }
+  .lecture-2 .mobile-pose-slide .mobile-formula small { margin-top: 6px; font-size: 15px; }
+  .lecture-2 .mobile-pose-example { padding-block: 10px; gap: 4px; }
+  .lecture-2 .mobile-pose-example strong { font-size: 21px; line-height: 1.3; }
+  .lecture-2 .mobile-pose-reading { font-size: 18px; line-height: 1.45; }
+  .lecture-2 .mobile-pose-figure { padding: 12px; }
+  .lecture-2 .mobile-pose-scroll .mobile-svg { height: 245px; }
+  .lecture-2 .mobile-pose-takeaway { padding-top: 8px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-pose-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-pose-scroll .mobile-svg { height: 350px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-pose-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-pose-formula dl { gap: 16px; }
+  .lecture-2 .mobile-pose-formula dl > div { grid-template-columns: 1fr; gap: 2px; }
+  .lecture-2 .mobile-pose-formula dt { font-size: 17px; }
+  .lecture-2 .mobile-pose-example strong { font-size: 21px; }
+  .lecture-2 .mobile-pose-reading { font-size: 20px; }
+  .lecture-2 .mobile-pose-figure { display: grid; overflow: visible; }
+  .lecture-2 .mobile-pose-figure-title { font-size: 17px; }
+  .lecture-2 .mobile-pose-scroll { overflow-x: auto; padding-block: 6px; }
+  .lecture-2 .mobile-pose-scroll .mobile-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .mobile-pose-figure figcaption { position: static; width: auto; margin-top: 0; font-size: 17px; }
+  .lecture-2 .mobile-pose-takeaway p { font-size: 23px; }
+  .lecture-2 .mobile-pose-takeaway small { font-size: 17px; }
+}
+/* 32페이지 · 같은 측정 구간의 바퀴 회전량에서 로봇 이동·회전량으로 */
+.lecture-2 .mobile-increment-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-increment-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-increment-content { display: grid; grid-template-rows: auto minmax(min-content, 1fr); gap: 18px; min-width: 0; }
+.lecture-2 .mobile-increment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; min-width: 0; min-height: min-content; }
+.lecture-2 .mobile-increment-context { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 28px; }
+.lecture-2 .mobile-increment-context p { display: grid; gap: 6px; margin: 0; color: #647080; font-size: 18px; line-height: 1.5; }
+.lecture-2 .mobile-increment-context strong { color: var(--hy-blue); font-size: 25px; font-weight: 600; }
+.lecture-2 .mobile-increment-geometry { text-align: right; }
+.lecture-2 .mobile-increment-geometry b { color: var(--accent-ink); font-size: 22px; font-weight: 500; }
+.lecture-2 .mobile-increment-wheels { display: grid; align-content: center; padding: 18px 24px; border: 2px solid #D8DEE9; border-radius: 16px; }
+.lecture-2 .mobile-increment-wheels h3 { margin: 0 0 10px; font-size: 24px; }
+.lecture-2 .mobile-increment-wheels dl { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 0; }
+.lecture-2 .mobile-increment-wheels dl > div { display: grid; gap: 2px; }
+.lecture-2 .mobile-increment-wheels dt { color: #647080; font-size: 19px; line-height: 1.7; }
+.lecture-2 .mobile-increment-wheels dd { margin: 0; color: var(--hy-blue); font-size: 25px; line-height: 1.7; }
+.lecture-2 .mobile-increment-wheels dd strong { color: var(--accent-ink); white-space: nowrap; }
+.lecture-2 .mobile-increment-wheels > p { margin: 8px 0 0; color: #647080; font-size: 17px; line-height: 1.7; }
+.lecture-2 .mobile-increment-result { gap: 14px; justify-content: center; min-height: min-content; }
+.lecture-2 .mobile-increment-result:last-child { background: var(--accent-tint); }
+.lecture-2 .mobile-increment-result h3 { font-size: 26px; }
+.lecture-2 .mobile-increment-result .mobile-formula { padding: 14px 18px; font-size: 27px; line-height: 1.7; }
+.lecture-2 .mobile-increment-result .mobile-increment-calculation { color: var(--hy-blue); font-size: 26px; line-height: 1.5; }
+.lecture-2 .mobile-increment-calculation strong { white-space: nowrap; }
+.lecture-2 .mobile-increment-result .mobile-increment-meaning { color: #647080; font-size: 19px; line-height: 1.5; }
+.lecture-2 .mobile-increment-meaning b { color: var(--accent-ink); font-weight: 500; }
+.lecture-2 .mobile-increment-takeaway { padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-increment-takeaway p { margin: 0; color: var(--hy-blue); font-size: 26px; line-height: 1.4; }
+.lecture-2 .mobile-increment-takeaway strong { font-weight: 600; }
+.lecture-2 .mobile-increment-takeaway small { display: block; margin-top: 6px; color: #647080; font-size: 18px; line-height: 1.5; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-increment-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-increment-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-increment-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-increment-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-increment-content { gap: 12px; }
+  .lecture-2 .mobile-increment-context p { font-size: 16px; gap: 2px; }
+  .lecture-2 .mobile-increment-context strong { font-size: 21px; }
+  .lecture-2 .mobile-increment-geometry b { font-size: 19px; }
+  .lecture-2 .mobile-increment-wheels { padding: 12px 18px; }
+  .lecture-2 .mobile-increment-wheels h3 { margin-bottom: 6px; font-size: 21px; }
+  .lecture-2 .mobile-increment-wheels dt { font-size: 17px; }
+  .lecture-2 .mobile-increment-wheels dd { font-size: 21px; }
+  .lecture-2 .mobile-increment-wheels > p { margin-top: 4px; font-size: 15px; }
+  .lecture-2 .mobile-increment-result { padding: 16px 18px; gap: 10px; }
+  .lecture-2 .mobile-increment-result h3 { font-size: 23px; }
+  .lecture-2 .mobile-increment-result .mobile-formula { padding: 10px 12px; font-size: 22px; }
+  .lecture-2 .mobile-increment-result .mobile-increment-calculation { font-size: 21px; }
+  .lecture-2 .mobile-increment-result .mobile-increment-meaning { font-size: 17px; }
+  .lecture-2 .mobile-increment-takeaway { padding-top: 10px; }
+  .lecture-2 .mobile-increment-takeaway p { font-size: 22px; }
+  .lecture-2 .mobile-increment-takeaway small { margin-top: 4px; font-size: 16px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-increment-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-increment-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-increment-content { gap: 8px; }
+  .lecture-2 .mobile-increment-result { padding-block: 12px; gap: 8px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-increment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lecture-2 .mobile-increment-wheels { grid-column: 1 / -1; }
+  .lecture-2 .mobile-increment-wheels dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lecture-2 .mobile-increment-result .mobile-formula { font-size: 21px; }
+  .lecture-2 .mobile-increment-result h3 { font-size: 21px; }
+  .lecture-2 .mobile-increment-result .mobile-increment-calculation { font-size: 20px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-increment-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-increment-content { gap: 22px; }
+  .lecture-2 .mobile-increment-grid { grid-template-columns: 1fr; gap: 22px; }
+  .lecture-2 .mobile-increment-context { flex-direction: column; gap: 16px; }
+  .lecture-2 .mobile-increment-context strong { font-size: 23px; }
+  .lecture-2 .mobile-increment-context p { font-size: 17px; }
+  .lecture-2 .mobile-increment-geometry { text-align: left; }
+  .lecture-2 .mobile-increment-geometry b { font-size: 20px; }
+  .lecture-2 .mobile-increment-wheels { padding: 18px; }
+  .lecture-2 .mobile-increment-wheels h3 { font-size: 22px; }
+  .lecture-2 .mobile-increment-wheels dl { grid-template-columns: 1fr; gap: 16px; }
+  .lecture-2 .mobile-increment-wheels dt { font-size: 18px; }
+  .lecture-2 .mobile-increment-wheels dd { font-size: 21px; }
+  .lecture-2 .mobile-increment-wheels > p { margin-top: 12px; font-size: 16px; }
+  .lecture-2 .mobile-increment-result h3 { font-size: 23px; }
+  .lecture-2 .mobile-increment-result .mobile-formula { padding: 12px; font-size: 20px; }
+  .lecture-2 .mobile-increment-result .mobile-increment-calculation { font-size: 21px; }
+  .lecture-2 .mobile-increment-result .mobile-increment-meaning { font-size: 18px; }
+  .lecture-2 .mobile-increment-takeaway p { font-size: 23px; }
+  .lecture-2 .mobile-increment-takeaway small { font-size: 17px; }
+}
+/* 33페이지 · 중간 방향을 구한 뒤 현재 위치·방향에 변화량 누적 */
+.lecture-2 .mobile-midpoint-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-midpoint-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto auto; }
+.lecture-2 .mobile-midpoint-slide .mobile-grid { min-height: min-content; }
+.lecture-2 .mobile-midpoint-steps { display: grid; align-content: center; gap: 20px; min-width: 0; }
+.lecture-2 .mobile-midpoint-direction h3, .lecture-2 .mobile-midpoint-update h3 { margin: 0 0 8px; font-size: 23px; }
+.lecture-2 .mobile-midpoint-direction p { margin: 0; color: var(--accent-ink); font-size: 31px; line-height: 1.7; font-weight: 600; }
+.lecture-2 .mobile-midpoint-update h3 { color: #DDE5F5; font-size: 22px; font-weight: 500; }
+.lecture-2 .mobile-midpoint-update > div { display: grid; gap: 2px; }
+.lecture-2 .mobile-midpoint-update p { margin: 0; font-size: 28px; line-height: 1.7; }
+.lecture-2 .mobile-midpoint-figure:has(figcaption) { grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; }
+.lecture-2 .mobile-midpoint-why { margin: 0; color: var(--hy-gray); font-size: 21px; line-height: 1.5; }
+.lecture-2 .mobile-midpoint-why strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-midpoint-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-midpoint-scroll .mobile-svg { height: 240px; }
+.lecture-2 .mobile-midpoint-example { display: grid; gap: 12px; min-width: 0; padding: 16px 22px; border-radius: 16px; background: var(--accent-tint); }
+.lecture-2 .mobile-midpoint-example > p { display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 0; color: #647080; font-size: 18px; line-height: 1.5; }
+.lecture-2 .mobile-midpoint-example > p strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-midpoint-example dl { display: grid; grid-template-columns: 1.1fr 1fr 1fr .75fr; gap: 24px; margin: 0; }
+.lecture-2 .mobile-midpoint-example dl > div { display: grid; align-content: start; gap: 4px; }
+.lecture-2 .mobile-midpoint-example dt { color: #647080; font-size: 18px; line-height: 1.7; }
+.lecture-2 .mobile-midpoint-example dd { margin: 0; color: var(--hy-blue); font-size: 24px; font-weight: 600; line-height: 1.5; }
+.lecture-2 .mobile-midpoint-example dd b { font-weight: inherit; white-space: nowrap; }
+.lecture-2 .mobile-midpoint-example dl > div:first-child dd { font-size: 21px; font-weight: 400; }
+.lecture-2 .mobile-midpoint-slide .mobile-takeaway strong { color: var(--accent-ink); }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-midpoint-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-midpoint-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-midpoint-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-midpoint-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-midpoint-steps { gap: 12px; }
+  .lecture-2 .mobile-midpoint-direction h3, .lecture-2 .mobile-midpoint-update h3 { margin-bottom: 4px; font-size: 20px; }
+  .lecture-2 .mobile-midpoint-direction p { font-size: 26px; }
+  .lecture-2 .mobile-midpoint-update { padding: 12px 18px; }
+  .lecture-2 .mobile-midpoint-update p { font-size: 23px; }
+  .lecture-2 .mobile-midpoint-figure { padding: 12px 16px; }
+  .lecture-2 .mobile-midpoint-why { font-size: 18px; }
+  .lecture-2 .mobile-midpoint-scroll .mobile-svg { height: 195px; }
+  .lecture-2 .mobile-midpoint-figure figcaption { font-size: 15px; }
+  .lecture-2 .mobile-midpoint-example { padding: 12px 18px; gap: 6px; }
+  .lecture-2 .mobile-midpoint-example > p { font-size: 16px; }
+  .lecture-2 .mobile-midpoint-example dl { gap: 18px; }
+  .lecture-2 .mobile-midpoint-example dt { font-size: 16px; }
+  .lecture-2 .mobile-midpoint-example dd { font-size: 22px; }
+  .lecture-2 .mobile-midpoint-example dl > div:first-child dd { font-size: 19px; }
+  .lecture-2 .mobile-midpoint-slide .mobile-takeaway { padding-top: 10px; font-size: 22px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-midpoint-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-midpoint-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-midpoint-scroll .mobile-svg { height: 160px; }
+  .lecture-2 .mobile-midpoint-figure:has(figcaption) { gap: 6px; }
+  .lecture-2 .mobile-midpoint-steps { gap: 8px; }
+  .lecture-2 .mobile-midpoint-update p { line-height: 1.6; }
+  .lecture-2 .mobile-midpoint-example { padding-block: 10px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-midpoint-slide .mobile-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-midpoint-example dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-midpoint-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-midpoint-direction h3, .lecture-2 .mobile-midpoint-update h3 { font-size: 20px; }
+  .lecture-2 .mobile-midpoint-direction p { font-size: 25px; }
+  .lecture-2 .mobile-midpoint-update { padding: 18px 14px; }
+  .lecture-2 .mobile-midpoint-update p { font-size: 21px; }
+  .lecture-2 .mobile-midpoint-figure { display: grid; overflow: visible; }
+  .lecture-2 .mobile-midpoint-why { font-size: 19px; }
+  .lecture-2 .mobile-midpoint-why br { display: none; }
+  .lecture-2 .mobile-midpoint-scroll { overflow-x: auto; padding-block: 6px; }
+  .lecture-2 .mobile-midpoint-scroll .mobile-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .mobile-midpoint-figure figcaption { position: static; width: auto; margin-top: 0; font-size: 16px; }
+  .lecture-2 .mobile-midpoint-example { padding: 18px; gap: 18px; }
+  .lecture-2 .mobile-midpoint-example > p { flex-direction: column; gap: 6px; font-size: 16px; }
+  .lecture-2 .mobile-midpoint-example dl { grid-template-columns: 1fr; gap: 18px; }
+  .lecture-2 .mobile-midpoint-example dt { font-size: 17px; }
+  .lecture-2 .mobile-midpoint-example dd { font-size: 24px; }
+  .lecture-2 .mobile-midpoint-example dl > div:first-child dd { font-size: 21px; }
+}

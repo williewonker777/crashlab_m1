@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="원하는 움직임을 만들고 유지하는 방법"><title>강의 02 · 제어 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css?v=19"><link rel="stylesheet" href="assets/css/mobile-chapter.css?v=2"><script src="assets/js/mobile-model.js?v=1" defer></script><script src="assets/js/mobile-demo.js?v=1" defer></script><link rel="stylesheet" href="assets/css/arm-chapter.css?v=2"><link rel="stylesheet" href="assets/css/simulation-basics.css?v=2"><script src="assets/js/arm-model.js?v=1" defer></script><script src="assets/js/arm-demo.js?v=2" defer></script><script src="assets/js/deck.js?v=4" defer></script><script src="assets/js/motor-demo.js" defer></script><script src="assets/js/encoder-demo.js?v=2" defer></script><script src="assets/js/pid-model.js" defer></script><script src="assets/js/pid-demo.js" defer></script></head><body class="deck-page lecture-2"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><nav class="lecture-nav" aria-label="강의 이동"><a href="orientation.html" aria-label="오리엔테이션">OT</a><a href="lecture-1.html" aria-label="강의 1">01</a><a href="lecture-2.html" aria-label="강의 2" aria-current="page">02</a><a href="lecture-3.html" aria-label="강의 3">03</a><a href="lecture-4.html" aria-label="강의 4">04</a></nav><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 63</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="63" data-prev-deck="lecture-1.html#slide-last" data-next-deck="lecture-3.html"><section id="slide-1" aria-label="슬라이드 1 / 63: 제어" class="slide slide--title layout-title" data-title="제어" data-layout="L1"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 02</p><h1>제어</h1><p class="slide__lead">원하는 움직임을 만들고 유지하는 방법</p><div class="title-meta"><span>9/18</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">02</div><figure class="title-robot" aria-hidden="true"><img src="assets/img/m1-3q.png" alt=""></figure><ol class="title-index" aria-label="강의 개념 목차"><li><span>01</span><div><strong>모터 제어</strong><small>위치 · 속도 · 토크</small></div></li><li><span>02</span><div><strong>오차 제어</strong><small>PID</small></div></li><li><span>03</span><div><strong>이동 제어</strong><small>차동 구동</small></div></li><li><span>04</span><div><strong>팔 제어</strong><small>순기구학 · 역기구학</small></div></li></ol></div></section>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="원하는 움직임을 만들고 유지하는 방법"><title>강의 02 · 제어 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css?v=19"><link rel="stylesheet" href="assets/css/mobile-chapter.css?v=14"><script src="assets/js/mobile-model.js?v=1" defer></script><script src="assets/js/mobile-demo.js?v=1" defer></script><link rel="stylesheet" href="assets/css/arm-chapter.css?v=2"><link rel="stylesheet" href="assets/css/simulation-basics.css?v=2"><script src="assets/js/arm-model.js?v=1" defer></script><script src="assets/js/arm-demo.js?v=2" defer></script><script src="assets/js/deck.js?v=4" defer></script><script src="assets/js/motor-demo.js" defer></script><script src="assets/js/encoder-demo.js?v=2" defer></script><script src="assets/js/pid-model.js" defer></script><script src="assets/js/pid-demo.js" defer></script></head><body class="deck-page lecture-2"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><nav class="lecture-nav" aria-label="강의 이동"><a href="orientation.html" aria-label="오리엔테이션">OT</a><a href="lecture-1.html" aria-label="강의 1">01</a><a href="lecture-2.html" aria-label="강의 2" aria-current="page">02</a><a href="lecture-3.html" aria-label="강의 3">03</a><a href="lecture-4.html" aria-label="강의 4">04</a></nav><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 63</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="63" data-prev-deck="lecture-1.html#slide-last" data-next-deck="lecture-3.html"><section id="slide-1" aria-label="슬라이드 1 / 63: 제어" class="slide slide--title layout-title" data-title="제어" data-layout="L1"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 02</p><h1>제어</h1><p class="slide__lead">원하는 움직임을 만들고 유지하는 방법</p><div class="title-meta"><span>9/18</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">02</div><figure class="title-robot" aria-hidden="true"><img src="assets/img/m1-3q.png" alt=""></figure><ol class="title-index" aria-label="강의 개념 목차"><li><span>01</span><div><strong>모터 제어</strong><small>위치 · 속도 · 토크</small></div></li><li><span>02</span><div><strong>오차 제어</strong><small>PID</small></div></li><li><span>03</span><div><strong>이동 제어</strong><small>차동 구동</small></div></li><li><span>04</span><div><strong>팔 제어</strong><small>순기구학 · 역기구학</small></div></li></ol></div></section>
 <section id="slide-2" aria-label="슬라이드 2 / 63: 질문" class="slide slide--question layout-question" data-title="질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>제어란 무엇인가?</h2><ol class="question-index" aria-label="강의 개념 목차"><li aria-current="step"><span>01</span><div><strong>모터 제어</strong><small>위치 · 속도 · 토크</small></div></li><li><span>02</span><div><strong>오차 제어</strong><small>PID</small></div></li><li><span>03</span><div><strong>이동 제어</strong><small>차동 구동</small></div></li><li><span>04</span><div><strong>팔 제어</strong><small>순기구학 · 역기구학</small></div></li></ol></div></section>
 <section id="slide-3" aria-label="슬라이드 3 / 63: 제어 루프" class="slide visual-full layout-diagram" data-title="제어 루프" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>제어 루프</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="목표와 현재를 비교한 오차로 제어기가 입력을 정하고 시스템이 움직이면 센서가 현재를 되돌리는 폐루프 블록도"><title>제어 루프</title><defs><marker id="l2s3-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker><marker id="l2s3-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-green" d="M0 0L10 5L0 10Z"/></marker></defs><path class="stroke-green" d="M1060 225 V405 Q1060 425 1040 425 H820" marker-end="url(#l2s3-green)"/><path class="stroke-green" d="M620 425 H400 Q380 425 380 405 V265" marker-end="url(#l2s3-green)"/><g><rect class="node" x="60" y="180" width="200" height="90" rx="16"/><text class="svg-title" x="160" y="210" text-anchor="middle" dominant-baseline="central">목표</text><text class="svg-small" x="160" y="244" text-anchor="middle" dominant-baseline="central">원하는 값 · 명령</text></g><g><rect class="node-green" x="500" y="180" width="200" height="90" rx="16"/><text class="svg-title" x="600" y="210" text-anchor="middle" dominant-baseline="central">제어기</text><text class="svg-small" x="600" y="244" text-anchor="middle" dominant-baseline="central">입력을 정한다</text></g><g><rect class="node" x="780" y="180" width="200" height="90" rx="16"/><text class="svg-title" x="880" y="210" text-anchor="middle" dominant-baseline="central">시스템</text><text class="svg-small" x="880" y="244" text-anchor="middle" dominant-baseline="central">모터 · 관절</text></g><g><rect class="node" x="620" y="380" width="200" height="90" rx="16"/><text class="svg-title" x="720" y="410" text-anchor="middle" dominant-baseline="central">센서</text><text class="svg-small" x="720" y="444" text-anchor="middle" dominant-baseline="central">엔코더 · 현재를 측정</text></g><path class="stroke-blue" d="M260 225 H340" marker-end="url(#l2s3-blue)"/><circle class="fill-white stroke-blue" cx="380" cy="225" r="40"/><text class="svg-blue" x="362" y="212" text-anchor="middle" dominant-baseline="central">+</text><text class="svg-blue" x="380" y="247" text-anchor="middle" dominant-baseline="central">−</text><path class="stroke-blue" d="M420 225 H500" marker-end="url(#l2s3-blue)"/><path class="stroke-blue" d="M700 225 H780" marker-end="url(#l2s3-blue)"/><path class="stroke-blue" d="M980 225 H1060"/><circle class="fill-blue" cx="1060" cy="225" r="8"/><path class="stroke-blue" d="M1060 225 H1140" marker-end="url(#l2s3-blue)"/><circle class="leader-dot" cx="450" cy="225" r="5"/><path class="leader" d="M450 225 V124"/><g class="chip" transform="translate(320 80)"><rect x="0" y="0" width="260" height="44" rx="22"/><text x="130" y="22" text-anchor="middle" dominant-baseline="central">오차 = 목표 − 현재</text></g><circle class="leader-dot" cx="730" cy="225" r="5"/><path class="leader" d="M730 225 V124"/><g class="chip" transform="translate(660 80)"><rect x="0" y="0" width="140" height="44" rx="22"/><text x="70" y="22" text-anchor="middle" dominant-baseline="central">제어 입력</text></g><g class="chip" transform="translate(880 403)"><rect x="0" y="0" width="100" height="44" rx="22"/><text x="50" y="22" text-anchor="middle" dominant-baseline="central">현재</text></g><g class="chip" transform="translate(450 403)"><rect x="0" y="0" width="120" height="44" rx="22"/><text x="60" y="22" text-anchor="middle" dominant-baseline="central">피드백</text></g></svg></div><p class="key-line">제어는 목표와 현재의 차이를 줄이도록 입력을 정하는 일이다.</p></div></section>
 <section id="slide-4" aria-label="슬라이드 4 / 63: 예시 · 어깨 관절을 30°로" class="slide visual-full layout-diagram" data-title="예시 · 어깨 관절을 30°로" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">EXAMPLE</p><h2>예시 · 어깨 관절을 30°로</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="어깨 관절이 지금 10도인 상태에서 모터 입력을 조정해 목표 30도로 가는 과정"><title>A를 B로 조정해 C로</title><defs><marker id="l2ex-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker></defs><rect class="node" x="70" y="200" width="320" height="170" rx="18"/><text class="svg-title" x="230" y="270" text-anchor="middle">지금 10°</text><text class="svg-small" x="230" y="315" text-anchor="middle">측정값 PV</text><rect class="node-green" x="810" y="200" width="320" height="170" rx="18"/><text class="svg-title" x="970" y="270" text-anchor="middle">목표 30°</text><text class="svg-small" x="970" y="315" text-anchor="middle">설정값 SV</text><path class="stroke-blue" d="M400 285H790" marker-end="url(#l2ex-blue)"/><path class="stroke-gray dashed" d="M230 378V424H970V378"/><g class="chip" transform="translate(202 132)"><rect x="0" y="0" width="56" height="44" rx="22"/><text x="28" y="22" text-anchor="middle" dominant-baseline="central">A</text></g><g class="chip" transform="translate(942 132)"><rect x="0" y="0" width="56" height="44" rx="22"/><text x="28" y="22" text-anchor="middle" dominant-baseline="central">C</text></g><g class="chip" transform="translate(456 210)"><rect x="0" y="0" width="288" height="44" rx="22"/><text x="144" y="22" text-anchor="middle" dominant-baseline="central">B · 모터 입력을 조정</text></g><g class="chip" transform="translate(424 448)"><rect x="0" y="0" width="352" height="44" rx="22"/><text x="176" y="22" text-anchor="middle" dominant-baseline="central">제어량 · 관절 각도</text></g></svg></div><p class="key-line">현재 A인 값을 조작량 B로 조정해 목표 C로 만든다.</p></div></section>
@@ -386,15 +386,366 @@
   </div>
 </section>
 <section id="slide-24" aria-label="슬라이드 24 / 63: 질문" class="slide slide--question layout-question" data-title="질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>바퀴 속도로 로봇의 움직임을 계산할 수 있을까?</h2><ol class="question-index" aria-label="강의 개념 목차"><li><span>01</span><div><strong>모터 제어</strong><small>위치 · 속도 · 토크</small></div></li><li><span>02</span><div><strong>오차 제어</strong><small>PID</small></div></li><li aria-current="step"><span>03</span><div><strong>이동 제어</strong><small>차동 구동</small></div></li><li><span>04</span><div><strong>팔 제어</strong><small>순기구학 · 역기구학</small></div></li></ol></div></section>
-<section id="slide-25" aria-label="슬라이드 25 / 63: 차동 구동: 바퀴 둘로 전진과 회전" class="slide mobile-slide " data-title="차동 구동: 바퀴 둘로 전진과 회전" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MODEL</p><h2>차동 구동: 바퀴 둘로 전진과 회전</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">왼쪽·오른쪽 바퀴의<br>속도 차이로 방향을 바꾼다.<small>Differential Drive Kinematics · 차동 구동 기구학</small></div><dl class="mobile-notes"><div><dt>모델</dt><dd>두 구동륜 + 보조 바퀴</dd></div><div><dt>가정</dt><dd>평평한 바닥 · 구름 운동 · 옆 미끄럼 없음</dd></div><div><dt>계산용 치수</dt><dd>r = 0.10 m · L = 0.50 m</dd></div></dl></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="차동 구동 로봇의 두 바퀴와 로봇 좌표축"><title>차동 구동 로봇의 두 바퀴와 로봇 좌표축</title><g transform="translate(390 260) rotate(0) scale(1)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M390 260 L390 70" fill="none" stroke="#006874" stroke-width="5"/><polygon points="390.00,70.00 383.70,84.00 396.30,84.00" fill="#006874"/><text x="410" y="80" font-size="25" fill="#006874" text-anchor="start" font-weight="500">x · 전방</text><path d="M390 260 L195 260" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="195.00,260.00 209.00,266.30 209.00,253.70" fill="#1D2475"/><text x="125" y="242" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">y · 왼쪽</text><circle cx="390" cy="260" r="20" fill="none" stroke="#006874" stroke-width="2"/><circle cx="390" cy="260" r="5" fill="#006874"/><text x="420" y="295" font-size="23" fill="#006874" text-anchor="start" font-weight="500">z · 위쪽</text><path d="M263 395 L517 395" fill="none" stroke="#647080" stroke-width="2"/><path d="M263 380 L263 410" fill="none" stroke="#647080" stroke-width="2"/><path d="M517 380 L517 410" fill="none" stroke="#647080" stroke-width="2"/><text x="390" y="436" font-size="26" fill="#647080" text-anchor="middle" font-weight="500">L: 좌우 바퀴 중심 간격</text><text x="240" y="190" font-size="24" fill="#1D2475" text-anchor="end" font-weight="500">왼쪽</text><text x="540" y="190" font-size="24" fill="#1D2475" text-anchor="start" font-weight="500">오른쪽</text><text x="540" y="350" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">r: 바퀴 반지름</text></svg><figcaption>위에서 본 모습 · 본문의 수치는 실제 로봇 사양이 아닌 계산용 예시</figcaption></figure></div><p class="mobile-takeaway">바퀴의 움직임을 로봇 중심의 전진 속도 v와 회전 속도 ω로 연결한다.</p></div></section>
-<section id="slide-26" aria-label="슬라이드 26 / 63: 바퀴의 각속도를 선속도로 바꾼다" class="slide mobile-slide " data-title="바퀴의 각속도를 선속도로 바꾼다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · WHEEL SPEED</p><h2>바퀴의 각속도를 선속도로 바꾼다</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">v<sub>L</sub> = rω<sub>L</sub><br>v<sub>R</sub> = rω<sub>R</sub><small>ωL·ωR: 바퀴 각속도 [rad/s] · vL·vR: 바퀴 선속도 [m/s]</small></div><div class="mobile-result"><span>r = 0.10 m · 왼쪽 4, 오른쪽 6 rad/s</span><strong>v<sub>L</sub> = 0.4 · v<sub>R</sub> = 0.6 m/s</strong></div><dl class="mobile-notes"><div><dt>rpm이라면</dt><dd>rad/s = rpm × 2π ÷ 60</dd></div><div><dt>모터 축 측정</dt><dd>감속비를 적용해 바퀴 축 회전량으로 환산</dd></div></dl></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="바퀴 반지름과 각속도로 선속도를 구하는 원리"><title>바퀴 반지름과 각속도로 선속도를 구하는 원리</title><circle cx="240" cy="230" r="120" fill="#FFFFFF" stroke="#1D2475" stroke-width="2"/><circle cx="240" cy="230" r="10" fill="#1D2475"/><path d="M240 230 L355 230" fill="none" stroke="#006874" stroke-width="5"/><text x="280" y="210" font-size="34" fill="#006874" text-anchor="start" font-weight="500">r</text><path d="M75 352 L690 352" fill="none" stroke="#647080" stroke-width="2"/><path d="M280 305 L605 305" fill="none" stroke="#006874" stroke-width="5"/><polygon points="605.00,305.00 591.00,298.70 591.00,311.30" fill="#006874"/><text x="500" y="278" font-size="36" fill="#006874" text-anchor="middle" font-weight="500">v = rω</text><path d="M158 134 A126 126 0 0 1 342 165" fill="none" stroke="#1D2475" stroke-width="5"/><path d="M322 147 L342 165" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="342.00,165.00 335.81,150.95 327.38,160.32" fill="#1D2475"/><text x="214" y="78" font-size="28" fill="#1D2475" text-anchor="start" font-weight="500">바퀴 각속도 ω</text><text x="200" y="411" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">회전량(rad) × 반지름(m) = 이동 거리(m)</text></svg></figure></div><p class="mobile-takeaway">바퀴의 rad/s와 로봇의 m/s를 구분한다.</p></div></section>
-<section id="slide-27" aria-label="슬라이드 27 / 63: 평균이 전진을, 차이가 회전을 만든다" class="slide mobile-slide " data-title="평균이 전진을, 차이가 회전을 만든다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MOTION</p><h2>평균이 전진을, 차이가 회전을 만든다</h2></header><div class="mobile-cards"><article class="mobile-card"><h3>직진</h3><svg class="mobile-svg" viewBox="0 0 400 290" role="img" aria-label="직진의 좌우 바퀴 속도"><title>직진의 좌우 바퀴 속도</title><g transform="translate(200 165) rotate(0) scale(0.55)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M130 160 L130 60" fill="none" stroke="#006874" stroke-width="5"/><polygon points="130.00,60.00 123.70,74.00 136.30,74.00" fill="#006874"/><path d="M270 160 L270 60" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="270.00,60.00 263.70,74.00 276.30,74.00" fill="#1D2475"/></svg><p class="mobile-card-formula">vL = vR</p><p>ω = 0</p></article><article class="mobile-card"><h3>왼쪽 선회</h3><svg class="mobile-svg" viewBox="0 0 400 290" role="img" aria-label="왼쪽 선회의 좌우 바퀴 속도"><title>왼쪽 선회의 좌우 바퀴 속도</title><g transform="translate(200 165) rotate(0) scale(0.55)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M130 160 L130 95" fill="none" stroke="#006874" stroke-width="5"/><polygon points="130.00,95.00 123.70,109.00 136.30,109.00" fill="#006874"/><path d="M270 160 L270 30" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="270.00,30.00 263.70,44.00 276.30,44.00" fill="#1D2475"/></svg><p class="mobile-card-formula">vR > vL > 0</p><p>ω > 0</p></article><article class="mobile-card"><h3>제자리 회전</h3><svg class="mobile-svg" viewBox="0 0 400 290" role="img" aria-label="제자리 회전의 좌우 바퀴 속도"><title>제자리 회전의 좌우 바퀴 속도</title><g transform="translate(200 165) rotate(0) scale(0.55)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M130 160 L130 250" fill="none" stroke="#006874" stroke-width="5"/><polygon points="130.00,250.00 136.30,236.00 123.70,236.00" fill="#006874"/><path d="M270 160 L270 70" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="270.00,70.00 263.70,84.00 276.30,84.00" fill="#1D2475"/></svg><p class="mobile-card-formula">vR = −vL</p><p>v = 0</p></article></div><p class="mobile-takeaway">양의 ω는 위에서 볼 때 반시계 회전이다. 양쪽 바퀴 속도가 0이면 정지한다.</p></div></section>
-<section id="slide-28" aria-label="슬라이드 28 / 63: 정기구학: 바퀴 속도 → 로봇 속도" class="slide mobile-slide " data-title="정기구학: 바퀴 속도 → 로봇 속도" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · FORWARD</p><h2>정기구학: 바퀴 속도 → 로봇 속도</h2></header><div class="mobile-cards mobile-cards--two"><article class="mobile-card"><h3>전진 속도 = 두 바퀴의 평균</h3><div class="mobile-formula">v = (v<sub>R</sub> + v<sub>L</sub>) / 2</div><div class="mobile-result"><span>같은 방향으로 움직이는 성분</span><strong>(0.6 + 0.4) / 2 = 0.5 m/s</strong></div></article><article class="mobile-card"><h3>회전 속도 = 속도 차이 / 간격</h3><div class="mobile-formula">ω = (v<sub>R</sub> − v<sub>L</sub>) / L</div><div class="mobile-result"><span>좌우가 다르게 움직이는 성분</span><strong>(0.6 − 0.4) / 0.5 = 0.4 rad/s</strong></div></article></div><p class="mobile-takeaway">같은 속도 차이라면, 바퀴 간격 L이 클수록 더 천천히 회전한다.</p></div></section>
-<section id="slide-29" aria-label="슬라이드 29 / 63: ICC: 한순간의 회전 중심" class="slide mobile-slide " data-title="ICC: 한순간의 회전 중심" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · TURNING RADIUS</p><h2>ICC: 한순간의 회전 중심</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">R = v / ω<small>ICC: Instantaneous Center of Curvature · ω ≠ 0</small></div><dl class="mobile-notes"><div><dt>안쪽 바퀴</dt><dd>vL = ω(R − L/2) = v − Lω/2</dd></div><div><dt>바깥쪽 바퀴</dt><dd>vR = ω(R + L/2) = v + Lω/2</dd></div></dl><div class="mobile-result"><span>v = 0.5 m/s · ω = 0.4 rad/s</span><strong>R = 1.25 m</strong></div></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="좌회전할 때 ICC는 로봇 왼쪽에 있고 바깥쪽 오른 바퀴의 반경이 더 크다"><title>좌회전할 때 ICC는 로봇 왼쪽에 있고 바깥쪽 오른 바퀴의 반경이 더 크다</title><circle cx="115" cy="320" r="9" fill="#006874"/><text x="115" y="370" font-size="32" fill="#006874" text-anchor="middle" font-weight="500">ICC</text><text x="115" y="407" font-size="23" fill="#006874" text-anchor="middle" font-weight="500">순간 회전 중심</text><g transform="translate(495 320) rotate(0) scale(0.63)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M115 320 L575 320" fill="none" stroke="#647080" stroke-width="2" stroke-dasharray="9 8"/><path d="M495 320 A380 380 0 0 0 330 8" fill="none" stroke="#006874" stroke-width="5"/><path d="M347 25 L330 8" fill="none" stroke="#006874" stroke-width="5"/><polygon points="330.00,8.00 335.44,22.35 344.35,13.44" fill="#006874"/><path d="M115 170 L495 170" fill="none" stroke="#006874" stroke-width="2"/><path d="M115 160 L115 185" fill="none" stroke="#006874" stroke-width="2"/><path d="M495 160 L495 185" fill="none" stroke="#006874" stroke-width="2"/><text x="295" y="153" font-size="30" fill="#006874" text-anchor="middle" font-weight="500">R = v / ω</text><path d="M425 415 L565 415" fill="none" stroke="#647080" stroke-width="2"/><text x="495" y="450" font-size="28" fill="#647080" text-anchor="middle" font-weight="500">L</text><path d="M425 265 L425 195" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="425.00,195.00 418.70,209.00 431.30,209.00" fill="#1D2475"/><path d="M565 265 L565 155" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="565.00,155.00 558.70,169.00 571.30,169.00" fill="#1D2475"/><text x="398" y="240" font-size="23" fill="#1D2475" text-anchor="end" font-weight="500">vL</text><text x="585" y="226" font-size="23" fill="#1D2475" text-anchor="start" font-weight="500">vR</text></svg><figcaption>양쪽 바퀴가 전진하며 좌회전하는 경우</figcaption></figure></div><p class="mobile-takeaway">직진(ω = 0)은 유한한 회전 중심이 없고, 제자리 회전(v = 0)은 R = 0이다.</p></div></section>
-<section id="slide-30" aria-label="슬라이드 30 / 63: 역기구학: 로봇 속도 → 바퀴 명령" class="slide mobile-slide " data-title="역기구학: 로봇 속도 → 바퀴 명령" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · INVERSE</p><h2>역기구학: 로봇 속도 → 바퀴 명령</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">ω<sub>L</sub> = (v − Lω/2) / r<br>ω<sub>R</sub> = (v + Lω/2) / r<small>로봇 중심 속도 명령을 각 바퀴의 각속도 명령으로 변환</small></div><dl class="mobile-notes"><div><dt>목표</dt><dd>v = 0.5 m/s · ω = 0.4 rad/s</dd></div><div><dt>치수</dt><dd>r = 0.10 m · L = 0.50 m</dd></div></dl></div><div class="mobile-copy"><div class="mobile-result"><span>왼쪽 바퀴</span><strong>(0.5 − 0.1) / 0.1 = 4 rad/s</strong></div><div class="mobile-result"><span>오른쪽 바퀴</span><strong>(0.5 + 0.1) / 0.1 = 6 rad/s</strong></div><div class="mobile-code-note"><h3>원자료의 /cmd_vel 예시</h3><code>linear.x = 0.5<br>angular.z = 0.4</code><p>geometry_msgs/msg/Twist · 다른 성분은 0</p></div></div></div><p class="mobile-takeaway">정기구학은 움직임을 해석하고, 역기구학은 바퀴에 보낼 명령을 만든다.</p></div></section>
-<section id="slide-31" aria-label="슬라이드 31 / 63: 로봇의 전진을 공간의 x·y로 나눈다" class="slide mobile-slide " data-title="로봇의 전진을 공간의 x·y로 나눈다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · POSE</p><h2>로봇의 전진을 공간의 x·y로 나눈다</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">ẋ = v cos θ<br>ẏ = v sin θ<br>θ̇ = ω<small>(x, y, θ): 기준 좌표계에서 본 로봇 중심의 위치·방향</small></div><dl class="mobile-notes"><div><dt>몸체 기준</dt><dd>옆으로 미끄러지지 않음 → vy = 0</dd></div><div><dt>공간 기준</dt><dd>몸체가 돌아가면 전진도 x·y 변화로 나타남</dd></div></dl><div class="mobile-result"><span>θ = 90° · v = 0.5 m/s</span><strong>ẋ = 0 · ẏ = 0.5 m/s</strong></div></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="로봇 전진 속도 v를 고정 좌표의 x와 y 성분으로 분해한다"><title>로봇 전진 속도 v를 고정 좌표의 x와 y 성분으로 분해한다</title><path d="M95 395 L700 395" fill="none" stroke="#647080" stroke-width="2"/><polygon points="700.00,395.00 686.00,388.70 686.00,401.30" fill="#647080"/><path d="M95 395 L95 55" fill="none" stroke="#647080" stroke-width="2"/><polygon points="95.00,55.00 88.70,69.00 101.30,69.00" fill="#647080"/><text x="702" y="431" font-size="26" fill="#647080" text-anchor="start" font-weight="500">x</text><text x="76" y="45" font-size="26" fill="#647080" text-anchor="start" font-weight="500">y</text><g transform="translate(355 300) rotate(45) scale(0.6)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M355 300 L550 105" fill="none" stroke="#006874" stroke-width="5"/><polygon points="550.00,105.00 535.65,110.44 544.56,119.35" fill="#006874"/><path d="M355 300 L550 300" fill="none" stroke="#1D2475" stroke-width="2" stroke-dasharray="9 8"/><path d="M550 300 L550 105" fill="none" stroke="#1D2475" stroke-width="2" stroke-dasharray="9 8"/><text x="437" y="337" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">v cos θ</text><text x="575" y="215" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">v sin θ</text><text x="497" y="107" font-size="30" fill="#006874" text-anchor="start" font-weight="500">v</text><path d="M425 300 A70 70 0 0 0 405 250" fill="none" stroke="#1D2475" stroke-width="3"/><text x="437" y="280" font-size="29" fill="#1D2475" text-anchor="start" font-weight="500">θ</text></svg></figure></div><p class="mobile-takeaway">몸체의 횡속도 0과 공간 좌표의 y 변화는 서로 다른 뜻이다.</p></div></section>
-<section id="slide-32" aria-label="슬라이드 32 / 63: 바퀴 회전량 → 로봇의 이동량" class="slide mobile-slide " data-title="바퀴 회전량 → 로봇의 이동량" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · ENCODER INCREMENTS</p><h2>바퀴 회전량 → 로봇의 이동량</h2></header><div class="mobile-stack"><div class="mobile-formula">Δs<sub>L</sub> = rΔφ<sub>L</sub>　·　Δs<sub>R</sub> = rΔφ<sub>R</sub><small>Δφ: 엔코더에서 얻은 바퀴 축 회전량 [rad] · 부호와 감속비를 반영</small></div><div class="mobile-cards mobile-cards--two"><article class="mobile-card"><h3>중심의 이동 거리</h3><div class="mobile-formula">Δs = (Δs<sub>R</sub> + Δs<sub>L</sub>) / 2</div><div class="mobile-result"><span>ΔφL = 0.4 rad · ΔφR = 0.6 rad</span><strong>(0.06 + 0.04) / 2 = 0.05 m</strong></div></article><article class="mobile-card"><h3>방향의 변화량</h3><div class="mobile-formula">Δθ = (Δs<sub>R</sub> − Δs<sub>L</sub>) / L</div><div class="mobile-result"><span>r = 0.10 m · L = 0.50 m</span><strong>(0.06 − 0.04) / 0.5 = 0.04 rad</strong></div></article></div></div><p class="mobile-takeaway">속도에 시간을 곱하거나, 엔코더 회전량에서 직접 이동량을 구할 수 있다.</p></div></section>
-<section id="slide-33" aria-label="슬라이드 33 / 63: 이동량을 위치와 방향으로 누적한다" class="slide mobile-slide " data-title="이동량을 위치와 방향으로 누적한다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MIDPOINT INTEGRATION</p><h2>이동량을 위치와 방향으로 누적한다</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">x ← x + Δs cos(θ + Δθ/2)<br>y ← y + Δs sin(θ + Δθ/2)<br>θ ← θ + Δθ<small>원자료의 미드포인트 적분 · x·y는 갱신 전 θ를 사용</small></div><div class="mobile-result"><span>시작 (0, 0, 0) · Δs = 0.05 m · Δθ = 0.04 rad</span><strong>다음 ≈ (0.04999 m, 0.00100 m, 0.04 rad)</strong></div><dl class="mobile-notes"><div><dt>근사식</dt><dd>시간 간격이 작을수록 원호를 잘 근사</dd></div><div><dt>시연의 계산</dt><dd>다음 페이지는 일정한 v·ω의 원호를 정확히 적분</dd></div></dl></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="현재와 다음 방향 사이의 중간 방향으로 작은 이동량을 누적하는 미드포인트 적분"><title>현재와 다음 방향 사이의 중간 방향으로 작은 이동량을 누적하는 미드포인트 적분</title><path d="M90 380 L720 380" fill="none" stroke="#647080" stroke-width="2"/><polygon points="720.00,380.00 706.00,373.70 706.00,386.30" fill="#647080"/><path d="M90 380 L90 55" fill="none" stroke="#647080" stroke-width="2"/><polygon points="90.00,55.00 83.70,69.00 96.30,69.00" fill="#647080"/><circle cx="245" cy="330" r="10" fill="#1D2475"/><circle cx="568" cy="171" r="10" fill="#006874"/><path d="M245 330 Q420 320 568 171" fill="none" stroke="#006874" stroke-width="5"/><path d="M245 330 L375 310" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="375.00,310.00 360.20,305.90 362.12,318.36" fill="#1D2475"/><path d="M568 171 L650 60" fill="none" stroke="#006874" stroke-width="5"/><polygon points="650.00,60.00 636.61,67.52 646.75,75.00" fill="#006874"/><path d="M391 271 L507 190" fill="none" stroke="#006874" stroke-width="5"/><polygon points="507.00,190.00 491.91,192.85 499.13,203.18" fill="#006874"/><text x="207" y="365" font-size="24" fill="#1D2475" text-anchor="start" font-weight="500">현재 (x, y, θ)</text><text x="470" y="130" font-size="25" fill="#006874" text-anchor="start" font-weight="500">다음 상태</text><text x="365" y="233" font-size="25" fill="#006874" text-anchor="start" font-weight="500">중간 방향</text><text x="330" y="170" font-size="29" fill="#006874" text-anchor="start" font-weight="500">θ + Δθ/2</text><text x="125" y="432" font-size="26" fill="#647080" text-anchor="start" font-weight="500">작은 구간의 이동을 반복해서 누적</text></svg></figure></div><p class="mobile-takeaway">위치는 매 순간의 이동을 쌓아 만든 추정값이다.</p></div></section>
+<section id="slide-25" aria-label="슬라이드 25 / 63: 차동 구동: 바퀴 둘로 전진과 회전" class="slide mobile-slide mobile-dimensions-slide" data-title="차동 구동: 바퀴 둘로 전진과 회전" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MODEL</p><h2>차동 구동: 바퀴 둘로 전진과 회전</h2></header>
+    <div class="mobile-grid">
+      <div class="mobile-copy">
+        <div class="mobile-formula">왼쪽·오른쪽 바퀴의<br>속도 차이로 방향을 바꾼다.<small>두 구동륜 + 보조 바퀴 · 미끄럼 없는 평면 주행</small></div>
+        <div class="mobile-dimension-example">
+          <header><h3>예제 로봇의 크기</h3></header>
+          <dl class="mobile-dimension-values">
+            <div><dt>바퀴 반지름 <b>r</b></dt><dd><strong>0.10 m</strong></dd></div>
+            <div><dt>바퀴 중심 간격 <b>L</b></dt><dd><strong>0.50 m</strong></dd></div>
+          </dl>
+        </div>
+      </div>
+      <figure class="mobile-visual mobile-dimension-figure">
+        <p class="mobile-scroll-hint">옆으로 밀어 M1 사진과 모델 보기 →</p>
+        <div class="mobile-dimension-scroll" data-horizontal-scroll tabindex="0" role="region" aria-label="앨리스 M1 이동부 사진과 바퀴 모델. 좁은 화면에서는 좌우로 스크롤할 수 있습니다.">
+          <svg class="mobile-svg" viewBox="0 0 800 430" role="img" aria-labelledby="mobile-dimension-title mobile-dimension-desc">
+            <title id="mobile-dimension-title">앨리스 M1 이동부 사진과 바퀴 간격·반지름 모델</title>
+            <desc id="mobile-dimension-desc">왼쪽은 실제 앨리스 M1의 이동부 사진이다. 오른쪽 개념도에서 L은 좌우 바퀴 중심 사이, r은 바퀴 중심부터 테두리까지의 길이다. 표의 수치는 실제 M1 사양이 아닌 예제용 가정값이다.</desc>
+            <text x="207" y="38" text-anchor="middle" font-size="30" font-weight="600" fill="#1D2475">앨리스 M1 이동부</text>
+            <svg x="0" y="68" width="420" height="360" viewBox="275 900 550 490" aria-hidden="true">
+              <image href="assets/img/m1-3q.png" width="1112" height="1400"/>
+            </svg>
+            <path d="M432 62V424" stroke="#D8DEE9" stroke-width="2"/>
+            <text x="622" y="38" text-anchor="middle" font-size="28" font-weight="600" fill="#1D2475">위에서 본 모델</text>
+            <rect x="550" y="105" width="140" height="124" rx="20" fill="#FFFFFF" stroke="#D8DEE9" stroke-width="2"/>
+            <rect x="505" y="122" width="40" height="84" rx="10" fill="#1D2475"/>
+            <rect x="695" y="122" width="40" height="84" rx="10" fill="#1D2475"/>
+            <circle cx="620" cy="212" r="10" fill="#B7DCE0"/>
+            <path d="M620 147V69" stroke="#006874" stroke-width="5"/>
+            <path d="M612 80L620 66L628 80" fill="none" stroke="#006874" stroke-width="4"/>
+            <text x="642" y="86" font-size="23" fill="#006874">앞</text>
+            <text x="525" y="108" text-anchor="middle" font-size="23" fill="#1D2475">왼쪽</text>
+            <text x="715" y="108" text-anchor="middle" font-size="23" fill="#1D2475">오른쪽</text>
+            <circle cx="525" cy="164" r="6" fill="#FFFFFF"/>
+            <circle cx="715" cy="164" r="6" fill="#FFFFFF"/>
+            <path d="M525 174V265 M715 174V265" stroke="#006874" stroke-width="2" stroke-dasharray="5 5"/>
+            <path d="M525 255H715 M525 245V265 M715 245V265" stroke="#006874" stroke-width="4"/>
+            <text x="620" y="299" text-anchor="middle" font-size="29" font-weight="600" fill="#006874">중심 간격 L</text>
+            <path d="M480 324H768" stroke="#D8DEE9" stroke-width="2"/>
+            <circle cx="565" cy="381" r="42" fill="#FFFFFF" stroke="#1D2475" stroke-width="6"/>
+            <path d="M565 381H603" stroke="#006874" stroke-width="5"/>
+            <path d="M596 373L607 381L596 389" fill="none" stroke="#006874" stroke-width="4"/>
+            <circle cx="565" cy="381" r="6" fill="#1D2475"/>
+            <text x="638" y="369" font-size="21" fill="#647080">옆에서 본 바퀴</text>
+            <text x="638" y="408" font-size="29" font-weight="600" fill="#006874">반지름 r</text>
+          </svg>
+        </div>
+        <figcaption>r·L은 예제용 가정값 · 실제 M1 사양 아님</figcaption>
+      </figure>
+    </div>
+    <p class="mobile-takeaway">바퀴의 크기와 간격으로 로봇의 이동을 계산한다.</p>
+  </div>
+</section>
+<section id="slide-26" aria-label="슬라이드 26 / 63: 바퀴의 각속도를 선속도로 바꾼다" class="slide mobile-slide mobile-wheel-speed-slide" data-title="바퀴의 각속도를 선속도로 바꾼다" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · WHEEL SPEED</p><h2>바퀴의 각속도를 선속도로 바꾼다</h2></header>
+    <div class="mobile-grid">
+      <div class="mobile-copy">
+        <div class="mobile-formula">
+          <div class="mobile-wheel-formulas"><span>v<sub>L</sub> = rω<sub>L</sub></span><span>v<sub>R</sub> = rω<sub>R</sub></span></div>
+          <small><span>ω: 바퀴 각속도 [rad/s]</span><span>v: 바퀴 선속도 [m/s]</span></small>
+        </div>
+        <div class="mobile-result mobile-wheel-example">
+          <span>바퀴 반지름 r = 0.10 m</span>
+          <dl>
+            <div><dt>왼쪽 4 rad/s</dt><dd>v<sub>L</sub> = 0.10 × 4 = <strong>0.4 m/s</strong></dd></div>
+            <div><dt>오른쪽 6 rad/s</dt><dd>v<sub>R</sub> = 0.10 × 6 = <strong>0.6 m/s</strong></dd></div>
+          </dl>
+        </div>
+        <dl class="mobile-notes mobile-wheel-notes">
+          <div><dt>rpm으로 받으면</dt><dd>2π ÷ 60을 곱해 rad/s로 바꾼다.<small>rpm은 1분 동안 회전하는 횟수</small></dd></div>
+          <div><dt>모터 속도라면</dt><dd>감속비로 나눠 바퀴 각속도를 구한다.<small>10:1 감속이면 바퀴 각속도는 모터의 1/10</small></dd></div>
+        </dl>
+      </div>
+      <figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="바퀴 반지름과 각속도로 선속도를 구하는 원리"><title>바퀴 반지름과 각속도로 선속도를 구하는 원리</title><circle cx="240" cy="230" r="120" fill="#FFFFFF" stroke="#1D2475" stroke-width="2"/><circle cx="240" cy="230" r="10" fill="#1D2475"/><path d="M240 230 L355 230" fill="none" stroke="#006874" stroke-width="5"/><text x="280" y="210" font-size="34" fill="#006874" text-anchor="start" font-weight="500">r</text><path d="M75 352 L690 352" fill="none" stroke="#647080" stroke-width="2"/><path d="M280 305 L605 305" fill="none" stroke="#006874" stroke-width="5"/><polygon points="605.00,305.00 591.00,298.70 591.00,311.30" fill="#006874"/><text x="500" y="278" font-size="36" fill="#006874" text-anchor="middle" font-weight="500">v = rω</text><path d="M158 134 A126 126 0 0 1 342 165" fill="none" stroke="#1D2475" stroke-width="5"/><path d="M322 147 L342 165" fill="none" stroke="#1D2475" stroke-width="5"/><polygon points="342.00,165.00 335.81,150.95 327.38,160.32" fill="#1D2475"/><text x="214" y="78" font-size="28" fill="#1D2475" text-anchor="start" font-weight="500">바퀴 각속도 ω</text><text x="400" y="411" font-size="25" fill="#1D2475" text-anchor="middle" font-weight="500">바퀴 각속도 × 반지름 = 바퀴 선속도</text></svg></figure>
+    </div>
+    <p class="mobile-takeaway">바퀴가 도는 속도(rad/s)를 이동하는 속도(m/s)로 바꾼다.</p>
+  </div>
+</section>
+<section id="slide-27" aria-label="슬라이드 27 / 63: 평균이 전진을, 차이가 회전을 만든다" class="slide mobile-slide mobile-motion-slide" data-title="평균이 전진을, 차이가 회전을 만든다" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MOTION</p><h2>평균이 전진을, 차이가 회전을 만든다</h2></header>
+    <div class="mobile-motion-content">
+      <div class="mobile-motion-legend"><span>위에서 본 모습 · 위쪽이 전방</span><span class="mobile-motion-wheel-key">바퀴 속도</span><span class="mobile-motion-path-key">로봇의 이동·회전</span><span>반시계 회전이 +ω</span></div>
+      <div class="mobile-cards">
+      <article class="mobile-motion-card">
+        <h3>직진</h3>
+        <svg class="mobile-svg" viewBox="0 0 400 245" role="img" aria-labelledby="motion-straight-title motion-straight-desc">
+            <title id="motion-straight-title">직진</title><desc id="motion-straight-desc">두 바퀴는 같은 길이의 전방 화살표다. 로봇 중심의 경로는 앞으로 뻗는 직선이다.</desc>
+            <defs>
+              <marker id="motion-straight-wheel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#1D2475"/></marker>
+              <marker id="motion-straight-path" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#006874"/></marker>
+            </defs>
+            <rect x="161" y="99" width="78" height="100" rx="18" fill="#FFFFFF" stroke="#CCD6E0" stroke-width="2"/>
+            <rect x="134" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <rect x="242" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <path d="M192 117L200 107L208 117" fill="none" stroke="#647080" stroke-width="3"/>
+            <path d="M200 149V24" fill="none" stroke="#006874" stroke-width="6" stroke-linecap="round" marker-end="url(#motion-straight-path)"/>
+            <circle cx="200" cy="149" r="7" fill="#006874" stroke="#FFFFFF" stroke-width="2"/>
+            <path d="M146 118V58" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-straight-wheel)"/>
+            <path d="M254 118V58" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-straight-wheel)"/>
+            <text x="112" y="210" text-anchor="end" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">L</tspan></text>
+            <text x="288" y="210" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">R</tspan></text>
+          </svg>
+        <p class="mobile-motion-copy">두 바퀴가 같은 속도로 <br>앞으로 구르면 직진한다.</p>
+        <dl class="mobile-motion-equations">
+          <div><dt>바퀴</dt><dd>v<sub>L</sub> = v<sub>R</sub> &gt; 0</dd></div>
+          <div><dt>로봇</dt><dd>v &gt; 0, ω = 0</dd></div>
+        </dl>
+      </article>
+      <article class="mobile-motion-card">
+        <h3>왼쪽 선회</h3>
+        <svg class="mobile-svg" viewBox="0 0 400 245" role="img" aria-labelledby="motion-left-title motion-left-desc">
+            <title id="motion-left-title">왼쪽 선회</title><desc id="motion-left-desc">두 바퀴가 모두 앞으로 구르며 오른쪽이 더 빠르다. 로봇 중심의 경로는 전방에서 왼쪽으로 휘어지는 원호다.</desc>
+            <defs>
+              <marker id="motion-left-wheel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#1D2475"/></marker>
+              <marker id="motion-left-path" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#006874"/></marker>
+            </defs>
+            <rect x="161" y="99" width="78" height="100" rx="18" fill="#FFFFFF" stroke="#CCD6E0" stroke-width="2"/>
+            <rect x="134" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <rect x="242" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <path d="M192 117L200 107L208 117" fill="none" stroke="#647080" stroke-width="3"/>
+            <path d="M200 149A110 110 0 0 0 90 39" fill="none" stroke="#006874" stroke-width="6" stroke-linecap="round" marker-end="url(#motion-left-path)"/>
+            <circle cx="200" cy="149" r="7" fill="#006874" stroke="#FFFFFF" stroke-width="2"/>
+            <path d="M146 118V88" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-left-wheel)"/>
+            <path d="M254 118V58" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-left-wheel)"/>
+            <text x="112" y="210" text-anchor="end" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">L</tspan></text>
+            <text x="288" y="210" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">R</tspan></text>
+          </svg>
+        <p class="mobile-motion-copy">오른쪽 바퀴가 더 빠르면 <br>느린 왼쪽으로 휘어 움직인다.</p>
+        <dl class="mobile-motion-equations">
+          <div><dt>바퀴</dt><dd>v<sub>R</sub> &gt; v<sub>L</sub> &gt; 0</dd></div>
+          <div><dt>로봇</dt><dd>v &gt; 0, ω &gt; 0</dd></div>
+        </dl>
+      </article>
+      <article class="mobile-motion-card">
+        <h3>제자리 회전</h3>
+        <svg class="mobile-svg" viewBox="0 0 400 245" role="img" aria-labelledby="motion-spin-title motion-spin-desc">
+            <title id="motion-spin-title">제자리 회전</title><desc id="motion-spin-desc">왼쪽 바퀴는 뒤로, 오른쪽 바퀴는 앞으로 같은 빠르기로 구른다. 로봇 중심점은 고정되며 원형 화살표는 반시계 회전을 나타낸다.</desc>
+            <defs>
+              <marker id="motion-spin-wheel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#1D2475"/></marker>
+              <marker id="motion-spin-path" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#006874"/></marker>
+            </defs>
+            <rect x="161" y="99" width="78" height="100" rx="18" fill="#FFFFFF" stroke="#CCD6E0" stroke-width="2"/>
+            <rect x="134" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <rect x="242" y="124" width="24" height="50" rx="7" fill="#1D2475"/>
+            <path d="M192 117L200 107L208 117" fill="none" stroke="#647080" stroke-width="3"/>
+            <path d="M305 149A105 105 0 0 0 95 149" fill="none" stroke="#006874" stroke-width="6" stroke-linecap="round" marker-end="url(#motion-spin-path)"/>
+            <circle cx="200" cy="149" r="7" fill="#006874" stroke="#FFFFFF" stroke-width="2"/>
+            <path d="M146 180V228" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-spin-wheel)"/>
+            <path d="M254 118V70" stroke="#1D2475" stroke-width="5" marker-end="url(#motion-spin-wheel)"/>
+            <text x="112" y="210" text-anchor="end" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">L</tspan></text>
+            <text x="288" y="210" font-size="23" fill="#1D2475">v<tspan baseline-shift="sub" font-size="16">R</tspan></text>
+          </svg>
+        <p class="mobile-motion-copy">같은 빠르기로 반대로 굴러 <br>중심은 그대로, 방향만 바뀐다.</p>
+        <dl class="mobile-motion-equations">
+          <div><dt>바퀴</dt><dd>v<sub>R</sub> = −v<sub>L</sub> &gt; 0</dd></div>
+          <div><dt>로봇</dt><dd>v = 0, ω &gt; 0</dd></div>
+        </dl>
+      </article>
+      </div>
+    </div>
+    <div class="mobile-motion-definitions">
+      <p><b>v<sub>L</sub>, v<sub>R</sub></b> 좌우 바퀴 선속도</p>
+      <p><b>v</b> 로봇 중심의 이동 속도</p>
+      <p><b>ω</b> 로봇 몸체의 회전 속도</p>
+    </div>
+  </div>
+</section>
+<section id="slide-28" aria-label="슬라이드 28 / 63: 정기구학: 바퀴 속도 → 로봇 속도" class="slide mobile-slide mobile-forward-slide" data-title="정기구학: 바퀴 속도 → 로봇 속도" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · FORWARD</p><h2>정기구학: 바퀴 속도 → 로봇 속도</h2><p class="mobile-forward-definition">바퀴의 속도를 알 때, <strong>로봇의 이동·회전 속도를 구하는 것</strong>이 정기구학이다.</p></header>
+    <div class="mobile-forward-inputs" role="group" aria-label="예제 계산에 사용하는 바퀴 속도와 간격">
+      <span>왼쪽 <b>v<sub>L</sub> = 0.4 m/s</b></span>
+      <span>오른쪽 <b>v<sub>R</sub> = 0.6 m/s</b></span>
+      <span>바퀴 중심 간격 <b>L = 0.50 m</b></span>
+    </div>
+    <div class="mobile-cards mobile-cards--two">
+      <article class="mobile-card">
+        <h3>이동 속도 = 두 바퀴의 평균</h3>
+        <div class="mobile-formula">v = (v<sub>R</sub> + v<sub>L</sub>) / 2</div>
+        <div class="mobile-result"><span>로봇 중심이 앞으로 이동하는 속도</span><strong>(0.6 + 0.4) / 2 = <b class="mobile-forward-value">0.5 m/s</b></strong></div>
+      </article>
+      <article class="mobile-card">
+        <h3>회전 속도 = 속도 차이 / 간격&nbsp;L</h3>
+        <div class="mobile-formula">ω = (v<sub>R</sub> − v<sub>L</sub>) / L</div>
+        <div class="mobile-result"><span>로봇 몸체의 방향이 바뀌는 속도</span><strong>(0.6 − 0.4) / 0.50 = <b class="mobile-forward-value">0.4 rad/s</b></strong></div>
+      </article>
+    </div>
+    <p class="mobile-takeaway">0.5 m/s로 이동하면서 왼쪽으로 0.4 rad/s로 회전한다.<small>같은 속도 차이라면, 바퀴 간격 L이 클수록 더 천천히 회전한다.</small></p>
+  </div>
+</section>
+<section id="slide-29" aria-label="슬라이드 29 / 63: ICC와 R: 원하는 곡선으로 주행하기" class="slide mobile-slide mobile-icc-slide" data-title="ICC와 R: 원하는 곡선으로 주행하기" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">ICC · Instantaneous Center of Curvature</p><h2>ICC와 R: 원하는 곡선으로 주행하기</h2></header>
+    <div class="mobile-grid">
+      <div class="mobile-copy">
+        <p class="mobile-icc-definition">ICC는 <strong>현재 원운동의 중심</strong>, R은 그곳에서 로봇 중심까지의 거리다.</p>
+        <dl class="mobile-icc-uses">
+          <div><dt>현재 회전 반경 해석</dt><dd>R = v / ω</dd></div>
+          <div><dt>원하는 곡선 주행</dt><dd>ω = v / R</dd></div>
+        </dl>
+        <div class="mobile-result mobile-icc-goal"><span>목표: 반경 1.25&nbsp;m로 왼쪽 선회, v = 0.5&nbsp;m/s</span><strong>ω = 0.5 / 1.25 = <b>0.4 rad/s</b></strong></div>
+        <dl class="mobile-notes mobile-icc-radii mobile-icc-radii--compact">
+          <div><dt>안쪽 · 왼쪽</dt><dd>v<sub>L</sub> = ω(R − L/2)</dd></div>
+          <div><dt>바깥쪽 · 오른쪽</dt><dd>v<sub>R</sub> = ω(R + L/2)</dd></div>
+        </dl>
+      </div>
+      <figure class="mobile-visual mobile-icc-figure">
+        <p class="mobile-scroll-hint">옆으로 밀어 세 회전 반경 비교하기 →</p>
+        <div class="mobile-icc-scroll" data-horizontal-scroll tabindex="0" role="region" aria-label="ICC와 세 회전 반경 그림. 좁은 화면에서는 좌우로 스크롤할 수 있습니다.">
+          <svg class="mobile-svg" viewBox="0 0 800 440" role="img" aria-labelledby="icc-diagram-title icc-diagram-desc">
+            <title id="icc-diagram-title">ICC에서 안쪽 바퀴, 로봇 중심, 바깥쪽 바퀴까지의 거리</title>
+            <desc id="icc-diagram-desc">ICC는 Instantaneous Center of Curvature의 약자다. 위에서 본 좌회전 예시에서 왼쪽 바퀴는 반경 R − L/2, 로봇 중심은 R, 오른쪽 바퀴는 R + L/2인 동심 원호를 따라 움직인다. 아래 치수선은 각 중심까지의 거리를 나타낸다. 같은 회전각 동안 바깥쪽 바퀴가 더 멀리 이동한다.</desc>
+            <defs>
+              <marker id="icc-wheel-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#1D2475"/></marker>
+              <marker id="icc-center-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#006874"/></marker>
+            </defs>
+            <rect x="420" y="205" width="140" height="100" rx="18" fill="#FFFFFF" stroke="#CCD6E0" stroke-width="2"/>
+            <rect x="394" y="235" width="32" height="50" rx="9" fill="#1D2475"/>
+            <rect x="554" y="235" width="32" height="50" rx="9" fill="#1D2475"/>
+            <path d="M482 228L490 217L498 228" fill="none" stroke="#647080" stroke-width="3"/>
+            <path d="M90 260H600" fill="none" stroke="#A8B3C0" stroke-width="2" stroke-dasharray="6 6"/>
+            <path d="M410 260A320 320 0 0 0 367.128 100.000" fill="none" stroke="#1D2475" stroke-width="3" marker-end="url(#icc-wheel-arrow)"/>
+            <path d="M490 260A400 400 0 0 0 436.410 60.000" fill="none" stroke="#006874" stroke-width="5" marker-end="url(#icc-center-arrow)"/>
+            <path d="M570 260A480 480 0 0 0 505.692 20.000" fill="none" stroke="#1D2475" stroke-width="3" marker-end="url(#icc-wheel-arrow)"/>
+            <circle cx="90" cy="260" r="8" fill="#006874"/>
+            <text x="90" y="232" text-anchor="middle" font-size="30" font-weight="600" fill="#006874">ICC</text>
+            <circle cx="410" cy="260" r="5" fill="#FFFFFF"/>
+            <circle cx="490" cy="260" r="7" fill="#006874" stroke="#FFFFFF" stroke-width="2"/>
+            <circle cx="570" cy="260" r="5" fill="#FFFFFF"/>
+            <path d="M410 229V184 M570 229V161.5" fill="none" stroke="#1D2475" stroke-width="5" marker-end="url(#icc-wheel-arrow)"/>
+            <text x="381" y="216" text-anchor="end" font-size="25" fill="#1D2475">v<tspan baseline-shift="sub" font-size="17">L</tspan></text>
+            <text x="603" y="198" font-size="25" fill="#1D2475">v<tspan baseline-shift="sub" font-size="17">R</tspan></text>
+            <text x="635" y="50" text-anchor="middle" font-size="23" fill="#647080">위에서 본 좌회전</text>
+            <path d="M90 271V434 M410 287V340 M490 274V387 M570 287V434" fill="none" stroke="#A8B3C0" stroke-width="2" stroke-dasharray="5 5"/>
+            <path d="M90 330H410 M90 322V338 M410 322V338" fill="none" stroke="#1D2475" stroke-width="3"/>
+            <text x="250" y="316" text-anchor="middle" font-size="27" fill="#1D2475">안쪽 R − L/2</text>
+            <path d="M90 377H490 M90 369V385 M490 369V385" fill="none" stroke="#006874" stroke-width="4"/>
+            <text x="290" y="363" text-anchor="middle" font-size="28" font-weight="600" fill="#006874">로봇 중심 R</text>
+            <path d="M90 424H570 M90 416V432 M570 416V432" fill="none" stroke="#1D2475" stroke-width="3"/>
+            <text x="330" y="410" text-anchor="middle" font-size="27" fill="#1D2475">바깥쪽 R + L/2</text>
+          </svg>
+        </div>
+      </figure>
+    </div>
+    <div class="mobile-icc-takeaway">
+      <p>원하는 반경 R → 로봇 속도 (v, ω) → 바퀴 명령 <span class="mobile-icc-next">다음: 역기구학</span></p>
+      <div class="mobile-icc-cases"><span>직진: v ≠ 0, ω = 0 → 유한한 회전 중심 없음</span><span>제자리 회전: v = 0, ω ≠ 0 → R = 0</span></div>
+    </div>
+  </div>
+</section>
+<section id="slide-30" aria-label="슬라이드 30 / 63: 역기구학: 로봇 속도 → 바퀴 명령" class="slide mobile-slide mobile-inverse-slide" data-title="역기구학: 로봇 속도 → 바퀴 명령" data-layout="L4">
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · INVERSE</p><h2>역기구학: 로봇 속도 → 바퀴 명령</h2></header>
+    <div class="mobile-grid">
+      <div class="mobile-copy">
+        <p class="mobile-inverse-definition">원하는 이동·회전 속도로 <strong>각 바퀴의 각속도 명령</strong>을 구한다.</p>
+        <dl class="mobile-notes mobile-inverse-inputs">
+          <div><dt>앞의 주행 목표</dt><dd><span>v = 0.5&nbsp;m/s</span><span>ω = 0.4&nbsp;rad/s</span></dd></div>
+          <div><dt>바퀴 크기·간격</dt><dd><span>r = 0.10&nbsp;m</span><span>L = 0.50&nbsp;m</span></dd></div>
+        </dl>
+        <div class="mobile-formula">ω<sub>L</sub> = (v − Lω/2) / r<br>ω<sub>R</sub> = (v + Lω/2) / r<small>좌우 선속도에 빼고 더할 값: Lω/2 = 0.10 m/s</small></div>
+        <div class="mobile-code-note mobile-inverse-message">
+          <h3>/cmd_vel 예시: 로봇 속도 명령</h3>
+          <div class="mobile-inverse-fields"><code>linear.x → v</code><code>angular.z → ω</code></div>
+          <p>원자료의 Twist 메시지 예시 · 다른 성분은 0</p>
+        </div>
+      </div>
+      <div class="mobile-inverse-outputs">
+        <article class="mobile-result mobile-inverse-wheel">
+          <h3>왼쪽 바퀴</h3>
+          <div><span>① 선속도</span><p>v<sub>L</sub> = 0.5 − 0.10 = <b>0.4 m/s</b></p></div>
+          <div><span>② 각속도</span><strong>ω<sub>L</sub> = 0.4 / 0.10 = <b>4 rad/s</b></strong></div>
+        </article>
+        <article class="mobile-result mobile-inverse-wheel">
+          <h3>오른쪽 바퀴</h3>
+          <div><span>① 선속도</span><p>v<sub>R</sub> = 0.5 + 0.10 = <b>0.6 m/s</b></p></div>
+          <div><span>② 각속도</span><strong>ω<sub>R</sub> = 0.6 / 0.10 = <b>6 rad/s</b></strong></div>
+        </article>
+      </div>
+    </div>
+    <p class="mobile-takeaway">로봇 속도 명령 (v, ω) → 역기구학 → 바퀴 각속도 명령 (ω<sub>L</sub>, ω<sub>R</sub>)</p>
+  </div>
+</section>
+<section id="slide-31" aria-label="슬라이드 31 / 63: 로봇의 속도로 위치 변화를 계산한다" class="slide mobile-slide mobile-pose-slide" data-title="로봇의 속도로 위치 변화를 계산한다" data-layout="L4"><div class="slide__inner">
+<header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · POSE</p><h2>로봇의 속도로 위치 변화를 계산한다</h2></header>
+<div class="mobile-grid"><div class="mobile-copy">
+<div class="mobile-formula mobile-pose-formula"><dl>
+<div><dt>x 방향 속도</dt><dd>ẋ = v cos θ</dd></div>
+<div><dt>y 방향 속도</dt><dd>ẏ = v sin θ</dd></div>
+<div><dt>방향이 변하는 속도</dt><dd>θ̇ = ω</dd></div>
+</dl><small>x·y는 로봇 중심의 위치, θ는 바라보는 방향이다.<br>기호 위의 점( ˙ )은 시간에 따른 변화율을 뜻한다.</small></div>
+<div class="mobile-result mobile-pose-example"><span>그림의 현재 방향 θ = 45° · v = 0.5&nbsp;m/s</span>
+<strong>ẋ = 0.5 cos 45° ≈ 0.35&nbsp;m/s</strong>
+<strong>ẏ = 0.5 sin 45° ≈ 0.35&nbsp;m/s</strong></div>
+<p class="mobile-pose-reading">로봇은 자기 앞쪽으로 전진하지만,<br><strong>바닥 기준으로는 x·y가 함께 증가한다.</strong></p>
+</div><figure class="mobile-visual mobile-pose-figure"><p class="mobile-pose-figure-title">위에서 본 모습 · 바닥에 고정된 x·y축</p>
+<div class="mobile-pose-scroll" data-horizontal-scroll tabindex="0" role="region" aria-label="전진 속도를 바닥 좌표로 나누는 그림"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="40 0 740 375" role="img" aria-label="바닥의 +x축에서 반시계로 45도인 방향으로 전진하는 로봇. 전진 속도 0.5 m/s를 x와 y 방향으로 나누면 각각 약 0.35 m/s다.">
+<title>45도 방향의 전진 속도를 바닥의 x·y 방향 속도로 나누기</title>
+<defs><marker id="pose31-axis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#647080"/></marker><marker id="pose31-forward" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#006874"/></marker></defs>
+<path d="M100 330 H710 M100 330 V50" fill="none" stroke="#647080" stroke-width="2" marker-end="url(#pose31-axis)"/>
+<path d="M695 330 H710" fill="none" stroke="#647080" stroke-width="2" marker-end="url(#pose31-axis)"/>
+<text x="712" y="358" font-size="26" fill="#647080">+x</text><text x="77" y="36" font-size="26" fill="#647080">+y</text>
+<g transform="translate(320 245) rotate(45) scale(0.48)"><rect x="-99" y="-100" width="198" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/></g>
+<path d="M320 245 H500 V65" fill="none" stroke="#1D2475" stroke-width="2" stroke-dasharray="9 8"/>
+<path d="M320 245 L500 65" fill="none" stroke="#006874" stroke-width="5" marker-end="url(#pose31-forward)"/>
+<circle cx="320" cy="245" r="5" fill="#006874"/>
+<text x="515" y="35" font-size="27" fill="#006874" text-anchor="middle" font-weight="600">전진 v = 0.5 m/s</text>
+<text x="408" y="286" font-size="25" fill="#1D2475">ẋ = v cos θ</text><text x="525" y="170" font-size="25" fill="#1D2475">ẏ = v sin θ</text>
+<path d="M382 245 A62 62 0 0 0 363.841 201.159" fill="none" stroke="#1D2475" stroke-width="3"/>
+<text x="402" y="224" font-size="28" fill="#1D2475">θ = 45°</text>
+</svg></div>
+<figcaption><strong>θ</strong>: 바닥 +x축 → 로봇 전방의 각도 (반시계 +)</figcaption></figure></div>
+<div class="mobile-pose-takeaway"><p>짧은 시간의 위치 변화 ≈ 속도 × 시간</p><small>측정한 바퀴 이동량을 바닥 좌표로 바꿔 누적하면 <strong>오도메트리(위치·방향 추정)</strong>가 된다.</small></div>
+</div></section>
+<section id="slide-32" aria-label="슬라이드 32 / 63: 엔코더 회전량으로 이동·회전량을 구한다" class="slide mobile-slide mobile-increment-slide" data-title="엔코더 회전량으로 이동·회전량을 구한다" data-layout="L4"><div class="slide__inner">
+<header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · ENCODER INCREMENTS</p><h2>엔코더 회전량으로 이동·회전량을 구한다</h2></header>
+<div class="mobile-increment-content">
+<div class="mobile-increment-context"><p><strong>Δ = 이번 값 − 이전 값</strong><span>좌우 바퀴를 같은 측정 구간에서 비교한다.</span></p><p class="mobile-increment-geometry"><span>앞과 같은 예제 크기</span><b>r = 0.10&nbsp;m · L = 0.50&nbsp;m</b></p></div>
+<div class="mobile-increment-grid"><div class="mobile-increment-wheels"><h3>바퀴 회전량 → 이동량</h3><dl>
+<div><dt>왼쪽 Δφ<sub>L</sub> = 0.4&nbsp;rad</dt><dd>Δs<sub>L</sub> = 0.10 × 0.4 = <strong>0.04&nbsp;m</strong></dd></div>
+<div><dt>오른쪽 Δφ<sub>R</sub> = 0.6&nbsp;rad</dt><dd>Δs<sub>R</sub> = 0.10 × 0.6 = <strong>0.06&nbsp;m</strong></dd></div>
+</dl><p>바퀴 축 회전량 Δφ에<br>반지름 r을 곱해 이동량을 구한다.</p></div>
+
+<article class="mobile-card mobile-increment-result"><h3>평균 → 중심 이동량</h3><div class="mobile-formula">Δs = (Δs<sub>R</sub> + Δs<sub>L</sub>) / 2</div><p class="mobile-increment-calculation">(0.06 + 0.04) / 2 = <strong>0.05&nbsp;m</strong></p><p class="mobile-increment-meaning">Δs는 로봇 중심이 <b>진행 경로를 따라 간 길이</b></p></article>
+<article class="mobile-card mobile-increment-result"><h3>차이 → 방향 변화량</h3><div class="mobile-formula">Δθ = (Δs<sub>R</sub> − Δs<sub>L</sub>) / L</div><p class="mobile-increment-calculation">(0.06 − 0.04) / 0.50 = <strong>0.04&nbsp;rad</strong></p><p class="mobile-increment-meaning">Δθ는 <b>로봇 몸체</b>의 회전량 · 양수는 왼쪽 회전</p></article>
+</div></div>
+<div class="mobile-increment-takeaway"><p>이번 구간: <strong>0.05&nbsp;m 이동 · 왼쪽으로 0.04&nbsp;rad 회전</strong></p><small>다음: 이동량 Δs와 방향 변화량 Δθ를 바닥 기준 위치·방향 (x, y, θ)에 누적한다.</small></div>
+</div></section>
+<section id="slide-33" aria-label="슬라이드 33 / 63: 작은 이동을 더해 위치와 방향을 갱신한다" class="slide mobile-slide mobile-midpoint-slide" data-title="작은 이동을 더해 위치와 방향을 갱신한다" data-layout="L4"><div class="slide__inner">
+<header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · MIDPOINT INTEGRATION</p><h2>작은 이동을 더해 위치와 방향을 갱신한다</h2></header>
+<div class="mobile-grid"><div class="mobile-midpoint-steps">
+<div class="mobile-midpoint-direction"><h3>① 시작과 끝 사이의 중간 방향을 구한다</h3><p>θ<sub>중간</sub> = θ<sub>현재</sub> + Δθ / 2</p></div>
+<div class="mobile-formula mobile-midpoint-update"><h3>② 이동량을 x·y로 나누고, 현재 값에 더한다</h3><div>
+<p>x<sub>다음</sub> ≈ x<sub>현재</sub> + Δs cos θ<sub>중간</sub></p>
+<p>y<sub>다음</sub> ≈ y<sub>현재</sub> + Δs sin θ<sub>중간</sub></p>
+<p>θ<sub>다음</sub> = θ<sub>현재</sub> + Δθ</p>
+</div></div>
+</div><figure class="mobile-visual mobile-midpoint-figure"><p class="mobile-midpoint-why">돌면서 전진하므로, <strong>시작·끝의 중간 방향</strong>을 쓴다.</p>
+<div class="mobile-midpoint-scroll" data-horizontal-scroll tabindex="0" role="region" aria-label="시작 방향과 끝 방향 사이의 중간 방향 개념도"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p>
+<svg class="mobile-svg" viewBox="40 10 600 310" role="img" aria-label="굽은 경로의 시작, 중간, 끝에서 로봇 전방이 점차 왼쪽으로 회전한다. 중간 방향은 시작 방향에 회전 변화량의 절반을 더한 방향이다."><title>돌면서 이동할 때 시작과 끝 사이의 중간 방향을 사용한다</title>
+<defs><marker id="midpoint33-direction" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#1D2475"/></marker><marker id="midpoint33-mid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#006874"/></marker></defs>
+<path d="M120 260 A410 410 0 0 0 434.079 113.543" fill="none" stroke="#A9BBC8" stroke-width="5"/>
+<circle cx="120" cy="260" r="7" fill="#1D2475"/><circle cx="434.079" cy="113.543" r="7" fill="#1D2475"/>
+<path d="M120 260 H215" fill="none" stroke="#1D2475" stroke-width="4" marker-end="url(#midpoint33-direction)"/>
+<path d="M434.079 113.543 L495.144 40.769" fill="none" stroke="#1D2475" stroke-width="4" marker-end="url(#midpoint33-direction)"/>
+<circle cx="293.273" cy="221.586" r="7" fill="#006874"/><path d="M293.273 221.586 L379.372 181.437" fill="none" stroke="#006874" stroke-width="6" marker-end="url(#midpoint33-mid)"/>
+<text x="88" y="291" font-size="27" fill="#1D2475">시작 θ<tspan baseline-shift="sub" font-size="18">현재</tspan></text><text x="500" y="96" font-size="27" fill="#1D2475">끝 θ<tspan baseline-shift="sub" font-size="18">다음</tspan></text>
+<text x="292" y="154" font-size="29" fill="#006874" font-weight="600">중간 θ<tspan baseline-shift="sub" font-size="19">중간</tspan></text><text x="385" y="272" font-size="24" fill="#647080">이번 이동 경로</text>
+</svg></div><figcaption>회전 차이를 크게 그린 개념도 · Δθ가 작은 구간에서 잘 맞는 근사</figcaption></figure></div>
+<div class="mobile-midpoint-example"><p><strong>32페이지에서 이어 계산</strong><span>시작: x = 0, y = 0, θ = 0</span><span>Δs = 0.05&nbsp;m · Δθ = 0.04&nbsp;rad</span></p>
+<dl><div><dt>중간 방향 θ<sub>중간</sub></dt><dd>0 + 0.04 / 2 = <b>0.02&nbsp;rad</b></dd></div>
+<div><dt>다음 x ≈ 0 + 0.05 cos 0.02</dt><dd>0.04999&nbsp;m</dd></div>
+<div><dt>다음 y ≈ 0 + 0.05 sin 0.02</dt><dd>0.00100&nbsp;m</dd></div>
+<div><dt>다음 θ = 0 + 0.04</dt><dd>0.04&nbsp;rad</dd></div></dl></div>
+<p class="mobile-takeaway">이 계산을 측정할 때마다 반복하는 것이 <strong>누적(적분)</strong>이다.</p>
+</div></section>
 <section id="slide-34" aria-label="슬라이드 34 / 63: 바퀴 속도를 바꾸며 궤적을 비교해 보자" class="slide mobile-slide mobile-drive-slide" data-title="바퀴 속도를 바꾸며 궤적을 비교해 보자" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">DIFFERENTIAL DRIVE · INTERACTIVE</p><h2>바퀴 속도를 바꾸며 궤적을 비교해 보자</h2></header><div class="mobile-lab-grid" data-mobile-drive><div class="mobile-lab-controls"><p class="mobile-lab-geometry">r = 0.10 m · L = 0.50 m · 이상적인 차동 구동</p><label for="mobile-wheel-left">왼쪽 바퀴 <output data-mobile-left>4.0 rad/s</output></label><input id="mobile-wheel-left" data-mobile-wheel="left" type="range" min="-8" max="8" step="0.1" value="4"><label for="mobile-wheel-right">오른쪽 바퀴 <output data-mobile-right>6.0 rad/s</output></label><input id="mobile-wheel-right" data-mobile-wheel="right" type="range" min="-8" max="8" step="0.1" value="6"><div class="mobile-buttons" role="group" aria-label="주행 예시 선택"><button type="button" data-mobile-preset="straight">직진</button><button type="button" data-mobile-preset="turn" aria-pressed="true">왼쪽 선회</button><button type="button" data-mobile-preset="spin">제자리 회전</button></div><div class="mobile-lab-readouts"><div><span>전진 v</span><strong data-mobile-v>0.50 m/s</strong></div><div><span>회전 ω</span><strong data-mobile-omega>0.40 rad/s</strong></div><div><span>반경 R</span><strong data-mobile-radius>1.25 m</strong></div></div><div class="mobile-buttons"><button type="button" data-mobile-play>일시정지</button><button type="button" data-mobile-reset>처음부터</button></div><p class="mobile-lab-status" data-mobile-status>속도를 바꾸면 시작점에서 새 경로를 비교한다.</p></div><div class="mobile-lab-view"><svg class="mobile-lab-svg" viewBox="0 0 800 480" data-mobile-board role="img" aria-label="바퀴 속도로 계산한 로봇의 주행 궤적"><title>차동 구동 로봇의 이상적인 주행 궤적</title><g data-mobile-grid></g><path data-mobile-preview fill="none" stroke="#00A0B0" stroke-width="4" stroke-dasharray="9 9" opacity=".5"/><path data-mobile-trail fill="none" stroke="#1D2475" stroke-width="5"/><g data-mobile-robot></g></svg><div class="mobile-pose-readout"><span data-mobile-time>0.0 s</span><strong data-mobile-pose>x 0.00 m · y 0.00 m · θ 0.0°</strong></div><p>점선: 6초 예상 경로 · 실선: 재생한 경로 · 축 단위 m</p></div></div><p class="mobile-takeaway">좌우 속도의 합과 차이가 경로를 어떻게 바꾸는지 확인한다.</p></div></section>
 <section id="slide-35" aria-label="슬라이드 35 / 63: 오도메트리: 이동을 쌓아 위치를 추정한다" class="slide mobile-slide " data-title="오도메트리: 이동을 쌓아 위치를 추정한다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">ODOMETRY · ESTIMATION</p><h2>오도메트리: 이동을 쌓아 위치를 추정한다</h2></header><div class="mobile-grid"><div class="mobile-copy"><dl class="mobile-notes"><div><dt>입력</dt><dd>바퀴 엔코더·IMU·영상 등에서 얻은 이동 정보</dd></div><div><dt>출력</dt><dd>기준 좌표계에 대한 위치·방향·속도 추정</dd></div><div><dt>오차의 원인</dt><dd>미끄럼 · 바퀴 치수 오차 · 센서 오차</dd></div></dl><div class="mobile-formula">명령대로 움직였다고 가정한 예측<br>≠ 센서로 확인한 이동<small>명령 적분은 open-loop 예측이며 실제 이동의 측정값이 아니다.</small></div></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="실제 폐곡선 주행과 오차가 누적된 오도메트리 경로 비교"><title>실제 폐곡선 주행과 오차가 누적된 오도메트리 경로 비교</title><path d="M90 400 L720 400" fill="none" stroke="#647080" stroke-width="2"/><polygon points="720.00,400.00 706.00,393.70 706.00,406.30" fill="#647080"/><path d="M90 400 L90 55" fill="none" stroke="#647080" stroke-width="2"/><polygon points="90.00,55.00 83.70,69.00 96.30,69.00" fill="#647080"/><path d="M180 345 H550 V145 H180 V345" fill="none" stroke="#1D2475" stroke-width="5"/><path d="M180 345 L570 325 L603 118 L206 80 L136 310" fill="none" stroke="#AF5900" stroke-width="5" stroke-dasharray="10 7"/><circle cx="180" cy="345" r="10" fill="#1D2475"/><circle cx="136" cy="310" r="10" fill="#AF5900"/><text x="220" y="447" font-size="26" fill="#1D2475" text-anchor="start" font-weight="500">실제 이동</text><text x="415" y="447" font-size="26" fill="#AF5900" text-anchor="start" font-weight="500">오도메트리 추정</text><text x="125" y="47" font-size="25" fill="#1D2475" text-anchor="start" font-weight="500">출발점으로 돌아와도 추정은 어긋날 수 있다</text><path d="M136 310 L180 345" fill="none" stroke="#AF5900" stroke-width="3"/><text x="80" y="275" font-size="24" fill="#AF5900" text-anchor="start" font-weight="500">누적 오차</text></svg><figcaption>오차 누적을 설명하는 개념 그림 · 실측 데이터 아님</figcaption></figure></div><p class="mobile-takeaway">odom은 연속적인 이동 추정에 유용하지만, 시간이 지나며 오차가 쌓인다.</p></div></section>
 <section id="slide-36" aria-label="슬라이드 36 / 63: Frame: 좌표는 기준과 함께 읽는다" class="slide mobile-slide " data-title="Frame: 좌표는 기준과 함께 읽는다" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">FRAME · ORIGIN AND AXES</p><h2>Frame: 좌표는 기준과 함께 읽는다</h2></header><div class="mobile-grid"><div class="mobile-copy"><div class="mobile-formula">프레임 = 원점 + 좌표축<small>같은 점도 어느 프레임에서 표현하는지에 따라 좌표가 달라진다.</small></div><dl class="mobile-notes"><div><dt>odom</dt><dd>공간에 고정된 지역 기준</dd></div><div><dt>base_link</dt><dd>로봇 몸체에 붙어 함께 움직이는 기준</dd></div><div><dt>laser_link</dt><dd>센서 장착 위치와 방향을 기준으로 측정</dd></div></dl><div class="mobile-result"><span>ROS의 몸체 축 규약</span><strong>x 전방 · y 왼쪽 · z 위쪽</strong></div></div><figure class="mobile-visual"><p class="mobile-scroll-hint">옆으로 밀어 그림 전체 보기 →</p><svg class="mobile-svg" viewBox="0 0 800 480" role="img" aria-label="공간에 고정된 odom 좌표계와 회전한 로봇의 base_link 좌표계"><title>공간에 고정된 odom 좌표계와 회전한 로봇의 base_link 좌표계</title><path d="M90 400 L690 400" fill="none" stroke="#647080" stroke-width="3"/><polygon points="690.00,400.00 676.00,393.70 676.00,406.30" fill="#647080"/><path d="M90 400 L90 65" fill="none" stroke="#647080" stroke-width="3"/><polygon points="90.00,65.00 83.70,79.00 96.30,79.00" fill="#647080"/><text x="698" y="435" font-size="24" fill="#647080" text-anchor="start" font-weight="500">xodom</text><text x="100" y="65" font-size="24" fill="#647080" text-anchor="start" font-weight="500">yodom</text><g transform="translate(420 275) rotate(0) scale(0.55)"><rect x="-95" y="-100" width="190" height="205" rx="28" fill="#FFFFFF"/><rect x="-127" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><rect x="95" y="-45" width="32" height="100" rx="10" fill="#1D2475"/><circle cx="0" cy="-67" r="13" fill="#B7DCE0"/><circle cx="0" cy="0" r="9" fill="#006874"/><path d="M0 0 L0 -135" fill="none" stroke="#006874" stroke-width="5"/><polygon points="0.00,-135.00 -6.30,-121.00 6.30,-121.00" fill="#006874"/></g><path d="M420 275 L420 95" fill="none" stroke="#006874" stroke-width="5"/><polygon points="420.00,95.00 413.70,109.00 426.30,109.00" fill="#006874"/><path d="M420 275 L245 275" fill="none" stroke="#006874" stroke-width="5"/><polygon points="245.00,275.00 259.00,281.30 259.00,268.70" fill="#006874"/><text x="443" y="116" font-size="24" fill="#006874" text-anchor="start" font-weight="500">xbase</text><text x="229" y="302" font-size="24" fill="#006874" text-anchor="start" font-weight="500">ybase</text><text x="338" y="377" font-size="25" fill="#006874" text-anchor="start" font-weight="500">base_link</text><circle cx="420" cy="180" r="9" fill="#1D2475"/><text x="455" y="191" font-size="27" fill="#1D2475" text-anchor="start" font-weight="500">같은 점</text><text x="118" y="445" font-size="28" fill="#647080" text-anchor="start" font-weight="500">odom</text><path d="M420 180 L90 180" fill="none" stroke="#647080" stroke-width="2" stroke-dasharray="9 8"/><path d="M420 180 L420 400" fill="none" stroke="#647080" stroke-width="2" stroke-dasharray="9 8"/></svg></figure></div><p class="mobile-takeaway">(1, 0)만으로는 부족하다. 어느 frame의 좌표인지 함께 말한다.</p></div></section>
