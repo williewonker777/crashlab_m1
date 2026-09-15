@@ -2675,3 +2675,72 @@ button { color: inherit; }
   .lecture-2 .motor-cycle-hold { font-size: 19px; }
   .lecture-2 .motor-cycle-next { position: absolute; top: -48px; left: 0; display: block; width: 100%; margin: 0; color: var(--accent-ink); font-size: 21px; font-weight: 600; text-align: center; }
 }
+
+/* 강의 ② 23페이지 · 관절 한계와 제한 동작 */
+.lecture-2 .joint-limit-slide .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 24px; }
+.lecture-2 .joint-limit-slide h2 { font-size: clamp(34px, 2.8vw, 54px); }
+.lecture-2 .joint-limit-content { display: grid; min-height: 0; grid-template-rows: minmax(0, 1fr) auto; gap: 24px; }
+.lecture-2 .joint-limit-overview { display: grid; grid-template-columns: minmax(0, .65fr) minmax(0, 2fr); min-height: 0; gap: 24px; }
+.lecture-2 .joint-limit-photo { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; gap: 10px; margin: 0; padding: 22px; border-radius: 18px; background: #EDF0F6; }
+.lecture-2 .joint-limit-photo > span { font-size: 18px; font-weight: 600; letter-spacing: .12em; color: var(--hy-blue); }
+.lecture-2 .joint-limit-photo svg { width: 100%; height: 100%; min-height: 0; filter: drop-shadow(0 5px 8px rgba(29, 36, 117, .16)); }
+.lecture-2 .joint-limit-photo figcaption { color: var(--hy-blue); font-size: 24px; line-height: 1.45; }
+.lecture-2 .joint-limit-range { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; margin: 0; padding: 22px; gap: 16px; border: 2px solid #D8DEE9; border-radius: 18px; }
+.lecture-2 .joint-limit-definitions { display: grid; grid-template-columns: 1fr 1.2fr; margin: 0; gap: 24px; }
+.lecture-2 .joint-limit-definitions > div { border-left: 4px solid var(--accent-ink); padding-left: 14px; }
+.lecture-2 .joint-limit-definitions > div:nth-child(2) { border-color: #AF5900; }
+.lecture-2 .joint-limit-definitions dt { color: var(--accent-ink); font-size: 24px; font-weight: 600; }
+.lecture-2 .joint-limit-definitions > div:nth-child(2) dt { color: #AF5900; }
+.lecture-2 .joint-limit-definitions dd { margin: 4px 0 0; color: var(--hy-gray); font-size: 21px; line-height: 1.4; }
+.lecture-2 .joint-limit-chart-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .joint-limit-scroll-hint { display: none; }
+.lecture-2 .joint-limit-chart { display: block; width: 100%; height: 100%; min-height: 0; font-family: inherit; }
+.lecture-2 .joint-limit-range figcaption { color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .joint-limit-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; gap: 24px; list-style: none; }
+.lecture-2 .joint-limit-steps li { min-width: 0; padding: 20px 24px; border-radius: 16px; background: #F5F7FA; }
+.lecture-2 .joint-limit-steps li:nth-child(2) { background: var(--accent-tint); }
+.lecture-2 .joint-limit-steps h3 { font-size: 28px; line-height: 1.3; }
+.lecture-2 .joint-limit-steps h3 span { margin-right: 10px; color: var(--accent-ink); font-size: 20px; }
+.lecture-2 .joint-limit-steps p { margin: 10px 0 0; color: var(--hy-gray); font-size: 24px; line-height: 1.45; }
+.lecture-2 .joint-limit-takeaway { margin: 0; padding-top: 16px; border-top: 2px solid #D8DEE9; color: var(--hy-blue); font-size: clamp(23px, 1.5vw, 29px); font-weight: 600; line-height: 1.35; }
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-2 .joint-limit-slide .slide__inner { grid-template-rows: 85px minmax(0, 1fr) auto; gap: 12px; }
+  .lecture-2 .joint-limit-slide h2 { font-size: 32px; }
+  .lecture-2 .joint-limit-slide .slide__header { gap: 6px; }
+  .lecture-2 .joint-limit-slide .slide__header::after { margin-top: 8px; }
+  .lecture-2 .joint-limit-content, .lecture-2 .joint-limit-overview, .lecture-2 .joint-limit-steps { gap: 14px; }
+  .lecture-2 .joint-limit-photo { padding: 14px; gap: 6px; }
+  .lecture-2 .joint-limit-photo > span { font-size: 15px; }
+  .lecture-2 .joint-limit-photo figcaption { font-size: 19px; }
+  .lecture-2 .joint-limit-range { padding: 12px 16px; gap: 10px; }
+  .lecture-2 .joint-limit-definitions { gap: 16px; }
+  .lecture-2 .joint-limit-definitions > div { display: flex; align-items: baseline; gap: 10px; padding-left: 10px; }
+  .lecture-2 .joint-limit-definitions dt { font-size: 20px; white-space: nowrap; }
+  .lecture-2 .joint-limit-definitions dd { margin: 0; font-size: 17px; }
+  .lecture-2 .joint-limit-range figcaption { font-size: 15px; }
+  .lecture-2 .joint-limit-steps li { padding: 12px 18px; }
+  .lecture-2 .joint-limit-steps h3 { font-size: 23px; }
+  .lecture-2 .joint-limit-steps h3 span { font-size: 17px; }
+  .lecture-2 .joint-limit-steps p { margin-top: 6px; font-size: 19px; }
+  .lecture-2 .joint-limit-takeaway { padding-top: 10px; font-size: 21px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .joint-limit-slide .slide__inner { grid-template-rows: auto auto auto; gap: 26px; }
+  .lecture-2 .joint-limit-slide h2 { font-size: 36px; }
+  .lecture-2 .joint-limit-content, .lecture-2 .joint-limit-overview, .lecture-2 .joint-limit-steps { grid-template-columns: 1fr; grid-template-rows: auto; gap: 24px; }
+  .lecture-2 .joint-limit-photo { padding: 20px; }
+  .lecture-2 .joint-limit-photo svg { height: auto; max-height: 260px; }
+  .lecture-2 .joint-limit-photo figcaption { font-size: 22px; }
+  .lecture-2 .joint-limit-range { grid-template-rows: auto auto auto; padding: 16px; gap: 22px; }
+  .lecture-2 .joint-limit-definitions { grid-template-columns: 1fr; gap: 18px; }
+  .lecture-2 .joint-limit-definitions dt { font-size: 22px; }
+  .lecture-2 .joint-limit-definitions dd { font-size: 19px; }
+  .lecture-2 .joint-limit-chart-scroll { overflow-x: auto; padding-block: 6px; }
+  .lecture-2 .joint-limit-scroll-hint { display: block; margin: 0; color: var(--accent-ink); font-size: 16px; }
+  .lecture-2 .joint-limit-chart { width: 720px; max-width: none; height: auto; }
+  .lecture-2 .joint-limit-range figcaption { font-size: 16px; }
+  .lecture-2 .joint-limit-steps li { padding: 20px; }
+  .lecture-2 .joint-limit-steps h3 { font-size: 25px; }
+  .lecture-2 .joint-limit-steps p { font-size: 21px; }
+  .lecture-2 .joint-limit-takeaway { font-size: 23px; }
+}

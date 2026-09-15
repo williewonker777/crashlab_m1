@@ -134,6 +134,33 @@ stiffness와 damping은 각각 implicit PD의 P·D 게인이다.
 - [NVIDIA — Articulation and Robot Simulation Stability Guide](https://nvidia-omniverse.github.io/PhysX/ovphysx/latest/guides/articulation_stability.html):
   임계 감쇠·과감쇠와 응답 속도, 중력 등 feedforward 보상.
 
+## 23페이지 — 관절 한계와 제한 동작
+
+각도 한계가 있는 회전 관절 하나를 예로 들어, 하드웨어가 허용하는 범위 안에
+소프트 한계를 두는 구성을 설명한다. 그림의 현재각, 요청 목표, 제한한 목표는
+서로 다른 표식으로 구분한다. 소프트 상한을 넘는 요청을 상한으로 제한하는 예시이며,
+실제 ALICE M1의 관절별 허용각이나 제어기 구현을 나타내지 않는다.
+M1 사진은 관절마다 회전 범위가 다름을 소개하는 용도로 사용한다.
+
+- 이 페이지의 소프트 한계는 보수적으로 정한 제어용 범위다. 목표를 범위 안으로
+  제한한 뒤에도 현재 위치·속도와 정지에 필요한 거리를 고려해 감속해야 한다.
+  실제 각도·속도를 계속 확인하고 속도·토크 한계도 적용한다. 목표값을 잘랐다는
+  사실만으로 관성·추종 오차가 있는 실제 관절의 위치를 보장하지 않는다.
+- ros2_control의 soft limiter는 위치에 따른 속도·effort 제한도 포함한다.
+  모든 소프트 한계 구현이 단순한 목표 각도 clamp와 같다는 뜻은 아니다.
+- 하드웨어 범위는 구조·배선 등 장비의 제약을 말한다. 소프트웨어에서 정의한
+  hard joint limit와 기계적 스토퍼를 동일시하거나, 스토퍼에 부딪혀 정지하는 것을
+  정상 운용 방식으로 소개하지 않는다.
+- 20페이지 PID 실험의 토크 포화와 관절의 각도 제한은 별개다. 기존 실험 모델에는
+  관절 각도 한계를 추가하지 않았으며, 이 페이지의 도식은 시뮬레이션 결과가 아니다.
+
+확인한 공식 자료:
+
+- [ros2_control — SoftJointLimits](https://control.ros.org/iron/doc/api/structjoint__limits_1_1SoftJointLimits.html):
+  안쪽 소프트 경계와 위치·속도·effort 제한의 관계.
+- [ros2_control — JointLimits](https://control.ros.org/master/doc/api/structjoint__limits_1_1JointLimits.html):
+  위치 하한·상한과 속도·가속도·effort 한계의 구분.
+
 ## PID에 앞서 보강한 모터 제어 기초
 
 7·8·10페이지는 PID의 목표값·측정값·제어 입력·시간 간격을 실제 구동 과정과 연결한다.
