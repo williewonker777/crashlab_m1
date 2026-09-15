@@ -12,11 +12,13 @@
     const right = lab.querySelector("[data-mobile-wheel='right']");
     const board = lab.querySelector("[data-mobile-board]");
     const play = lab.querySelector("[data-mobile-play]");
-    const presets = { straight: [5, 5], turn: [4, 6], spin: [-4, 4] };
+    const seek = lab.querySelector("[data-mobile-seek]");
+    const explanation = slide.querySelector("[data-mobile-explanation]");
+    const presets = { straight: [5, 5], turn: [4, 6], right: [6, 4], spin: [-4, 4] };
     const duration = 6;
     const origin = { x: 0, y: 0, theta: 0 };
     let speed, planned, projection;
-    let elapsed = 0, playing = !motion.matches, request = null, previousTime = null;
+    let elapsed = 0, playing = false, request = null, previousTime = null;
     const put = (selector, value) => { lab.querySelector(selector).textContent = value; };
 
     function setupPath() {
@@ -25,27 +27,34 @@
       const xs = planned.map(p => p.x), ys = planned.map(p => p.y);
       const minX = Math.min(...xs) - 0.65, maxX = Math.max(...xs) + 0.65;
       const minY = Math.min(...ys) - 0.65, maxY = Math.max(...ys) + 0.65;
-      const scale = Math.min(160, 660 / (maxX - minX), 360 / (maxY - minY));
-      projection = { scale, x: 400 - (minX + maxX) * scale / 2, y: 235 + (minY + maxY) * scale / 2 };
+      const scale = Math.min(160, 660 / (maxX - minX), 230 / (maxY - minY));
+      projection = { scale, x: 400 - (minX + maxX) * scale / 2, y: 170 + (minY + maxY) * scale / 2 };
       const worldLeft = (60 - projection.x) / scale, worldRight = (740 - projection.x) / scale;
-      const worldBottom = (projection.y - 425) / scale, worldTop = (projection.y - 45) / scale;
+      const worldBottom = (projection.y - 305) / scale, worldTop = (projection.y - 35) / scale;
       let grid = "";
       for (let x = Math.ceil(worldLeft); x <= worldRight; x++) {
         const sx = projection.x + x * scale;
-        grid += `<path d="M${sx} 45V425" stroke="${x === 0 ? "#647080" : "#E5E9EF"}" stroke-width="${x === 0 ? 2 : 1}"/><text x="${sx}" y="454" fill="#647080" font-size="22" text-anchor="middle">${x}</text>`;
+        grid += `<path d="M${sx} 35V305" stroke="${x === 0 ? "#647080" : "#E5E9EF"}" stroke-width="${x === 0 ? 2 : 1}"/><text x="${sx}" y="336" fill="#647080" font-size="26" text-anchor="middle">${x}</text>`;
       }
       for (let y = Math.ceil(worldBottom); y <= worldTop; y++) {
         const sy = projection.y - y * scale;
-        grid += `<path d="M60 ${sy}H740" stroke="${y === 0 ? "#647080" : "#E5E9EF"}" stroke-width="${y === 0 ? 2 : 1}"/><text x="45" y="${sy + 7}" fill="#647080" font-size="22" text-anchor="end">${y}</text>`;
+        grid += `<path d="M60 ${sy}H740" stroke="${y === 0 ? "#647080" : "#E5E9EF"}" stroke-width="${y === 0 ? 2 : 1}"/><text x="45" y="${sy + 7}" fill="#647080" font-size="26" text-anchor="end">${y}</text>`;
       }
-      grid += '<text x="756" y="454" fill="#647080" font-size="23">x</text><text x="25" y="28" fill="#647080" font-size="23">y</text>';
+      grid += '<text x="756" y="336" fill="#647080" font-size="23">x</text><text x="78" y="35" fill="#647080" font-size="23">y</text>';
       lab.querySelector("[data-mobile-grid]").innerHTML = grid;
+      lab.querySelector("[data-mobile-start]").innerHTML = `<circle cx="${projection.x}" cy="${projection.y}" r="7" fill="#FFFFFF" stroke="#647080" stroke-width="2"/><text x="${projection.x}" y="${projection.y + 58}" fill="#647080" font-size="20" text-anchor="middle">시작 (0, 0)</text>`;
       lab.querySelector("[data-mobile-preview]").setAttribute("d", path(planned));
       put("[data-mobile-left]", `${format(Number(left.value), 1)} rad/s`);
       put("[data-mobile-right]", `${format(Number(right.value), 1)} rad/s`);
       put("[data-mobile-v]", `${format(speed.v)} m/s`);
       put("[data-mobile-omega]", `${format(speed.omega)} rad/s`);
-      put("[data-mobile-radius]", speed.radius === null ? (Math.abs(speed.v) < 1e-10 ? "정지" : "직진 · ∞") : `${format(speed.radius)} m`);
+      put("[data-mobile-radius]", speed.radius === null ? (Math.abs(speed.v) < 1e-10 ? "—" : "∞ · 직진") : `${format(Math.abs(speed.radius))} m`);
+      const moving = Math.abs(speed.v) >= 1e-10, turning = Math.abs(speed.omega) >= 1e-10;
+      const direction = speed.omega > 0 ? "반시계" : "시계";
+      explanation.textContent = !moving && !turning ? "두 바퀴가 멈춰 위치와 방향이 그대로다." :
+        !moving ? `두 바퀴가 반대로 같은 속도로 돌아, 중심은 그대로이고 방향만 ${direction} 방향으로 바뀐다.` :
+        !turning ? `두 바퀴 속도가 같아, 방향을 유지하며 ${speed.v > 0 ? "앞" : "뒤"}으로 직진한다.` :
+        `${speed.v > 0 ? "앞" : "뒤"}으로 움직이며 ${direction} 방향으로 회전한다. 회전 반경은 ${format(Math.abs(speed.radius))} m다.`;
       lab.querySelectorAll("[data-mobile-preset]").forEach(button => {
         const values = presets[button.dataset.mobilePreset];
         button.setAttribute("aria-pressed", String(Number(left.value) === values[0] && Number(right.value) === values[1]));
@@ -64,11 +73,18 @@
       const scale = projection.scale;
       const robot = lab.querySelector("[data-mobile-robot]");
       robot.setAttribute("transform", `translate(${projection.x + pose.x * scale} ${projection.y - pose.y * scale}) rotate(${-pose.theta * 180 / Math.PI})`);
-      robot.innerHTML = `<rect x="${-0.27 * scale}" y="${-0.19 * scale}" width="${0.54 * scale}" height="${0.38 * scale}" rx="${0.07 * scale}" fill="#E6F7F8" stroke="#006874" stroke-width="2"/><rect x="${-0.12 * scale}" y="${-0.29 * scale}" width="${0.24 * scale}" height="${0.08 * scale}" rx="4" fill="#1D2475"/><rect x="${-0.12 * scale}" y="${0.21 * scale}" width="${0.24 * scale}" height="${0.08 * scale}" rx="4" fill="#1D2475"/><path d="M0 0H${0.42 * scale}" stroke="#006874" stroke-width="4"/><path d="M${0.42 * scale} 0L${0.3 * scale} ${-0.06 * scale}V${0.06 * scale}Z" fill="#006874"/><circle r="4" fill="#1D2475"/>`;
-      put("[data-mobile-time]", `${format(elapsed, 1)} s`);
-      put("[data-mobile-pose]", `x ${format(pose.x)} m · y ${format(pose.y)} m · θ ${format(pose.theta * 180 / Math.PI, 1)}°`);
-      board.setAttribute("aria-label", `바퀴 각속도 왼쪽 ${left.value}, 오른쪽 ${right.value} rad/s. 전진 ${format(speed.v)} m/s, 회전 ${format(speed.omega)} rad/s. ${format(elapsed, 1)}초의 위치 x ${format(pose.x)}, y ${format(pose.y)} 미터, 방향 ${format(pose.theta * 180 / Math.PI, 1)}도.`);
+      robot.innerHTML = `<rect x="${-0.27 * scale}" y="${-0.22 * scale}" width="${0.54 * scale}" height="${0.44 * scale}" rx="${0.07 * scale}" fill="#E6F7F8" stroke="#006874" stroke-width="2"/><rect x="${-0.12 * scale}" y="${-0.29 * scale}" width="${0.24 * scale}" height="${0.08 * scale}" rx="4" fill="#1D2475"/><rect x="${-0.12 * scale}" y="${0.21 * scale}" width="${0.24 * scale}" height="${0.08 * scale}" rx="4" fill="#1D2475"/><path d="M0 0H${0.42 * scale}" stroke="#006874" stroke-width="4"/><path d="M${0.42 * scale} 0L${0.3 * scale} ${-0.06 * scale}V${0.06 * scale}Z" fill="#006874"/><circle r="4" fill="#1D2475"/>`;
+      put("[data-mobile-time]", `${format(elapsed, 1)} s / ${format(duration, 1)} s`);
+      seek.value = format(elapsed, 1);
+      seek.setAttribute("aria-valuetext", `${format(elapsed, 1)}초, 전체 ${duration}초`);
+      put("[data-mobile-x]", `x ${format(pose.x, 3)} m`);
+      put("[data-mobile-y]", `y ${format(pose.y, 3)} m`);
+      put("[data-mobile-theta]", `θ ${format(pose.theta, 3)} rad`);
+      board.setAttribute("aria-label", `바퀴 각속도 왼쪽 ${left.value}, 오른쪽 ${right.value} rad/s. 이동 ${format(speed.v)} m/s, 회전 ${format(speed.omega)} rad/s. ${format(elapsed, 1)}초의 위치 x ${format(pose.x, 3)}, y ${format(pose.y, 3)} 미터, 방향 ${format(pose.theta, 3)} 라디안.`);
       play.textContent = playing ? "일시정지" : elapsed >= duration ? "다시 재생" : "재생";
+      const status = playing ? "선택한 바퀴 속도를 유지하며 재생 중이다." : elapsed >= duration ? "6초 재생 완료. 다시 재생해 같은 조건을 확인할 수 있다." : elapsed > 0 ? "일시정지. 시간 막대로 위치와 방향을 비교해 보자." : "재생하거나 시간 막대를 움직여 위치를 확인한다.";
+      const statusNode = lab.querySelector("[data-mobile-status]");
+      if (statusNode.textContent !== status) statusNode.textContent = status;
       lab.dataset.playing = String(playing);
       lab.dataset.elapsed = String(elapsed);
       lab.dataset.pose = JSON.stringify(pose);
@@ -100,6 +116,13 @@
       schedule();
     }
     [left, right].forEach(input => input.addEventListener("input", () => restart(false)));
+    seek.addEventListener("input", () => {
+      elapsed = Math.max(0, Math.min(duration, Number(seek.value)));
+      playing = false;
+      previousTime = null;
+      render();
+      schedule();
+    });
     lab.querySelectorAll("[data-mobile-preset]").forEach(button => button.addEventListener("click", () => {
       [left.value, right.value] = presets[button.dataset.mobilePreset];
       restart(false);

@@ -853,3 +853,91 @@
   .lecture-2 .mobile-midpoint-example dd { font-size: 24px; }
   .lecture-2 .mobile-midpoint-example dl > div:first-child dd { font-size: 21px; }
 }
+/* 34페이지 · 바퀴 속도 비교와 재생 시점 직접 탐색 */
+.lecture-2 .mobile-drive-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-drive-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-drive-slide .mobile-lab-grid { min-height: min-content; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); }
+.lecture-2 .mobile-drive-slide .mobile-lab-controls { min-width: 0; min-height: min-content; }
+.lecture-2 .mobile-drive-wheels { display: grid; gap: 10px; min-width: 0; }
+.lecture-2 .mobile-drive-sign { margin: 0; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-drive-sign b { color: var(--accent-ink); font-weight: 500; }
+.lecture-2 .mobile-drive-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.lecture-2 .mobile-drive-slide .mobile-lab-readouts { gap: 14px; }
+.lecture-2 .mobile-drive-slide .mobile-lab-readouts strong { font-size: 22px; white-space: nowrap; }
+.lecture-2 .mobile-drive-slide .mobile-lab-view { min-width: 0; min-height: min-content; grid-template-rows: auto minmax(160px, 1fr) auto auto auto; gap: 10px; }
+.lecture-2 .mobile-drive-slide .mobile-lab-svg { height: 290px; align-self: center; }
+.lecture-2 .mobile-drive-timeline { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.lecture-2 .mobile-drive-timeline label { display: flex; gap: 14px; color: var(--hy-blue); font-size: 19px; white-space: nowrap; }
+.lecture-2 .mobile-drive-slide .mobile-pose-readout { justify-content: space-around; column-gap: 12px; font-size: 22px; }
+.lecture-2 .mobile-drive-slide .mobile-pose-readout strong { white-space: nowrap; }
+.lecture-2 .mobile-drive-legend { display: flex; flex-wrap: wrap; gap: 6px 24px; }
+.lecture-2 .mobile-drive-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.lecture-2 .mobile-drive-legend span::before { content: ''; width: 24px; border-top: 3px solid var(--hy-blue); }
+.lecture-2 .mobile-drive-legend span:first-child::before { border-top: 3px dashed var(--accent); }
+.lecture-2 .mobile-drive-slide .mobile-lab-view .mobile-lab-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.lecture-2 .mobile-drive-help { margin: 0; color: #647080; font-size: 16px; line-height: 1.4; }
+.lecture-2 .mobile-drive-takeaway { padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-drive-takeaway > p { margin: 0; color: var(--hy-blue); font-size: 25px; font-weight: 600; line-height: 1.4; }
+.lecture-2 .mobile-drive-takeaway > small { display: block; margin-top: 6px; color: #647080; font-size: 18px; line-height: 1.5; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-drive-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-drive-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-drive-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-drive-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls { padding: 14px 18px; gap: 12px; }
+  .lecture-2 .mobile-drive-wheels { gap: 6px; }
+  .lecture-2 .mobile-drive-sign { font-size: 16px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-geometry { font-size: 16px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls label { font-size: 20px; }
+  .lecture-2 .mobile-drive-slide .mobile-buttons { gap: 8px; }
+  .lecture-2 .mobile-drive-slide .mobile-buttons button { padding: 7px 10px; font-size: 17px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts { gap: 10px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts span { font-size: 16px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts strong { font-size: 19px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-view { padding: 12px 16px; gap: 6px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-view > p { font-size: 15px; }
+  .lecture-2 .mobile-drive-timeline label { gap: 10px; font-size: 17px; }
+  .lecture-2 .mobile-drive-slide .mobile-pose-readout { font-size: 19px; }
+  .lecture-2 .mobile-drive-takeaway { padding-top: 10px; }
+  .lecture-2 .mobile-drive-takeaway > p { font-size: 21px; }
+  .lecture-2 .mobile-drive-takeaway > small { font-size: 16px; margin-top: 4px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-drive-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-drive-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls { gap: 8px; padding-block: 10px; }
+  .lecture-2 .mobile-drive-wheels { gap: 4px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-svg { height: 200px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls label { line-height: 1.6; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts span { line-height: 1.4; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts strong { line-height: 1.3; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-view { gap: 4px; padding-block: 10px; }
+  .lecture-2 .mobile-drive-slide .mobile-drive-help { font-size: 15px; }
+  .lecture-2 .mobile-drive-timeline label { font-size: 16px; gap: 6px; }
+  .lecture-2 .mobile-drive-timeline .mobile-buttons button { padding: 6px 8px; font-size: 15px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts strong { font-size: 18px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-drive-slide .mobile-lab-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls { grid-template-columns: 1fr 1fr; column-gap: 28px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-geometry { grid-column: 1 / -1; }
+  .lecture-2 .mobile-drive-wheels { grid-row: span 3; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-svg { height: 330px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-drive-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-grid { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls { padding: 20px; gap: 18px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-controls label { font-size: 21px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts strong { font-size: 18px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-readouts span { font-size: 16px; }
+  .lecture-2 .mobile-drive-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lecture-2 .mobile-drive-slide .mobile-lab-view { grid-template-rows: auto; padding: 12px; gap: 14px; }
+  .lecture-2 .mobile-drive-slide .mobile-lab-svg { height: auto; }
+  .lecture-2 .mobile-drive-timeline { grid-template-columns: 1fr; gap: 6px; }
+  .lecture-2 .mobile-drive-timeline label { justify-content: space-between; font-size: 18px; }
+  .lecture-2 .mobile-drive-slide .mobile-pose-readout { justify-content: flex-start; gap: 8px 20px; font-size: 19px; }
+  .lecture-2 .mobile-drive-legend { flex-direction: column; gap: 8px; }
+  .lecture-2 .mobile-drive-takeaway > p { font-size: 23px; }
+  .lecture-2 .mobile-drive-takeaway > small { font-size: 17px; }
+}
