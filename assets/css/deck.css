@@ -1738,20 +1738,20 @@ button { color: inherit; }
 .lecture-3 .deck-svg .svg-small { font-size: 22px; }
 .lecture-3 .deck-svg .chip text { font-size: 24px; }
 
-.lecture-3 #slide-14 .photo-aside strong {
+.lecture-3 #slide-16 .photo-aside strong {
   font-size: clamp(38px, 2.5vw, 50px);
 }
 
-.lecture-3 #slide-18 .slide__visual,
-.lecture-3 #slide-23 .slide__visual,
-.lecture-3 #slide-24 .slide__visual,
-.lecture-3 #slide-29 .slide__visual,
-.lecture-3 #slide-41 .slide__visual {
+.lecture-3 #slide-21 .slide__visual,
+.lecture-3 #slide-26 .slide__visual,
+.lecture-3 #slide-27 .slide__visual,
+.lecture-3 #slide-33 .slide__visual,
+.lecture-3 #slide-50 .slide__visual {
   padding: 0;
 }
 
-.lecture-3 #slide-30 .slide__visual,
-.lecture-3 #slide-46 .slide__visual {
+.lecture-3 #slide-34 .slide__visual,
+.lecture-3 #slide-56 .slide__visual {
   display: grid;
   padding: 22px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1759,8 +1759,8 @@ button { color: inherit; }
   gap: 28px;
 }
 
-.lecture-3 #slide-30 .slide__visual > figure,
-.lecture-3 #slide-46 .slide__visual > figure {
+.lecture-3 #slide-34 .slide__visual > figure,
+.lecture-3 #slide-56 .slide__visual > figure {
   display: grid;
   min-width: 0;
   min-height: 0;
@@ -1771,8 +1771,8 @@ button { color: inherit; }
   background: #fff;
 }
 
-.lecture-3 #slide-30 .slide__visual > figure > svg,
-.lecture-3 #slide-46 .slide__visual > figure > svg {
+.lecture-3 #slide-34 .slide__visual > figure > svg,
+.lecture-3 #slide-56 .slide__visual > figure > svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -1780,33 +1780,33 @@ button { color: inherit; }
   background: #fff;
 }
 
-.lecture-3 #slide-30 figcaption,
-.lecture-3 #slide-46 figcaption {
+.lecture-3 #slide-34 figcaption,
+.lecture-3 #slide-56 figcaption {
   display: grid;
   padding: 18px 24px 20px;
   border-top: 2px solid var(--accent);
   gap: 5px;
 }
 
-.lecture-3 #slide-30 figcaption strong,
-.lecture-3 #slide-46 figcaption strong {
+.lecture-3 #slide-34 figcaption strong,
+.lecture-3 #slide-56 figcaption strong {
   color: var(--hy-blue);
   font-size: 27px;
 }
 
-.lecture-3 #slide-30 figcaption span,
-.lecture-3 #slide-46 figcaption span {
+.lecture-3 #slide-34 figcaption span,
+.lecture-3 #slide-56 figcaption span {
   color: var(--hy-gray);
   font-size: 21px;
 }
 
-.lecture-3 #slide-31 .slide__visual {
+.lecture-3 #slide-36 .slide__visual {
   padding: 12px 16px;
   overflow: hidden;
   background: #11131a;
 }
 
-.lecture-3 #slide-31 video {
+.lecture-3 #slide-36 video {
   position: absolute;
   top: 12px;
   bottom: 12px;
@@ -1822,68 +1822,118 @@ button { color: inherit; }
   background: #11131a;
 }
 
-.lecture-3 #slide-31 .slide__inner {
+.lecture-3 #slide-36 .slide__inner {
   grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.75fr);
   grid-template-rows: 140px minmax(0, 1fr);
   gap: 16px 32px;
 }
 
-.lecture-3 #slide-31 .slide__header {
+.lecture-3 #slide-36 .slide__header {
   grid-column: 1 / -1;
   grid-row: 1;
 }
 
-.lecture-3 #slide-31 .slide__visual {
+.lecture-3 #slide-36 .slide__visual {
   grid-column: 1;
   grid-row: 2;
 }
 
-.lecture-3 #slide-38 .concept-table,
-.lecture-3 #slide-47 .concept-table {
+.lecture-3 #slide-47 .concept-table,
+.lecture-3 #slide-57 .concept-table {
   border-spacing: 0 12px;
 }
 
-.lecture-3 #slide-38 .concept-table th,
-.lecture-3 #slide-38 .concept-table td,
 .lecture-3 #slide-47 .concept-table th,
-.lecture-3 #slide-47 .concept-table td {
+.lecture-3 #slide-47 .concept-table td,
+.lecture-3 #slide-57 .concept-table th,
+.lecture-3 #slide-57 .concept-table td {
   padding-block: 22px;
 }
 
-.lecture-3 #slide-38 .concept-table th { width: 29%; }
-.lecture-3 #slide-47 .concept-table th { width: 23%; }
+.lecture-3 #slide-47 .concept-table th { width: 29%; }
+.lecture-3 #slide-57 .concept-table th { width: 23%; }
 
-.lecture-3 #slide-14 .key-line,
-.lecture-3 #slide-21 .key-line,
-.lecture-3 #slide-31 .key-line {
+.lecture-3 #slide-16 .key-line,
+.lecture-3 #slide-24 .key-line {
   width: 100%;
   max-width: 1600px;
   font-size: clamp(27px, 1.65vw, 32px);
   white-space: nowrap;
 }
 
-.lecture-3 #slide-31 .key-line {
+/* s31: 오른쪽에 영상 속 특징점 색 범례를 두고, 핵심 한 줄은 아래로 내린다 */
+.lecture-3 #slide-36 .slide__inner {
+  grid-template-rows: 140px minmax(0, 1fr) auto;
+}
+
+.lecture-3 #slide-36 .legend-card {
   grid-column: 2;
   grid-row: 2;
-  align-self: center;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 36px;
+}
+
+.lecture-3 #slide-36 .key-line {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  font-size: clamp(27px, 1.7vw, 33px);
+}
+
+.legend-card {
+  display: grid;
+  align-content: center;
+  padding: 32px 34px;
   border-radius: 16px;
-  font-size: clamp(31px, 2vw, 39px);
-  line-height: 1.4;
-  white-space: normal;
+  gap: 24px;
   background: var(--bg-alt);
 }
 
-.lecture-3 #slide-31 .key-line::before {
-  display: block;
-  width: 58px;
-  margin: 0 0 24px;
+.legend-card__eyebrow {
+  margin: 0;
+  color: var(--accent-ink);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
 }
 
-.lecture-3 #slide-30 .slide__inner {
+.color-legend {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 24px;
+  list-style: none;
+}
+
+.color-legend li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.color-legend__dot {
+  width: 20px;
+  height: 20px;
+  margin-top: 9px;
+  border-radius: 50%;
+}
+
+.color-legend__dot--red { background: #D9362B; }
+.color-legend__dot--yellow { background: #D9A400; }
+.color-legend__dot--green { background: #2E9E4F; }
+
+.color-legend strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--hy-blue);
+  font-size: 26px;
+}
+
+.color-legend span {
+  display: block;
+  color: var(--hy-gray);
+  font-size: clamp(19px, 1.2vw, 22px);
+  line-height: 1.45;
+}
+
+.lecture-3 #slide-34 .slide__inner {
   grid-template-rows: 200px minmax(0, 1fr) 50px;
   gap: 20px;
 }
@@ -2743,4 +2793,93 @@ button { color: inherit; }
   .lecture-2 .joint-limit-steps h3 { font-size: 25px; }
   .lecture-2 .joint-limit-steps p { font-size: 21px; }
   .lecture-2 .joint-limit-takeaway { font-size: 23px; }
+}
+
+/* 실습 슬라이드 — 명령어가 들어간 여러 줄 단계를 받도록 조정 */
+.concept-table code,
+.practice-steps code,
+.practice-task code,
+.practice-help code {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--accent-tint);
+  color: var(--accent-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  line-height: 1.35;
+}
+
+/* 실습 — 목표·단계·확인을 폭 전체에 쌓아 좌우 여백을 대칭으로 맞춘다.
+   머리줄(실습 뱃지 + 목표) / 단계 목록(남는 높이를 균등 분할) / 마무리줄(확인) */
+.layout-practice-stack .practice-shell {
+  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  column-gap: 22px;
+  row-gap: 20px;
+}
+
+.layout-practice-stack .practice-label { grid-column: 1; grid-row: 1; align-self: center; }
+
+.layout-practice-stack .practice-task {
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: 1fr;
+  align-content: center;
+}
+
+.layout-practice-stack .practice-steps {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  grid-template-columns: 1fr;
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.layout-practice-stack .practice-steps li {
+  min-height: 0;
+  padding: 10px 24px;
+  border-radius: 16px;
+  align-content: center;
+  align-items: center;
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+.layout-practice-stack .practice-steps li::before {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 20px;
+}
+
+.layout-practice-stack .practice-help {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  grid-template-columns: 1fr;
+  align-content: center;
+  padding-top: 14px;
+  border-top: 2px solid var(--line);
+}
+
+.practice-task p, .practice-help p { margin: 0; }
+.practice-task { color: var(--hy-gray); font-size: 23px; font-weight: 600; line-height: 1.5; }
+.practice-help { font-size: 21px; line-height: 1.45; }
+
+
+/* s31은 2열 고정이라 좁은 화면에서 영상 칸이 눌린다. 범례를 영상 아래로 내린다 */
+@media (max-width: 800px) {
+  .lecture-3 #slide-36 .slide__inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(360px, 1fr) auto auto;
+  }
+
+  .lecture-3 #slide-36 .legend-card,
+  .lecture-3 #slide-36 .key-line {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }

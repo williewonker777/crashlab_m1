@@ -102,9 +102,9 @@
       return;
     }
 
-    // 좁은 화면의 도식에 포커스가 있으면 좌우 키로 그림을 스크롤한다.
+    // 넓은 도식에 포커스가 있으면 좌우 키로 그림을 스크롤한다.
     const scrollRegion = event.target instanceof Element
-      ? event.target.closest("[data-horizontal-scroll]") : null;
+      ? event.target.closest("[data-horizontal-scroll], .ppt-viewport") : null;
     if (scrollRegion && scrollRegion.scrollWidth > scrollRegion.clientWidth
       && ["ArrowLeft", "ArrowRight"].includes(event.key)) {
       return;
