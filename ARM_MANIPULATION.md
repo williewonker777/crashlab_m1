@@ -100,6 +100,9 @@ Pinocchio는 `ros-jazzy-pinocchio` 로 따로 설치한다. `ros-jazzy-desktop` 
 상태·피드백 토픽은 대부분 BEST_EFFORT다. 기본 RELIABLE로 구독하면 한 개도 받지 못한다.
 `aeirobot_msgs`는 컨테이너 안에만 있어 실습 2의 송출은 컨테이너에서 돌린다.
 
+팔 명령은 `Command{command: 11, style: 1, value: [19칸]}`이다. `value[관절 id − 1]`에 목표각을
+degree로 넣고, 건드리지 않을 관절은 NaN으로 둔다. 왼팔 q₁~q₇은 0·2·4·6·8·10·12번 칸이다.
+
 ### TCP 정의
 
 | 기준 | 손목에서 | q=0의 z |
@@ -115,7 +118,7 @@ Pinocchio는 `ros-jazzy-pinocchio` 로 따로 설치한다. `ros-jazzy-desktop` 
 | 항목 | 값 |
 | --- | --- |
 | 실습 1 · q=0 검산 | 플랜지 기준 `(0, 0.24, −0.592)` |
-| 실습 1 · 로봇 TF와의 차이 | 30 µm 내외. 양자화 상한 70 µm 안이면 통과 |
+| 실습 1 · 로봇 TF와의 차이 | 30 µm 내외. 0.1 mm 안이면 통과 (양자화 상한은 약 70 µm) |
 | 실습 2 · 자코비안 vs 유한차분 | 1e-9 |
 | 실습 2 · FK↔IK 왕복 | 위치 오차 1e-5 m 미만 |
 | 실습 2 · 팔에 보낸 뒤 도달 오차 | y 2 mm · x 11 mm · z 22 mm |
@@ -127,4 +130,5 @@ Pinocchio는 `ros-jazzy-pinocchio` 로 따로 설치한다. `ros-jazzy-desktop` 
 
 - IK `success=False` — 작업공간 밖이 아니라 국소최소점인 경우가 많다. 초기값을 바꿔 재시도한다
 - 궤적이 6.28 rad 튐 — warm start를 쓰지 않아 IK 분기가 바뀐 것이다
+- 손끝 pose가 로봇 TF와 크게 어긋남 — `data.oMf`는 URDF 루트(`base_footprint`) 기준이다. `torso_link` pose의 역변환을 곱해 몸통 기준으로 바꾼다
 - 보낸 뒤 팔이 제자리로 돌아감 — 명령을 유지 송출하지 않으면 기존 명령이 되찾아간다
