@@ -5,10 +5,10 @@
 - `index.html`: OT와 네 개 강의 덱 진입
 - `orientation.html`: 한 학기 운영 · 프로젝트 · 평가 안내 (11장)
 - `lecture-1.html`: ROS2 로봇 프로그래밍 이론·실습 (60장)
-- `lecture-2.html`: 제어 (65장) — 이론 63 + 실습 2
+- `lecture-2.html`: 제어 (64장) — 이론 62 + 실습 2
 - `lecture-3.html`: VSLAM · 내비게이션 (63장) — 이론 57 + 실습 6
 - `lecture-4.html`: VLA 이론 (14장)
-- 전체: OT 11장 + 4개 강의 202장, 총 213장
+- 전체: OT 11장 + 4개 강의 201장, 총 212장
 
 강의 1은 PowerPoint 원본의 텍스트·도형·이미지를 네이티브 HTML/CSS로 변환한 덱이다.
 다른 강의와 같은 헤더·서체·색상 토큰을 사용하며, 본문 그리드는 글자 크기에 맞춰 높이가 늘어난다.
@@ -34,4 +34,4 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 34페이지에서는 좌우 바퀴 속도에 따른 궤적을, 41페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 
-챕터 4 「팔 제어」는 ALICE M1의 7자유도 팔로 물체에 접근하고 잡고 옮기는 매니퓰레이션을 다룬다. 52페이지는 7개 관절의 순기구학 시연, 54페이지는 같은 TCP pose를 유지하는 서로 다른 팔 자세의 역기구학 시연이다. 64~65페이지는 이 두 시연을 학생이 Pinocchio로 직접 구현하는 실습이다. 로봇 모델·사진·수업 구성은 [ARM_MANIPULATION.md](ARM_MANIPULATION.md)에 정리했다.
+챕터 4 「팔 제어」는 ALICE M1의 7자유도 팔로 물체에 접근하고 잡고 옮기는 매니퓰레이션을 다룬다. 51페이지는 7개 관절의 순기구학 시연, 53페이지는 같은 TCP pose를 유지하는 서로 다른 팔 자세의 역기구학 시연이다. 63~64페이지는 이 두 시연을 학생이 Pinocchio로 직접 구현하는 실습이다. 로봇 모델·사진·수업 구성은 [ARM_MANIPULATION.md](ARM_MANIPULATION.md)에 정리했다.

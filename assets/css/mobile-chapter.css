@@ -941,3 +941,496 @@
   .lecture-2 .mobile-drive-takeaway > p { font-size: 23px; }
   .lecture-2 .mobile-drive-takeaway > small { font-size: 17px; }
 }
+/* 35페이지 · 측정한 이동의 누적과 드리프트 */
+.lecture-2 .mobile-odometry-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-odometry-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-odometry-slide .mobile-grid, .lecture-2 .mobile-odometry-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-odometry-slide .mobile-copy { gap: 18px; }
+.lecture-2 .mobile-odometry-definition { font-size: 29px; }
+.lecture-2 .mobile-odometry-process { padding: 0 4px; }
+.lecture-2 .mobile-odometry-process h3 { margin: 0 0 12px; font-size: 23px; }
+.lecture-2 .mobile-odometry-steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: odom-step; }
+.lecture-2 .mobile-odometry-steps li { display: grid; grid-template-columns: 28px 54px minmax(0, 1fr); gap: 10px; align-items: baseline; counter-increment: odom-step; }
+.lecture-2 .mobile-odometry-steps li::before { content: counter(odom-step); width: 26px; height: 26px; border-radius: 50%; background: var(--accent-tint); color: var(--accent-ink); font-size: 18px; line-height: 26px; font-weight: 600; text-align: center; }
+.lecture-2 .mobile-odometry-steps strong { color: var(--accent-ink); font-size: 22px; }
+.lecture-2 .mobile-odometry-steps span { color: var(--hy-blue); font-size: 22px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-odometry-process > p { margin: 14px 0 0; color: #647080; font-size: 18px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-odometry-process > p strong { color: var(--accent-ink); font-weight: 500; }
+.lecture-2 .mobile-odometry-slip { padding: 16px 20px; border-radius: 14px; background: #FFF3E3; }
+.lecture-2 .mobile-odometry-slip > strong { color: #AF5900; font-size: 22px; font-weight: 600; }
+.lecture-2 .mobile-odometry-slip p { margin: 6px 0 0; color: var(--hy-gray); font-size: 20px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-odometry-figure:has(figcaption) { grid-template-rows: auto minmax(0, 1fr) auto auto; gap: 12px; }
+.lecture-2 .mobile-odometry-figure h3 { font-size: 25px; line-height: 1.4; }
+.lecture-2 .mobile-odometry-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-odometry-scroll .mobile-svg { height: 280px; }
+.lecture-2 .mobile-odometry-legend { display: flex; flex-wrap: wrap; gap: 12px 24px; color: var(--hy-blue); font-size: 20px; }
+.lecture-2 .mobile-odometry-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.lecture-2 .mobile-odometry-legend span::before { content: ''; width: 28px; border-top: 3px solid currentColor; }
+.lecture-2 .mobile-odometry-legend span + span { color: #AF5900; }
+.lecture-2 .mobile-odometry-legend span + span::before { border-top-style: dashed; }
+.lecture-2 .mobile-odometry-legend small { align-self: center; color: #647080; font-size: 15px; }
+.lecture-2 .mobile-odometry-figure figcaption { padding-top: 12px; border-top: 1px solid #D8DEE9; font-size: 20px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-odometry-figure figcaption strong { color: var(--hy-blue); font-weight: 500; }
+.lecture-2 .mobile-odometry-takeaway { padding-top: 12px; border-top: 2px solid #D8DEE9; }
+.lecture-2 .mobile-odometry-takeaway p { margin: 0; color: var(--hy-blue); font-size: 26px; line-height: 1.4; font-weight: 600; }
+.lecture-2 .mobile-odometry-takeaway small { display: block; margin-top: 6px; color: #647080; font-size: 19px; line-height: 1.5; }
+.lecture-2 .mobile-odometry-takeaway strong { color: var(--accent-ink); font-weight: 600; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-odometry-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-odometry-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-odometry-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-odometry-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-odometry-slide .mobile-copy { gap: 12px; }
+  .lecture-2 .mobile-odometry-definition { padding: 14px 18px; font-size: 25px; }
+  .lecture-2 .mobile-odometry-definition small { margin-top: 6px; font-size: 17px; }
+  .lecture-2 .mobile-odometry-process h3 { margin-bottom: 8px; font-size: 21px; }
+  .lecture-2 .mobile-odometry-steps { gap: 8px; }
+  .lecture-2 .mobile-odometry-steps strong, .lecture-2 .mobile-odometry-steps span { font-size: 20px; }
+  .lecture-2 .mobile-odometry-process > p { margin-top: 10px; font-size: 16px; }
+  .lecture-2 .mobile-odometry-slip { padding: 12px 16px; }
+  .lecture-2 .mobile-odometry-slip > strong { font-size: 20px; }
+  .lecture-2 .mobile-odometry-slip p { font-size: 18px; }
+  .lecture-2 .mobile-odometry-figure { padding: 18px; }
+  .lecture-2 .mobile-odometry-figure h3 { font-size: 23px; }
+  .lecture-2 .mobile-odometry-legend, .lecture-2 .mobile-odometry-figure figcaption { font-size: 18px; }
+  .lecture-2 .mobile-odometry-takeaway p { font-size: 23px; }
+  .lecture-2 .mobile-odometry-takeaway small { font-size: 17px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-odometry-slide { padding-bottom: 64px; }
+  .lecture-2 .mobile-odometry-slide .slide__inner { gap: 10px; }
+  .lecture-2 .mobile-odometry-slide .mobile-copy { gap: 10px; }
+  .lecture-2 .mobile-odometry-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-odometry-definition { padding-block: 10px; font-size: 23px; line-height: 1.3; }
+  .lecture-2 .mobile-odometry-definition small { font-size: 16px; }
+  .lecture-2 .mobile-odometry-steps strong, .lecture-2 .mobile-odometry-steps span { font-size: 18px; }
+  .lecture-2 .mobile-odometry-process > p { margin-top: 8px; font-size: 15px; }
+  .lecture-2 .mobile-odometry-slip p { font-size: 17px; }
+  .lecture-2 .mobile-odometry-scroll .mobile-svg { height: 205px; }
+  .lecture-2 .mobile-odometry-figure { padding: 14px; }
+  .lecture-2 .mobile-odometry-figure:has(figcaption) { gap: 8px; }
+  .lecture-2 .mobile-odometry-figure figcaption { padding-top: 8px; }
+  .lecture-2 .mobile-odometry-legend { gap: 8px 16px; font-size: 17px; }
+  .lecture-2 .mobile-odometry-legend small { font-size: 14px; }
+  .lecture-2 .mobile-odometry-takeaway { padding-top: 8px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-odometry-slide .mobile-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-odometry-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-odometry-slide .mobile-copy { gap: 20px; }
+  .lecture-2 .mobile-odometry-steps { gap: 16px; }
+  .lecture-2 .mobile-odometry-steps li { grid-template-columns: 26px minmax(0, 1fr); gap: 6px 10px; }
+  .lecture-2 .mobile-odometry-steps span { grid-column: 2; font-size: 20px; }
+  .lecture-2 .mobile-odometry-process > p { font-size: 17px; }
+  .lecture-2 .mobile-odometry-slip { padding: 16px; }
+  .lecture-2 .mobile-odometry-slip > strong { font-size: 21px; }
+  .lecture-2 .mobile-odometry-slip p { font-size: 19px; }
+  .lecture-2 .mobile-odometry-figure { display: grid; overflow: visible; }
+  .lecture-2 .mobile-odometry-figure h3 { font-size: 22px; }
+  .lecture-2 .mobile-odometry-scroll { overflow-x: auto; }
+  .lecture-2 .mobile-odometry-scroll .mobile-svg { width: 640px; max-width: none; height: auto; }
+  .lecture-2 .mobile-odometry-figure figcaption { position: static; width: auto; margin-top: 0; font-size: 18px; }
+  .lecture-2 .mobile-odometry-legend { font-size: 18px; gap: 8px 18px; }
+  .lecture-2 .mobile-odometry-takeaway p { font-size: 23px; }
+  .lecture-2 .mobile-odometry-takeaway small { font-size: 17px; }
+}
+/* 36페이지 · 원점·좌표축과 같은 점의 두 가지 좌표 */
+.lecture-2 .mobile-frame-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-frame-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-frame-slide .mobile-grid, .lecture-2 .mobile-frame-slide .mobile-copy { min-height: min-content; }
+.lecture-2 .mobile-frame-definition { font-size: 29px; }
+.lecture-2 .mobile-frame-definition dl { display: grid; gap: 8px; margin: 14px 0 0; }
+.lecture-2 .mobile-frame-definition dl > div { display: grid; grid-template-columns: 66px minmax(0, 1fr); gap: 14px; }
+.lecture-2 .mobile-frame-definition dt, .lecture-2 .mobile-frame-definition dd { margin: 0; color: #DDE5F5; font-size: 21px; line-height: 1.5; font-weight: 400; }
+.lecture-2 .mobile-frame-definition dt { color: #fff; font-weight: 500; }
+.lecture-2 .mobile-frame-names > div { grid-template-columns: 146px minmax(0, 1fr); gap: 14px; }
+.lecture-2 .mobile-frame-names small { display: block; margin-top: 4px; color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-frame-axes { gap: 8px; }
+.lecture-2 .mobile-frame-axes small { color: #647080; font-size: 18px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-frame-figure { grid-template-rows: auto minmax(0, 1fr) auto; gap: 12px; }
+.lecture-2 .mobile-frame-setup { margin: 0; color: #647080; font-size: 19px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-frame-setup strong { color: var(--hy-blue); font-weight: 500; }
+.lecture-2 .mobile-frame-scroll { min-width: 0; min-height: 0; }
+.lecture-2 .mobile-frame-scroll .mobile-svg { height: 310px; }
+.lecture-2 .mobile-frame-readings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.lecture-2 .mobile-frame-readings > div { display: grid; align-content: start; gap: 4px; padding: 14px; border: 1px solid #D8DEE9; border-radius: 12px; background: #fff; }
+.lecture-2 .mobile-frame-readings > div:first-child { background: #E8F6F8; border-color: #B7DCE0; }
+.lecture-2 .mobile-frame-readings span { color: #647080; font-size: 19px; }
+.lecture-2 .mobile-frame-readings > div:first-child span { color: var(--accent-ink); }
+.lecture-2 .mobile-frame-readings .mobile-frame-reading--sensor { background: #FFF3E3; border-color: #E7C49A; }
+.lecture-2 .mobile-frame-reading--sensor span, .lecture-2 .mobile-frame-names .mobile-frame-sensor-name { color: #AF5900; }
+.lecture-2 .mobile-frame-readings strong { color: var(--hy-blue); font-size: 28px; line-height: 1.4; font-weight: 600; }
+.lecture-2 .mobile-frame-readings small { color: #647080; font-size: 16px; line-height: 1.4; word-break: keep-all; }
+.lecture-2 .mobile-frame-figure figcaption { font-size: 19px; line-height: 1.5; color: var(--hy-blue); }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-frame-slide .slide__inner { gap: 12px; }
+  .lecture-2 .mobile-frame-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-frame-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-frame-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-frame-slide .mobile-copy { gap: 16px; }
+  .lecture-2 .mobile-frame-definition { padding: 14px 18px; font-size: 25px; }
+  .lecture-2 .mobile-frame-definition dl { gap: 4px; margin-top: 10px; }
+  .lecture-2 .mobile-frame-definition dt, .lecture-2 .mobile-frame-definition dd { font-size: 18px; }
+  .lecture-2 .mobile-frame-names { gap: 12px; }
+  .lecture-2 .mobile-frame-names > div { grid-template-columns: 126px minmax(0, 1fr); padding-top: 10px; }
+  .lecture-2 .mobile-frame-names dt, .lecture-2 .mobile-frame-names dd { font-size: 20px; }
+  .lecture-2 .mobile-frame-names small { font-size: 16px; }
+  .lecture-2 .mobile-frame-axes { padding: 14px 18px; gap: 6px; }
+  .lecture-2 .mobile-frame-axes span { font-size: 17px; }
+  .lecture-2 .mobile-frame-axes strong { font-size: 25px; }
+  .lecture-2 .mobile-frame-axes small { font-size: 16px; }
+  .lecture-2 .mobile-frame-figure { padding: 16px; }
+  .lecture-2 .mobile-frame-figure { gap: 10px; }
+  .lecture-2 .mobile-frame-setup { font-size: 17px; }
+  .lecture-2 .mobile-frame-readings > div { padding: 10px 12px; }
+  .lecture-2 .mobile-frame-readings span { font-size: 17px; }
+  .lecture-2 .mobile-frame-readings strong { font-size: 24px; }
+  .lecture-2 .mobile-frame-readings small { font-size: 15px; }
+  .lecture-2 .mobile-frame-figure figcaption { font-size: 17px; }
+  .lecture-2 .mobile-frame-slide .mobile-takeaway { font-size: 23px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-frame-slide { padding-bottom: 64px; }
+  .lecture-2 .mobile-frame-slide .slide__inner { gap: 10px; }
+  .lecture-2 .mobile-frame-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-frame-slide .mobile-copy { gap: 10px; }
+  .lecture-2 .mobile-frame-definition { padding-block: 10px; font-size: 23px; line-height: 1.3; }
+  .lecture-2 .mobile-frame-definition dl { margin-top: 4px; gap: 2px; }
+  .lecture-2 .mobile-frame-definition dt, .lecture-2 .mobile-frame-definition dd { font-size: 16px; line-height: 1.4; }
+  .lecture-2 .mobile-frame-names { gap: 8px; }
+  .lecture-2 .mobile-frame-names > div { padding-top: 8px; }
+  .lecture-2 .mobile-frame-names dt, .lecture-2 .mobile-frame-names dd { font-size: 18px; }
+  .lecture-2 .mobile-frame-names small { margin-top: 2px; font-size: 15px; }
+  .lecture-2 .mobile-frame-axes { padding-block: 10px; gap: 4px; }
+  .lecture-2 .mobile-frame-axes strong { font-size: 23px; }
+  .lecture-2 .mobile-frame-axes small { font-size: 15px; }
+  .lecture-2 .mobile-frame-figure { padding: 12px; }
+  .lecture-2 .mobile-frame-figure { gap: 8px; }
+  .lecture-2 .mobile-frame-scroll .mobile-svg { height: 225px; }
+  .lecture-2 .mobile-frame-setup, .lecture-2 .mobile-frame-figure figcaption { font-size: 16px; }
+  .lecture-2 .mobile-frame-readings > div { padding: 8px 10px; gap: 3px; }
+  .lecture-2 .mobile-frame-readings span { font-size: 16px; line-height: 1.3; }
+  .lecture-2 .mobile-frame-readings strong { font-size: 21px; line-height: 1.3; white-space: nowrap; }
+  .lecture-2 .mobile-frame-readings small { grid-column: 1 / -1; font-size: 14px; }
+  .lecture-2 .mobile-frame-slide .mobile-takeaway { padding-top: 10px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-frame-slide .mobile-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-frame-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-frame-definition dl > div { grid-template-columns: 58px minmax(0, 1fr); gap: 10px; }
+  .lecture-2 .mobile-frame-definition dt, .lecture-2 .mobile-frame-definition dd { font-size: 18px; }
+  .lecture-2 .mobile-frame-names > div { grid-template-columns: 1fr; gap: 6px; }
+  .lecture-2 .mobile-frame-names small { font-size: 17px; }
+  .lecture-2 .mobile-frame-axes small { font-size: 17px; }
+  .lecture-2 .mobile-frame-figure { display: grid; overflow: visible; }
+  .lecture-2 .mobile-frame-setup { font-size: 18px; }
+  .lecture-2 .mobile-frame-scroll { overflow-x: auto; }
+  .lecture-2 .mobile-frame-scroll .mobile-svg { width: 620px; max-width: none; height: auto; }
+  .lecture-2 .mobile-frame-readings { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-frame-readings span { font-size: 18px; }
+  .lecture-2 .mobile-frame-readings strong { font-size: 25px; }
+  .lecture-2 .mobile-frame-figure figcaption { position: static; width: auto; margin-top: 0; font-size: 18px; }
+}
+
+/* 35~36페이지 · 추정 과정과 좌표계 이름 구분 */
+.lecture-2 .mobile-odometry-terms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin: 0; }
+.lecture-2 .mobile-odometry-terms > div { display: grid; align-content: start; gap: 6px; }
+.lecture-2 .mobile-odometry-terms dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.lecture-2 .mobile-odometry-terms dt strong { color: var(--hy-blue); font-size: 25px; line-height: 1.4; }
+.lecture-2 .mobile-odometry-terms dt span { color: var(--accent-ink); font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-odometry-terms dd { margin: 0; color: var(--hy-gray); font-size: 21px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-frame-names dt small { font-weight: 400; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-odometry-terms dt strong { font-size: 23px; }
+  .lecture-2 .mobile-odometry-terms dt span { font-size: 17px; }
+  .lecture-2 .mobile-odometry-terms dd { font-size: 19px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-odometry-terms > div { gap: 4px; }
+  .lecture-2 .mobile-odometry-terms dt strong { font-size: 22px; }
+  .lecture-2 .mobile-odometry-terms dt span { font-size: 16px; }
+  .lecture-2 .mobile-odometry-terms dd { font-size: 18px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-odometry-terms { grid-template-columns: 1fr; gap: 18px; }
+  .lecture-2 .mobile-odometry-terms dt strong { font-size: 23px; }
+  .lecture-2 .mobile-odometry-terms dt span { font-size: 17px; }
+  .lecture-2 .mobile-odometry-terms dd { font-size: 19px; }
+}
+
+/* 37페이지 · 지도 위치추정과 오도메트리로 map → odom 보정 */
+.lecture-2 .mobile-frame-roles-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-frame-roles-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
+.lecture-2 .mobile-frame-roles-content { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 2fr); align-content: center; align-items: center; gap: 24px; min-height: min-content; }
+.lecture-2 .mobile-frame-roles-cards { display: grid; gap: 14px; min-width: 0; }
+.lecture-2 .mobile-frame-role { display: grid; gap: 8px; padding: 18px 20px; border-radius: 16px; background: #F5F7FA; min-width: 0; }
+.lecture-2 .mobile-frame-role--odometry { background: var(--accent-tint); }
+.lecture-2 .mobile-frame-role--correction { background: #FFF3E6; }
+.lecture-2 .mobile-frame-role h3 { font-size: 25px; line-height: 1.35; }
+.lecture-2 .mobile-frame-role--odometry h3 { color: var(--accent-ink); }
+.lecture-2 .mobile-frame-role--correction h3 { color: #AF5900; }
+.lecture-2 .mobile-frame-role p { margin: 0; color: var(--hy-gray); font-size: 20px; line-height: 1.5; word-break: keep-all; }
+.lecture-2 .mobile-frame-role small { color: #647080; font-size: 16px; line-height: 1.4; }
+.lecture-2 .mobile-frame-benefit { display: grid; gap: 8px; min-width: 0; padding: 18px 20px; border: 2px solid #1D2475; border-radius: 16px; background: #FFFFFF; }
+.lecture-2 .mobile-frame-benefit h3 { font-size: 24px; line-height: 1.35; }
+.lecture-2 .mobile-frame-benefit > p { margin: 0; color: #647080; font-size: 16px; line-height: 1.4; }
+.lecture-2 .mobile-frame-benefit dl { display: grid; gap: 6px; margin: 0; }
+.lecture-2 .mobile-frame-benefit dl > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 8px; }
+.lecture-2 .mobile-frame-benefit dt { color: var(--hy-gray); font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-frame-benefit dd { margin: 0; color: var(--hy-blue); font-size: 22px; line-height: 1.4; white-space: nowrap; }
+.lecture-2 .mobile-frame-benefit strong { font-weight: 600; }
+.lecture-2 .mobile-frame-example { display: grid; gap: 12px; min-width: 0; margin: 0; padding: 20px; border: 2px solid #D8DEE9; border-radius: 18px; }
+.lecture-2 .mobile-frame-example-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+.lecture-2 .mobile-frame-example-heading h3 { font-size: 25px; line-height: 1.4; }
+.lecture-2 .mobile-frame-example-heading p { margin: 0; color: #647080; font-size: 18px; line-height: 1.5; }
+.lecture-2 .mobile-frame-example-heading p span { white-space: nowrap; }
+.lecture-2 .mobile-frame-example-scroll { min-width: 0; }
+.lecture-2 .mobile-frame-example-scroll .mobile-svg { height: 365px; }
+.lecture-2 .mobile-frame-tf-chain { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin: 0; padding: 12px 16px; border-radius: 12px; background: #F5F7FA; color: var(--hy-blue); font-size: 21px; line-height: 1.5; }
+.lecture-2 .mobile-frame-tf-chain strong { font-weight: 600; }
+.lecture-2 .mobile-frame-tf-chain > span { white-space: nowrap; }
+.lecture-2 .mobile-frame-tf-chain small { color: #647080; font-size: 17px; }
+.lecture-2 .mobile-frame-roles-slide .mobile-takeaway { font-weight: 400; }
+.lecture-2 .mobile-frame-roles-slide .mobile-takeaway strong { font-weight: 600; white-space: nowrap; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-frame-roles-slide .slide__inner { gap: 14px; }
+  .lecture-2 .mobile-frame-roles-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-frame-roles-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-frame-roles-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-frame-roles-cards { gap: 12px; }
+  .lecture-2 .mobile-frame-role { padding: 14px 18px; gap: 6px; }
+  .lecture-2 .mobile-frame-role h3 { font-size: 23px; }
+  .lecture-2 .mobile-frame-role p { font-size: 19px; }
+  .lecture-2 .mobile-frame-role small { font-size: 15px; }
+  .lecture-2 .mobile-frame-benefit { padding: 14px 18px; gap: 6px; }
+  .lecture-2 .mobile-frame-benefit h3 { font-size: 22px; }
+  .lecture-2 .mobile-frame-benefit > p { font-size: 15px; }
+  .lecture-2 .mobile-frame-benefit dt { font-size: 17px; }
+  .lecture-2 .mobile-frame-benefit dd { font-size: 21px; }
+  .lecture-2 .mobile-frame-example { padding: 16px; gap: 10px; }
+  .lecture-2 .mobile-frame-example-heading h3 { font-size: 24px; }
+  .lecture-2 .mobile-frame-example-heading p { font-size: 17px; }
+  .lecture-2 .mobile-frame-example-scroll .mobile-svg { height: 330px; }
+  .lecture-2 .mobile-frame-tf-chain { padding: 10px 14px; font-size: 20px; }
+  .lecture-2 .mobile-frame-tf-chain small { font-size: 16px; }
+  .lecture-2 .mobile-frame-roles-slide .mobile-takeaway { font-size: 23px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-frame-roles-slide { padding-bottom: 64px; }
+  .lecture-2 .mobile-frame-roles-slide .slide__inner { gap: 10px; }
+  .lecture-2 .mobile-frame-roles-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-frame-roles-content { gap: 20px; }
+  .lecture-2 .mobile-frame-roles-cards { gap: 8px; }
+  .lecture-2 .mobile-frame-role { padding: 9px 14px; gap: 4px; }
+  .lecture-2 .mobile-frame-role h3 { font-size: 21px; }
+  .lecture-2 .mobile-frame-role p { font-size: 17px; }
+  .lecture-2 .mobile-frame-role small { font-size: 14px; }
+  .lecture-2 .mobile-frame-benefit { padding: 9px 12px; gap: 4px; }
+  .lecture-2 .mobile-frame-benefit h3 { font-size: 20px; }
+  .lecture-2 .mobile-frame-benefit > p { font-size: 14px; }
+  .lecture-2 .mobile-frame-benefit dl { gap: 3px; }
+  .lecture-2 .mobile-frame-benefit dt { font-size: 16px; }
+  .lecture-2 .mobile-frame-benefit dd { font-size: 19px; }
+  .lecture-2 .mobile-frame-example { padding: 10px; gap: 8px; }
+  .lecture-2 .mobile-frame-example-heading h3 { font-size: 22px; }
+  .lecture-2 .mobile-frame-example-heading p { font-size: 16px; }
+  .lecture-2 .mobile-frame-example-scroll .mobile-svg { height: 272px; }
+  .lecture-2 .mobile-frame-tf-chain { padding: 8px 12px; gap: 2px 14px; font-size: 18px; }
+  .lecture-2 .mobile-frame-tf-chain small { font-size: 14px; }
+  .lecture-2 .mobile-frame-roles-slide .mobile-takeaway { padding-top: 10px; font-size: 21px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-frame-roles-content { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-frame-roles-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+  .lecture-2 .mobile-frame-role { align-content: start; }
+  .lecture-2 .mobile-frame-role h3 { font-size: 21px; }
+  .lecture-2 .mobile-frame-role p { font-size: 18px; }
+  .lecture-2 .mobile-frame-benefit { grid-column: 1 / -1; }
+  .lecture-2 .mobile-frame-benefit dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-frame-roles-slide .slide__inner { grid-template-rows: auto; }
+  .lecture-2 .mobile-frame-roles-content { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-frame-roles-cards { gap: 14px; }
+  .lecture-2 .mobile-frame-role { padding: 18px; gap: 8px; }
+  .lecture-2 .mobile-frame-role h3 { font-size: 24px; }
+  .lecture-2 .mobile-frame-role p { font-size: 20px; }
+  .lecture-2 .mobile-frame-role small { font-size: 16px; }
+  .lecture-2 .mobile-frame-benefit { padding: 16px; }
+  .lecture-2 .mobile-frame-benefit h3 { font-size: 23px; }
+  .lecture-2 .mobile-frame-benefit dt { font-size: 17px; }
+  .lecture-2 .mobile-frame-benefit dd { font-size: 21px; }
+  .lecture-2 .mobile-frame-example { padding: 14px; }
+  .lecture-2 .mobile-frame-example-heading h3 { font-size: 22px; }
+  .lecture-2 .mobile-frame-example-heading p { font-size: 16px; }
+  .lecture-2 .mobile-frame-example-heading p span { white-space: normal; }
+  .lecture-2 .mobile-frame-example-scroll { overflow-x: auto; }
+  .lecture-2 .mobile-frame-example-scroll .mobile-svg { width: 850px; max-width: none; height: auto; }
+  .lecture-2 .mobile-frame-tf-chain { padding: 12px; gap: 6px; font-size: 18px; }
+  .lecture-2 .mobile-frame-tf-chain strong { flex-basis: 100%; }
+  .lecture-2 .mobile-frame-tf-chain small { margin-top: 4px; font-size: 16px; }
+}
+
+/* 39페이지 · 조건 → 몸체에서 점까지의 변위 → odom 좌표 */
+.lecture-2 .mobile-transform-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-transform-slide .slide__inner { grid-template-rows: auto auto minmax(min-content, 1fr) auto; gap: 20px; }
+.lecture-2 .mobile-transform-givens { display: grid; grid-template-columns: 1.2fr 1fr .85fr; gap: 18px; }
+.lecture-2 .mobile-transform-givens > div { min-width: 0; padding: 14px 18px; border-radius: 14px; background: #F5F7FA; }
+.lecture-2 .mobile-transform-givens > div:first-child { background: var(--accent-tint); }
+.lecture-2 .mobile-transform-givens > div:nth-child(2) { background: #FFF3E6; }
+.lecture-2 .mobile-transform-givens strong { display: block; margin-bottom: 4px; font-size: 19px; color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .mobile-transform-givens p { margin: 0; font-size: 22px; line-height: 1.4; color: var(--hy-gray); }
+.lecture-2 .mobile-transform-givens p span { font-size: .85em; white-space: nowrap; }
+.lecture-2 .mobile-transform-content { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 28px; align-items: center; min-height: min-content; }
+.lecture-2 .mobile-transform-explanation { display: grid; align-content: center; gap: 22px; min-width: 0; }
+.lecture-2 .mobile-transform-steps { gap: 20px; }
+.lecture-2 .mobile-transform-steps strong { font-size: 25px; line-height: 1.35; }
+.lecture-2 .mobile-transform-steps span { font-size: 22px; }
+.lecture-2 .mobile-rotation-example { display: grid; gap: 12px; min-width: 0; padding: 12px 16px; border-radius: 12px; background: var(--accent-tint); color: var(--hy-blue); }
+.lecture-2 .mobile-rotation-row { display: flex; align-items: center; min-width: max-content; }
+.lecture-2 .mobile-rotation-row math { margin: 0; font-family: "DejaVu Math TeX Gyre", "STIX Two Math", "Cambria Math", math; font-size: 25px; }
+.lecture-2 .mobile-rotation-row--product math { color: var(--accent-ink); }
+.lecture-2 .mobile-transform-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 26px; }
+.lecture-2 .mobile-transform-summary > p { margin: 0; line-height: 1.6; }
+.lecture-2 .mobile-transform-figure { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 18px; border-radius: 18px; background: #F5F7FA; }
+.lecture-2 .mobile-transform-scroll { min-width: 0; }
+.lecture-2 .mobile-transform-scroll .mobile-svg { height: 350px; }
+.lecture-2 .mobile-transform-figure figcaption { color: #647080; font-size: 18px; line-height: 1.4; }
+.lecture-2 .mobile-transform-slide .mobile-takeaway { font-weight: 400; }
+.lecture-2 .mobile-transform-slide .mobile-takeaway strong { font-weight: 600; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-transform-slide .slide__inner { gap: 14px; }
+  .lecture-2 .mobile-transform-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-transform-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-transform-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-transform-givens { gap: 14px; }
+  .lecture-2 .mobile-transform-givens > div { padding: 12px 16px; }
+  .lecture-2 .mobile-transform-givens strong { font-size: 18px; }
+  .lecture-2 .mobile-transform-givens p { font-size: 20px; }
+  .lecture-2 .mobile-transform-content { gap: 24px; }
+  .lecture-2 .mobile-transform-explanation { gap: 18px; }
+  .lecture-2 .mobile-transform-steps { gap: 18px; }
+  .lecture-2 .mobile-transform-steps strong { font-size: 23px; }
+  .lecture-2 .mobile-transform-steps span { font-size: 20px; }
+  .lecture-2 .mobile-rotation-example { gap: 10px; padding: 10px 14px; }
+  .lecture-2 .mobile-rotation-row math { font-size: 23px; }
+  .lecture-2 .mobile-transform-figure { padding: 14px; gap: 8px; }
+  .lecture-2 .mobile-transform-scroll .mobile-svg { height: 300px; }
+  .lecture-2 .mobile-transform-figure figcaption { font-size: 17px; }
+  .lecture-2 .mobile-transform-slide .mobile-takeaway { font-size: 23px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-transform-slide { padding-bottom: 64px; }
+  .lecture-2 .mobile-transform-slide .slide__inner { gap: 8px; }
+  .lecture-2 .mobile-transform-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-transform-givens { gap: 12px; }
+  .lecture-2 .mobile-transform-givens > div { padding: 8px 14px; }
+  .lecture-2 .mobile-transform-givens strong { font-size: 16px; margin-bottom: 3px; }
+  .lecture-2 .mobile-transform-givens p { font-size: 18px; }
+  .lecture-2 .mobile-transform-content { gap: 22px; }
+  .lecture-2 .mobile-transform-explanation { gap: 16px; }
+  .lecture-2 .mobile-transform-steps { gap: 9px; }
+  .lecture-2 .mobile-transform-steps strong { font-size: 21px; }
+  .lecture-2 .mobile-transform-steps span { font-size: 18px; }
+  .lecture-2 .mobile-rotation-example { gap: 6px; padding: 6px 12px; }
+  .lecture-2 .mobile-rotation-row math { font-size: 21px; }
+  .lecture-2 .mobile-transform-summary { gap: 6px 24px; }
+  .lecture-2 .mobile-transform-figure { padding: 10px; }
+  .lecture-2 .mobile-transform-scroll .mobile-svg { height: 255px; }
+  .lecture-2 .mobile-transform-figure figcaption { font-size: 16px; }
+  .lecture-2 .mobile-transform-slide .mobile-takeaway { padding-top: 10px; font-size: 21px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-transform-content { grid-template-columns: 1fr; }
+  .lecture-2 .mobile-transform-givens { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-transform-slide .slide__inner { grid-template-rows: auto; gap: 24px; }
+  .lecture-2 .mobile-transform-givens { grid-template-columns: 1fr; gap: 12px; }
+  .lecture-2 .mobile-transform-givens > div { padding: 14px 18px; }
+  .lecture-2 .mobile-transform-givens strong { font-size: 18px; }
+  .lecture-2 .mobile-transform-givens p { font-size: 20px; }
+  .lecture-2 .mobile-transform-content { grid-template-columns: 1fr; gap: 24px; }
+  .lecture-2 .mobile-transform-explanation { gap: 20px; }
+  .lecture-2 .mobile-transform-steps { gap: 20px; }
+  .lecture-2 .mobile-transform-steps strong { font-size: 22px; }
+  .lecture-2 .mobile-transform-steps span { font-size: 20px; }
+  .lecture-2 .mobile-rotation-example { overflow-x: auto; padding: 12px; gap: 12px; }
+  .lecture-2 .mobile-rotation-row math { font-size: 23px; }
+  .lecture-2 .mobile-transform-summary { gap: 12px; }
+  .lecture-2 .mobile-transform-figure { padding: 14px; }
+  .lecture-2 .mobile-transform-scroll { overflow-x: auto; }
+  .lecture-2 .mobile-transform-scroll .mobile-svg { width: 780px; max-width: none; height: auto; }
+  .lecture-2 .mobile-transform-figure figcaption { font-size: 17px; }
+}
+
+/* 43페이지 · 명령과 측정을 직진 예시로 연결 */
+.lecture-2 .mobile-control-flow-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
+.lecture-2 .mobile-control-flow-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; gap: 24px; }
+.lecture-2 .mobile-control-flow { display: grid; align-content: center; gap: 24px; min-width: 0; }
+.lecture-2 .mobile-control-assumption { margin: 0; color: #647080; font-size: 20px; line-height: 1.4; }
+.lecture-2 .mobile-control-lane { display: grid; gap: 14px; padding: 22px 24px; border-radius: 18px; background: #F0F2FA; color: var(--hy-blue); }
+.lecture-2 .mobile-control-lane--measurement { background: var(--accent-tint); color: var(--accent-ink); }
+.lecture-2 .mobile-control-lane h3 { color: inherit; font-size: 27px; line-height: 1.35; }
+.lecture-2 .mobile-control-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; margin: 0; padding: 0; list-style: none; }
+.lecture-2 .mobile-control-steps li { position: relative; display: grid; align-content: start; gap: 10px; min-width: 0; padding: 18px; border-radius: 12px; background: #FFFFFF; }
+.lecture-2 .mobile-control-steps li:not(:last-child)::after { content: "→"; position: absolute; right: -29px; top: calc(50% - 21px); width: 24px; text-align: center; font-size: 28px; line-height: 42px; }
+.lecture-2 .mobile-control-steps h4 { margin: 0; font-size: 24px; line-height: 1.4; font-weight: 600; }
+.lecture-2 .mobile-control-steps p { margin: 0; color: var(--hy-gray); font-size: 20px; line-height: 1.45; }
+.lecture-2 .mobile-control-steps .mobile-control-value { color: var(--hy-blue); font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lecture-2 .mobile-control-publish p { font-size: 21px; }
+.lecture-2 .mobile-control-publish strong { color: var(--accent-ink); font-weight: 600; }
+.lecture-2 .mobile-control-flow-slide .mobile-takeaway { font-weight: 400; }
+.lecture-2 .mobile-control-flow-slide .mobile-takeaway strong { font-weight: 600; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .mobile-control-flow-slide .slide__inner { gap: 16px; }
+  .lecture-2 .mobile-control-flow-slide .slide__header { gap: 6px; }
+  .lecture-2 .mobile-control-flow-slide .slide__header::after { margin-top: 6px; }
+  .lecture-2 .mobile-control-flow-slide h2 { font-size: clamp(32px, 2.8vw, 42px); }
+  .lecture-2 .mobile-control-flow { gap: 16px; }
+  .lecture-2 .mobile-control-assumption { font-size: 18px; }
+  .lecture-2 .mobile-control-lane { padding: 16px 18px; gap: 12px; }
+  .lecture-2 .mobile-control-lane h3 { font-size: 24px; }
+  .lecture-2 .mobile-control-steps li { padding: 14px; gap: 8px; }
+  .lecture-2 .mobile-control-steps h4 { font-size: 22px; }
+  .lecture-2 .mobile-control-steps p { font-size: 18px; }
+  .lecture-2 .mobile-control-steps .mobile-control-value { font-size: 20px; }
+  .lecture-2 .mobile-control-flow-slide .mobile-takeaway { font-size: 23px; }
+}
+@media (min-width: 1101px) and (max-height: 730px) {
+  .lecture-2 .mobile-control-flow-slide { padding-bottom: 64px; }
+  .lecture-2 .mobile-control-flow-slide .slide__inner { gap: 10px; }
+  .lecture-2 .mobile-control-flow-slide h2 { font-size: 32px; }
+  .lecture-2 .mobile-control-flow { gap: 10px; }
+  .lecture-2 .mobile-control-assumption { font-size: 16px; }
+  .lecture-2 .mobile-control-lane { padding: 8px 16px; gap: 8px; }
+  .lecture-2 .mobile-control-lane h3 { font-size: 22px; }
+  .lecture-2 .mobile-control-steps { gap: 30px; }
+  .lecture-2 .mobile-control-steps li { padding: 10px 12px; gap: 7px; }
+  .lecture-2 .mobile-control-steps li:not(:last-child)::after { right: -27px; }
+  .lecture-2 .mobile-control-steps h4 { font-size: 21px; }
+  .lecture-2 .mobile-control-steps .mobile-control-value { font-size: 19px; }
+  .lecture-2 .mobile-control-flow-slide .mobile-takeaway { padding-top: 10px; font-size: 21px; }
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .lecture-2 .mobile-control-steps { gap: 26px; }
+  .lecture-2 .mobile-control-steps li { padding: 12px; }
+  .lecture-2 .mobile-control-steps li:not(:last-child)::after { right: -25px; }
+}
+@media (max-width: 800px) {
+  .lecture-2 .mobile-control-flow-slide .slide__inner { grid-template-rows: auto; gap: 24px; }
+  .lecture-2 .mobile-control-flow { gap: 24px; }
+  .lecture-2 .mobile-control-assumption { font-size: 18px; }
+  .lecture-2 .mobile-control-lane { padding: 18px 14px; gap: 16px; }
+  .lecture-2 .mobile-control-lane h3 { font-size: 24px; }
+  .lecture-2 .mobile-control-steps { grid-template-columns: 1fr; gap: 32px; }
+  .lecture-2 .mobile-control-steps li { padding: 16px; gap: 10px; }
+  .lecture-2 .mobile-control-steps li:not(:last-child)::after { content: "↓"; top: auto; bottom: -32px; right: calc(50% - 12px); line-height: 32px; }
+  .lecture-2 .mobile-control-steps h4 { font-size: 23px; }
+  .lecture-2 .mobile-control-steps p { font-size: 19px; }
+  .lecture-2 .mobile-control-steps .mobile-control-value { font-size: 21px; }
+}
