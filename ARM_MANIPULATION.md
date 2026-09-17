@@ -16,6 +16,38 @@
 
 사진은 장식보다 설명에 사용한다. 관절 그룹 표시에는 `m1-arm-ext.png`, TCP와 작업 목표에는 `m1-gripper.png`, FK 비교에는 접은·중간·뻗은 팔 사진, 집기 단계에는 `m1-grasp-*`, 관측 좌표 설명에는 `m1-sensor.png`를 사용한다. 흰 본체가 보이도록 틴트 패널을 깐다. 사진의 관절각·TCP·작업공간을 실측값으로 취급하지 않는다.
 
+## 49페이지 — 엔드 이펙터와 TCP를 구분해서 읽기
+
+엔드 이펙터(End effector, 말단 장치)는 팔 끝에 달려 작업을 수행하는 장치다. M1의 물체를 잡는 손 전체가 이에 해당한다. 상단에서 ‘손·도구라는 장치’와 ‘작업의 기준점’을 비교하고, 본문은 엔드 이펙터 → TCP → TCP pose의 순서로 설명한다.
+
+TCP(Tool Center Point)는 손·도구에서 작업의 기준으로 정한 점이다. 집기에서는 손가락 사이의 한 점, 글씨 쓰기에서는 펜 끝을 예로 든다. 이어 TCP에 붙인 좌표축으로 방향을 표현하고, 위치와 방향을 합쳐 pose라고 부른다는 점을 설명한다. 이 강의에서 TCP pose를 표현하는 기준은 몸통의 `torso_link`다. 몸통 기준이 곧 고정된 세계 좌표계라는 뜻은 아니다.
+
+M1 손 사진에는 손 전체를 가리키는 황갈색 엔드 이펙터 표시를 넣는다. 손목 기준점은 남색, TCP는 청록으로 구분하고, TCP 좌표축과 손목에서 TCP까지의 관계를 표시한다. 목표에 맞출 점은 TCP이므로 손목까지의 관절 연결뿐 아니라 손목에서 TCP까지의 거리·방향도 모델에 포함해야 한다. 다음 50~51페이지의 FK·좌표변환 연결로 이어지는 설명이다.
+
+사진의 점·축은 개념을 설명하는 표시이며, M1의 실제 프레임 위치·축 방향·치수를 측정한 값이 아니다. TCP를 손·도구에 고정해 정의하는 것과, 손가락 관절의 움직임에 따라 실제 접촉점이 바뀌는 것은 구분한다. 사진의 집기 기준점과 52·54페이지 시연의 교육용 TCP 가정도 동일한 실측 파지점으로 취급하지 않는다.
+
+## 53페이지 — 위치 목표와 방향 목표
+
+하단은 ‘위치만 지정하면 손의 방향은 달라도 된다. 방향까지 지정하면 그 방향도 맞춰야 한다.’로 설명한다. 위치만의 목표도 관절 한계·충돌 등 나머지 조건을 만족해야 한다. RPY = (0, 0, 0)은 TCP의 각 축을 몸통 좌표계의 해당 축과 같은 방향으로 맞추라는 예시로 따로 제시한다. 방향 조건을 생략하거나 현재 방향을 유지하라는 뜻으로 해석하지 않는다.
+
+## 55페이지 — 자코비안의 개념과 수치 IK의 연결
+
+자코비안 J(q)은 현재 관절각 q에서 관절을 조금 돌렸을 때 TCP가 어느 방향으로 얼마나 이동·회전하는지를 나타내는 변화율의 행렬이다. 식 `Δx ≈ J(q) Δq`에서 Δq는 관절각 7개의 작은 변화이고, Δx는 TCP의 위치 변화 3개와 작은 회전 3개를 모은 벡터다. Δx를 단일 x축 위치 변화로 읽지 않는다.
+
+M1 한쪽 팔의 J는 6행 × 7열이다. 각 열은 해당 관절의 영향, 각 행은 TCP 변화의 한 성분에 대응한다. 다른 관절을 고정하고 팔꿈치 q₄만 조금 돌리는 경우가 네 번째 열의 예다. 관절각 변화는 rad, 위치 변화는 m, 작은 회전은 rad로 해석한다.
+
+이 강의의 기하 자코비안은 몸통 좌표계 기준 `[TCP 선속도; 각속도]` 순서를 사용한다. 작은 회전 3개는 몸통 축으로 표현한 회전벡터의 성분이며 RPY 세 값의 단순 차이가 아니다. `Δx ≈ J Δq`는 작은 변화에 대한 국소 근사다. 참고 자료의 공간 트위스트 자코비안과 본 시연의 TCP 선속도 자코비안을 같은 수치 행렬로 취급하지 않는다.
+
+오른쪽에서는 FK로 목표 오차를 계산하고, J(q) Δq가 그 오차에 가까워지도록 Δq를 구한 뒤 갱신·반복하는 순서로 연결한다. J는 6×7이므로 보통의 정방행렬 역행렬을 적용한다는 설명은 쓰지 않는다. 시연은 위치·회전 오차에 가중치를 적용한 감쇠 최소제곱을 사용하며, 수렴을 보장한다고 설명하지 않는다. 실패하면 목표·초기값·제약을 확인하고, 계산 실패만으로 도달 불가를 단정하지 않는다.
+
+## 57페이지 — rank 감소와 특이 자세
+
+rank(랭크)는 현재 자세에서 관절 속도로 만들 수 있는 독립적인 TCP 순간 운동의 수, 즉 자코비안 열공간의 차원으로 설명한다. 일반적인 M1 자세의 rank 6에서는 TCP의 이동 3개와 회전 3개를 독립적으로 조절할 수 있다. 그림의 rank 5에서는 가능한 독립 운동이 하나 줄어든다. 관절 개수는 여전히 7개이며, 자코비안의 크기도 6×7이다.
+
+M1 교육용 모델의 굽힌 팔 기준 자세에서 rank 6, 모든 관절각이 0일 때 rank 5를 다시 확인했다. 모든 관절각이 0인 자세에서는 J의 TCP z 선속도 행이 모두 0이고, 나머지 x·y 선속도와 각속도 3개의 다섯 행은 독립적이다. 그림의 청록색 화살표는 가능한 옆 방향 속도, 주황색 양방향 화살표와 X는 팔 길이 방향의 순간 속도를 만들 수 없음을 표시한다. 그림에는 이동 방향만 그렸고 rank는 회전까지 포함하여 계산했다.
+
+이 설명은 현재 자세에서의 순간 운동에 대한 것이다. 해당 방향으로 영원히 이동할 수 없다는 뜻이 아니며, 자세를 바꾸면 가능한 운동도 달라진다. 기하학적 순간 운동 능력과 실제 관절 속도 한계·충돌·접촉 조건도 구분한다. 특이점 근처에서는 특정 TCP 속도를 만들기 위해 큰 관절 속도가 필요할 수 있어 팔 자세·경로를 조정하고 속도를 줄인다. 속도를 낮추는 것만으로 정확한 특이 자세에서 잃은 운동 방향이 복구되는 것은 아니다. 모든 관절축이 같아야만 특이점이 되는 것도 아니다.
+
 ## M1 모델의 근거와 범위
 
 주 자료는 `~/Downloads/alice_m1_urdf/alice_m1.urdf`다. 같은 팔 연결을 `~/robot_ws/src/aeirobot_framework/simulation/kamino/alice_m1_left_arm.urdf`와 `alice_m1_gripper.urdf`에서도 확인했다. 다른 ALICE 기종의 팔 파라미터는 사용하지 않는다.
@@ -59,8 +91,13 @@ IK는 기하 Jacobian과 감쇠 최소제곱으로 작은 수정을 반복한다
 
 ## 참고 자료
 
+- [MoveIt — End-Effectors](https://moveit.picknik.ai/main/doc/examples/urdf_srdf/urdf_srdf_tutorial.html#end-effectors): 팔에 연결된 말단 장치를 별도 그룹으로 표현하는 개념. TCP라는 기준점과 장치 전체를 구분한다.
+- [MoveIt — Position Only IK](https://moveit.picknik.ai/main/doc/examples/kinematics_configuration/kinematics_configuration_tutorial.html#position-only-ik): 방향 조건을 제외하고 위치만 맞추는 IK의 별도 설정.
+- [Universal Robots — TCP Configuration](https://www.universal-robots.com/manuals/EN/HTML/SW5_26/Content/prod-usr-man/software/PolyScope/content/installation_g5/installation_TCP_configuration_en.htm): 도구의 작업 기준점과 장착부 기준 위치·회전으로 TCP를 정의하는 일반 개념. M1 사진의 점·축·치수에 대한 근거로 사용하지 않는다.
 - [Modern Robotics — Forward Kinematics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/4-1-2-product-of-exponentials-formula-in-the-end-effector-frame/): 관절각에서 말단의 위치·방향을 구하는 FK의 의미. 본문은 입문 수준의 연속 좌표변환으로 설명한다.
 - [Modern Robotics — Inverse Kinematics](https://modernrobotics.northwestern.edu/chapters/chapter6/): 목표 말단 pose의 해와 수치 반복 방식.
+- [Modern Robotics — Space Jacobian](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-1-1-space-jacobian/): 관절 속도와 말단 운동의 관계, 관절별 열의 의미와 6×n 크기. 시연에서는 TCP 선속도·각속도 순서의 기하 자코비안으로 설명한다.
+- [Modern Robotics — Numerical Inverse Kinematics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/6-2-numerical-inverse-kinematics-part-1-of-2/): 국소 근사로 관절 수정량을 구하는 반복 계산과 초기값의 영향.
 - [Modern Robotics — Singularities](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-3-singularities/): Jacobian의 크기·rank, 여유자유도, 손끝을 유지하는 내부 운동.
 - [MoveIt — Pick and Place with Task Constructor](https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html): 접근·파지·물체 부착·들어 올리기·놓기의 작업 분해.
 - [MoveIt — Planning Scene](https://moveit.picknik.ai/main/api/html/planning_scene_overview.html): 로봇·물체·환경 상태와 제약·충돌 검사의 관계.
@@ -71,6 +108,12 @@ IK는 기하 Jacobian과 감쇠 최소제곱으로 작은 수정을 반복한다
 ## 검증
 
 `node tools/check-arm-model.cjs`로 기준 자세의 FK, 140개 Jacobian 열의 유한차분, 회전행렬·quaternion 정규성, 51개 여유자유도 해의 위치·방향 유지, 도달 불가능 목표의 실패를 검증한다. 원본 URDF를 별도로 읽어 NumPy의 4×4 변환으로 계산한 40개 자세와도 비교했다. 최대 수치 차이는 약 3.4×10⁻¹⁶이다.
+
+49페이지의 설명·그림 배치는 1366×681, 1536×864, 1024×768, 390×844 화면에서 확인한다. 데스크톱에서는 한 화면에 담고, 좁은 화면에서는 그림만 가로로 스크롤한다. 방향키로 그림을 스크롤할 때 페이지가 바뀌지 않는지도 확인한다.
+
+55페이지도 같은 네 가지 화면 크기에서 수식·설명 배치와 페이지 이동을 확인한다. 데스크톱에서는 개념과 IK 절차를 나란히 한 화면에 배치하고, 좁은 화면에서는 세로로 이어 읽는다.
+
+57페이지는 같은 네 화면에서 rank 비교 설명, SVG 글자 범위, 모바일 그림 스크롤과 페이지 이동을 확인한다. 모델이 계산한 자코비안을 NumPy로 읽어 두 자세의 rank와 모든 관절각이 0일 때 TCP z 선속도 행이 0임을 검증했다.
 
 ## 실습 (64~65페이지)
 
