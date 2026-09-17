@@ -1,0 +1,97 @@
+/* 61 · 경로에 시간을 붙여 목표각·속도·가속도를 만든다. */
+.lecture-2 .arm-trajectory-slide { height:auto; min-height:max(680px,100dvh); overflow:visible; }
+.lecture-2 .arm-trajectory-slide .slide__inner { grid-template-rows:auto minmax(min-content,1fr) auto; gap:24px; }
+.lecture-2 .arm-trajectory-content { display:grid; grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr); align-items:center; min-width:0; gap:30px; }
+.lecture-2 .arm-trajectory-copy { display:grid; gap:24px; min-width:0; }
+.lecture-2 .arm-trajectory-meaning { display:grid; gap:16px; margin:0; }
+.lecture-2 .arm-trajectory-meaning > div { display:grid; gap:7px; }
+.lecture-2 .arm-trajectory-meaning dt { color:var(--hy-blue); font-size:26px; font-weight:600; line-height:1.3; }
+.lecture-2 .arm-trajectory-meaning dd { margin:0; color:var(--hy-gray); font-size:23px; line-height:1.45; word-break:keep-all; }
+.lecture-2 .arm-trajectory-meaning strong { font-weight:600; color:var(--accent-ink); }
+.lecture-2 .arm-trajectory-targets { display:grid; gap:12px; margin:0; }
+.lecture-2 .arm-trajectory-targets > div { display:grid; grid-template-columns:205px minmax(0,1fr); gap:12px; padding-top:10px; border-top:1px solid #D8DEE9; font-size:22px; line-height:1.4; }
+.lecture-2 .arm-trajectory-targets dt { color:var(--hy-blue); font-weight:500; }
+.lecture-2 .arm-trajectory-targets dd { margin:0; color:var(--hy-gray); word-break:keep-all; }
+.lecture-2 .arm-trajectory-limits { display:grid; gap:6px; margin:0; padding:14px 18px; background:var(--accent-tint); border-radius:14px; font-size:21px; line-height:1.45; color:var(--accent-ink); word-break:keep-all; }
+.lecture-2 .arm-trajectory-limits strong { color:var(--hy-blue); font-weight:600; }
+.lecture-2 .arm-trajectory-lab { display:grid; gap:12px; min-width:0; padding:20px; border:2px solid #D8DEE9; border-radius:18px; }
+.lecture-2 .arm-trajectory-lab-header { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+.lecture-2 .arm-trajectory-lab-header h3 { font-size:26px; }
+.lecture-2 .arm-trajectory-buttons button { min-width:68px; padding:6px 14px; font-size:20px; }
+.lecture-2 .arm-trajectory-scroll-hint { display:none; margin:0; color:var(--accent-ink); font-size:15px; line-height:1.4; }
+.lecture-2 .arm-trajectory-chart-wrap { min-width:0; }
+.lecture-2 .arm-trajectory-chart-wrap:focus-visible { outline:3px solid var(--accent-ink); outline-offset:3px; }
+.lecture-2 .arm-trajectory-chart { display:block; width:100%; height:300px; font-family:inherit; }
+.lecture-2 .arm-trajectory-readouts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.lecture-2 .arm-trajectory-readouts > div { display:grid; gap:5px; min-width:0; }
+.lecture-2 .arm-trajectory-readouts span { color:#647080; font-size:18px; line-height:1.4; }
+.lecture-2 .arm-trajectory-readouts strong { color:var(--hy-blue); font-size:25px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1.4; }
+.lecture-2 .arm-trajectory-example-note { margin:0; font-size:17px; line-height:1.4; color:#647080; }
+.lecture-2 .arm-trajectory-bottom { display:grid; gap:10px; }
+.lecture-2 .arm-trajectory-time-rule { display:flex; flex-wrap:wrap; align-items:baseline; gap:3px 8px; margin:0; color:var(--hy-blue); font-size:23px; line-height:1.4; }
+.lecture-2 .arm-trajectory-time-rule strong { font-weight:600; }
+.lecture-2 .arm-trajectory-time-rule small { color:#647080; font-size:17px; }
+.lecture-2 .arm-trajectory-slide .mobile-takeaway { font-weight:400; }
+@media (min-width:801px) and (max-height:950px) {
+  .lecture-2 .arm-trajectory-slide .slide__inner { gap:18px; }
+  .lecture-2 .arm-trajectory-slide h2 { font-size:clamp(32px,2.8vw,42px); }
+  .lecture-2 .arm-trajectory-copy { gap:18px; }
+  .lecture-2 .arm-trajectory-meaning dt { font-size:24px; }
+  .lecture-2 .arm-trajectory-meaning dd { font-size:21px; }
+  .lecture-2 .arm-trajectory-targets { gap:9px; }
+  .lecture-2 .arm-trajectory-targets > div { grid-template-columns:175px minmax(0,1fr); font-size:20px; }
+  .lecture-2 .arm-trajectory-limits { font-size:20px; }
+  .lecture-2 .arm-trajectory-lab { padding:16px; gap:10px; }
+  .lecture-2 .arm-trajectory-lab-header h3 { font-size:24px; }
+  .lecture-2 .arm-trajectory-chart { height:260px; }
+  .lecture-2 .arm-trajectory-readouts strong { font-size:23px; }
+}
+@media (min-width:1101px) and (max-height:730px) {
+  .lecture-2 .arm-trajectory-slide { padding-bottom:64px; }
+  .lecture-2 .arm-trajectory-slide .slide__inner { gap:10px; }
+  .lecture-2 .arm-trajectory-slide h2 { font-size:32px; }
+  .lecture-2 .arm-trajectory-content { gap:24px; }
+  .lecture-2 .arm-trajectory-copy { gap:10px; }
+  .lecture-2 .arm-trajectory-meaning { gap:12px; }
+  .lecture-2 .arm-trajectory-meaning > div { gap:4px; }
+  .lecture-2 .arm-trajectory-meaning dt { font-size:22px; }
+  .lecture-2 .arm-trajectory-meaning dd { font-size:18px; }
+  .lecture-2 .arm-trajectory-targets { gap:4px; }
+  .lecture-2 .arm-trajectory-targets > div { grid-template-columns:160px minmax(0,1fr); padding-top:6px; gap:10px; font-size:18px; }
+  .lecture-2 .arm-trajectory-limits { padding:10px 14px; font-size:18px; gap:4px; }
+  .lecture-2 .arm-trajectory-lab { padding:11px; gap:6px; }
+  .lecture-2 .arm-trajectory-lab-header h3 { font-size:22px; }
+  .lecture-2 .arm-trajectory-buttons button { min-width:60px; font-size:18px; padding:5px 12px; }
+  .lecture-2 .arm-trajectory-chart { height:200px; }
+  .lecture-2 .arm-trajectory-readouts > div { gap:3px; }
+  .lecture-2 .arm-trajectory-readouts span { font-size:15px; }
+  .lecture-2 .arm-trajectory-readouts strong { font-size:21px; }
+  .lecture-2 .arm-trajectory-example-note { font-size:15px; }
+  .lecture-2 .arm-trajectory-bottom { gap:4px; }
+  .lecture-2 .arm-trajectory-time-rule { font-size:19px; }
+  .lecture-2 .arm-trajectory-time-rule small { font-size:15px; }
+  .lecture-2 .arm-trajectory-slide .mobile-takeaway { font-size:20px; padding-top:8px; }
+}
+@media (max-width:1100px) {
+  .lecture-2 .arm-trajectory-content { grid-template-columns:1fr; gap:24px; }
+}
+@media (max-width:800px) {
+  .lecture-2 .arm-trajectory-slide .slide__inner { gap:26px; }
+  .lecture-2 .arm-trajectory-copy { gap:22px; }
+  .lecture-2 .arm-trajectory-meaning dt { font-size:24px; }
+  .lecture-2 .arm-trajectory-meaning dd { font-size:20px; }
+  .lecture-2 .arm-trajectory-targets > div { grid-template-columns:155px minmax(0,1fr); gap:8px; font-size:18px; }
+  .lecture-2 .arm-trajectory-limits { padding:14px; font-size:19px; }
+  .lecture-2 .arm-trajectory-lab { padding:12px; }
+  .lecture-2 .arm-trajectory-lab-header h3 { font-size:23px; }
+  .lecture-2 .arm-trajectory-scroll-hint { display:block; }
+  .lecture-2 .arm-trajectory-chart-wrap { overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin; scrollbar-color:var(--accent-ink) transparent; }
+  .lecture-2 .arm-trajectory-chart { width:600px; height:auto; max-width:none; }
+  .lecture-2 .arm-trajectory-readouts { gap:8px; }
+  .lecture-2 .arm-trajectory-readouts span { font-size:15px; }
+  .lecture-2 .arm-trajectory-readouts strong { font-size:18px; }
+  .lecture-2 .arm-trajectory-example-note { font-size:16px; }
+  .lecture-2 .arm-trajectory-time-rule { font-size:21px; }
+  .lecture-2 .arm-trajectory-time-rule small { font-size:16px; }
+  .lecture-2 .arm-trajectory-slide .mobile-takeaway { font-size:22px; }
+}
