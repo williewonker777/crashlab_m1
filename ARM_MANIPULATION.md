@@ -48,6 +48,21 @@ M1 교육용 모델의 굽힌 팔 기준 자세에서 rank 6, 모든 관절각�
 
 이 설명은 현재 자세에서의 순간 운동에 대한 것이다. 해당 방향으로 영원히 이동할 수 없다는 뜻이 아니며, 자세를 바꾸면 가능한 운동도 달라진다. 기하학적 순간 운동 능력과 실제 관절 속도 한계·충돌·접촉 조건도 구분한다. 특이점 근처에서는 특정 TCP 속도를 만들기 위해 큰 관절 속도가 필요할 수 있어 팔 자세·경로를 조정하고 속도를 줄인다. 속도를 낮추는 것만으로 정확한 특이 자세에서 잃은 운동 방향이 복구되는 것은 아니다. 모든 관절축이 같아야만 특이점이 되는 것도 아니다.
 
+## 61페이지 — 경로에 시간을 붙인 궤적
+
+경로(Path)는 지날 자세의 순서, 궤적(Trajectory)은 그 경로의 각 자세를 언제 통과할지까지 정한 계획으로 구분한다. 관절 궤적 q(t)의 시간 미분이 목표속도 q̇(t), 한 번 더 미분한 값이 목표가속도 q̈(t)다. 각도·속도·가속도를 서로 무관한 값으로 지정한다는 뜻이 아니다. M1에서는 7개 관절의 궤적을 함께 계획하고 각 관절의 속도·가속도 한계에 맞춰 이동 시간을 정한다.
+
+시연은 한 관절을 0°에서 60°로 움직이는 교육용 예다. 4초·2초 버튼을 누르면 선택한 계획을 실선, 다른 계획을 점선으로 표시한다. 위는 목표각, 아래는 목표속도이며 두 선택 모두 시간축 0~4초, 각도축 0~60°, 속도축 0~60°/s를 유지한다. 도착한 뒤에는 목표각 60°를 유지하고 목표속도·가속도는 0이다. 표시값은 계산한 목표이며 실제 측정값이 아니다.
+
+| 도착 시간 | 1초 때 목표각 | 최대 속도 | 최대 가속도 크기 |
+| --- | --- | --- | --- |
+| 4초 | 6.2° | 28.1°/s | 21.7°/s² |
+| 2초 | 30.0° | 56.3°/s | 86.6°/s² |
+
+계산은 u=t/T에 대해 s(u)=10u³−15u⁴+6u⁵, q(t)=60s(u)를 사용한다. 출발·도착에서 속도와 가속도가 0인 5차 시간 스케일링이다. 같은 경로와 가속·감속 형태를 유지하면서 시간 T만 절반으로 줄이면 속도는 2배, 가속도는 4배가 된다. 임의의 서로 다른 가감속 계획에 이 비율을 적용하지 않는다.
+
+이 예시는 M1의 허용 속도·가속도나 실행 가능한 실기 명령을 제시하지 않는다. 실제 계획에는 필요한 동역학·토크·저크 제약도 고려할 수 있다. 궤적은 관절 제어기에 보내는 시각별 목표이며, 관절 제어는 측정값과 비교하여 추종 오차를 줄인다. 계획 시간이 지났다는 것만으로 작업 성공을 판정하지 않고 실제 도착 오차와 파지 유지도 확인한다.
+
 ## M1 모델의 근거와 범위
 
 주 자료는 `~/Downloads/alice_m1_urdf/alice_m1.urdf`다. 같은 팔 연결을 `~/robot_ws/src/aeirobot_framework/simulation/kamino/alice_m1_left_arm.urdf`와 `alice_m1_gripper.urdf`에서도 확인했다. 다른 ALICE 기종의 팔 파라미터는 사용하지 않는다.
@@ -99,6 +114,8 @@ IK는 기하 Jacobian과 감쇠 최소제곱으로 작은 수정을 반복한다
 - [Modern Robotics — Space Jacobian](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-1-1-space-jacobian/): 관절 속도와 말단 운동의 관계, 관절별 열의 의미와 6×n 크기. 시연에서는 TCP 선속도·각속도 순서의 기하 자코비안으로 설명한다.
 - [Modern Robotics — Numerical Inverse Kinematics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/6-2-numerical-inverse-kinematics-part-1-of-2/): 국소 근사로 관절 수정량을 구하는 반복 계산과 초기값의 영향.
 - [Modern Robotics — Singularities](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-3-singularities/): Jacobian의 크기·rank, 여유자유도, 손끝을 유지하는 내부 운동.
+- [Modern Robotics — Paths and Trajectories](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-1-and-9-2-point-to-point-trajectories-part-1-of-2/): 경로에 시간 스케일링을 적용해 궤적을 만들고 그 미분으로 속도·가속도를 구하는 관계.
+- [Modern Robotics — Time Scalings](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-1-and-9-2-point-to-point-trajectories-part-2-of-2/): 시작·종료 시 속도·가속도가 0인 5차 시간 스케일링과 이동 시간의 영향.
 - [MoveIt — Pick and Place with Task Constructor](https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html): 접근·파지·물체 부착·들어 올리기·놓기의 작업 분해.
 - [MoveIt — Planning Scene](https://moveit.picknik.ai/main/api/html/planning_scene_overview.html): 로봇·물체·환경 상태와 제약·충돌 검사의 관계.
 - [MoveIt — Concepts](https://moveit.ai/documentation/concepts/): 경로에 시간을 부여하고 관절 속도·가속도 한계를 반영하는 역할.
@@ -114,6 +131,8 @@ IK는 기하 Jacobian과 감쇠 최소제곱으로 작은 수정을 반복한다
 55페이지도 같은 네 가지 화면 크기에서 수식·설명 배치와 페이지 이동을 확인한다. 데스크톱에서는 개념과 IK 절차를 나란히 한 화면에 배치하고, 좁은 화면에서는 세로로 이어 읽는다.
 
 57페이지는 같은 네 화면에서 rank 비교 설명, SVG 글자 범위, 모바일 그림 스크롤과 페이지 이동을 확인한다. 모델이 계산한 자코비안을 NumPy로 읽어 두 자세의 rank와 모든 관절각이 0일 때 TCP z 선속도 행이 0임을 검증했다.
+
+61페이지의 계산은 `node tools/check-trajectory-model.cjs`로 시작·종료 경계조건, 목표각·속도의 유한차분, 속도의 수치 적분, 수치 최대값과 시간에 따른 배율을 검증한다. 브라우저에서는 4초·2초 선택에 따른 그래프·수치·접근성 상태 갱신과 네 가지 화면 크기의 배치, 모바일 가로 스크롤을 확인한다.
 
 ## 실습 (64~65페이지)
 
