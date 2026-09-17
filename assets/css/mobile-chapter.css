@@ -214,7 +214,7 @@
   .lecture-2 .mobile-quaternion-view > p { font-size: 18px; }
 }
 
-/* 25페이지 · 예제 로봇의 크기와 두 길이를 재는 위치 */
+/* 26페이지 · 예제 로봇의 크기와 두 길이를 재는 위치 */
 .lecture-2 .mobile-dimensions-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-dimensions-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-dimensions-slide .mobile-grid, .lecture-2 .mobile-dimensions-slide .mobile-copy { min-height: min-content; }
@@ -282,7 +282,7 @@
   .lecture-2 .mobile-dimension-figure figcaption { font-size: 17px; }
 }
 
-/* 26페이지 · 좌우 바퀴 계산과 측정 속도 환산 */
+/* 27페이지 · 좌우 바퀴 계산과 측정 속도 환산 */
 .lecture-2 .mobile-wheel-speed-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-wheel-speed-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-wheel-speed-slide .mobile-grid,
@@ -338,7 +338,7 @@
   .lecture-2 .mobile-wheel-notes small { margin-top: 2px; }
 }
 
-/* 27페이지 · 바퀴 속도와 로봇의 움직임을 함께 읽기 */
+/* 28페이지 · 바퀴 속도와 로봇의 움직임을 함께 읽기 */
 .lecture-2 .mobile-motion-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-motion-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-motion-content { display: grid; grid-template-rows: auto minmax(min-content, 1fr); gap: 12px; min-width: 0; }
@@ -408,7 +408,7 @@
   .lecture-2 .mobile-motion-equations dd { line-height: 1.7; }
 }
 
-/* 28페이지 · 입력 조건에서 로봇 이동·회전 결과로 연결 */
+/* 29페이지 · 입력 조건에서 로봇 이동·회전 결과로 연결 */
 .lecture-2 .mobile-forward-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-forward-slide .slide__inner { grid-template-rows: auto auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-forward-definition { margin: 6px 0 0; color: var(--hy-gray); font-size: clamp(18px, 1.5vw, 24px); line-height: 1.5; }
@@ -447,7 +447,7 @@
   .lecture-2 .mobile-forward-slide h2 { font-size: 32px; }
 }
 
-/* 29페이지 · ICC의 뜻과 세 회전 반경 */
+/* 30페이지 · ICC의 뜻과 세 회전 반경 */
 .lecture-2 .mobile-icc-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-icc-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-icc-definition { margin: 0; color: var(--hy-gray); font-size: clamp(18px, 1.5vw, 24px); line-height: 1.5; }
@@ -503,7 +503,7 @@
   .lecture-2 .mobile-icc-cases { margin-top: 4px; }
 }
 
-/* 29페이지 · 회전 반경을 곡선 주행 명령으로 활용 */
+/* 30페이지 · 회전 반경을 곡선 주행 명령으로 활용 */
 .lecture-2 .mobile-icc-uses { display: grid; gap: 12px; margin: 0; padding: 18px 22px; border-radius: 16px; background: var(--hy-blue); color: #FFFFFF; }
 .lecture-2 .mobile-icc-uses > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; }
 .lecture-2 .mobile-icc-uses dt { font-size: 20px; line-height: 1.4; }
@@ -538,7 +538,7 @@
   .lecture-2 .mobile-icc-next { display: block; margin: 6px 0 0; font-size: 18px; }
 }
 
-/* 30페이지 · 로봇 속도 입력에서 두 단계로 바퀴 명령 계산 */
+/* 31페이지 · 로봇 속도 입력에서 두 단계로 바퀴 명령 계산 */
 .lecture-2 .mobile-inverse-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-inverse-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-inverse-slide .mobile-grid, .lecture-2 .mobile-inverse-slide .mobile-copy { min-height: min-content; }
@@ -610,7 +610,7 @@
   .lecture-2 .mobile-inverse-message p { font-size: 16px; }
   .lecture-2 .mobile-inverse-slide .mobile-takeaway { font-size: 22px; }
 }
-/* 31페이지 · 몸체 전진 속도를 바닥 좌표의 변화로 연결 */
+/* 32페이지 · 몸체 전진 속도를 바닥 좌표의 변화로 연결 */
 .lecture-2 .mobile-pose-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-pose-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-pose-slide .mobile-grid, .lecture-2 .mobile-pose-slide .mobile-copy { min-height: min-content; }
@@ -685,7 +685,7 @@
   .lecture-2 .mobile-pose-takeaway p { font-size: 23px; }
   .lecture-2 .mobile-pose-takeaway small { font-size: 17px; }
 }
-/* 32페이지 · 같은 측정 구간의 바퀴 회전량에서 로봇 이동·회전량으로 */
+/* 33페이지 · 같은 측정 구간의 바퀴 회전량에서 로봇 이동·회전량으로 */
 .lecture-2 .mobile-increment-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-increment-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-increment-content { display: grid; grid-template-rows: auto minmax(min-content, 1fr); gap: 18px; min-width: 0; }
@@ -774,7 +774,7 @@
   .lecture-2 .mobile-increment-takeaway p { font-size: 23px; }
   .lecture-2 .mobile-increment-takeaway small { font-size: 17px; }
 }
-/* 33페이지 · 중간 방향을 구한 뒤 현재 위치·방향에 변화량 누적 */
+/* 34페이지 · 중간 방향을 구한 뒤 현재 위치·방향에 변화량 누적 */
 .lecture-2 .mobile-midpoint-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-midpoint-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto auto; }
 .lecture-2 .mobile-midpoint-slide .mobile-grid { min-height: min-content; }
@@ -853,7 +853,7 @@
   .lecture-2 .mobile-midpoint-example dd { font-size: 24px; }
   .lecture-2 .mobile-midpoint-example dl > div:first-child dd { font-size: 21px; }
 }
-/* 34페이지 · 바퀴 속도 비교와 재생 시점 직접 탐색 */
+/* 35페이지 · 바퀴 속도 비교와 재생 시점 직접 탐색 */
 .lecture-2 .mobile-drive-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-drive-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-drive-slide .mobile-lab-grid { min-height: min-content; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); }
@@ -941,7 +941,7 @@
   .lecture-2 .mobile-drive-takeaway > p { font-size: 23px; }
   .lecture-2 .mobile-drive-takeaway > small { font-size: 17px; }
 }
-/* 35페이지 · 측정한 이동의 누적과 드리프트 */
+/* 36페이지 · 측정한 이동의 누적과 드리프트 */
 .lecture-2 .mobile-odometry-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-odometry-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-odometry-slide .mobile-grid, .lecture-2 .mobile-odometry-slide .mobile-copy { min-height: min-content; }
@@ -1036,7 +1036,7 @@
   .lecture-2 .mobile-odometry-takeaway p { font-size: 23px; }
   .lecture-2 .mobile-odometry-takeaway small { font-size: 17px; }
 }
-/* 36페이지 · 원점·좌표축과 같은 점의 두 가지 좌표 */
+/* 37페이지 · 원점·좌표축과 같은 점의 두 가지 좌표 */
 .lecture-2 .mobile-frame-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-frame-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-frame-slide .mobile-grid, .lecture-2 .mobile-frame-slide .mobile-copy { min-height: min-content; }
@@ -1136,7 +1136,7 @@
   .lecture-2 .mobile-frame-figure figcaption { position: static; width: auto; margin-top: 0; font-size: 18px; }
 }
 
-/* 35~36페이지 · 추정 과정과 좌표계 이름 구분 */
+/* 36~37페이지 · 추정 과정과 좌표계 이름 구분 */
 .lecture-2 .mobile-odometry-terms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin: 0; }
 .lecture-2 .mobile-odometry-terms > div { display: grid; align-content: start; gap: 6px; }
 .lecture-2 .mobile-odometry-terms dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
@@ -1162,7 +1162,7 @@
   .lecture-2 .mobile-odometry-terms dd { font-size: 19px; }
 }
 
-/* 37페이지 · 지도 위치추정과 오도메트리로 map → odom 보정 */
+/* 38페이지 · 지도 위치추정과 오도메트리로 map → odom 보정 */
 .lecture-2 .mobile-frame-roles-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-frame-roles-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; }
 .lecture-2 .mobile-frame-roles-content { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 2fr); align-content: center; align-items: center; gap: 24px; min-height: min-content; }
@@ -1275,7 +1275,7 @@
   .lecture-2 .mobile-frame-tf-chain small { margin-top: 4px; font-size: 16px; }
 }
 
-/* 39페이지 · 조건 → 몸체에서 점까지의 변위 → odom 좌표 */
+/* 40페이지 · 조건 → 몸체에서 점까지의 변위 → odom 좌표 */
 .lecture-2 .mobile-transform-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-transform-slide .slide__inner { grid-template-rows: auto auto minmax(min-content, 1fr) auto; gap: 20px; }
 .lecture-2 .mobile-transform-givens { display: grid; grid-template-columns: 1.2fr 1fr .85fr; gap: 18px; }
@@ -1368,7 +1368,7 @@
   .lecture-2 .mobile-transform-figure figcaption { font-size: 17px; }
 }
 
-/* 43페이지 · 명령과 측정을 직진 예시로 연결 */
+/* 44페이지 · 명령과 측정을 직진 예시로 연결 */
 .lecture-2 .mobile-control-flow-slide { height: auto; min-height: max(680px, 100dvh); overflow: visible; }
 .lecture-2 .mobile-control-flow-slide .slide__inner { grid-template-rows: auto minmax(min-content, 1fr) auto; gap: 24px; }
 .lecture-2 .mobile-control-flow { display: grid; align-content: center; gap: 24px; min-width: 0; }

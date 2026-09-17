@@ -1,4 +1,4 @@
-/* 강의 ② 21–22페이지 · 시뮬레이션 배경부터 P·D와 계산 방식으로 연결 */
+/* 강의 ② 22–23페이지 · 시뮬레이션 배경부터 P·D와 계산 방식으로 연결 */
 .lecture-2 .sim-basics-slide .slide__inner { grid-template-rows: 125px minmax(0, 1fr) auto; gap: 24px; }
 .lecture-2 .sim-basics-slide h2 { font-size: clamp(34px, 2.8vw, 54px); }
 .lecture-2 .sim-content { display: grid; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: 24px; }
@@ -137,7 +137,7 @@
   .lecture-2 .sim-method > p { font-size: 20px; }
 }
 
-/* 22페이지: 도식의 최소 높이를 보존하고 설명문을 별도 행에 둔다. */
+/* 23페이지: 도식의 최소 높이를 보존하고 설명문을 별도 행에 둔다. */
 .lecture-2 .sim-step-slide {
   --sim-step-gap: clamp(14px, 1.8vh, 22px);
   height: auto;
@@ -163,7 +163,7 @@
 .lecture-2 .sim-step-slide .sim-fine { font-size: clamp(15px, 1.1vw, 18px); }
 .lecture-2 .sim-step-slide .sim-methods { gap: var(--sim-step-gap); }
 .lecture-2 .sim-step-slide .sim-method {
-  grid-template-rows: auto minmax(min-content, 1fr) auto;
+  grid-template-rows: auto auto auto 1fr;
   padding: var(--sim-step-gap) 18px;
   gap: var(--sim-step-gap);
 }
@@ -176,22 +176,41 @@
 .lecture-2 .sim-step-slide .sim-method-flow small { margin-top: 6px; font-size: clamp(16px, 1.2vw, 20px); line-height: 1.4; }
 .lecture-2 .sim-step-slide .sim-coupled { padding: 10px; }
 .lecture-2 .sim-step-slide .sim-method > p {
-  align-self: end;
-  padding-top: 14px;
-  border-top: 1px solid #D8DEE9;
   font-size: clamp(18px, 1.3vw, 22px);
   line-height: 1.5;
 }
+.lecture-2 .sim-step-slide .sim-method-traits { display: grid; align-content: start; gap: 12px; margin: 0; padding-top: 14px; border-top: 1px solid #D8DEE9; }
+.lecture-2 .sim-step-slide .sim-method-traits > div { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.lecture-2 .sim-step-slide .sim-method-traits dt { color: var(--accent-ink); font-size: 20px; font-weight: 600; line-height: 1.45; }
+.lecture-2 .sim-step-slide .sim-method-traits dd { margin: 0; color: var(--hy-gray); font-size: 21px; line-height: 1.45; }
+.lecture-2 .sim-step-slide .sim-method-traits strong { color: var(--hy-blue); font-weight: 600; }
+.lecture-2 .sim-step-slide .sim-numerical-damping { white-space: nowrap; }
 .lecture-2 .sim-step-slide .sim-takeaway { padding-top: 12px; }
 .lecture-2 .sim-step-slide .sim-takeaway > p { font-size: clamp(21px, 1.6vw, 28px); line-height: 1.4; }
+.lecture-2 .sim-step-slide .sim-takeaway > .sim-fine { font-size: clamp(15px, 1.1vw, 18px); font-weight: 400; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-2 .sim-step-slide .sim-method-traits { gap: 8px; padding-top: 10px; }
+  .lecture-2 .sim-step-slide .sim-method-traits > div { grid-template-columns: 96px minmax(0, 1fr); gap: 10px; }
+  .lecture-2 .sim-step-slide .sim-method-traits dt { font-size: 18px; }
+  .lecture-2 .sim-step-slide .sim-method-traits dd { font-size: 19px; }
+}
 @media (min-width: 1101px) and (max-height: 730px) {
-  .lecture-2 .sim-step-slide { --sim-step-gap: 12px; }
-  .lecture-2 .sim-step-slide .sim-method > p { padding-top: 10px; }
+  .lecture-2 .sim-step-slide { --sim-step-gap: 8px; padding-bottom: 64px; }
+  .lecture-2 .sim-step-slide .sim-step-panel { gap: 8px 24px; }
+  .lecture-2 .sim-step-slide .sim-time-point { padding: 6px; gap: 4px; }
+  .lecture-2 .sim-step-slide .sim-method-flow--explicit > div, .lecture-2 .sim-step-slide .sim-method-start, .lecture-2 .sim-step-slide .sim-coupled { padding-block: 6px; }
+  .lecture-2 .sim-step-slide .sim-method-flow small { margin-top: 3px; }
+  .lecture-2 .sim-step-slide .sim-method > p { font-size: 17px; }
+  .lecture-2 .sim-step-slide .sim-method-traits { gap: 6px; padding-top: 8px; }
+  .lecture-2 .sim-step-slide .sim-method-traits > div { grid-template-columns: 90px minmax(0, 1fr); }
+  .lecture-2 .sim-step-slide .sim-method-traits dt, .lecture-2 .sim-step-slide .sim-method-traits dd { font-size: 17px; }
+  .lecture-2 .sim-step-slide .sim-takeaway { padding-top: 10px; }
 }
 @media (min-width: 801px) and (max-width: 1100px) {
   .lecture-2 .sim-step-slide .sim-methods { grid-template-columns: 1fr; }
   .lecture-2 .sim-step-slide .sim-method { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: auto auto; gap: 18px 24px; }
   .lecture-2 .sim-step-slide .sim-method > p { grid-column: 1 / -1; }
+  .lecture-2 .sim-step-slide .sim-method-traits { grid-column: 1 / -1; }
   .lecture-2 .sim-step-slide .sim-step-panel { grid-template-columns: 1fr; }
   .lecture-2 .sim-step-slide .sim-step-definition { grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
   .lecture-2 .sim-step-slide .sim-step-definition br { display: none; }
@@ -216,5 +235,10 @@
   .lecture-2 .sim-step-slide .sim-method-flow--explicit > div, .lecture-2 .sim-step-slide .sim-method-start { padding: 14px; }
   .lecture-2 .sim-step-slide .sim-coupled { padding: 18px 10px; }
   .lecture-2 .sim-step-slide .sim-method > p { font-size: 20px; }
+  .lecture-2 .sim-step-slide .sim-method-traits { gap: 16px; }
+  .lecture-2 .sim-step-slide .sim-method-traits > div { grid-template-columns: 1fr; gap: 4px; }
+  .lecture-2 .sim-step-slide .sim-method-traits dt { font-size: 19px; }
+  .lecture-2 .sim-step-slide .sim-method-traits dd { font-size: 20px; }
   .lecture-2 .sim-step-slide .sim-takeaway > p { font-size: 23px; }
+  .lecture-2 .sim-step-slide .sim-takeaway > .sim-fine { font-size: 16px; }
 }
