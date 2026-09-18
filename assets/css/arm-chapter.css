@@ -312,3 +312,43 @@
   .lecture-2 .arm-tcp-scroll-hint { display:block; }
   .lecture-2 .arm-tcp-slide .mobile-takeaway { font-size:22px; }
 }
+
+/* 63~65페이지 · 복습에서 FK·IK 실습으로 이어지는 참조 */
+.lecture-2 .arm-review-slide, .lecture-2 .arm-practice-slide { height:auto; min-height:max(680px, 100dvh); overflow:visible; }
+.lecture-2 .arm-review-slide .slide__inner { grid-template-rows:auto minmax(min-content, 1fr) auto; gap:22px; }
+.lecture-2 .arm-review-slide .mobile-card { gap:18px; }
+.lecture-2 .arm-review-slide .arm-page-refs { font-size:19px; line-height:1.6; }
+.lecture-2 .arm-review-slide a, .lecture-2 .arm-practice-slide a { color:var(--accent-ink); text-decoration-thickness:1px; }
+.lecture-2 .arm-review-slide .mobile-takeaway { font-size:23px; line-height:1.5; }
+.lecture-2 .arm-practice-slide .slide__inner { grid-template-rows:auto minmax(min-content, 1fr); }
+.lecture-2 .arm-practice-slide .slide__header { padding:22px 32px; }
+.lecture-2 .arm-practice-slide h2 { font-size:clamp(28px, 2.4vw, 40px); line-height:1.35; }
+.lecture-2 .arm-practice-slide .practice-shell { grid-template-rows:auto minmax(min-content, 1fr) auto; padding:26px 32px; gap:18px 22px; }
+.lecture-2 .arm-practice-slide .practice-steps { grid-auto-rows:minmax(min-content, 1fr); }
+.lecture-2 .arm-practice-slide .practice-steps li { padding:10px 18px; font-size:20px; }
+.lecture-2 .arm-practice-slide .practice-help { font-size:18px; font-weight:400; line-height:1.5; padding-top:12px; }
+@media (min-width:1101px) and (max-height:730px) {
+  .lecture-2 .arm-review-slide, .lecture-2 .arm-practice-slide { padding-bottom:64px; }
+  .lecture-2 .arm-review-slide .slide__inner { gap:14px; }
+  .lecture-2 .arm-review-slide .mobile-card { padding:20px; gap:14px; }
+  .lecture-2 .arm-review-slide .mobile-card p { font-size:20px; }
+  .lecture-2 .arm-review-slide .arm-page-refs { font-size:17px; }
+  .lecture-2 .arm-review-slide .mobile-takeaway { font-size:21px; }
+  .lecture-2 .arm-practice-slide .slide__header { padding:16px 24px; }
+  .lecture-2 .arm-practice-slide .practice-shell { padding:18px 24px; gap:12px 18px; }
+  .lecture-2 .arm-practice-slide .practice-task { font-size:20px; }
+  .lecture-2 .arm-practice-slide .practice-steps { grid-auto-rows:auto; gap:8px; }
+  .lecture-2 .arm-practice-slide .practice-steps li { padding:8px 14px; font-size:18px; gap:12px; }
+  .lecture-2 .arm-practice-slide .practice-help { font-size:17px; padding-top:8px; }
+}
+@media (max-width:800px) {
+  .lecture-2 .arm-review-slide .slide__inner { gap:26px; }
+  .lecture-2 .arm-practice-slide .slide__header { padding:20px; }
+  .lecture-2 .arm-practice-slide h2 { font-size:27px; }
+  .lecture-2 .arm-practice-slide .practice-shell { grid-template-columns:1fr; grid-template-rows:auto; padding:20px 16px; gap:20px; }
+  .lecture-2 .arm-practice-slide .practice-shell > * { grid-column:1; grid-row:auto; }
+  .lecture-2 .arm-practice-slide .practice-task { font-size:21px; }
+  .lecture-2 .arm-practice-slide .practice-steps li { grid-template-columns:30px minmax(0, 1fr); padding:16px 12px; gap:10px; font-size:19px; }
+  .lecture-2 .arm-practice-slide .practice-steps li::before { width:28px; height:28px; font-size:18px; }
+  .lecture-2 .arm-practice-slide code { display:inline; padding:2px 4px; overflow-wrap:anywhere; }
+}
