@@ -963,8 +963,8 @@ L3 제어 루프(폐루프 블록도)·L3 A·B·C 예시·L5 제어 용어(conce
 # v73 — 강의 ② 실습 앞에 환경 설치 안내 추가
 2026-09-18. 사용자 직접 지시.
 
-- 실습 1 앞(64페이지)에 실습 준비 슬라이드를 넣는다. 실습 환경은 `github.com/HERoEHS/aeirobot-deploy`의 릴리스 tarball과 `deploy_setup.sh`로 준비하고, 문서는 `docs.arobot4all.com`을 본다.
-- 단계는 저장소 → 준비물(Ubuntu 24.04 · NVIDIA GPU · 컨테이너 이미지 · 라이선스) → 기본 패키지 → 릴리스 내려받기 → 설치 스크립트 → 라이선스 등록 6단계다. 명령 칩은 한 단계에 하나만 둔다.
-- 레이아웃은 실습과 같은 `practice-slide layout-practice-stack arm-practice-slide`를 쓰되 뱃지만 `실습 준비`로 구분한다. 같은 형식이어야 실습 직전에 끝내 두는 절차로 읽힌다.
+- 실습 1 앞(64페이지)에 안내 슬라이드를 넣는다. 받을 곳과 문서 주소 둘만 쓴다: `github.com/HERoEHS/aeirobot-deploy`와 `docs.arobot4all.com`.
+- 설치 명령·준비물·라이선스 절차는 슬라이드에 올리지 않는다. 저장소 README가 원본이고, 덱은 그리로 보내는 역할만 한다.
+- 레이아웃은 §2 L5 비교의 `layout-compare layout-guide` + `concept-table` 두 행이다. 실습 워크시트(L6)를 쓰면 항목이 둘뿐이라 빈 카드가 늘어나 보인다.
 - 슬라이드 id·aria-label은 `deck.js`의 `#slide-N` 해시와 1:1이므로 실습 1·2를 65·66으로 민다. 63페이지 복습의 안내와 66페이지의 "64페이지의 FK" 같은 본문 참조 번호도 함께 옮긴다.
 - 강의 ②는 66장, 4개 강의는 203장, OT를 포함한 전체는 214장이다.

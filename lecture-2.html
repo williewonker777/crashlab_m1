@@ -1347,21 +1347,13 @@
     <p class="mobile-takeaway">이제 직접 구현해 보자: <a href="#slide-65">65페이지 · FK 계산과 검산</a> → <a href="#slide-66">66페이지 · IK 계산과 실행</a></p>
   </div>
 </section>
-<section class="slide practice-slide layout-practice-stack arm-practice-slide" id="slide-64" data-title="실습 준비 · 환경 설치와 문서" aria-label="슬라이드 64 / 66: 실습 준비 · 환경 설치와 문서" data-layout="L6">
+<section class="slide layout-compare layout-guide" id="slide-64" data-title="실습 준비 · 환경 설치와 문서" aria-label="슬라이드 64 / 66: 실습 준비 · 환경 설치와 문서" data-layout="L5">
   <div class="slide__inner">
     <header class="slide__header"><p class="slide__eyebrow">SETUP</p><h2>실습 준비 · 환경 설치와 문서</h2></header>
-    <div class="practice-shell">
-      <p class="practice-label">실습 준비</p><div class="practice-task"><p>실습 1로 넘어가기 전에 배포 저장소의 설치 스크립트로 실습 환경을 올려 둔다.</p></div>
-      <ol class="practice-steps">
-        <li><span>배포 저장소를 연다 — 소스가 아니라 릴리스 tarball로 배포된다<a href="https://github.com/HERoEHS/aeirobot-deploy" target="_blank" rel="noreferrer"><code>github.com/HERoEHS/aeirobot-deploy</code></a></span></li>
-        <li><span>준비물을 확인한다 — Ubuntu 24.04 · NVIDIA GPU(시뮬레이션은 RTX) · 벤더가 주는 컨테이너 이미지 · 라이선스 파일</span></li>
-        <li><span>기본 패키지를 설치한다<code>sudo apt install curl net-tools openssh-server</code></span></li>
-        <li><span>최신 릴리스를 내려받는다<code>curl -L https://github.com/HERoEHS/aeirobot-deploy/releases/latest/download/aeirobot-deploy.tar.gz | tar xz</code></span></li>
-        <li><span>설치 스크립트를 실행한다 — 드라이버 · Docker · Isaac Sim · <code>aeirobot</code> 명령까지 구성된다<code>cd aeirobot-deploy-* &amp;&amp; bash deploy_setup.sh</code></span></li>
-        <li><span>라이선스를 등록한다 — 지문을 출력해 발급받은 뒤 설치하고 <code>--verify</code>로 확인한다<code>bash scripts/09_license_activate.sh --install &lt;파일&gt;.license</code></span></li>
-      </ol>
-      <div class="practice-help"><p>로봇과 프레임워크 사용법은 <a href="https://docs.arobot4all.com/" target="_blank" rel="noreferrer"><code>docs.arobot4all.com</code></a> 에서 본다. 설치는 실습 시간 전에 끝내 둔다.</p></div>
-    </div>
+    <table class="concept-table"><tbody>
+      <tr><th scope="row">환경 설치</th><td><a href="https://github.com/HERoEHS/aeirobot-deploy" target="_blank" rel="noreferrer">github.com/HERoEHS/aeirobot-deploy</a><br><small>준비물과 설치 절차는 저장소 README에 있다</small></td></tr>
+      <tr><th scope="row">문서</th><td><a href="https://docs.arobot4all.com/" target="_blank" rel="noreferrer">docs.arobot4all.com</a><br><small>로봇과 프레임워크 사용법</small></td></tr>
+    </tbody></table>
   </div>
 </section>
 <section class="slide practice-slide layout-practice-stack arm-practice-slide" id="slide-65" data-title="실습 1 · 순기구학 — URDF에서 손끝 pose 계산하기" aria-label="슬라이드 65 / 66: 실습 1 · 순기구학 — URDF에서 손끝 pose 계산하기" data-layout="L6">
