@@ -1738,6 +1738,15 @@ button { color: inherit; }
 .lecture-3 .deck-svg .svg-small { font-size: 22px; }
 .lecture-3 .deck-svg .chip text { font-size: 24px; }
 
+/* s12: 식의 기호를 그림의 치수와 같은 색으로 잇는다. 파랑은 실제 거리(m), 주황은 픽셀(px) */
+.lecture-3 #slide-12 .sym-m { color: var(--hy-blue); }
+.lecture-3 #slide-12 .sym-px { color: var(--accent-ink); }
+.lecture-3 #slide-12 .deck-svg .chip text { font-size: 26px; font-weight: 700; }
+.lecture-3 #slide-12 .deck-svg .chip--px rect { stroke: var(--accent); stroke-width: 2; }
+.lecture-3 #slide-12 .deck-svg .chip--px text { fill: var(--accent-ink); }
+.lecture-3 #slide-12 .deck-svg .chip--note text { font-size: 24px; font-weight: 500; }
+.lecture-3 #slide-12 .deck-svg .svg-unit { font-size: 24px; font-weight: 600; }
+
 .lecture-3 #slide-16 .photo-aside strong {
   font-size: clamp(38px, 2.5vw, 50px);
 }
