@@ -104,6 +104,11 @@
   line-height: 1.5;
 }
 .lecture-3 .stereo-footnote { padding-top: 10px; border-top: 1px solid #dde0e5; }
+.lecture-3 .stereo-intro .stereo-disparity-figure { flex: 1 1 0; }
+.lecture-3 .stereo-intro .stereo-disparity-figure figcaption { font-size: clamp(17px, 1.05vw, 20px); }
+.lecture-3 .stereo-intro .stereo-result { display: flex; align-items: center; gap: 24px; }
+.lecture-3 .stereo-intro .stereo-result .stereo-eq { flex-shrink: 0; }
+.lecture-3 .stereo-intro .stereo-result .stereo-note { max-width: 15em; }
 .lecture-3 .stereo-steps { display: grid; min-height: 0; margin: 0; padding: 0; gap: 18px; list-style: none; }
 .lecture-3 .stereo-steps > li { padding-left: 20px; border-left: 3px solid var(--accent); }
 .lecture-3 .stereo-step-title { margin: 0 0 6px; color: var(--accent-ink); font-size: clamp(19px, 1.32vw, 25px); font-weight: 700; }
@@ -150,6 +155,7 @@
   .lecture-3 .stereo-slide .stereo-result .stereo-eq { font-size: 27px; line-height: 1.3; }
   .lecture-3 .stereo-error .stereo-result .stereo-eq { font-size: 24px; }
   .lecture-3 .stereo-figure figcaption { font-size: 15px; }
+  .lecture-3 .stereo-intro .stereo-disparity-figure figcaption { font-size: 15px; }
   .lecture-3 .stereo-slide .slide__header::after { margin-top: 4px; }
   .lecture-3 .stereo-defs { gap: 10px; }
   .lecture-3 .stereo-defs > div { grid-template-columns: 85px minmax(0, 1fr); gap: 10px; padding-bottom: 8px; }
@@ -172,6 +178,8 @@
   .lecture-3 .stereo-slide .stereo-columns { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .lecture-3 .stereo-figure { flex: none; padding: 12px; }
   .lecture-3 .stereo-lab .stereo-figure, .lecture-3 .stereo-derive .stereo-figure { flex: 0 0 auto; }
+  .lecture-3 .stereo-intro .stereo-disparity-figure { flex: 0 0 auto; }
+  .lecture-3 .stereo-intro .stereo-result { gap: 16px; }
   .lecture-3 .stereo-figure .deck-svg { flex: none; width: 100%; height: auto; min-height: 0; }
   .lecture-3 .stereo-copy, .lecture-3 .stereo-lab { gap: 20px; }
   .lecture-3 .stereo-defs > div { grid-template-columns: 80px minmax(0, 1fr); gap: 12px; }
