@@ -1738,29 +1738,20 @@ button { color: inherit; }
 .lecture-3 .deck-svg .svg-small { font-size: 22px; }
 .lecture-3 .deck-svg .chip text { font-size: 24px; }
 
-/* s12: 식의 기호를 그림의 치수와 같은 색으로 잇는다. 파랑은 실제 거리(m), 주황은 픽셀(px) */
-.lecture-3 #slide-12 .sym-m { color: var(--hy-blue); }
-.lecture-3 #slide-12 .sym-px { color: var(--accent-ink); }
-.lecture-3 #slide-12 .deck-svg .chip text { font-size: 26px; font-weight: 700; }
-.lecture-3 #slide-12 .deck-svg .chip--px rect { stroke: var(--accent); stroke-width: 2; }
-.lecture-3 #slide-12 .deck-svg .chip--px text { fill: var(--accent-ink); }
-.lecture-3 #slide-12 .deck-svg .chip--note text { font-size: 24px; font-weight: 500; }
-.lecture-3 #slide-12 .deck-svg .svg-unit { font-size: 24px; font-weight: 600; }
-
-.lecture-3 #slide-16 .photo-aside strong {
+.lecture-3 #slide-19 .photo-aside strong {
   font-size: clamp(38px, 2.5vw, 50px);
 }
 
-.lecture-3 #slide-21 .slide__visual,
-.lecture-3 #slide-26 .slide__visual,
-.lecture-3 #slide-27 .slide__visual,
-.lecture-3 #slide-33 .slide__visual,
-.lecture-3 #slide-50 .slide__visual {
+.lecture-3 #slide-24 .slide__visual,
+.lecture-3 #slide-29 .slide__visual,
+.lecture-3 #slide-30 .slide__visual,
+.lecture-3 #slide-36 .slide__visual,
+.lecture-3 #slide-53 .slide__visual {
   padding: 0;
 }
 
-.lecture-3 #slide-34 .slide__visual,
-.lecture-3 #slide-56 .slide__visual {
+.lecture-3 #slide-37 .slide__visual,
+.lecture-3 #slide-59 .slide__visual {
   display: grid;
   padding: 22px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1768,8 +1759,8 @@ button { color: inherit; }
   gap: 28px;
 }
 
-.lecture-3 #slide-34 .slide__visual > figure,
-.lecture-3 #slide-56 .slide__visual > figure {
+.lecture-3 #slide-37 .slide__visual > figure,
+.lecture-3 #slide-59 .slide__visual > figure {
   display: grid;
   min-width: 0;
   min-height: 0;
@@ -1780,8 +1771,8 @@ button { color: inherit; }
   background: #fff;
 }
 
-.lecture-3 #slide-34 .slide__visual > figure > svg,
-.lecture-3 #slide-56 .slide__visual > figure > svg {
+.lecture-3 #slide-37 .slide__visual > figure > svg,
+.lecture-3 #slide-59 .slide__visual > figure > svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -1789,33 +1780,33 @@ button { color: inherit; }
   background: #fff;
 }
 
-.lecture-3 #slide-34 figcaption,
-.lecture-3 #slide-56 figcaption {
+.lecture-3 #slide-37 figcaption,
+.lecture-3 #slide-59 figcaption {
   display: grid;
   padding: 18px 24px 20px;
   border-top: 2px solid var(--accent);
   gap: 5px;
 }
 
-.lecture-3 #slide-34 figcaption strong,
-.lecture-3 #slide-56 figcaption strong {
+.lecture-3 #slide-37 figcaption strong,
+.lecture-3 #slide-59 figcaption strong {
   color: var(--hy-blue);
   font-size: 27px;
 }
 
-.lecture-3 #slide-34 figcaption span,
-.lecture-3 #slide-56 figcaption span {
+.lecture-3 #slide-37 figcaption span,
+.lecture-3 #slide-59 figcaption span {
   color: var(--hy-gray);
   font-size: 21px;
 }
 
-.lecture-3 #slide-36 .slide__visual {
+.lecture-3 #slide-39 .slide__visual {
   padding: 12px 16px;
   overflow: hidden;
   background: #11131a;
 }
 
-.lecture-3 #slide-36 video {
+.lecture-3 #slide-39 video {
   position: absolute;
   top: 12px;
   bottom: 12px;
@@ -1831,39 +1822,39 @@ button { color: inherit; }
   background: #11131a;
 }
 
-.lecture-3 #slide-36 .slide__inner {
+.lecture-3 #slide-39 .slide__inner {
   grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.75fr);
   grid-template-rows: 140px minmax(0, 1fr);
   gap: 16px 32px;
 }
 
-.lecture-3 #slide-36 .slide__header {
+.lecture-3 #slide-39 .slide__header {
   grid-column: 1 / -1;
   grid-row: 1;
 }
 
-.lecture-3 #slide-36 .slide__visual {
+.lecture-3 #slide-39 .slide__visual {
   grid-column: 1;
   grid-row: 2;
 }
 
-.lecture-3 #slide-47 .concept-table,
-.lecture-3 #slide-57 .concept-table {
+.lecture-3 #slide-50 .concept-table,
+.lecture-3 #slide-60 .concept-table {
   border-spacing: 0 12px;
 }
 
-.lecture-3 #slide-47 .concept-table th,
-.lecture-3 #slide-47 .concept-table td,
-.lecture-3 #slide-57 .concept-table th,
-.lecture-3 #slide-57 .concept-table td {
+.lecture-3 #slide-50 .concept-table th,
+.lecture-3 #slide-50 .concept-table td,
+.lecture-3 #slide-60 .concept-table th,
+.lecture-3 #slide-60 .concept-table td {
   padding-block: 22px;
 }
 
-.lecture-3 #slide-47 .concept-table th { width: 29%; }
-.lecture-3 #slide-57 .concept-table th { width: 23%; }
+.lecture-3 #slide-50 .concept-table th { width: 29%; }
+.lecture-3 #slide-60 .concept-table th { width: 23%; }
 
-.lecture-3 #slide-16 .key-line,
-.lecture-3 #slide-24 .key-line {
+.lecture-3 #slide-19 .key-line,
+.lecture-3 #slide-27 .key-line {
   width: 100%;
   max-width: 1600px;
   font-size: clamp(27px, 1.65vw, 32px);
@@ -1871,16 +1862,16 @@ button { color: inherit; }
 }
 
 /* s31: 오른쪽에 영상 속 특징점 색 범례를 두고, 핵심 한 줄은 아래로 내린다 */
-.lecture-3 #slide-36 .slide__inner {
+.lecture-3 #slide-39 .slide__inner {
   grid-template-rows: 140px minmax(0, 1fr) auto;
 }
 
-.lecture-3 #slide-36 .legend-card {
+.lecture-3 #slide-39 .legend-card {
   grid-column: 2;
   grid-row: 2;
 }
 
-.lecture-3 #slide-36 .key-line {
+.lecture-3 #slide-39 .key-line {
   grid-column: 1 / -1;
   grid-row: 3;
   font-size: clamp(27px, 1.7vw, 33px);
@@ -1942,7 +1933,7 @@ button { color: inherit; }
   line-height: 1.45;
 }
 
-.lecture-3 #slide-34 .slide__inner {
+.lecture-3 #slide-37 .slide__inner {
   grid-template-rows: 200px minmax(0, 1fr) 50px;
   gap: 20px;
 }
@@ -2881,13 +2872,13 @@ button { color: inherit; }
 
 /* s31은 2열 고정이라 좁은 화면에서 영상 칸이 눌린다. 범례를 영상 아래로 내린다 */
 @media (max-width: 800px) {
-  .lecture-3 #slide-36 .slide__inner {
+  .lecture-3 #slide-39 .slide__inner {
     grid-template-columns: 1fr;
     grid-template-rows: auto minmax(360px, 1fr) auto auto;
   }
 
-  .lecture-3 #slide-36 .legend-card,
-  .lecture-3 #slide-36 .key-line {
+  .lecture-3 #slide-39 .legend-card,
+  .lecture-3 #slide-39 .key-line {
     grid-column: 1;
     grid-row: auto;
   }

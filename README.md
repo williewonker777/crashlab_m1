@@ -6,9 +6,9 @@
 - `orientation.html`: 한 학기 운영 · 프로젝트 · 평가 안내 (11장)
 - `lecture-1.html`: ROS2 로봇 프로그래밍 이론·실습 (60장)
 - `lecture-2.html`: 제어 (66장) — 이론 63 + 실습 준비 1 + 실습 2
-- `lecture-3.html`: VSLAM · 내비게이션 (63장) — 이론 57 + 실습 6
+- `lecture-3.html`: VSLAM · 내비게이션 (66장) — 이론 60 + 실습 6
 - `lecture-4.html`: VLA 이론 (14장)
-- 전체: OT 11장 + 4개 강의 203장, 총 214장
+- 전체: OT 11장 + 4개 강의 206장, 총 217장
 
 강의 1은 PowerPoint 원본의 텍스트·도형·이미지를 네이티브 HTML/CSS로 변환한 덱이다.
 다른 강의와 같은 헤더·서체·색상 토큰을 사용하며, 본문 그리드는 글자 크기에 맞춰 높이가 늘어난다.
@@ -31,6 +31,8 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 - 도움말: `?`
 
 빌드 도구 없이 GitHub Pages 루트에서 동작한다. 모든 교육 다이어그램은 인라인 SVG다.
+
+강의 ③의 12~15페이지는 스테레오의 기호·가상 영상면 → 닮은 삼각형과 투영식 유도 → 조작 가능한 숫자 예제 → 깊이 오차 유도 순서다. 14페이지의 슬라이더나 1·2·4 m 버튼으로 같은 점의 영상 좌표와 시차 변화를 확인한다. 수식의 가정, 기존 설명에서 바로잡은 부분, 공식 출처는 [STEREO_DEPTH.md](STEREO_DEPTH.md)에 정리했다.
 
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 35페이지에서는 좌우 바퀴 속도에 따른 궤적을, 42페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 
