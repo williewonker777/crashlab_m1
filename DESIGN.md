@@ -1054,3 +1054,51 @@ L3 제어 루프(폐루프 블록도)·L3 A·B·C 예시·L5 제어 용어(conce
 - 검증: 1920×1080·1280×720·1024×768·430×900에서 12~15p의 실제 텍스트 경계와 배치를 확인했다.
   overlap·occlusion·cross 검사 0건. 제목·ARIA·ID 유일성, 도형 투영, 오차표를 검산하고
   14p 슬라이더 61개 값·3개 버튼·방향키를 재검증했다. 다른 62장과 전체 66장 구성은 그대로 유지한다.
+
+# v78 — 강의 ③ 50p 지역 제어기 약어의 영문 풀이
+2026-09-22. 사용자 직접 지시. DWB·MPPI·TEB가 약어로만 적혀 있어 무엇의 줄임말인지 함께 적는다.
+
+- 강의 ② 5p 제어 용어 표처럼 설명 끝에 `<small>(영문 풀이)</small>`를 붙인다.
+  MPPI는 Model Predictive Path Integral, TEB는 Timed Elastic Band다(Nav2·teb_local_planner README).
+- DWB에는 정식 풀네임이 없다. ROS 1 `dwa_local_planner`를 다시 구현한 후속이라 A 다음 글자인 B를 붙였다
+  (robot_navigation README). 없는 풀네임을 지어내지 않고 「DWA · Dynamic Window Approach의 후속」으로 적는다.
+  Regulated Pure Pursuit는 이미 풀어 쓴 이름이라 그대로 둔다.
+- 풀이가 붙으면 1536×864·1440×900에서 풀이가 둘째 줄로 내려가 표가 63·27px 넘쳤다. 50p에 한해 풀이를
+  inline-block으로 만들어 쪼개지지 않고 통째로 내려가게 하고, 앞 공백이 간격을 맡아 다음 줄에서는 본문과
+  왼쪽이 맞게 한다. 데스크톱의 최소 행 여백은 22px에서 10px로 줄인다. 표가 화면을 채울 때는 남는 높이를
+  행이 나눠 가지므로 1920×1080에서는 여백을 줄이기 전후의 화면이 픽셀 단위로 같다. 강의 ③의 deck.css 캐시 버전은 15다.
+- 검증: 10개 크기에서 표 하단을 쟀다. 원래 한 화면에 들어가던 1920×1080·1920×960·1680×1050·1600×900·
+  1536×864·1440×900은 모두 들어간다. 원래부터 넘치던 1366×768·1280×800·1280×720·1024×768은
+  88→39·92→79·172→159·231→146px로 줄었지만 여전히 넘친다(강의 ② 5p 같은 다른 표 슬라이드와 같은 기존 문제).
+  overlap·occlusion·cross 검사에서 50p는 0건이다. 430×900에서는 풀이가 본문 아래로 왼쪽을 맞춰 내려간다.
+
+# v79 — 강의 ③ 나머지 약어의 영문 풀이
+2026-09-22. 사용자 직접 지시. v78에 이어 강의 ③에서 풀이 없이 쓰인 약어의 풀네임을 적는다.
+
+- 약어마다 한 번, 처음 설명하는 HTML 본문에 적는다. 표지·질문 슬라이드와 SVG 도식 안의 첫 등장은 건너뛴다.
+  제품·패키지·메시지 이름(ZED, TurtleBot3, Nav2, OccupancyGrid 등)은 약어가 아니라서 그대로 둔다.
+- 제목에 약어가 있는 페이지는 강의 ② ICC처럼 eyebrow를 「약어 · 풀네임」으로 바꾼다. 4p VSLAM · Visual SLAM,
+  18p IMU · Inertial Measurement Unit, 34p LiDAR · Light Detection and Ranging, 53p TF · Transform,
+  55p ROS · Robot Operating System이다. 3p는 제목에 약어가 없지만 SLAM을 처음 정의하는 페이지라
+  SLAM · Simultaneous Localization and Mapping을 같은 자리에 둔다.
+  SLAM 상자 안에 넣으려면 상자 하나만 키워야 해서 도식은 건드리지 않는다.
+- 용어 표는 v78처럼 설명 끝에 `<small>`을 붙인다. 11p RGB-D는 Red·Green·Blue + Depth, VIO는
+  Visual-Inertial Odometry이고, 17p ToF는 Time of Flight다. v78에서 50p에만 준 규칙(풀이를 통째로 다음 줄로
+  내리고, 간격은 앞의 공백이 맡음)을 강의 ③의 모든 용어 표로 넓힌다. 강의 ③ 용어 표의 `<small>`은 이 풀이뿐이다.
+- 문장 속 약어는 괄호로 적는다. 28p 번들 조정(BA · Bundle Adjustment), 62p RPY(Roll·Pitch·Yaw)와
+  RViz(ROS Visualization), 63p EKF(Extended Kalman Filter), 65p AMCL(Adaptive Monte Carlo Localization),
+  66p 32FC1(32-bit Float, 1 Channel)이다. 62p는 조사를 「RPY이」에서 「RPY(…)가」로 고친다.
+  AMCL은 63p 확인 문장에 먼저 나오지만 그 줄에 여유가 없어서, AMCL을 직접 다루는 65p에 적는다.
+- RTAB-Map은 55p 칩에서만 소개되므로 칩 문구를 RTAB-Map(Real-Time Appearance-Based Mapping)으로 늘린다.
+  글 길이(657→1106)에 맞춰 칩 폭을 820에서 1270으로 넓히고, 좌우 여백 81.5와 가운데(x = 800)는 유지한다.
+- 28p는 1920×1080에서 「Bundle / Adjustment」로 끊겨서 `&nbsp;`로 「번들 조정(BA · Bundle Adjustment)이라」를 묶는다.
+  실습 슬라이드의 풀이도 묶어 봤지만, 휴대폰에서 한 줄보다 긴 덩어리가 「Kalm / an」처럼 단어 중간에서 끊겨 되돌렸다.
+  데스크톱에서는 그 줄들에 여유가 충분하다.
+- 11·17p는 풀이가 붙으면서 1366×768 이하에서 더 넘쳤다. 그래서 높이 850px 이하에서만 행 여백을 10px로 줄인다.
+  두 줄 행이 있는 11p는 여백을 항상 줄이면 1920×1080에서도 남는 높이의 배분이 달라지므로, 낮은 화면에 한정한다.
+  강의 ③의 deck.css 캐시 버전은 v78에서 올린 15를 그대로 쓴다(아직 배포 전).
+- 검증: 수정 전(HEAD의 HTML과 CSS)과 수정 후를 14장(v78의 50p 포함)×11개 크기에서 쟀다. 크기는 1920×1080부터
+  1280×720까지 데스크톱 8개와 430·390·360 폭 휴대폰이다. 나빠진 곳은 28p 1280×720의 2→18px 한 곳이다.
+  글이 한 줄 늘었지만 페이지 번호와 하단 글자와는 겹치지 않는다. 11·17p는 1366×768·1280×800에서 31·34→0px,
+  1280×720에서 114→30px로 줄었다. 11·17p의 1920×1080·1536×864 화면은 여백 규칙 추가 전후가 픽셀 단위로 같다.
+  휴대폰 폭 가로 넘침은 0건이다. overlap·occlusion·cross 결과는 수정 전과 같다(기존 s3·s16·s28·s46·s47).

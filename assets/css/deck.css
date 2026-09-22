@@ -1853,6 +1853,26 @@ button { color: inherit; }
 .lecture-3 #slide-50 .concept-table th { width: 29%; }
 .lecture-3 #slide-60 .concept-table th { width: 23%; }
 
+/* 약어 풀이는 줄이 모자라면 쪼개지지 않고 통째로 다음 줄로 내린다.
+   간격은 앞의 공백이 맡아, 다음 줄로 내려가면 본문과 왼쪽이 맞는다 */
+.lecture-3 .concept-table td small { display: inline-block; margin-left: 0; }
+
+/* 좁은 폭에서 풀이가 둘째 줄로 내려가도 표가 한 화면에 들어가게 최소 행 여백을 줄인다.
+   남는 높이는 행이 나눠 가지므로 1920×1080에서는 모습이 그대로다 */
+@media (min-width: 801px) {
+  .lecture-3 #slide-50 .concept-table th,
+  .lecture-3 #slide-50 .concept-table td { padding-block: 10px; }
+}
+
+/* 11·17p는 원래 여백으로도 1440×900까지 들어간다. 두 줄 행이 있는 11p는 여백을 줄이면
+   남는 높이의 배분이 달라지므로, 표가 넘치는 낮은 화면에서만 줄인다 */
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-3 #slide-11 .concept-table th,
+  .lecture-3 #slide-11 .concept-table td,
+  .lecture-3 #slide-17 .concept-table th,
+  .lecture-3 #slide-17 .concept-table td { padding-block: 10px; }
+}
+
 .lecture-3 #slide-19 .key-line,
 .lecture-3 #slide-27 .key-line {
   width: 100%;
