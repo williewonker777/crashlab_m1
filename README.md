@@ -34,7 +34,7 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 
 강의 ③의 12~15페이지는 두 눈의 관찰 위치 → 거리와 시차의 관계 → 거리 슬라이더 → 거리 지도 순서로 스테레오를 쉽게 설명한다. 46~48페이지는 격자 지도의 최단 경로 → 후보 평가값 비교 → 단계별 A* 탐색 시연이다. 본문과 시연 피드백은 대학 강의용 서술체로 통일했다. 스테레오의 가정과 참고 자료는 [STEREO_DEPTH.md](STEREO_DEPTH.md), A*의 규칙과 검증은 [PATHFINDING.md](PATHFINDING.md)에 정리했다. 시연의 계산은 `node tools/check-lecture3-basics.cjs`로 검증한다.
 
-강의 ③의 61~66페이지는 RViz 센서 확인 → 이동 궤적과 지도 생성 → 재방문 후 지도 보정의 세 기능으로 구성한 Visual SLAM 실습이다. 각 실습에는 완료 목표와 화면 중심의 결과물만 제시한다. AI 에이전트가 구현하고 학생은 실행 화면을 확인한 뒤 다음 실습으로 진행한다. 실습 바로 다음 장에는 센서·지도·보정 전후의 RViz 결과 예시를 배치했다. 구성과 예시의 출처는 [VSLAM_LAB.md](VSLAM_LAB.md)에 정리했다.
+강의 ③의 61~66페이지는 RViz 센서 확인 → 이동 궤적과 맵 생성 → 루프 클로징의 세 기능으로 구성한 Visual SLAM 실습이다. 각 실습에는 완료 목표와 화면 중심의 결과물만 제시한다. AI 에이전트가 구현하고 학생은 실행 화면을 확인한 뒤 다음 실습으로 진행한다. 실습 바로 다음 장에는 센서·맵·보정 전후의 RViz 결과 예시를 배치했다. 구성과 예시의 출처는 [VSLAM_LAB.md](VSLAM_LAB.md)에 정리했다.
 
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 35페이지에서는 좌우 바퀴 속도에 따른 궤적을, 42페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 
