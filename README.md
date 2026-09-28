@@ -34,6 +34,8 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 
 강의 ③의 12~15페이지는 두 눈의 관찰 위치 → 거리와 시차의 관계 → 거리 슬라이더 → 거리 지도 순서로 스테레오를 쉽게 설명한다. 46~48페이지는 격자 지도의 최단 경로 → 후보 평가값 비교 → 단계별 A* 탐색 시연이다. 본문과 시연 피드백은 대학 강의용 서술체로 통일했다. 스테레오의 가정과 참고 자료는 [STEREO_DEPTH.md](STEREO_DEPTH.md), A*의 규칙과 검증은 [PATHFINDING.md](PATHFINDING.md)에 정리했다. 시연의 계산은 `node tools/check-lecture3-basics.cjs`로 검증한다.
 
+강의 ③의 61~66페이지는 실행 중인 ALICE M1의 RGB·깊이·CameraInfo 토픽에서 시작하는 Visual SLAM 개발 실습이다. 입력 동기화 → 특징점·3차원 대응 → VO → 키프레임·지도 → 루프 검증·그래프 보정 → 동일 데이터 평가로 이어진다. [학생용 구현 가이드](vslam-lab.html)에 함수 입출력, 좌표 변환, 실패 처리, 기록·재생, 제출 기준이 있고, 환경 관측과 설계 근거는 [VSLAM_LAB.md](VSLAM_LAB.md)에 정리했다.
+
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 35페이지에서는 좌우 바퀴 속도에 따른 궤적을, 42페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 
 챕터 4 「팔 제어」는 ALICE M1의 7자유도 팔로 물체에 접근하고 잡고 옮기는 매니퓰레이션을 다룬다. 52페이지는 7개 관절의 순기구학 시연, 54페이지는 같은 TCP pose를 유지하는 서로 다른 팔 자세의 역기구학 시연이다. 63페이지에서 관련 개념을 복습하고, 64~65페이지에서는 Pinocchio로 FK·IK를 구현해 로봇 TF와 비교하고 동작으로 연결한다. 실습의 손 기준 프레임은 시연의 교육용 TCP와 구분한다. 로봇 모델·사진·수업 구성은 [ARM_MANIPULATION.md](ARM_MANIPULATION.md)에 정리했다.
