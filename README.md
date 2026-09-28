@@ -32,7 +32,7 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 
 빌드 도구 없이 GitHub Pages 루트에서 동작한다. 모든 교육 다이어그램은 인라인 SVG다.
 
-강의 ③의 12~15페이지는 스테레오의 기호·가상 영상면 → 닮은 삼각형과 투영식 유도 → 조작 가능한 숫자 예제 → 깊이 오차 유도 순서다. 14페이지의 슬라이더나 1·2·4 m 버튼으로 같은 점의 영상 좌표와 시차 변화를 확인한다. 수식의 가정, 기존 설명에서 바로잡은 부분, 공식 출처는 [STEREO_DEPTH.md](STEREO_DEPTH.md)에 정리했다.
+강의 ③의 12~15페이지는 엄지와 두 눈 실험 → 가까운 공·먼 공의 시차 비교 → 거리 슬라이더 → 거리 지도 순서로 스테레오를 쉽게 설명한다. 46~48페이지는 학교까지 가는 격자 지도 → 후보 점수 퀴즈 → 한 단계씩 진행하는 A* 시연이다. 스테레오의 가정과 참고 자료는 [STEREO_DEPTH.md](STEREO_DEPTH.md), A*의 규칙과 검증은 [PATHFINDING.md](PATHFINDING.md)에 정리했다. 시연의 계산은 `node tools/check-lecture3-basics.cjs`로 검증한다.
 
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 35페이지에서는 좌우 바퀴 속도에 따른 궤적을, 42페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 

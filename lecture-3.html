@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="미지 환경에서의 위치 추정과 경로 계획"><title>강의 03 · VSLAM · 내비게이션 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css?v=15"><link rel="stylesheet" href="assets/css/stereo-depth.css?v=3"><script src="assets/js/stereo-depth.js?v=1" defer></script><script src="assets/js/deck.js?v=3" defer></script></head><body class="deck-page lecture-3"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><nav class="lecture-nav" aria-label="강의 이동"><a href="orientation.html" aria-label="오리엔테이션">OT</a><a href="lecture-1.html" aria-label="강의 1">01</a><a href="lecture-2.html" aria-label="강의 2">02</a><a href="lecture-3.html" aria-label="강의 3" aria-current="page">03</a><a href="lecture-4.html" aria-label="강의 4">04</a></nav><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 66</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="66" data-prev-deck="lecture-2.html#slide-last" data-next-deck="lecture-4.html"><section class="slide slide--title layout-title" id="slide-1" data-title="미지 환경에서의 위치 추정과 경로 계획" aria-label="슬라이드 1 / 66: 미지 환경에서의 위치 추정과 경로 계획" data-layout="L1"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 03</p><h1>VSLAM · 내비게이션</h1><p class="slide__lead">미지 환경에서의 위치 추정과 경로 계획</p><div class="title-meta"><span>10/2</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">03</div><figure class="title-robot" aria-hidden="true"><img src="assets/img/m1-3q.png" alt=""></figure><ol class="title-index" aria-label="강의 개념 목차"><li><span>01</span><div><strong>카메라와 위치 추정</strong><small>오도메트리·드리프트</small></div></li><li><span>02</span><div><strong>VSLAM 원리</strong><small>프론트엔드·백엔드</small></div></li><li><span>03</span><div><strong>지도와 코스트맵</strong><small>특징점·점유 격자</small></div></li><li><span>04</span><div><strong>내비게이션 연동</strong><small>TF·Nav2</small></div></li></ol></div></section><section class="slide slide--question layout-question" id="slide-2" data-title="질문" aria-label="슬라이드 2 / 66: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>카메라로 위치를 찾았다면, 바로 목적지까지 갈 수 있을까?</h2><div class="question-keywords" aria-label="강의 핵심어"><span>위치 추정</span><span>경로 계획</span><span>제어기</span></div></div></section><section class="slide visual-full layout-diagram" id="slide-3" data-title="다섯 개의 개념" aria-label="슬라이드 3 / 66: 다섯 개의 개념" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">SLAM · Simultaneous Localization and Mapping</p><h2>다섯 개의 개념</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1600 620" role="img" aria-label="Visual Odometry, Localization, Mapping, SLAM, Navigation의 역할 관계"><defs><marker id="l3s3-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker><marker id="l3s3-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#75B446"/></marker></defs><rect class="node" x="40" y="60" width="360" height="120" rx="18"/><text class="svg-title" x="220" y="105" text-anchor="middle" dominant-baseline="central">Visual Odometry</text><text class="svg-small" x="220" y="145" text-anchor="middle" dominant-baseline="central">프레임 사이 이동량 · 오차 누적</text><rect class="node" x="40" y="390" width="360" height="120" rx="18"/><text class="svg-title" x="220" y="435" text-anchor="middle" dominant-baseline="central">Localization</text><text class="svg-small" x="220" y="475" text-anchor="middle" dominant-baseline="central">기존 지도에서 현재 위치 추정</text><rect class="node" x="500" y="60" width="360" height="120" rx="18"/><text class="svg-title" x="680" y="105" text-anchor="middle" dominant-baseline="central">Mapping</text><text class="svg-small" x="680" y="145" text-anchor="middle" dominant-baseline="central">센서 관측으로 지도 생성</text><rect class="node-green" x="500" y="390" width="360" height="120" rx="18"/><text class="svg-title" x="680" y="430" text-anchor="middle" dominant-baseline="central">SLAM</text><text class="svg-small" x="680" y="475" text-anchor="middle" dominant-baseline="central">위치 추정과 지도 생성을 동시에 수행</text><rect class="node" x="1160" y="225" width="380" height="140" rx="18"/><text class="svg-title" x="1350" y="275" text-anchor="middle" dominant-baseline="central">Navigation</text><text class="svg-small" x="1350" y="320" text-anchor="middle" dominant-baseline="central">경로 계획 · 제어기 실행</text><line class="stroke-blue" x1="400" y1="120" x2="500" y2="120" marker-end="url(#l3s3-blue)"/><line class="stroke-blue" x1="400" y1="450" x2="500" y2="450" marker-end="url(#l3s3-blue)"/><line class="stroke-green" x1="860" y1="450" x2="1160" y2="320" marker-end="url(#l3s3-green)"/><text class="svg-small" x="1010" y="405" text-anchor="middle" dominant-baseline="central">자세 · 지도</text></svg></div><p class="key-line">SLAM은 위치 추정과 지도 생성을, Navigation은 경로 계획과 제어기 실행을 맡는다.</p></div></section><section class="slide layout-compare" id="slide-4" data-title="VSLAM과 Navigation의 분담" aria-label="슬라이드 4 / 66: VSLAM과 Navigation의 분담" data-layout="L5"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">VSLAM · Visual SLAM</p><h2>VSLAM과 Navigation의 분담</h2></header><div class="comparison-grid"><article class="comparison-card"><h3>VSLAM</h3><ul><li>로봇의 현재 자세를 추정한다.</li><li>관측한 특징점으로 지도를 만든다.</li><li>같은 장소를 다시 인식해 누적 오차를 줄인다.</li></ul></article><article class="comparison-card"><h3>Navigation</h3><ul><li>이동 가능한 공간과 장애물 위치</li><li>로봇 크기와 속도·가속도 한계</li><li>목적지까지의 경로와 추종 제어기</li></ul></article></div></div></section><section class="slide slide--question layout-question" id="slide-5" data-title="질문" aria-label="슬라이드 5 / 66: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>외부 관측 없이 걸으면 몇 걸음 만에 위치를 잃을까?</h2><div class="question-keywords" aria-label="강의 핵심어"><span>위치 추정</span><span>경로 계획</span><span>제어기</span></div></div></section><section class="slide layout-split" id="slide-6" data-title="오도메트리" aria-label="슬라이드 6 / 66: 오도메트리" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>오도메트리</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="바퀴 회전량을 이동 거리와 위치로 바꾸는 오도메트리">
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="미지 환경에서의 위치 추정과 경로 계획"><title>강의 03 · VSLAM · 내비게이션 | 크래쉬랩 M1</title><link rel="icon" href="data:,"><link rel="stylesheet" href="assets/css/deck.css?v=15"><link rel="stylesheet" href="assets/css/lecture3-basics.css?v=1"><script src="assets/js/lecture3-basics.js?v=1" defer></script><script src="assets/js/deck.js?v=3" defer></script></head><body class="deck-page lecture-3"><a class="skip-link" href="#slide-1">첫 슬라이드로</a><div class="deck-progress" aria-hidden="true"><span class="deck-progress__bar" data-progress></span></div><a class="deck-wordmark" href="index.html">크래쉬랩 M1</a><nav class="lecture-nav" aria-label="강의 이동"><a href="orientation.html" aria-label="오리엔테이션">OT</a><a href="lecture-1.html" aria-label="강의 1">01</a><a href="lecture-2.html" aria-label="강의 2">02</a><a href="lecture-3.html" aria-label="강의 3" aria-current="page">03</a><a href="lecture-4.html" aria-label="강의 4">04</a></nav><div class="deck-tools"><button class="deck-tool" type="button" data-help-open aria-label="단축키 도움말">?</button><button class="deck-tool" type="button" data-fullscreen aria-label="전체화면" aria-pressed="false">F</button></div><div class="deck-counter" data-counter aria-live="polite">1 / 66</div><dialog class="shortcut-help" id="shortcut-help" aria-labelledby="shortcut-title"><div class="shortcut-help__inner"><h2 id="shortcut-title">슬라이드 단축키</h2><dl><dt>→ ↓ Space PageDown</dt><dd>다음 슬라이드</dd><dt>← ↑ PageUp</dt><dd>이전 슬라이드</dd><dt>Home / End</dt><dd>처음 / 마지막</dd><dt>F</dt><dd>전체화면 전환</dd><dt>?</dt><dd>도움말 열기 / 닫기</dd></dl><button class="shortcut-help__close" type="button" data-help-close>닫기</button></div></dialog><main class="deck" data-deck data-slide-count="66" data-prev-deck="lecture-2.html#slide-last" data-next-deck="lecture-4.html"><section class="slide slide--title layout-title" id="slide-1" data-title="미지 환경에서의 위치 추정과 경로 계획" aria-label="슬라이드 1 / 66: 미지 환경에서의 위치 추정과 경로 계획" data-layout="L1"><div class="slide__inner"><div><p class="slide__eyebrow">LECTURE 03</p><h1>VSLAM · 내비게이션</h1><p class="slide__lead">미지 환경에서의 위치 추정과 경로 계획</p><div class="title-meta"><span>10/2</span><span>CRASH LAB M1</span></div></div><div class="title-number" aria-hidden="true">03</div><figure class="title-robot" aria-hidden="true"><img src="assets/img/m1-3q.png" alt=""></figure><ol class="title-index" aria-label="강의 개념 목차"><li><span>01</span><div><strong>카메라와 위치 추정</strong><small>오도메트리·드리프트</small></div></li><li><span>02</span><div><strong>VSLAM 원리</strong><small>프론트엔드·백엔드</small></div></li><li><span>03</span><div><strong>지도와 코스트맵</strong><small>특징점·점유 격자</small></div></li><li><span>04</span><div><strong>내비게이션 연동</strong><small>TF·Nav2</small></div></li></ol></div></section><section class="slide slide--question layout-question" id="slide-2" data-title="질문" aria-label="슬라이드 2 / 66: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>카메라로 위치를 찾았다면, 바로 목적지까지 갈 수 있을까?</h2><div class="question-keywords" aria-label="강의 핵심어"><span>위치 추정</span><span>경로 계획</span><span>제어기</span></div></div></section><section class="slide visual-full layout-diagram" id="slide-3" data-title="다섯 개의 개념" aria-label="슬라이드 3 / 66: 다섯 개의 개념" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">SLAM · Simultaneous Localization and Mapping</p><h2>다섯 개의 개념</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1600 620" role="img" aria-label="Visual Odometry, Localization, Mapping, SLAM, Navigation의 역할 관계"><defs><marker id="l3s3-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker><marker id="l3s3-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#75B446"/></marker></defs><rect class="node" x="40" y="60" width="360" height="120" rx="18"/><text class="svg-title" x="220" y="105" text-anchor="middle" dominant-baseline="central">Visual Odometry</text><text class="svg-small" x="220" y="145" text-anchor="middle" dominant-baseline="central">프레임 사이 이동량 · 오차 누적</text><rect class="node" x="40" y="390" width="360" height="120" rx="18"/><text class="svg-title" x="220" y="435" text-anchor="middle" dominant-baseline="central">Localization</text><text class="svg-small" x="220" y="475" text-anchor="middle" dominant-baseline="central">기존 지도에서 현재 위치 추정</text><rect class="node" x="500" y="60" width="360" height="120" rx="18"/><text class="svg-title" x="680" y="105" text-anchor="middle" dominant-baseline="central">Mapping</text><text class="svg-small" x="680" y="145" text-anchor="middle" dominant-baseline="central">센서 관측으로 지도 생성</text><rect class="node-green" x="500" y="390" width="360" height="120" rx="18"/><text class="svg-title" x="680" y="430" text-anchor="middle" dominant-baseline="central">SLAM</text><text class="svg-small" x="680" y="475" text-anchor="middle" dominant-baseline="central">위치 추정과 지도 생성을 동시에 수행</text><rect class="node" x="1160" y="225" width="380" height="140" rx="18"/><text class="svg-title" x="1350" y="275" text-anchor="middle" dominant-baseline="central">Navigation</text><text class="svg-small" x="1350" y="320" text-anchor="middle" dominant-baseline="central">경로 계획 · 제어기 실행</text><line class="stroke-blue" x1="400" y1="120" x2="500" y2="120" marker-end="url(#l3s3-blue)"/><line class="stroke-blue" x1="400" y1="450" x2="500" y2="450" marker-end="url(#l3s3-blue)"/><line class="stroke-green" x1="860" y1="450" x2="1160" y2="320" marker-end="url(#l3s3-green)"/><text class="svg-small" x="1010" y="405" text-anchor="middle" dominant-baseline="central">자세 · 지도</text></svg></div><p class="key-line">SLAM은 위치 추정과 지도 생성을, Navigation은 경로 계획과 제어기 실행을 맡는다.</p></div></section><section class="slide layout-compare" id="slide-4" data-title="VSLAM과 Navigation의 분담" aria-label="슬라이드 4 / 66: VSLAM과 Navigation의 분담" data-layout="L5"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">VSLAM · Visual SLAM</p><h2>VSLAM과 Navigation의 분담</h2></header><div class="comparison-grid"><article class="comparison-card"><h3>VSLAM</h3><ul><li>로봇의 현재 자세를 추정한다.</li><li>관측한 특징점으로 지도를 만든다.</li><li>같은 장소를 다시 인식해 누적 오차를 줄인다.</li></ul></article><article class="comparison-card"><h3>Navigation</h3><ul><li>이동 가능한 공간과 장애물 위치</li><li>로봇 크기와 속도·가속도 한계</li><li>목적지까지의 경로와 추종 제어기</li></ul></article></div></div></section><section class="slide slide--question layout-question" id="slide-5" data-title="질문" aria-label="슬라이드 5 / 66: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>외부 관측 없이 걸으면 몇 걸음 만에 위치를 잃을까?</h2><div class="question-keywords" aria-label="강의 핵심어"><span>위치 추정</span><span>경로 계획</span><span>제어기</span></div></div></section><section class="slide layout-split" id="slide-6" data-title="오도메트리" aria-label="슬라이드 6 / 66: 오도메트리" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>오도메트리</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="바퀴 회전량을 이동 거리와 위치로 바꾸는 오도메트리">
   <title>오도메트리</title>
   <defs>
     <marker id="l3s6-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="fill-blue" d="M0 0L10 5L0 10Z"/></marker>
@@ -22,198 +22,127 @@
  <path class="stroke-warn thin" d="M1050 95V220"/><circle class="leader-dot" cx="1050" cy="158" r="5"/><path class="leader" d="M1050 158L1050 280"/>
  <g class="svg-small" text-anchor="middle"><text x="300" y="540">20걸음</text><text x="480" y="540">40걸음</text><text x="660" y="540">60걸음</text><text x="840" y="540">80걸음</text><text x="1050" y="540">100걸음</text></g>
 <g class="chip" transform="translate(209 39)"><rect x="0" y="0" width="120" height="44" rx="22"/><text x="60" y="22" text-anchor="middle" dominant-baseline="central">실제 경로</text></g><g class="chip" transform="translate(209 87)"><rect x="0" y="0" width="120" height="44" rx="22"/><text x="60" y="22" text-anchor="middle" dominant-baseline="central">추정 경로</text></g><g class="chip" transform="translate(394 469)"><rect x="0" y="0" width="92" height="44" rx="22"/><text x="46" y="22" text-anchor="middle" dominant-baseline="central">0.2 m</text></g><g class="chip" transform="translate(574 414)"><rect x="0" y="0" width="92" height="44" rx="22"/><text x="46" y="22" text-anchor="middle" dominant-baseline="central">0.5 m</text></g><g class="chip" transform="translate(754 349)"><rect x="0" y="0" width="92" height="44" rx="22"/><text x="46" y="22" text-anchor="middle" dominant-baseline="central">1.1 m</text></g><g class="chip" transform="translate(900 270)"><rect x="0" y="0" width="92" height="44" rx="22"/><text x="46" y="22" text-anchor="middle" dominant-baseline="central">1.8 m</text></g><g class="chip" transform="translate(1010 330)"><rect x="0" y="0" width="92" height="44" rx="22"/><text x="46" y="22" text-anchor="middle" dominant-baseline="central">2.6 m</text></g></svg></div><ul class="slide-bullets"><li>백 걸음이면 방 하나 크기만큼 벌어진다.</li></ul></div></section><section class="slide slide--question layout-question" id="slide-9" data-title="질문" aria-label="슬라이드 9 / 66: 질문" data-layout="L2"><div class="slide__inner"><p class="slide__eyebrow">QUESTION</p><div class="question-mark" aria-hidden="true">?</div><h2>카메라 한 대로 물체까지의 거리를 알 수 있을까?</h2><div class="question-keywords" aria-label="강의 핵심어"><span>위치 추정</span><span>경로 계획</span><span>제어기</span></div></div></section><section class="slide visual-full layout-diagram" id="slide-10" data-title="단안 카메라의 스케일 모호성" aria-label="슬라이드 10 / 66: 단안 카메라의 스케일 모호성" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>단안 카메라의 스케일 모호성</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1600 620" role="img" aria-label="같은 각크기의 가까운 작은 상자와 먼 큰 상자"><defs><marker id="l3s10-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker><marker id="l3s10-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#75B446"/></marker></defs><rect class="node" x="80" y="250" width="260" height="110" rx="16"/><text class="svg-title" x="210" y="305" text-anchor="middle" dominant-baseline="central">카메라</text><line class="stroke-gray" x1="340" y1="270" x2="1280" y2="80"/><line class="stroke-gray" x1="340" y1="340" x2="1280" y2="540"/><rect class="fill-soft" x="520" y="260" width="120" height="100" rx="8"/><rect class="fill-tint" x="920" y="180" width="240" height="200" rx="8"/><rect class="node" x="1300" y="180" width="200" height="260" rx="16"/><rect class="fill-blue" x="1360" y="260" width="80" height="80" rx="8"/><g class="chip" transform="translate(500 400)"><rect x="0" y="0" width="220" height="44" rx="22"/><text x="110" y="22" text-anchor="middle" dominant-baseline="central">작은 물체 · 가까이</text></g><g class="chip" transform="translate(920 420)"><rect x="0" y="0" width="220" height="44" rx="22"/><text x="110" y="22" text-anchor="middle" dominant-baseline="central">큰 물체 · 멀리</text></g><g class="chip" transform="translate(1320 460)"><rect x="0" y="0" width="160" height="44" rx="22"/><text x="80" y="22" text-anchor="middle" dominant-baseline="central">같은 영상</text></g><g class="chip" transform="translate(820 525)"><rect x="0" y="0" width="680" height="58" rx="29"/><text x="340" y="29" text-anchor="middle" dominant-baseline="central">Stereo · RGB-D · 초기화된 VIO → Metric Scale</text></g></svg></div><p class="key-line">단안 Vision-only SLAM은 절대 스케일을 관측할 수 없다.</p></div></section><section class="slide layout-compare layout-guide" id="slide-11" data-title="절대 스케일을 얻는 방법" aria-label="슬라이드 11 / 66: 절대 스케일을 얻는 방법" data-layout="L5"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>절대 스케일을 얻는 방법</h2></header><table class="concept-table"><tbody><tr><th scope="row">단안 단독</th><td>영상만으로는 배율을 알 수 없다. 지도와 궤적이 임의의 배율로 나온다.</td></tr><tr><th scope="row">스테레오</th><td>두 카메라 사이 거리인 기선이 길이 기준이 된다. 시차로 거리를 계산한다.</td></tr><tr><th scope="row">RGB-D</th><td>센서가 픽셀마다 거리를 직접 내보낸다. 길이 기준이 센서 안에 있다. <small>(Red·Green·Blue + Depth)</small></td></tr><tr><th scope="row">VIO</th><td>카메라에 IMU를 더한 시각·관성 주행계다. 가속도를 적분한 이동량이 길이 기준이 된다. <small>(Visual-Inertial Odometry)</small></td></tr></tbody></table></div></section>
-<section class="slide stereo-slide stereo-intro" id="slide-12" data-title="스테레오 · 무엇을 측정하는가" aria-label="슬라이드 12 / 66: 스테레오 · 무엇을 측정하는가" data-layout="L4">
+<section class="slide basics-slide " id="slide-12" data-title="한쪽 눈씩 감으면, 엄지가 움직여 보여요" aria-label="슬라이드 12 / 66: 한쪽 눈씩 감으면, 엄지가 움직여 보여요" data-layout="L4" >
   <div class="slide__inner">
-    <header class="slide__header"><p class="slide__eyebrow">STEREO 1 / 4 · GEOMETRY</p><h2>스테레오 · 무엇을 측정하는가</h2><p class="stereo-lead">같은 물체점의 좌우 영상 위치 차이를 측정하면, 카메라 앞쪽 깊이(뎁스)를 구할 수 있다.</p></header>
-    <div class="stereo-columns">
-      <figure class="stereo-figure">
-        <svg class="deck-svg" viewBox="0 0 820 620" role="img" aria-labelledby="stereo-geometry-title stereo-geometry-desc">
-          <title id="stereo-geometry-title">평행 스테레오의 기선 B, 깊이 Z, 초점거리 f와 픽셀 환산 fₓ</title>
-          <desc id="stereo-geometry-desc">왼쪽 광학 중심과 오른쪽 광학 중심은 수평으로 B만큼 떨어져 있고, 광축 방향 깊이 Z의 점 P를 본다. 계산용 가상 영상면은 광학 중심 앞 f 위치다. f 치수선의 라벨에서 주황색 연결선을 따라가면 fₓ = f / pₓ라는 픽셀 환산을 볼 수 있다. f는 mm, 픽셀 폭 pₓ는 mm/px, fₓ는 px다. 두 영상면에 맺힌 점을 각각 uL과 uR로 표시했다. 옆의 영상 좌표 그림은 두 영상의 원점을 맞춘 후 시차 d를 잰다. 이 공간 그림에서 두 주황 점 사이를 바로 잰 거리는 d가 아니다. X는 오른쪽, Z는 앞쪽이며 Y축은 생략했다.</desc>
-          <defs><marker id="stereo-geometry-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker><marker id="stereo-focal-conversion-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#F7931A"/></marker></defs>
-          <line class="stroke-gray dashed" x1="200" y1="450" x2="200" y2="70"/>
-          <line class="stroke-gray dashed" x1="520" y1="450" x2="520" y2="70"/>
-          <line class="stroke-blue" x1="200" y1="460" x2="400" y2="100"/>
-          <line class="stroke-blue" x1="520" y1="460" x2="400" y2="100"/>
-          <rect class="fill-gray" x="146" y="335" width="188" height="10" rx="5"/>
-          <rect class="fill-gray" x="426" y="335" width="176" height="10" rx="5"/>
-          <circle class="fill-green" cx="266.6667" cy="340" r="9"/>
-          <circle class="fill-green" cx="480" cy="340" r="9"/>
-          <circle class="fill-green" cx="400" cy="100" r="14"/>
-          <circle class="fill-blue" cx="200" cy="460" r="9"/>
-          <circle class="fill-blue" cx="520" cy="460" r="9"/>
-          <path class="leader" d="M180 340H90M180 460H90M420 100H710M540 460H710M200 478V560M520 478V560"/>
-          <line class="stroke-blue thin" x1="104" y1="344" x2="104" y2="456" marker-start="url(#stereo-geometry-arrow)" marker-end="url(#stereo-geometry-arrow)"/>
-          <line class="stroke-blue thin" x1="690" y1="104" x2="690" y2="456" marker-start="url(#stereo-geometry-arrow)" marker-end="url(#stereo-geometry-arrow)"/>
-          <line class="stroke-blue thin" x1="204" y1="550" x2="516" y2="550" marker-start="url(#stereo-geometry-arrow)" marker-end="url(#stereo-geometry-arrow)"/>
-          <path class="stroke-green thin" d="M74 378V320H128V306" marker-end="url(#stereo-focal-conversion-arrow)"/>
-          <path class="leader" d="M266.6667 352V364M480 352V364M380 306V340H420"/>
-          <g class="chip" transform="translate(422 56)"><rect width="204" height="44" rx="22"/><text x="102" y="22" text-anchor="middle" dominant-baseline="central">P · 같은 물체점</text></g>
-          <g class="chip" transform="translate(36 378)"><rect width="136" height="44" rx="22"/><text x="68" y="22" text-anchor="middle" dominant-baseline="central">f (mm)</text></g>
-          <g class="chip chip--px" transform="translate(8 244)"><rect width="240" height="60" rx="16"/><text x="120" y="30" text-anchor="middle" dominant-baseline="central">fₓ = f / pₓ (px)</text></g>
-          <g class="chip chip--px" transform="translate(228 366)"><rect width="78" height="40" rx="20"/><text x="39" y="18" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="70%">L</tspan></text></g>
-          <g class="chip chip--px" transform="translate(441 366)"><rect width="78" height="40" rx="20"/><text x="39" y="18" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="70%">R</tspan></text></g>
-          <g class="chip" transform="translate(600 236)"><rect width="180" height="44" rx="22"/><text x="90" y="22" text-anchor="middle" dominant-baseline="central">Z · 깊이 (m)</text></g>
-          <g class="chip" transform="translate(218 568)"><rect width="284" height="44" rx="22"/><text x="142" y="22" text-anchor="middle" dominant-baseline="central">B · 광학 중심 간격 (m)</text></g>
-          <g class="chip" transform="translate(90 482)"><rect width="220" height="44" rx="22"/><text x="110" y="22" text-anchor="middle" dominant-baseline="central">왼쪽 광학 중심</text></g>
-          <g class="chip" transform="translate(410 482)"><rect width="220" height="44" rx="22"/><text x="110" y="22" text-anchor="middle" dominant-baseline="central">오른쪽 광학 중심</text></g>
-          <g class="chip" transform="translate(280 260)"><rect width="212" height="44" rx="22"/><text x="106" y="22" text-anchor="middle" dominant-baseline="central">가상 영상면</text></g>
-          <line class="stroke-blue thin" x1="70" y1="180" x2="70" y2="110" marker-end="url(#stereo-geometry-arrow)"/>
-          <line class="stroke-blue thin" x1="70" y1="180" x2="140" y2="180" marker-end="url(#stereo-geometry-arrow)"/>
-          <text class="svg-label" x="70" y="72" text-anchor="middle" dominant-baseline="central">+Z</text>
-          <text class="svg-label" x="140" y="212" text-anchor="middle" dominant-baseline="central">+X</text>
+    <header class="slide__header"><p class="slide__eyebrow">STEREO 1 / 4 · 두 눈 실험</p><h2>한쪽 눈씩 감으면, 엄지가 움직여 보여요</h2><p class="basics-lead">스테레오는 두 눈이 조금 다른 곳에서 세상을 보는 원리를 이용해요.</p></header>
+
+    <div class="basics-columns">
+      <figure class="basics-panel eye-stage" data-eye-demo>
+        <p class="eye-badge" data-eye-status aria-live="polite">왼쪽 눈으로 본 모습</p>
+        <svg class="basics-svg " viewBox="0 0 700 350" role="img" aria-label="먼 창문 앞에 세운 엄지. 보는 눈을 바꾸면 배경에 대한 엄지의 위치가 달라진다."><title>먼 창문 앞에 세운 엄지. 보는 눈을 바꾸면 배경에 대한 엄지의 위치가 달라진다.</title>
+          <rect x="22" y="16" width="656" height="314" rx="20" fill="#e7edf6"/>
+          <rect x="176" y="42" width="348" height="241" rx="12" fill="#fff" stroke="#b4bfd6" stroke-width="5"/>
+          <path d="M190 247L280 155L335 210L423 129L510 229V269H190Z" fill="#d8e6dc"/>
+          <path d="M350 43V282M178 158H524" stroke="#b4bfd6" stroke-width="5"/>
+          <g data-eye-thumb transform="translate(370 0)">
+            <path d="M-35 222L-2 176Q9 156 9 128V107Q9 90 25 90Q45 90 45 113V178H97Q120 178 116 201L98 287Q93 310 74 310H-35Z" fill="#f9b65f" stroke="#874000" stroke-width="5" stroke-linejoin="round"/>
+            <rect x="-69" y="219" width="34" height="95" rx="7" fill="#ffdbac" stroke="#874000" stroke-width="5"/>
+            <path d="M69 208H112M65 238H106M61 268H99" stroke="#be7626" stroke-width="2"/>
+          </g>
         </svg>
-        <figcaption>X: 오른쪽 · Z: 앞쪽 깊이(사선 거리 아님) · 축척 생략.<br>가상 영상면은 계산용이며, 실제 센서는 렌즈 뒤에 있다.</figcaption>
+        <div class="basics-controls" role="group" aria-label="보는 눈 선택"><button type="button" data-eye="left" aria-pressed="true">왼쪽 눈으로 보기</button><button type="button" data-eye="right" aria-pressed="false">오른쪽 눈으로 보기</button></div>
+        <figcaption class="basics-caption">먼 배경을 기준으로 본 모습이에요. 차이를 크게 그렸어요.</figcaption>
       </figure>
-      <div class="stereo-copy">
-        <dl class="stereo-defs">
-          <div><dt class="stereo-px">fₓ · px</dt><dd>초점거리 f(mm)를 가로 픽셀 단위로 환산<small>pₓ = 영상면 1픽셀의 폭 (mm/px).</small></dd></div>
-        </dl>
-        <figure class="stereo-figure stereo-disparity-figure">
-          <p class="stereo-step-title">d · 같은 점의 가로 픽셀 위치 차이</p>
-          <svg class="deck-svg" viewBox="0 0 760 270" role="img" aria-labelledby="stereo-disparity-title stereo-disparity-desc">
-            <title id="stereo-disparity-title">좌우 영상의 원점을 맞춰 비교한 시차 d</title>
-            <desc id="stereo-disparity-desc">왼쪽 영상과 오른쪽 영상에서 같은 물체점 P가 각각 uL과 uR에 맺힌다. 각 영상 왼쪽 끝의 0과 공통 주점 cₓ를 수직으로 맞추고, 두 점의 가로 위치를 아래로 내려 비교한다. 아래 주황색 양방향 치수선은 uR에서 uL까지의 픽셀 간격이며 d = uL − uR이다. 카메라 사이의 실제 공간 거리가 아니라 영상 좌표의 차이를 잰다.</desc>
-            <defs><marker id="stereo-intro-disparity-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#F7931A"/></marker><marker id="stereo-pixel-axis-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker></defs>
-            <path class="stroke-gray thin dashed" d="M440 58V180"/>
-            <path class="stroke-blue thin" d="M196 74H738" marker-end="url(#stereo-pixel-axis-arrow)"/>
-            <path class="stroke-blue thin" d="M196 154H738" marker-end="url(#stereo-pixel-axis-arrow)"/>
-            <path class="stroke-blue thin" d="M196 66V82M196 146V162"/>
-            <path class="stroke-green thin dashed" d="M540 86V240M380 166V240"/>
-            <line class="stroke-green" x1="382" y1="226" x2="538" y2="226" marker-start="url(#stereo-intro-disparity-arrow)" marker-end="url(#stereo-intro-disparity-arrow)"/>
-            <circle class="fill-green" cx="540" cy="74" r="9"/>
-            <circle class="fill-green" cx="380" cy="154" r="9"/>
-            <g class="chip" transform="translate(0 52)"><rect width="158" height="44" rx="22"/><text x="79" y="22" text-anchor="middle" dominant-baseline="central">왼쪽 영상</text></g>
-            <g class="chip" transform="translate(0 132)"><rect width="158" height="44" rx="22"/><text x="79" y="22" text-anchor="middle" dominant-baseline="central">오른쪽 영상</text></g>
-            <g class="chip" transform="translate(174 10)"><rect width="44" height="44" rx="22"/><text x="22" y="22" text-anchor="middle" dominant-baseline="central">0</text></g>
-            <g class="chip" transform="translate(174 90)"><rect width="44" height="44" rx="22"/><text x="22" y="22" text-anchor="middle" dominant-baseline="central">0</text></g>
-            <g class="chip" transform="translate(400 10)"><rect width="80" height="44" rx="22"/><text x="40" y="22" text-anchor="middle" dominant-baseline="central">cₓ</text></g>
-            <g class="chip chip--px" transform="translate(501 12)"><rect width="78" height="44" rx="22"/><text x="39" y="20" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="70%">L</tspan></text></g>
-            <g class="chip chip--px" transform="translate(341 92)"><rect width="78" height="44" rx="22"/><text x="39" y="20" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="70%">R</tspan></text></g>
-            <g class="chip chip--px" transform="translate(560 204)"><rect width="152" height="44" rx="22"/><text x="76" y="22" text-anchor="middle" dominant-baseline="central">d (px)</text></g>
-          </svg>
-          <figcaption><strong class="stereo-px">d = u<sub>L</sub> − u<sub>R</sub></strong> · u<sub>L</sub>/u<sub>R</sub>: 좌/우 영상 가로 좌표(px).<br>cₓ: 주점(광축과 영상면의 교점)의 가로 좌표(px).</figcaption>
-        </figure>
-        <div class="stereo-result"><p class="stereo-eq">Z = <span class="stereo-frac"><span><span class="stereo-px">fₓ</span> B</span><span class="stereo-px">d</span></span></p><p class="stereo-note"><strong>Z</strong>: 광축 방향 뎁스(m)<br><strong>B</strong>: 두 광학 중심 간격(m)</p></div>
+      <div class="basics-copy">
+        <ol class="basics-steps"><li><strong>엄지를 눈앞에 세워요.</strong><p>팔을 조금 뻗고 먼 배경을 바라봐요.</p></li><li><strong>한쪽 눈씩 번갈아 감아요.</strong><p>머리와 손은 그대로 두세요.</p></li><li><strong>엄지가 옆으로 옮겨 보이나요?</strong><p>두 눈이 서로 다른 자리에서 보기 때문이에요.</p></li></ol>
+        <p class="basics-callout">손은 그대로인데,<br>보는 위치가 달라졌어요!</p>
       </div>
     </div>
-    <p class="stereo-note stereo-footnote">이상적인 핀홀 모델의 식이다. 여기서는 왜곡을 보정하고 두 영상을 같은 행으로 정렬(정류)한 뒤, 좌우의 fₓ와 주점 cₓ를 같게 맞춘 경우를 다룬다.</p>
+    <p class="basics-takeaway">두 눈에 보이는 작은 차이가 거리의 힌트예요.</p>
   </div>
 </section>
-<section class="slide stereo-slide stereo-derive" id="slide-13" data-title="시차가 뎁스가 되는 원리" aria-label="슬라이드 13 / 66: 시차가 뎁스가 되는 원리" data-layout="L4">
+<section class="slide basics-slide " id="slide-13" data-title="가까운 물체일수록 더 많이 달라 보여요" aria-label="슬라이드 13 / 66: 가까운 물체일수록 더 많이 달라 보여요" data-layout="L5" >
   <div class="slide__inner">
-    <header class="slide__header"><p class="slide__eyebrow">STEREO 2 / 4 · DERIVATION</p><h2>시차가 뎁스가 되는 원리</h2><p class="stereo-lead">닮은 삼각형으로 영상 좌표를 구한 뒤, 두 식을 빼서 모르는 가로 위치 X를 없앤다.</p></header>
-    <div class="stereo-columns">
-      <div class="stereo-copy">
-        <figure class="stereo-figure">
-          <svg class="deck-svg" viewBox="0 0 700 420" role="img" aria-labelledby="stereo-triangle-title stereo-triangle-desc">
-            <title id="stereo-triangle-title">한 카메라의 투영을 설명하는 두 닮은 직각삼각형</title>
-            <desc id="stereo-triangle-desc">광학 중심 O에서 점 P를 향하는 직선 위에 가상 영상점 p가 있다. 큰 삼각형의 세로 변은 Z, 가로 변은 X다. 작은 삼각형의 세로 변은 f, 가로 변은 x다. 같은 각과 직각을 공유하므로 x/f = X/Z이다. x와 f는 mm로, X와 Z는 m로 짝지어 같은 단위를 쓴다.</desc>
-            <defs><marker id="stereo-triangle-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#1D2475"/></marker></defs>
-            <path d="M150 350V70H500Z" fill="#EEF1F6"/>
-            <path d="M150 350V250H275Z" fill="#FFE6C9"/>
-            <path class="stroke-gray" d="M150 350V70H500"/>
-            <path class="stroke-blue" d="M150 350L500 70"/>
-            <line class="stroke-green" x1="150" y1="250" x2="275" y2="250"/>
-            <path class="stroke-gray thin" d="M150 90H170V70M150 270H170V250"/>
-            <circle class="fill-blue" cx="150" cy="350" r="8"/>
-            <circle class="fill-green" cx="275" cy="250" r="8"/>
-            <circle class="fill-blue" cx="500" cy="70" r="10"/>
-            <g class="chip" transform="translate(250 14)"><rect width="122" height="42" rx="21"/><text x="61" y="21" text-anchor="middle" dominant-baseline="central">X (m)</text></g>
-            <path class="leader" d="M514 70H640M166 350H640M134 250H66M134 350H66M288 250H320"/>
-            <line class="stroke-blue thin" x1="632" y1="74" x2="632" y2="346" marker-start="url(#stereo-triangle-arrow)" marker-end="url(#stereo-triangle-arrow)"/>
-            <line class="stroke-blue thin" x1="76" y1="254" x2="76" y2="346" marker-start="url(#stereo-triangle-arrow)" marker-end="url(#stereo-triangle-arrow)"/>
-            <g class="chip" transform="translate(576 138)"><rect width="112" height="42" rx="21"/><text x="56" y="21" text-anchor="middle" dominant-baseline="central">Z (m)</text></g>
-            <g class="chip" transform="translate(20 282)"><rect width="112" height="42" rx="21"/><text x="56" y="21" text-anchor="middle" dominant-baseline="central">f (mm)</text></g>
-            <g class="chip" transform="translate(156 194)"><rect width="134" height="42" rx="21"/><text x="67" y="21" text-anchor="middle" dominant-baseline="central">x (mm)</text></g>
-            <g class="chip" transform="translate(70 366)"><rect width="224" height="42" rx="21"/><text x="112" y="21" text-anchor="middle" dominant-baseline="central">O · 광학 중심</text></g>
-            <g class="chip" transform="translate(320 230)"><rect width="276" height="42" rx="21"/><text x="138" y="21" text-anchor="middle" dominant-baseline="central">p · 가상 영상의 점</text></g>
-            <g class="chip" transform="translate(510 8)"><rect width="160" height="42" rx="21"/><text x="80" y="21" text-anchor="middle" dominant-baseline="central">P (X, Z)</text></g>
-          </svg>
-          <figcaption class="stereo-symbol-note">X: 물체 가로 위치(m) · x: 주점 기준 영상 가로 위치(mm).<br>Z: 뎁스(m) · f: 초점거리(mm) · 두 삼각형은 닮은꼴.</figcaption>
-        </figure>
-        <p class="stereo-eq">x / f = X / Z</p>
-        <p class="stereo-symbol-note">u: 영상점의 가로 좌표(px) · cₓ: 주점의 가로 좌표(px).<br>pₓ: 픽셀 폭(mm/px) · fₓ: 픽셀 단위 초점거리(px).<br>u − cₓ = x / pₓ, fₓ = f / pₓ ⇒ <strong>u − cₓ = fₓ X / Z</strong>.</p>
-      </div>
-      <ol class="stereo-steps">
-        <li><p class="stereo-step-title">01 · 같은 물체점 P를 서로 다른 원점에서 본다</p><p class="stereo-note">왼쪽 중심 (0, 0), 오른쪽 중심 (B, 0) · B: 기선(m).<br>P(X, Z)의 오른쪽 카메라 기준 가로 위치는 <strong>X − B</strong>.</p></li>
-        <li><p class="stereo-step-title">02 · 왼쪽과 오른쪽에 투영식을 각각 쓴다</p><p class="stereo-eq">u<sub>L</sub> − cₓ = fₓ X / Z <span class="stereo-eq-meaning">L: 왼쪽 영상</span></p><p class="stereo-eq">u<sub>R</sub> − cₓ = fₓ (X − B) / Z <span class="stereo-eq-meaning">R: 오른쪽 영상</span></p></li>
-        <li><p class="stereo-step-title">03 · 시차 d(px): 빼면 X와 cₓ가 사라진다</p><p class="stereo-eq">d = u<sub>L</sub> − u<sub>R</sub><br>= fₓ [X − (X − B)] / Z<br>= fₓ B / Z</p></li>
-        <li class="stereo-result"><p class="stereo-eq">d Z = fₓ B &nbsp; ⇒ &nbsp; Z = <span class="stereo-frac"><span>fₓ B</span><span>d</span></span></p><p class="stereo-symbol-note">⇒: 식을 정리하면<br>fₓB = fₓ × B</p></li>
-      </ol>
+    <header class="slide__header"><p class="slide__eyebrow">STEREO 2 / 4 · 가까이와 멀리</p><h2>가까운 물체일수록 더 많이 달라 보여요</h2><p class="basics-lead">사진 크기와 왼쪽 끝을 맞춘 뒤, 같은 공의 가로 위치를 비교해요.</p></header>
+
+    <div class="basics-compare">
+      <figure class="basics-panel basics-panel--warm"><h3>가까운 공</h3><svg class="basics-svg " viewBox="0 0 660 325" role="img" aria-label="가까운 공은 왼쪽 사진과 오른쪽 사진의 위치 차이가 크다."><title>가까운 공은 왼쪽 사진과 오른쪽 사진의 위치 차이가 크다.</title>
+      <rect x="145" y="42" width="480" height="82" rx="12" fill="#fff"/>
+      <rect x="145" y="172" width="480" height="82" rx="12" fill="#fff"/>
+      <path d="M385 42V254" stroke="#cbd2e2" stroke-width="2" stroke-dasharray="6 6"/>
+      <text x="10" y="90">왼쪽 사진</text><text x="10" y="220">오른쪽 사진</text>
+      <path d="M460 84V298M310 214V298" fill="none" stroke="#b66200" stroke-width="2" stroke-dasharray="6 5"/>
+      <circle cx="460" cy="84" r="22" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+      <circle cx="310" cy="214" r="22" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+      <path d="M310 284H460M310 275V293M460 275V293" fill="none" stroke="#874000" stroke-width="5"/>
+    </svg><figcaption class="basics-callout">위치 차이가 커요.</figcaption></figure>
+      <figure class="basics-panel"><h3>멀리 있는 공</h3><svg class="basics-svg " viewBox="0 0 660 325" role="img" aria-label="먼 공은 왼쪽 사진과 오른쪽 사진의 위치 차이가 작다."><title>먼 공은 왼쪽 사진과 오른쪽 사진의 위치 차이가 작다.</title>
+      <rect x="145" y="42" width="480" height="82" rx="12" fill="#fff"/>
+      <rect x="145" y="172" width="480" height="82" rx="12" fill="#fff"/>
+      <path d="M385 42V254" stroke="#cbd2e2" stroke-width="2" stroke-dasharray="6 6"/>
+      <text x="10" y="90">왼쪽 사진</text><text x="10" y="220">오른쪽 사진</text>
+      <path d="M403 84V298M367 214V298" fill="none" stroke="#b66200" stroke-width="2" stroke-dasharray="6 5"/>
+      <circle cx="403" cy="84" r="13" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+      <circle cx="367" cy="214" r="13" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+      <path d="M367 284H403M367 275V293M403 275V293" fill="none" stroke="#874000" stroke-width="5"/>
+    </svg><figcaption class="basics-callout">위치 차이가 작아요.</figcaption></figure>
     </div>
-    <p class="stereo-note stereo-footnote">c<sub>xL</sub>, c<sub>xR</sub>: 좌·우 주점의 가로 좌표(px). 서로 다르면 d = (u<sub>L</sub> − c<sub>xL</sub>) − (u<sub>R</sub> − c<sub>xR</sub>)로 보정한다. 같은 행 정렬만으로 주점 일치가 보장되지는 않는다.</p>
+    <p class="basics-takeaway">같은 물체가 두 사진에서 어긋난 정도를 ‘시차’라고 해요.</p>
   </div>
 </section>
-<section class="slide stereo-slide stereo-example" id="slide-14" data-title="픽셀 차이에서 미터까지" aria-label="슬라이드 14 / 66: 픽셀 차이에서 미터까지" data-layout="L5" data-stereo-demo>
+<section class="slide basics-slide " id="slide-14" data-title="로봇도 두 카메라로 거리를 알아내요" aria-label="슬라이드 14 / 66: 로봇도 두 카메라로 거리를 알아내요" data-layout="L4" data-simple-stereo>
   <div class="slide__inner">
-    <header class="slide__header"><p class="slide__eyebrow">STEREO 3 / 4 · TRY IT</p><h2>픽셀 차이에서 미터까지</h2><p class="stereo-lead">교육용 값: 초점거리 fₓ = 600 px · 기선 B = 0.12 m. 픽셀 차이를 뎁스로 바꾼다.</p></header>
-    <div class="stereo-columns">
-      <div class="stereo-copy">
-        <ol class="stereo-steps">
-          <li><p class="stereo-step-title">01 · 같은 물체점 P의 가로 좌표를 읽는다</p><p class="stereo-eq">u<sub>L</sub> = <span data-stereo-value="left">670.0</span> px <span class="stereo-eq-meaning">왼쪽 가로 좌표</span><br>u<sub>R</sub> = <span data-stereo-value="right">634.0</span> px <span class="stereo-eq-meaning">오른쪽 가로 좌표</span></p></li>
-          <li><p class="stereo-step-title">02 · 시차 d(px) = 왼쪽 좌표 − 오른쪽 좌표</p><p class="stereo-eq">d = <span data-stereo-value="left">670.0</span> − <span data-stereo-value="right">634.0</span><br>&nbsp; = <span class="stereo-px"><span data-stereo-value="disparity">36.0</span> px</span></p></li>
-          <li><p class="stereo-step-title">03 · 초점거리 fₓ와 기선 B를 대입한다</p><p class="stereo-eq">Z = (600 × 0.12) / <span data-stereo-value="disparity">36.0</span></p></li>
-        </ol>
-        <div class="stereo-result"><p class="stereo-eq">Z ≈ <span data-stereo-value="recovered">2.00</span> m</p><p class="stereo-symbol-note">Z: 광축 방향 뎁스 · ≈: 반올림한 근삿값.<br>단위 확인: px × m / px = m</p></div>
-        <p class="stereo-note">같은 카메라에서 <strong>뎁스 2배 → 시차 d는 ½배</strong>.</p>
-      </div>
-      <div class="stereo-lab">
-        <figure class="stereo-figure">
-          <svg class="deck-svg" viewBox="0 0 780 460" role="img" aria-labelledby="stereo-demo-title stereo-demo-desc">
-            <title id="stereo-demo-title">좌우 영상에서 같은 점의 가로 좌표와 그 차이</title>
-            <desc id="stereo-demo-desc" data-stereo-description>같은 점의 왼쪽 영상 좌표 670 픽셀, 오른쪽 영상 좌표 634 픽셀. 시차 36 픽셀로 계산한 깊이는 2 미터다.</desc>
-            <defs><marker id="stereo-disparity-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 L2.5,5 Z" fill="#874000"/></marker></defs>
-            <rect x="40" y="28" width="700" height="144" rx="16" fill="#EEF1F6"/>
-            <rect x="40" y="202" width="700" height="124" rx="16" fill="#FFF1E1"/>
-            <path class="stroke-gray" d="M80 114H680M80 288H680M80 104V124M280 104V124M480 104V124M680 104V124M80 278V298M280 278V298M480 278V298M680 278V298"/>
-            <line class="stroke-blue thin dashed" data-stereo-guide="left" x1="430" y1="128" x2="430" y2="350"/>
-            <line class="stroke-green thin dashed" data-stereo-guide="right" x1="250" y1="302" x2="250" y2="350"/>
-            <line data-stereo-disparity x1="250" y1="350" x2="430" y2="350" stroke="#874000" stroke-width="2" marker-start="url(#stereo-disparity-arrow)" marker-end="url(#stereo-disparity-arrow)"/>
-            <circle data-stereo-left class="fill-blue" cx="430" cy="114" r="11"/>
-            <circle data-stereo-right cx="250" cy="288" r="11" fill="#fff" stroke="#874000" stroke-width="4"/>
-            <g class="chip" transform="translate(60 42)"><rect width="172" height="42" rx="21"/><text x="86" y="21" text-anchor="middle" dominant-baseline="central">왼쪽 영상 · P</text></g>
-            <g class="chip chip--px" transform="translate(60 216)"><rect width="184" height="42" rx="21"/><text x="92" y="21" text-anchor="middle" dominant-baseline="central">오른쪽 영상 · P</text></g>
-            <g class="chip" transform="translate(442 42)"><rect width="268" height="42" rx="21"/><text x="134" y="21" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="16">L</tspan> = <tspan data-stereo-value="left">670.0</tspan> px</text></g>
-            <g class="chip chip--px" transform="translate(442 216)"><rect width="268" height="42" rx="21"/><text x="134" y="21" text-anchor="middle" dominant-baseline="central">u<tspan baseline-shift="sub" font-size="16">R</tspan> = <tspan data-stereo-value="right">634.0</tspan> px</text></g>
-            <path class="stroke-gray" d="M80 388H680M80 384V392M280 384V392M480 384V392M680 384V392"/>
-            <text class="svg-small" x="80" y="432" text-anchor="middle" dominant-baseline="central">600</text><text class="svg-small" x="280" y="432" text-anchor="middle" dominant-baseline="central">640</text><text class="svg-small" x="480" y="432" text-anchor="middle" dominant-baseline="central">680</text><text class="svg-small" x="680" y="432" text-anchor="middle" dominant-baseline="central">720</text>
-            <g class="chip chip--px" data-stereo-dimension-label transform="translate(20 330)"><rect width="184" height="42" rx="21"/><text x="92" y="21" text-anchor="middle" dominant-baseline="central">d = <tspan data-stereo-value="disparity">36.0</tspan> px</text></g>
-          </svg>
-          <figcaption class="stereo-symbol-note">가로축 u: 영상 가로 좌표(px) · 600~720 px 구간 확대.<br>cₓ: 주점의 가로 좌표 = 640 px.<br>X: 왼쪽 카메라 기준 물체의 가로 위치 = 0.10 m.</figcaption>
-        </figure>
-        <div class="stereo-control">
-          <label for="stereo-depth-range">물체의 깊이 Z <output for="stereo-depth-range"><span data-stereo-value="depth">2.00</span> m</output></label>
-          <input id="stereo-depth-range" data-stereo-range type="range" min="1" max="4" step="0.05" value="2" aria-describedby="stereo-demo-help">
-          <div class="stereo-presets" role="group" aria-label="깊이 예제"><button type="button" data-stereo-preset="1" aria-pressed="false">1 m</button><button type="button" data-stereo-preset="2" aria-pressed="true">2 m</button><button type="button" data-stereo-preset="4" aria-pressed="false">4 m</button></div>
-        </div>
+    <header class="slide__header"><p class="slide__eyebrow">STEREO 3 / 4 · 직접 움직여 보기</p><h2>로봇도 두 카메라로 거리를 알아내요</h2><p class="basics-lead">공을 가까이, 멀리 옮겨 보세요. 두 사진에서 공의 위치 차이가 바뀌어요.</p></header>
+
+    <div class="basics-columns">
+      <figure class="basics-panel">
+        <svg class="basics-svg " viewBox="0 0 640 362" role="img" aria-label="왼쪽 사진과 오른쪽 사진 속 공의 위치 차이. 공이 멀어지면 두 위치가 가까워진다."><title>왼쪽 사진과 오른쪽 사진 속 공의 위치 차이. 공이 멀어지면 두 위치가 가까워진다.</title>
+          <rect x="144" y="30" width="470" height="100" rx="12" fill="#fff"/>
+          <rect x="144" y="154" width="470" height="100" rx="12" fill="#fff"/>
+          <path d="M370 30V254" stroke="#cbd2e2" stroke-width="2" stroke-dasharray="6 6"/>
+          <text x="10" y="88">왼쪽 사진</text><text x="10" y="212">오른쪽 사진</text>
+          <path data-left-guide d="M424 86V289" fill="none" stroke="#b66200" stroke-width="2" stroke-dasharray="5 5"/>
+          <path data-right-guide d="M316 210V289" fill="none" stroke="#b66200" stroke-width="2" stroke-dasharray="5 5"/>
+          <circle data-ball-left cx="424" cy="80" r="20" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+          <circle data-ball-right cx="316" cy="204" r="20" fill="#f7931e" stroke="#874000" stroke-width="2"/>
+          <line data-disparity-line x1="316" y1="283" x2="424" y2="283" stroke="#874000" stroke-width="7" stroke-linecap="round"/>
+          <text x="370" y="341" text-anchor="middle" class="diagram-small">사진 속 위치 차이</text>
+        </svg>
+        <div class="stereo-simple-control"><label for="simple-stereo-distance">공을 옮겨 보세요 <span><output for="simple-stereo-distance" data-distance-output>2.0</output> m</span></label><input id="simple-stereo-distance" type="range" min="1" max="4" step="0.1" value="2" aria-label="공까지 거리, 미터"><div class="basics-controls" role="group" aria-label="공 거리 선택"><button type="button" data-distance="1" aria-pressed="false">가까이 · 1 m</button><button type="button" data-distance="2" aria-pressed="true">중간 · 2 m</button><button type="button" data-distance="4" aria-pressed="false">멀리 · 4 m</button></div></div>
+        <figcaption class="basics-caption">카메라 간격과 설정을 고정한 교육용 그림이에요.</figcaption>
+      </figure>
+      <div class="basics-copy">
+        <ol class="basics-steps"><li><strong>두 카메라로 동시에 찰칵!</strong><p>우리의 왼쪽 눈, 오른쪽 눈과 같아요.</p></li><li><strong>두 사진에서 같은 공을 찾아요.</strong><p>공이 각각 어디에 찍혔는지 비교해요.</p></li><li><strong>위치 차이를 거리로 바꿔요.</strong><p>카메라 사이 간격과 설정을 알면 계산할 수 있어요.</p></li></ol>
+        <div class="stereo-readout"><div><span>사진 속 차이</span><strong><span data-disparity-output>36</span> <small>픽셀</small></strong></div><div><span>알아낸 거리</span><strong><span data-distance-output>2.0</span> <small>m</small></strong></div></div>
+        <p class="basics-caption">픽셀은 사진을 이루는 아주 작은 한 칸이에요.</p>
       </div>
     </div>
-    <p class="stereo-note stereo-footnote" id="stereo-demo-help">실제 센서는 영상에서 d를 재고 Z를 계산한다. 여기서는 물체의 깊이를 바꿔 영상 위치가 어떻게 움직이는지 관찰한다. 예제 값은 실기기 보정값과 다르다.</p>
+    <p class="basics-takeaway">공이 멀어질수록 시차는 작아져요.</p>
   </div>
 </section>
-<section class="slide stereo-slide stereo-error" id="slide-15" data-title="멀수록 시차 오차가 커진다" aria-label="슬라이드 15 / 66: 멀수록 시차 오차가 커진다" data-layout="L5">
+<section class="slide basics-slide " id="slide-15" data-title="두 사진으로 ‘무엇이 가까운지’ 알아요" aria-label="슬라이드 15 / 66: 두 사진으로 ‘무엇이 가까운지’ 알아요" data-layout="L3" >
   <div class="slide__inner">
-    <header class="slide__header"><p class="slide__eyebrow">STEREO 4 / 4 · ERROR</p><h2>멀수록 시차 오차가 커진다</h2><p class="stereo-lead">정확히는, 같은 시차 오차가 더 큰 뎁스 오차로 이어진다. 시차 오차 자체가 커진다는 뜻은 아니다.</p></header>
-    <div class="stereo-columns">
-      <div class="stereo-copy">
-        <ol class="stereo-steps">
-          <li><p class="stereo-step-title">01 · 시차 d(px)에 대한 뎁스 Z(m)의 변화율</p><p class="stereo-eq">Z = fₓB / d &nbsp; ⇒ &nbsp; <span class="stereo-frac"><span>∂Z</span><span>∂d</span></span> = − <span class="stereo-frac"><span>fₓB</span><span>d²</span></span></p><p class="stereo-symbol-note">∂Z/∂d(편미분): fₓ·B를 고정한 뎁스 변화율(m/px).<br>− 부호: 시차를 크게 측정하면 뎁스는 작게 계산된다.</p></li>
-          <li><p class="stereo-step-title">02 · 작은 오차는 ‘변화율 × 입력 오차’</p><p class="stereo-eq">δZ ≈ − <span class="stereo-frac"><span>fₓB</span><span>d²</span></span> δd</p><p class="stereo-symbol-note">δd(px) = 측정 시차 − 참 시차 · δZ(m) = 계산 뎁스 − 참 뎁스.<br>δ(델타): 참값에 대한 오차 · ≈: 근사적으로 같음(1차 근사).</p></li>
-          <li><p class="stereo-step-title">03 · d = fₓB/Z를 넣고, 오차의 크기를 본다</p><div class="stereo-result"><p class="stereo-eq">|δZ| ≈ <span class="stereo-frac"><span>Z²</span><span>fₓB</span></span> |δd|</p></div><p class="stereo-symbol-note">| |: 절댓값(오차 크기) · d², Z²: 각각 시차·뎁스의 제곱.</p></li>
-        </ol>
-      </div>
-      <div class="stereo-copy">
-        <table class="stereo-error-table">
-          <caption>초점거리 fₓ = 600 px · 기선 B = 0.12 m<br>시차 오차 크기 |δd| = 0.5 px 고정</caption>
-          <thead><tr><th scope="col">뎁스 Z</th><th scope="col">시차 d</th><th scope="col">근사 뎁스 오차 |δZ|</th></tr></thead>
-          <tbody><tr><th scope="row">1 m</th><td>72 px</td><td>0.69 cm</td></tr><tr><th scope="row">2 m</th><td>36 px</td><td>2.78 cm</td></tr><tr><th scope="row">4 m</th><td>18 px</td><td>11.11 cm</td></tr></tbody>
-        </table>
-        <p class="stereo-takeaway">뎁스 2배 → 뎁스 오차 약 4배</p>
-        <div class="stereo-result"><p class="stereo-step-title">2 m에서 검산 · fₓB = 600 × 0.12 = 72 px·m</p><p class="stereo-symbol-note">참 시차 36 px를 36.5 px로 측정하면<br>계산 뎁스 = 72 / 36.5 ≈ <strong>1.973 m</strong>.<br>오차 δZ ≈ −2.74 cm · 1차 근사 −2.78 cm.</p></div>
-      </div>
+    <header class="slide__header"><p class="slide__eyebrow">STEREO 4 / 4 · 한눈에 정리</p><h2>두 사진으로 ‘무엇이 가까운지’ 알아요</h2><p class="basics-lead">같은 방법을 사진 속 여러 곳에 쓰면, 거리 지도를 만들 수 있어요.</p></header>
+
+    <div class="basics-panel basics-flow" tabindex="0" data-horizontal-scroll aria-label="스테레오 처리 순서 그림. 좁은 화면에서는 좌우로 스크롤할 수 있습니다.">
+      <svg class="basics-svg " viewBox="0 0 1400 415" role="img" aria-label="두 사진을 찍고 같은 곳을 찾은 뒤 거리 지도를 만든다. 예시에서 가까운 상자는 주황색, 먼 나무는 파란색이다."><title>두 사진을 찍고 같은 곳을 찾은 뒤 거리 지도를 만든다. 예시에서 가까운 상자는 주황색, 먼 나무는 파란색이다.</title>
+        <text x="215" y="52" text-anchor="middle">1. 두 장 찍기</text>
+        <rect x="35" y="86" width="340" height="190" rx="18" fill="#dce4f2"/>
+        <rect x="74" y="129" width="340" height="190" rx="18" fill="#fff" stroke="#c1cbe0" stroke-width="2"/>
+        <path d="M325 170L286 238H365Z" fill="#7d9e82"/><path d="M325 237V270" stroke="#738375" stroke-width="8"/>
+        <rect x="127" y="229" width="83" height="63" rx="7" fill="#f7af59"/>
+        <text x="210" y="375" text-anchor="middle" class="diagram-small">같은 장면을 조금 다른 자리에서</text>
+        <path d="M442 208H488M476 194L490 208L476 222" fill="none" stroke="#1d2475" stroke-width="5"/>
+        <text x="700" y="52" text-anchor="middle">2. 같은 곳 찾기</text>
+        <rect x="525" y="107" width="350" height="90" rx="16" fill="#fff"/>
+        <rect x="525" y="233" width="350" height="90" rx="16" fill="#fff"/>
+        <circle cx="657" cy="151" r="18" fill="#f7931e"/><circle cx="592" cy="277" r="18" fill="#f7931e"/>
+        <circle cx="803" cy="151" r="12" fill="#1d2475"/><circle cx="782" cy="277" r="12" fill="#1d2475"/>
+        <path d="M657 174L592 254" fill="none" stroke="#b66200" stroke-width="5"/>
+        <path d="M803 170L782 258" fill="none" stroke="#1d2475" stroke-width="5"/>
+        <text x="700" y="375" text-anchor="middle" class="diagram-small">상자와 나무의 같은 점을 연결</text>
+        <path d="M902 208H948M936 194L950 208L936 222" fill="none" stroke="#1d2475" stroke-width="5"/>
+        <text x="1165" y="52" text-anchor="middle">3. 거리 알아내기</text>
+        <rect x="995" y="95" width="350" height="240" rx="18" fill="#fff"/>
+        <path d="M1254 132L1214 205H1294Z" fill="#1d2475"/><path d="M1254 205V235" stroke="#1d2475" stroke-width="9"/>
+        <rect x="1040" y="226" width="95" height="78" rx="7" fill="#f7931e"/>
+        <text x="1088" y="204" text-anchor="middle" class="diagram-small">가까움</text>
+        <text x="1175" y="152" text-anchor="middle" class="diagram-small">멂</text>
+        <text x="1170" y="375" text-anchor="middle" class="diagram-small">거리를 색으로 칠한 지도</text>
+      </svg>
+      <div class="basics-flow-notes"><p class="basics-callout">사진 속 위치 차이 → 물체까지 거리</p><p class="basics-caption">이 그림에서는 주황색이 가까움,<br>파란색이 멂을 뜻해요.</p></div>
     </div>
-    <p class="stereo-note stereo-footnote">|δd| ≪ d: 시차 오차의 크기가 시차보다 훨씬 작다는 뜻. fₓ·B 고정, 올바른 대응점이 전제다. 큰 오매칭이나 보정값의 오차는 이 식의 범위 밖이다.</p>
+    <p class="basics-takeaway">흰 벽처럼 표시가 없거나 너무 멀면, 거리를 알아내기 어려워요.</p>
   </div>
 </section>
 
@@ -314,60 +243,51 @@
  <path class="stroke-green" d="M210 445H360V350H610V190H940"/>
  <circle class="fill-green" cx="210" cy="445" r="22"/><circle class="leader-dot" cx="210" cy="445" r="5"/><path class="leader" d="M210 445L165 485"/><text class="svg-title" x="70" y="535">시작</text>
  <circle class="fill-warn" cx="940" cy="190" r="22"/><circle class="leader-dot" cx="940" cy="190" r="5"/><path class="leader" d="M940 190L1000 130"/><text class="svg-title" x="1030" y="95">목표</text>
-</svg></div><ul class="slide-bullets"><li>전역 플래너는 지도 전체를 탐색한다.</li><li>A*는 지금까지 든 비용과 남은 비용 추정을 더해 비교한다.</li><li>최소 비용 경로를 선택한다.</li></ul></div></section><section class="slide layout-split" id="slide-46" data-title="A*라는 이름과 평가 함수" aria-label="슬라이드 46 / 66: A*라는 이름과 평가 함수" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>A*라는 이름과 평가 함수</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 620" role="img" aria-label="격자 위에서 시작점까지의 비용 g와 목표까지 남은 추정 비용 h를 더한 f로 다음 칸을 고르는 A 스타 탐색">
-  <title>A* 비용 함수</title>
-  <rect class="fill-tint" x="40" y="80" width="780" height="520" rx="20"/>
-  <g class="stroke-gray thin" fill="none"><path d="M170 80V600M300 80V600M430 80V600M560 80V600M690 80V600M40 210H820M40 340H820M40 470H820"/></g>
-  <rect class="fill-blue" x="440" y="222" width="106" height="106" rx="10"/>
-  <rect class="fill-blue" x="440" y="352" width="106" height="106" rx="10"/>
-  <rect class="fill-soft" x="180" y="352" width="106" height="106" rx="10"/>
-  <rect class="fill-soft" x="180" y="222" width="106" height="106" rx="10"/>
-  <rect class="node-green" x="310" y="352" width="106" height="106" rx="10"/>
-  <rect class="fill-white" x="310" y="352" width="106" height="106" rx="10" fill="none" stroke="#F7931E" stroke-width="4"/>
-  <text x="363" y="395" text-anchor="middle" font-size="26" font-weight="700" fill="#1D2475">g 4</text>
-  <text x="363" y="432" text-anchor="middle" font-size="26" font-weight="700" fill="#874000">h 5</text>
-  <circle class="fill-green" cx="105" cy="535" r="24"/>
-  <text class="svg-small" x="105" y="585" text-anchor="middle">시작</text>
-  <circle class="fill-warn" cx="755" cy="145" r="24"/>
-  <text class="svg-small" x="755" y="195" text-anchor="middle">목표</text>
-  <circle class="leader-dot" cx="416" cy="440" r="5"/><path class="leader" d="M416 440L486 496H872"/>
-  <rect class="fill-white" x="880" y="392" width="300" height="208" rx="16"/>
-  <text x="906" y="444" font-size="26" font-weight="700" fill="#1D2475">f = g + h</text>
-  <text class="svg-small" x="906" y="484">g 시작점에서 여기까지 쓴 비용</text>
-  <text class="svg-small" x="906" y="520">h 목표까지 남은 비용 추정</text>
-  <text x="906" y="570" font-size="30" font-weight="700" fill="#1D2475">f = 9</text>
-  <text class="svg-small" x="60" y="60">파란 칸은 장애물, 연한 칸은 이미 펼친 칸이다</text>
-<g class="chip" transform="translate(800 96)"><rect x="0" y="0" width="380" height="44" rx="22"/><text x="190" y="22" text-anchor="middle" dominant-baseline="central">1968년 Hart · Nilsson · Raphael</text></g>
-</svg></div><ul class="slide-bullets"><li>평가 함수 f로 다음 칸을 고르는 탐색을 A라 부른다.</li><li>h가 실제 비용을 넘지 않으면 최소 비용 경로가 보장된다.</li><li>그 보장이 붙은 A를 A*(에이 스타)로 쓴다.</li><li>h = 0이면 주변을 고르게 펼치는 다익스트라가 된다.</li></ul></div></section><section class="slide layout-split layout-split-reverse" id="slide-47" data-title="총 비용을 더하는 방법" aria-label="슬라이드 47 / 66: 총 비용을 더하는 방법" data-layout="L4"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>총 비용을 더하는 방법</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 620" role="img" aria-label="지나온 칸의 비용을 더한 g와 목표까지 남은 칸 수 h를 더해 세 후보의 f를 비교하는 격자">
-  <title>g와 h를 더해 f를 비교한다</title>
-  <rect class="fill-tint" x="40" y="90" width="770" height="440" rx="18"/>
-  <g class="stroke-gray thin" fill="none"><path d="M150 90V530M260 90V530M370 90V530M480 90V530M590 90V530M700 90V530M40 200H810M40 310H810M40 420H810"/></g>
-  <rect class="fill-blue" x="260" y="200" width="110" height="110" rx="10"/>
-  <rect class="fill-blue" x="370" y="200" width="110" height="110" rx="10"/>
-  <rect class="fill-soft" x="370" y="310" width="110" height="110" rx="10"/>
-  <path class="stroke-blue" d="M95 475H425"/>
-  <circle class="fill-green" cx="95" cy="475" r="22"/>
-  <text class="svg-small" x="95" y="562" text-anchor="middle">시작</text>
-  <text class="svg-small" x="205" y="512" text-anchor="middle">g 1</text>
-  <text class="svg-small" x="315" y="512" text-anchor="middle">g 2</text>
-  <rect x="370" y="420" width="110" height="110" rx="10" fill="none" stroke="#3F3D42" stroke-width="3"/>
-  <text x="425" y="468" text-anchor="middle" font-size="22" font-weight="700" fill="#1D2475">현재</text>
-  <text class="svg-small" x="425" y="500" text-anchor="middle">g 3</text>
+</svg></div><ul class="slide-bullets"><li>전역 플래너는 지도 전체를 탐색한다.</li><li>A*는 지금까지 든 비용과 남은 비용 추정을 더해 비교한다.</li><li>최소 비용 경로를 선택한다.</li></ul></div></section><section class="slide basics-slide " id="slide-46" data-title="A*는 벽을 피해 짧은 길을 찾아요" aria-label="슬라이드 46 / 66: A*는 벽을 피해 짧은 길을 찾아요" data-layout="L4" >
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">A* 1 / 3 · 학교까지 가는 길</p><h2>A*는 벽을 피해 짧은 길을 찾아요</h2><p class="basics-lead">A*는 ‘에이 스타’라고 읽어요. 로봇이 갈 길을 지도에서 먼저 찾아보는 방법이에요.</p></header>
 
-  <text class="svg-small" x="535" y="462" text-anchor="middle">g 4 · h 4</text>
-  <text x="535" y="500" text-anchor="middle" font-size="26" font-weight="700" fill="#1D2475">f 8</text>
+    <div class="basics-columns">
+      <figure class="basics-panel astar-map-panel"><svg class="basics-svg astar-map" viewBox="0 0 625 430" role="img" aria-label="벽을 피해 출발점에서 학교로 가는 격자 지도. 상하좌우 한 칸씩 이동한다."><title>벽을 피해 출발점에서 학교로 가는 격자 지도. 상하좌우 한 칸씩 이동한다.</title><g class="astar-cell" data-cell="0,0"><title>1열 1행: 빈 칸</title><rect x="25" y="18" width="72" height="72" rx="11"/><text x="61" y="54"></text></g><g class="astar-cell" data-cell="1,0"><title>2열 1행: 빈 칸</title><rect x="107" y="18" width="72" height="72" rx="11"/><text x="143" y="54"></text></g><g class="astar-cell" data-cell="2,0"><title>3열 1행: 빈 칸</title><rect x="189" y="18" width="72" height="72" rx="11"/><text x="225" y="54"></text></g><g class="astar-cell" data-cell="3,0"><title>4열 1행: 빈 칸</title><rect x="271" y="18" width="72" height="72" rx="11"/><text x="307" y="54"></text></g><g class="astar-cell" data-cell="4,0"><title>5열 1행: 빈 칸</title><rect x="353" y="18" width="72" height="72" rx="11"/><text x="389" y="54"></text></g><g class="astar-cell" data-cell="5,0"><title>6열 1행: 빈 칸</title><rect x="435" y="18" width="72" height="72" rx="11"/><text x="471" y="54"></text></g><g class="astar-cell" data-cell="6,0"><title>7열 1행: 빈 칸</title><rect x="517" y="18" width="72" height="72" rx="11"/><text x="553" y="54"></text></g><g class="astar-cell" data-cell="0,1"><title>1열 2행: 빈 칸</title><rect x="25" y="100" width="72" height="72" rx="11"/><text x="61" y="136"></text></g><g class="astar-cell" data-cell="1,1"><title>2열 2행: 빈 칸</title><rect x="107" y="100" width="72" height="72" rx="11"/><text x="143" y="136"></text></g><g class="astar-cell is-wall" data-cell="2,1"><title>3열 2행: 벽</title><rect x="189" y="100" width="72" height="72" rx="11"/><text x="225" y="136">벽</text></g><g class="astar-cell is-wall" data-cell="3,1"><title>4열 2행: 벽</title><rect x="271" y="100" width="72" height="72" rx="11"/><text x="307" y="136">벽</text></g><g class="astar-cell is-wall" data-cell="4,1"><title>5열 2행: 벽</title><rect x="353" y="100" width="72" height="72" rx="11"/><text x="389" y="136">벽</text></g><g class="astar-cell" data-cell="5,1"><title>6열 2행: 빈 칸</title><rect x="435" y="100" width="72" height="72" rx="11"/><text x="471" y="136"></text></g><g class="astar-cell is-goal is-path" data-cell="6,1"><title>7열 2행: 학교</title><rect x="517" y="100" width="72" height="72" rx="11"/><text x="553" y="136">학교</text></g><g class="astar-cell" data-cell="0,2"><title>1열 3행: 빈 칸</title><rect x="25" y="182" width="72" height="72" rx="11"/><text x="61" y="218"></text></g><g class="astar-cell" data-cell="1,2"><title>2열 3행: 빈 칸</title><rect x="107" y="182" width="72" height="72" rx="11"/><text x="143" y="218"></text></g><g class="astar-cell is-wall" data-cell="2,2"><title>3열 3행: 벽</title><rect x="189" y="182" width="72" height="72" rx="11"/><text x="225" y="218">벽</text></g><g class="astar-cell" data-cell="3,2"><title>4열 3행: 빈 칸</title><rect x="271" y="182" width="72" height="72" rx="11"/><text x="307" y="218"></text></g><g class="astar-cell" data-cell="4,2"><title>5열 3행: 빈 칸</title><rect x="353" y="182" width="72" height="72" rx="11"/><text x="389" y="218"></text></g><g class="astar-cell" data-cell="5,2"><title>6열 3행: 빈 칸</title><rect x="435" y="182" width="72" height="72" rx="11"/><text x="471" y="218"></text></g><g class="astar-cell is-path" data-cell="6,2"><title>7열 3행: 빈 칸</title><rect x="517" y="182" width="72" height="72" rx="11"/><text x="553" y="218"></text></g><g class="astar-cell is-start is-path" data-cell="0,3"><title>1열 4행: 출발</title><rect x="25" y="264" width="72" height="72" rx="11"/><text x="61" y="300">출발</text></g><g class="astar-cell is-path" data-cell="1,3"><title>2열 4행: 빈 칸</title><rect x="107" y="264" width="72" height="72" rx="11"/><text x="143" y="300"></text></g><g class="astar-cell is-wall" data-cell="2,3"><title>3열 4행: 벽</title><rect x="189" y="264" width="72" height="72" rx="11"/><text x="225" y="300">벽</text></g><g class="astar-cell" data-cell="3,3"><title>4열 4행: 빈 칸</title><rect x="271" y="264" width="72" height="72" rx="11"/><text x="307" y="300"></text></g><g class="astar-cell" data-cell="4,3"><title>5열 4행: 빈 칸</title><rect x="353" y="264" width="72" height="72" rx="11"/><text x="389" y="300"></text></g><g class="astar-cell" data-cell="5,3"><title>6열 4행: 빈 칸</title><rect x="435" y="264" width="72" height="72" rx="11"/><text x="471" y="300"></text></g><g class="astar-cell is-path" data-cell="6,3"><title>7열 4행: 빈 칸</title><rect x="517" y="264" width="72" height="72" rx="11"/><text x="553" y="300"></text></g><g class="astar-cell" data-cell="0,4"><title>1열 5행: 빈 칸</title><rect x="25" y="346" width="72" height="72" rx="11"/><text x="61" y="382"></text></g><g class="astar-cell is-path" data-cell="1,4"><title>2열 5행: 빈 칸</title><rect x="107" y="346" width="72" height="72" rx="11"/><text x="143" y="382"></text></g><g class="astar-cell is-path" data-cell="2,4"><title>3열 5행: 빈 칸</title><rect x="189" y="346" width="72" height="72" rx="11"/><text x="225" y="382"></text></g><g class="astar-cell is-path" data-cell="3,4"><title>4열 5행: 빈 칸</title><rect x="271" y="346" width="72" height="72" rx="11"/><text x="307" y="382"></text></g><g class="astar-cell is-path" data-cell="4,4"><title>5열 5행: 빈 칸</title><rect x="353" y="346" width="72" height="72" rx="11"/><text x="389" y="382"></text></g><g class="astar-cell is-path" data-cell="5,4"><title>6열 5행: 빈 칸</title><rect x="435" y="346" width="72" height="72" rx="11"/><text x="471" y="382"></text></g><g class="astar-cell is-path" data-cell="6,4"><title>7열 5행: 빈 칸</title><rect x="517" y="346" width="72" height="72" rx="11"/><text x="553" y="382"></text></g><line class="astar-route" x1="98" y1="300" x2="143" y2="300"/><line class="astar-route" x1="143" y1="300" x2="143" y2="382"/><line class="astar-route" x1="143" y1="382" x2="225" y2="382"/><line class="astar-route" x1="225" y1="382" x2="307" y2="382"/><line class="astar-route" x1="307" y1="382" x2="389" y2="382"/><line class="astar-route" x1="389" y1="382" x2="471" y2="382"/><line class="astar-route" x1="471" y1="382" x2="553" y2="382"/><line class="astar-route" x1="553" y1="382" x2="553" y2="300"/><line class="astar-route" x1="553" y1="300" x2="553" y2="218"/><line class="astar-route" x1="553" y1="218" x2="553" y2="172"/></svg><div class="astar-legend"><span><i></i>벽</span><span><i class="legend-path"></i>찾은 길</span></div><figcaption class="basics-caption">상하좌우로 한 칸씩 · 한 칸 = 1걸음 · 대각선은 없어요.</figcaption></figure>
+      <div class="basics-copy"><ol class="basics-steps"><li><strong>학교에 가고 싶어요.</strong><p>출발점과 학교의 위치를 알아요.</p></li><li><strong>파란 벽은 지나갈 수 없어요.</strong><p>빈 칸으로 돌아서 가야 해요.</p></li><li><strong>걸음 수가 적은 길을 찾아요.</strong><p>갈 수 있는 여러 길을 비교해요.</p></li></ol><p class="basics-callout">A*의 질문<br>“어느 곳부터 살펴보면 좋을까?”</p></div>
+    </div>
+    <p class="basics-takeaway">로봇이 움직이기 전에, 지도 위에서 길을 계획해요.</p>
+  </div>
+</section><section class="slide basics-slide " id="slide-47" data-title="온 길 + 남은 길을 더해요" aria-label="슬라이드 47 / 66: 온 길 + 남은 길을 더해요" data-layout="L5" >
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">A* 2 / 3 · 점수로 비교하기</p><h2>온 길 + 남은 길을 더해요</h2><p class="basics-lead">아직 살펴보지 않은 후보 중, 점수가 가장 작은 곳을 먼저 살펴봐요.</p></header>
 
-  <text class="svg-small" x="425" y="352" text-anchor="middle">g 6 · h 4</text>
-  <text x="425" y="390" text-anchor="middle" font-size="26" font-weight="700" fill="#1D2475">f 10</text>
+    <div class="astar-quiz-body" data-astar-quiz>
+      <div class="astar-equation" aria-label="지금까지 온 길 g 더하기 앞으로 남은 길의 예상 h는 비교 점수 f"><div>지금까지 온 길<small>g · 실제 걸음 수</small></div><span aria-hidden="true">+</span><div>앞으로 남은 길<small>h · 예상 걸음 수</small></div><span aria-hidden="true">=</span><div>비교할 점수<small>f · 작을수록 먼저</small></div></div>
+      <div class="astar-choices" role="group" aria-label="먼저 살펴볼 후보를 고르세요">
+        <button class="astar-choice" type="button" data-choice="A" aria-pressed="false"><strong>후보 A</strong><span>온 길 <b>2</b></span><span>남은 길 예상 <b>8</b></span><span class="choice-total">2 + 8 = 10</span></button>
+        <button class="astar-choice" type="button" data-choice="B" aria-pressed="false"><strong>후보 B</strong><span>온 길 <b>4</b></span><span>남은 길 예상 <b>4</b></span><span class="choice-total">4 + 4 = 8</span></button>
+        <button class="astar-choice" type="button" data-choice="C" aria-pressed="false"><strong>후보 C</strong><span>온 길 <b>6</b></span><span>남은 길 예상 <b>4</b></span><span class="choice-total">6 + 4 = 10</span></button>
+      </div>
+      <p class="astar-feedback" data-quiz-feedback aria-live="polite">작은 연습이에요. 세 후보 중 어디를 먼저 살펴볼까요? 눌러 보세요.</p>
+      <p class="basics-caption">남은 길은 벽이 없다고 생각하고 ‘가로 몇 칸 + 세로 몇 칸’으로 세어요.<br>벽을 돌아가야 한다면 실제 길은 더 길어질 수 있어요.</p>
+    </div>
+    <p class="basics-takeaway">지금까지 온 거리와 앞으로 갈 거리를 함께 생각해요.</p>
+  </div>
+</section><section class="slide basics-slide astar-demo" id="slide-48" data-title="가장 작은 점수부터, 한 단계씩!" aria-label="슬라이드 48 / 66: 가장 작은 점수부터, 한 단계씩!" data-layout="L4" data-astar-demo>
+  <div class="slide__inner">
+    <header class="slide__header"><p class="slide__eyebrow">A* 3 / 3 · 길 찾기 실험</p><h2>가장 작은 점수부터, 한 단계씩!</h2><p class="basics-lead">아래는 로봇의 이동이 아니라, 지도에서 갈 길을 찾아보는 과정이에요.</p></header>
 
-  <rect class="node-green" x="480" y="310" width="110" height="110" rx="10"/>
-  <rect x="480" y="310" width="110" height="110" rx="10" fill="none" stroke="#F7931E" stroke-width="4"/>
-  <text class="svg-small" x="535" y="352" text-anchor="middle">g 4.4 · h 3</text>
-  <text x="535" y="390" text-anchor="middle" font-size="26" font-weight="700" fill="#874000">f 7.4</text>
-
-  <circle class="fill-warn" cx="755" cy="255" r="22"/>
-  <text class="svg-small" x="755" y="212" text-anchor="middle">목표</text>
-<g class="chip" transform="translate(860 234)"><rect x="0" y="0" width="300" height="44" rx="22"/><text x="150" y="22" text-anchor="middle" dominant-baseline="central">연한 칸은 칸 비용 2</text></g><g class="chip" transform="translate(860 300)"><rect x="0" y="0" width="300" height="44" rx="22"/><text x="150" y="22" text-anchor="middle" dominant-baseline="central">한 칸 1 · 대각선 1.4</text></g><g class="chip" transform="translate(860 366)"><rect x="0" y="0" width="300" height="44" rx="22"/><text x="150" y="22" text-anchor="middle" dominant-baseline="central">h = 남은 칸 수</text></g><g class="chip" transform="translate(860 432)"><rect x="0" y="0" width="300" height="44" rx="22"/><text x="150" y="22" text-anchor="middle" dominant-baseline="central">f 가 가장 작은 칸을 선택</text></g></svg></div><ul class="slide-bullets"><li>g는 지나온 칸의 비용을 모두 더한 값이다.</li><li>이동 비용에 코스트맵이 준 칸 비용을 더한다.</li><li>h는 목표까지 남은 칸 수로 추정한다.</li><li>세 후보 중 f가 가장 작은 칸을 먼저 펼친다.</li></ul></div></section><section class="slide layout-compare layout-guide" id="slide-48" data-title="A*가 도는 순서" aria-label="슬라이드 48 / 66: A*가 도는 순서" data-layout="L5"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>A*가 도는 순서</h2></header><table class="concept-table"><tbody><tr><th scope="row">열린 목록</th><td>아직 펼치지 않은 후보 칸을 모아 둔다. 매 단계 여기서 f가 가장 작은 칸 하나를 꺼낸다.</td></tr><tr><th scope="row">닫힌 목록</th><td>이미 펼친 칸이다. 다시 펼치지 않기 때문에 같은 자리를 맴돌지 않는다.</td></tr><tr><th scope="row">이웃 갱신</th><td>꺼낸 칸의 이웃마다 g를 다시 계산한다. 지금까지 알던 길보다 싸면 g를 낮추고 부모를 그 칸으로 바꾼다.</td></tr><tr><th scope="row">경로 복원</th><td>목표를 꺼내면 탐색이 끝난다. 부모를 거꾸로 따라가면 시작점까지의 경로가 나온다.</td></tr></tbody></table></div></section><section class="slide visual-wide visual-right layout-diagram" id="slide-49" data-title="지역 플래너" aria-label="슬라이드 49 / 66: 지역 플래너" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>지역 플래너</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="전역 경로 위 돌발 장애물을 지역 플래너가 우회">
+    <div class="basics-columns">
+      <figure class="basics-panel astar-map-panel"><svg class="basics-svg astar-map" viewBox="0 0 625 430" role="img" aria-label="벽을 피해 출발점에서 학교로 가는 격자 지도. 상하좌우 한 칸씩 이동한다."><title>벽을 피해 출발점에서 학교로 가는 격자 지도. 상하좌우 한 칸씩 이동한다.</title><g class="astar-cell" data-cell="0,0"><title>1열 1행: 빈 칸</title><rect x="25" y="18" width="72" height="72" rx="11"/><text x="61" y="54"></text></g><g class="astar-cell" data-cell="1,0"><title>2열 1행: 빈 칸</title><rect x="107" y="18" width="72" height="72" rx="11"/><text x="143" y="54"></text></g><g class="astar-cell" data-cell="2,0"><title>3열 1행: 빈 칸</title><rect x="189" y="18" width="72" height="72" rx="11"/><text x="225" y="54"></text></g><g class="astar-cell" data-cell="3,0"><title>4열 1행: 빈 칸</title><rect x="271" y="18" width="72" height="72" rx="11"/><text x="307" y="54"></text></g><g class="astar-cell" data-cell="4,0"><title>5열 1행: 빈 칸</title><rect x="353" y="18" width="72" height="72" rx="11"/><text x="389" y="54"></text></g><g class="astar-cell" data-cell="5,0"><title>6열 1행: 빈 칸</title><rect x="435" y="18" width="72" height="72" rx="11"/><text x="471" y="54"></text></g><g class="astar-cell" data-cell="6,0"><title>7열 1행: 빈 칸</title><rect x="517" y="18" width="72" height="72" rx="11"/><text x="553" y="54"></text></g><g class="astar-cell" data-cell="0,1"><title>1열 2행: 빈 칸</title><rect x="25" y="100" width="72" height="72" rx="11"/><text x="61" y="136"></text></g><g class="astar-cell" data-cell="1,1"><title>2열 2행: 빈 칸</title><rect x="107" y="100" width="72" height="72" rx="11"/><text x="143" y="136"></text></g><g class="astar-cell is-wall" data-cell="2,1"><title>3열 2행: 벽</title><rect x="189" y="100" width="72" height="72" rx="11"/><text x="225" y="136">벽</text></g><g class="astar-cell is-wall" data-cell="3,1"><title>4열 2행: 벽</title><rect x="271" y="100" width="72" height="72" rx="11"/><text x="307" y="136">벽</text></g><g class="astar-cell is-wall" data-cell="4,1"><title>5열 2행: 벽</title><rect x="353" y="100" width="72" height="72" rx="11"/><text x="389" y="136">벽</text></g><g class="astar-cell" data-cell="5,1"><title>6열 2행: 빈 칸</title><rect x="435" y="100" width="72" height="72" rx="11"/><text x="471" y="136"></text></g><g class="astar-cell is-goal" data-cell="6,1"><title>7열 2행: 학교</title><rect x="517" y="100" width="72" height="72" rx="11"/><text x="553" y="136">학교</text></g><g class="astar-cell" data-cell="0,2"><title>1열 3행: 빈 칸</title><rect x="25" y="182" width="72" height="72" rx="11"/><text x="61" y="218"></text></g><g class="astar-cell" data-cell="1,2"><title>2열 3행: 빈 칸</title><rect x="107" y="182" width="72" height="72" rx="11"/><text x="143" y="218"></text></g><g class="astar-cell is-wall" data-cell="2,2"><title>3열 3행: 벽</title><rect x="189" y="182" width="72" height="72" rx="11"/><text x="225" y="218">벽</text></g><g class="astar-cell" data-cell="3,2"><title>4열 3행: 빈 칸</title><rect x="271" y="182" width="72" height="72" rx="11"/><text x="307" y="218"></text></g><g class="astar-cell" data-cell="4,2"><title>5열 3행: 빈 칸</title><rect x="353" y="182" width="72" height="72" rx="11"/><text x="389" y="218"></text></g><g class="astar-cell" data-cell="5,2"><title>6열 3행: 빈 칸</title><rect x="435" y="182" width="72" height="72" rx="11"/><text x="471" y="218"></text></g><g class="astar-cell" data-cell="6,2"><title>7열 3행: 빈 칸</title><rect x="517" y="182" width="72" height="72" rx="11"/><text x="553" y="218"></text></g><g class="astar-cell is-start" data-cell="0,3"><title>1열 4행: 출발</title><rect x="25" y="264" width="72" height="72" rx="11"/><text x="61" y="300">출발</text></g><g class="astar-cell" data-cell="1,3"><title>2열 4행: 빈 칸</title><rect x="107" y="264" width="72" height="72" rx="11"/><text x="143" y="300"></text></g><g class="astar-cell is-wall" data-cell="2,3"><title>3열 4행: 벽</title><rect x="189" y="264" width="72" height="72" rx="11"/><text x="225" y="300">벽</text></g><g class="astar-cell" data-cell="3,3"><title>4열 4행: 빈 칸</title><rect x="271" y="264" width="72" height="72" rx="11"/><text x="307" y="300"></text></g><g class="astar-cell" data-cell="4,3"><title>5열 4행: 빈 칸</title><rect x="353" y="264" width="72" height="72" rx="11"/><text x="389" y="300"></text></g><g class="astar-cell" data-cell="5,3"><title>6열 4행: 빈 칸</title><rect x="435" y="264" width="72" height="72" rx="11"/><text x="471" y="300"></text></g><g class="astar-cell" data-cell="6,3"><title>7열 4행: 빈 칸</title><rect x="517" y="264" width="72" height="72" rx="11"/><text x="553" y="300"></text></g><g class="astar-cell" data-cell="0,4"><title>1열 5행: 빈 칸</title><rect x="25" y="346" width="72" height="72" rx="11"/><text x="61" y="382"></text></g><g class="astar-cell" data-cell="1,4"><title>2열 5행: 빈 칸</title><rect x="107" y="346" width="72" height="72" rx="11"/><text x="143" y="382"></text></g><g class="astar-cell" data-cell="2,4"><title>3열 5행: 빈 칸</title><rect x="189" y="346" width="72" height="72" rx="11"/><text x="225" y="382"></text></g><g class="astar-cell" data-cell="3,4"><title>4열 5행: 빈 칸</title><rect x="271" y="346" width="72" height="72" rx="11"/><text x="307" y="382"></text></g><g class="astar-cell" data-cell="4,4"><title>5열 5행: 빈 칸</title><rect x="353" y="346" width="72" height="72" rx="11"/><text x="389" y="382"></text></g><g class="astar-cell" data-cell="5,4"><title>6열 5행: 빈 칸</title><rect x="435" y="346" width="72" height="72" rx="11"/><text x="471" y="382"></text></g><g class="astar-cell" data-cell="6,4"><title>7열 5행: 빈 칸</title><rect x="517" y="346" width="72" height="72" rx="11"/><text x="553" y="382"></text></g></svg>
+        <div class="astar-legend"><span><i></i>벽</span><span><i class="legend-candidate"></i>후보 · 숫자는 점수</span><span><i class="legend-checked"></i>살펴본 곳</span><span><i class="legend-path"></i>찾은 길</span></div>
+        <div class="basics-controls"><button type="button" class="basics-button--primary" data-search-next>한 단계 보기</button><button type="button" data-search-finish>완성된 길 보기</button><button type="button" data-search-reset>처음부터</button></div>
+        <figcaption class="basics-caption">상하좌우 한 칸 = 1걸음 · <span data-search-count>0</span>단계 진행</figcaption>
+      </figure>
+      <div class="basics-copy">
+        <ol class="basics-steps"><li><strong>후보 전체에서 가장 작은 점수!</strong><p>그 칸부터 꺼내서 살펴봐요.</p></li><li><strong>옆의 빈 칸들을 후보에 넣어요.</strong><p>더 짧게 온 길을 찾으면 기록을 바꿔요.</p></li><li><strong>학교 칸을 꺼내면 도착!</strong><p>어디서 왔는지 기록을 거꾸로 이으면 길이 완성돼요.</p></li></ol>
+        <div class="astar-score" aria-label="이번에 살펴본 칸의 점수"><span><small>온 길</small><b data-search-g>0</b></span><span><small>남은 길 예상</small><b data-search-h>8</b></span><span><small>합계</small><b data-search-f>8</b></span></div>
+        <p class="basics-callout astar-status" data-search-status aria-live="polite">출발 칸부터 시작해요. ‘한 단계 보기’를 눌러 보세요.</p>
+      </div>
+    </div>
+    <p class="basics-takeaway">후보를 비교하고 → 이웃을 살펴보고 → 찾은 길을 이어요.</p>
+  </div>
+</section><section class="slide visual-wide visual-right layout-diagram" id="slide-49" data-title="지역 플래너" aria-label="슬라이드 49 / 66: 지역 플래너" data-layout="L3"><div class="slide__inner"><header class="slide__header"><p class="slide__eyebrow">CONCEPT</p><h2>지역 플래너</h2></header><div class="slide__visual"><svg class="deck-svg" viewBox="0 0 1200 560" role="img" aria-label="전역 경로 위 돌발 장애물을 지역 플래너가 우회">
  <title>지역 플래너</title>
  <path class="stroke-gray" d="M90 450H1110"/>
  <rect class="node-green" x="145" y="330" width="190" height="100" rx="24"/><circle class="fill-blue" cx="190" cy="445" r="32"/><circle class="fill-blue" cx="290" cy="445" r="32"/>
