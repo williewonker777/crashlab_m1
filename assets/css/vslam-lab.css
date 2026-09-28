@@ -1,8 +1,79 @@
-/* Lecture 3 project worksheets and the companion implementation guide. */
-.lecture-3 .vslam-practice .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
-.lecture-3 .vslam-practice .slide__header { min-height: 76px; padding: 18px 34px; gap: 24px; justify-content: space-between; background: var(--hy-blue); }
-.lecture-3 .vslam-practice h2 { color: #fff; font-size: clamp(27px, 2.3vw, 44px); line-height: 1.25; }
-.lab-guide-link { flex-shrink: 0; color: #fff; font-size: clamp(15px, 1.05vw, 20px); text-decoration-thickness: 1px; }
+/* Lecture 3 project worksheets and results from crashlab_vslam. */
+.result-badge { flex-shrink: 0; color: #fff; font-size: clamp(14px, 1vw, 19px); letter-spacing: .1em; }
+.result-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; min-height: 0; gap: clamp(14px, 1.7vh, 22px); padding: clamp(22px, 2.1vw, 40px); }
+.result-figure { display: grid; min-width: 0; min-height: 0; margin: 0; overflow: auto; border-radius: 10px; background: #fff; }
+.result-figure a { display: block; min-height: 0; height: 100%; }
+.result-figure img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.result-stats > div { display: grid; align-content: start; gap: 6px; padding: 14px 20px; background: #f3f5fa; border-radius: 12px; color: var(--hy-blue); }
+.result-stats span { font-size: clamp(16px, 1.05vw, 20px); font-weight: 600; }
+.result-stats strong { font-size: clamp(25px, 1.95vw, 37px); line-height: 1.2; }
+.result-stats em { font-size: .58em; font-style: normal; }
+.result-stats small { font-size: clamp(14px, .92vw, 18px); color: #51576c; }
+.result-source { margin: 0; padding-top: 12px; border-top: 1px solid #dce0e8; color: #51576c; font-size: clamp(14px, .95vw, 18px); line-height: 1.5; }
+.result-work { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); min-height: 0; gap: 38px; align-items: center; }
+.result-map .result-body, .result-evaluation .result-body { grid-template-rows: auto minmax(0, 1fr) auto; }
+.result-map .result-figure { height: 100%; }
+.result-notes { display: grid; gap: 28px; align-content: center; min-width: 0; }
+.vslam-result .result-notes h3 { font-size: clamp(21px, 1.55vw, 30px); line-height: 1.35; }
+.result-notes p { margin: 9px 0 0; font-size: clamp(18px, 1.22vw, 23px); line-height: 1.6; }
+.result-notes code { font-size: .85em; }
+.result-legend { display: grid; gap: 12px; padding: 0; margin: 0; list-style: none; font-size: clamp(16px, 1.1vw, 21px); }
+.result-legend li { display: flex; align-items: center; gap: 12px; }
+.result-legend span { width: 19px; height: 19px; flex-shrink: 0; border: 1px solid #687086; border-radius: 3px; }
+.map-occupied { background: #1d2475; }.map-free { background: #fff; }.map-unknown { background: #9aa0a6; }
+.result-table-wrap { min-width: 0; }
+.result-table { width: 100%; border-collapse: collapse; font-size: clamp(18px, 1.45vw, 28px); }
+.result-table th, .result-table td { padding: 20px 18px; border-bottom: 1px solid #dce0e8; text-align: left; }
+.result-table thead { color: #fff; background: var(--hy-blue); }
+.result-table tbody th { color: var(--hy-blue); }
+.result-table td:last-child { font-weight: 700; color: #874000; background: #fff1e2; }
+.result-table small { font-size: .72em; font-weight: 400; }
+.result-takeaway { padding: 20px; border-radius: 12px; background: #f3f5fa; }
+.result-takeaway strong { color: var(--hy-blue); font-size: clamp(19px, 1.4vw, 27px); }
+@media (min-width: 801px) and (max-height: 820px) {
+  .result-body { padding: 20px 28px; gap: 12px; }
+  .result-stats { gap: 12px; }
+  .result-stats > div { padding: 10px 14px; gap: 4px; }
+  .result-stats span { font-size: 16px; }
+  .result-stats strong { font-size: 27px; }
+  .result-stats small { font-size: 14px; }
+  .result-source { font-size: 14px; padding-top: 10px; }
+  .result-work { gap: 26px; }
+  .result-notes { gap: 20px; }
+  .vslam-result .result-notes h3 { font-size: 21px; }
+  .result-notes p { font-size: 17px; margin-top: 6px; }
+  .result-legend { font-size: 16px; gap: 10px; }
+  .result-table { font-size: 18px; }
+  .result-table th, .result-table td { padding: 13px 12px; }
+  .result-takeaway { padding: 14px; }
+}
+@media (max-width: 1100px) and (min-width: 801px) {
+  .result-body { padding: 20px; }
+  .result-work { gap: 20px; }
+  .result-stats strong { font-size: 24px; }
+  .result-stats > div { padding: 10px; }
+  .result-table th, .result-table td { padding: 12px 8px; }
+}
+@media (max-width: 800px) {
+  .result-body { grid-template-rows: auto auto auto auto; padding: 24px 20px; gap: 24px; }
+  .result-stats { grid-template-columns: 1fr; gap: 12px; }
+  .result-stats strong { font-size: 30px; }
+  .result-stats > div { padding: 18px 20px; }
+  .result-figure a, .result-figure img { height: auto; }
+  .result-figure[data-horizontal-scroll] img { width: 760px; max-width: none; }
+  .result-work { grid-template-columns: 1fr; gap: 26px; }
+  .result-map .result-body, .result-evaluation .result-body { grid-template-rows: auto auto auto; }
+  .result-map .result-figure { height: auto; }
+  .result-notes { gap: 24px; }
+  .result-source { font-size: 14px; }
+  .result-table { font-size: 15px; }
+  .result-table th, .result-table td { padding: 12px 5px; }
+  .result-table small { font-size: 12px; }
+}
+.lecture-3 :is(.vslam-practice, .vslam-result) .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
+.lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { min-height: 76px; padding: 18px 34px; gap: 24px; justify-content: space-between; background: var(--hy-blue); }
+.lecture-3 :is(.vslam-practice, .vslam-result) h2 { color: #fff; font-size: clamp(27px, 2.3vw, 44px); line-height: 1.25; }
 .lab-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(16px, 1.5vh, 24px); padding: clamp(22px, 2.1vw, 40px); min-height: 0; }
 .lab-concept { margin: 0; font-size: clamp(21px, 1.55vw, 30px); line-height: 1.5; color: var(--hy-blue); font-weight: 600; }
 .lab-work { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 2.5vw, 48px); min-height: 0; align-items: center; }
@@ -37,7 +108,7 @@
 .lab-mini-table th, .lab-mini-table td { padding: 14px 8px; border-bottom: 1px solid #d8dce7; text-align: left; }
 .lab-mini-table thead { background: #e5e9f3; }
 @media (min-width: 801px) and (max-height: 820px) {
-  .lecture-3 .vslam-practice .slide__header { min-height: 58px; padding: 12px 26px; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { min-height: 58px; padding: 12px 26px; }
   .lab-body { padding: 20px 28px; gap: 13px; }
   .lab-concept { font-size: 21px; }
   .lab-panel { gap: 9px; padding: 15px 22px; }
@@ -57,17 +128,17 @@
   .lab-mini-table th, .lab-mini-table td { padding: 10px 8px; }
 }
 @media (max-width: 1100px) and (min-width: 801px) {
-  .lecture-3 .vslam-practice { padding-left: 38px; padding-right: 38px; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) { padding-left: 38px; padding-right: 38px; }
   .lab-body { padding: 20px; }
   .lab-work { gap: 20px; }
   .lab-steps li { grid-template-columns: 28px minmax(0, 1fr); column-gap: 9px; }
   .lab-steps li::before { width: 26px; height: 26px; font-size: 16px; }
 }
 @media (max-width: 800px) {
-  .lecture-3 .vslam-practice { height: auto; min-height: 100dvh; }
-  .lecture-3 .vslam-practice .slide__inner { grid-template-rows: auto auto; }
-  .lecture-3 .vslam-practice .slide__header { align-items: flex-start; flex-direction: column; padding: 24px; gap: 14px; }
-  .lecture-3 .vslam-practice h2 { font-size: 27px; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) { height: auto; min-height: 100dvh; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__inner { grid-template-rows: auto auto; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { align-items: flex-start; flex-direction: column; padding: 24px; gap: 14px; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) h2 { font-size: 27px; }
   .lab-body { display: grid; grid-template-rows: auto auto auto; padding: 24px 20px; gap: 24px; }
   .lab-work { grid-template-columns: 1fr; gap: 28px; }
   .lab-panel { padding: 20px 16px; }
@@ -77,62 +148,4 @@
   .lab-inputs code { font-size: 12px; }
   .lab-check { grid-template-columns: 1fr; gap: 8px; }
   .lab-steps { gap: 24px; }
-}
-
-/* The long-form guide uses normal document scrolling, including on phones. */
-.vslam-guide { --hy-blue: #1d2475; --orange: #874000; margin: 0; color: #252937; background: #f5f7fa; font-family: "Noto Sans KR", system-ui, -apple-system, "Malgun Gothic", sans-serif; line-height: 1.8; word-break: keep-all; overflow-wrap: anywhere; }
-.vslam-guide * { box-sizing: border-box; }
-.vslam-guide a { color: var(--hy-blue); text-underline-offset: .2em; }
-.vslam-guide a:focus-visible, .vslam-guide summary:focus-visible { outline: 3px solid #f7931e; outline-offset: 4px; }
-.guide-wrap { max-width: 1120px; margin: 0 auto; padding: 32px 28px 80px; }
-.guide-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-weight: 600; }
-.guide-hero { padding: 48px 0 30px; }
-.guide-eyebrow { color: #874000; font-size: 14px; letter-spacing: .12em; font-weight: 700; }
-.vslam-guide h1 { margin: 10px 0 20px; color: var(--hy-blue); font-size: clamp(32px, 4vw, 50px); line-height: 1.3; }
-.guide-hero > p:last-child { max-width: 830px; font-size: 20px; }
-.guide-toc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 32px; }
-.guide-toc a { padding: 12px 16px; border: 1px solid #d8dce7; border-radius: 8px; background: #fff; text-decoration: none; font-weight: 600; }
-.guide-section { padding: 34px 40px; margin: 26px 0; border-radius: 16px; background: #fff; scroll-margin-top: 24px; }
-.vslam-guide h2 { color: var(--hy-blue); font-size: 28px; line-height: 1.4; margin: 0 0 20px; }
-.vslam-guide h3 { color: var(--hy-blue); font-size: 21px; margin: 30px 0 10px; }
-.vslam-guide p { margin: 12px 0; }
-.vslam-guide li { margin: 9px 0; }
-.vslam-guide code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .87em; }
-.vslam-guide :not(pre) > code { background: #eef0f6; padding: 2px 5px; border-radius: 4px; }
-.vslam-guide pre { padding: 20px 24px; background: #18204f; color: #f8f9ff; border-radius: 10px; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; line-height: 1.75; }
-.guide-table-wrap { overflow-x: auto; }
-.vslam-guide table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; }
-.vslam-guide th, .vslam-guide td { padding: 12px 14px; border-bottom: 1px solid #e2e5ed; text-align: left; vertical-align: top; }
-.vslam-guide th { background: #eff2f8; color: var(--hy-blue); }
-.guide-note { padding: 16px 22px; margin: 22px 0; border-left: 4px solid #f7931e; background: #fff5e9; }
-.guide-deliver { padding: 16px 22px; margin: 24px 0 0; background: #eef2fa; border-radius: 8px; }
-.guide-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0; list-style: none; }
-.guide-flow li { padding: 18px; border-radius: 8px; background: var(--hy-blue); color: #fff; }
-.guide-flow small { display: block; color: #e4e9ff; }
-.guide-section details { border-top: 1px solid #e2e5ed; margin-top: 22px; padding-top: 16px; }
-.guide-section summary { cursor: pointer; font-weight: 700; color: var(--hy-blue); }
-.guide-section .lab-formula { background: #f0f3f9; font-size: 19px; }
-.guide-footer { font-size: 14px; color: #51576c; }
-@media (max-width: 700px) {
-  .guide-wrap { padding: 22px 16px 50px; }
-  .guide-hero { padding: 30px 4px 20px; }
-  .guide-hero > p:last-child { font-size: 18px; }
-  .guide-section { padding: 26px 20px; }
-  .vslam-guide h2 { font-size: 25px; }
-  .guide-toc, .guide-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .guide-toc a { padding: 10px; font-size: 14px; }
-  .vslam-guide table { min-width: 570px; }
-  .vslam-guide pre { padding: 16px; font-size: 14px; }
-  .vslam-guide ol, .vslam-guide ul { padding-left: 22px; }
-  .vslam-guide .guide-flow { padding: 0; }
-}
-@media print {
-  .vslam-guide { background: #fff; }
-  .guide-wrap { max-width: none; padding: 0; }
-  .guide-section { border-top: 1px solid #ccc; border-radius: 0; padding: 24px 0; }
-  .guide-top, .guide-toc { display: none; }
-  .vslam-guide pre { color: #111; background: #eee; }
-  .vslam-guide table { min-width: 0; }
-  .guide-section h2, .guide-section h3 { break-after: avoid; }
-  .guide-note, .guide-deliver, .vslam-guide pre { break-inside: avoid; }
 }
