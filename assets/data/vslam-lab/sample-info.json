@@ -1,0 +1,40 @@
+{
+  "kind": "synthetic RGB-D teaching example",
+  "frames": 49,
+  "width": 640,
+  "height": 360,
+  "keyframes": 5,
+  "map_keyframes": 5,
+  "map_points": 11045,
+  "loop_constraints": 1,
+  "matches": 458,
+  "inliers": 458,
+  "displayed_matches": 24,
+  "lost_frames": 2,
+  "lost_reasons": [
+    "implausible step 2.53 m / 179.7 deg in 0.10 s (budget 0.20 m / 19 deg)",
+    "implausible step 894281.69 m / 176.0 deg in 0.10 s (budget 0.20 m / 19 deg)"
+  ],
+  "metrics": {
+    "graph_cost": [
+      84.89261214716234,
+      9.702042304489437
+    ],
+    "loop_translation_m": [
+      0.35983873957310014,
+      0.03594340404534516
+    ],
+    "lost_frames": [
+      2,
+      2
+    ]
+  },
+  "input_keys": {
+    "gray": "uint8 [49,360,640]",
+    "depth": "float32 [49,360,640]; optical Z in metres; NaN is invalid",
+    "K": "float64 [3,3]; no distortion",
+    "stamp": "float64 [49]; seconds",
+    "T_base_camera": "float64 [4,4]; fixed camera-to-body transform"
+  },
+  "note": "Example values depend on input and settings; these are not required student scores."
+}

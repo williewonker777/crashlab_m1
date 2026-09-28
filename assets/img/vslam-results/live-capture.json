@@ -1,17 +1,6 @@
 {
   "captured_at": "2026-09-28T19:44:39.713553+09:00",
-  "mode": "Read-only live topic capture; unchanged crashlab_vslam frontend; two frames only",
-  "source_sha256": {
-    "camera.py": "df699f436eca7ab521a83b9910b0ebcd42b64125e8ec8fd8758dcf4a574c6f73",
-    "frontend.py": "1de8a350d1f840c38127392dfbfa3d910a180d4b62d2b05f66d4a6cee35486cf",
-    "node.py": "8b8663f10f5dca436afbbea5eeaee1b1a827bf23cf8083aad8ef6d93848bd175",
-    "vo.py": "e97aae0252c7390714b55072898c4b44fbc1b4d2a5c2240b9d2abc59055a495b",
-    "slam.py": "330d47981b89fdc3bbc17cf067bf38fe1204632f9db4c969b6f6c5082c162e48",
-    "posegraph.py": "8cd84b2a69930d43917ac1fa88a5263b04e800d92d4c9642cfea5a8f06db0942",
-    "slam_node.py": "9e0d28ec048ddceffbe2f58813a8bfd4c7f77cf07291f258a0a2554f6b71dade",
-    "evaluate.py": "c44311a5c1db61907224c500126c6645b05f7ac702d5e20b4dd2aed1453c7dd8",
-    "replay.py": "77c9dd33ecc02cee9030cc00bb0c0ca5ce8f0a85afdcd86f4f0d0a4e99d0c5fa"
-  },
+  "mode": "Read-only live RGB-D topic capture; two frames only",
   "width": 1280,
   "height": 720,
   "camera": {

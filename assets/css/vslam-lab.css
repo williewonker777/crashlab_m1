@@ -1,4 +1,4 @@
-/* Lecture 3 project worksheets and results from crashlab_vslam. */
+/* Lecture 3 Visual SLAM practice worksheets and result examples. */
 .result-badge { flex-shrink: 0; color: #fff; font-size: clamp(14px, 1vw, 19px); letter-spacing: .1em; }
 .result-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; min-height: 0; gap: clamp(14px, 1.7vh, 22px); padding: clamp(22px, 2.1vw, 40px); }
 .result-figure { display: grid; min-width: 0; min-height: 0; margin: 0; overflow: auto; border-radius: 10px; background: #fff; }
@@ -148,4 +148,23 @@
   .lab-inputs code { font-size: 12px; }
   .lab-check { grid-template-columns: 1fr; gap: 8px; }
   .lab-steps { gap: 24px; }
+}
+
+/* Concrete submissions share the existing lecture practice header. */
+.result-source a { color: var(--hy-blue); font-weight: 600; text-underline-offset: 3px; }
+.result-source code { overflow-wrap: anywhere; }
+.lab-check code, .lab-steps code { font-size: .88em; overflow-wrap: anywhere; }
+.result-compact-table { width: 100%; border-collapse: collapse; color: var(--hy-blue); font-size: clamp(15px, 1.05vw, 20px); line-height: 1.45; }
+.result-compact-table th, .result-compact-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid #dce0e8; }
+.result-compact-table thead { background: #f3f5fa; }
+.result-compact-table td:nth-child(3) { font-weight: 700; color: #874000; }
+.result-compact-table td:last-child { color: #51576c; }
+@media (min-width: 801px) and (max-height: 820px) {
+  .result-compact-table { font-size: 14px; }
+  .result-compact-table th, .result-compact-table td { padding: 5px 8px; }
+}
+@media (max-width: 800px) {
+  .result-compact-table { font-size: 13px; }
+  .result-compact-table th, .result-compact-table td { padding: 8px 4px; }
+  .result-compact-table td:last-child { max-width: 100px; }
 }
