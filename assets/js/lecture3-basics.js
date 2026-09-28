@@ -111,8 +111,8 @@
         choice.classList.toggle("is-correct", choice === button && correct);
       });
       feedback.textContent = correct
-        ? "맞아요! B는 4 + 4 = 8점. 가장 작은 점수라 먼저 살펴봐요."
-        : `${button.dataset.choice}는 10점이에요. 온 길과 남은 길을 더해, 더 작은 점수를 찾아보세요.`;
+        ? "B의 평가값은 4 + 4 = 8로 가장 작으므로 먼저 탐색한다."
+        : `${button.dataset.choice}의 평가값은 10이다. 평가값이 8인 B를 먼저 탐색한다.`;
     }));
   }
 
@@ -133,13 +133,13 @@
         cell.classList.toggle("is-current", id === state.current && !state.done);
         cell.classList.toggle("is-path", path.has(id));
         const f = state.costs.has(id) ? state.costs.get(id) + remaining(id, map.goal) : null;
-        cell.querySelector("text").textContent = isStart ? "출발" : isGoal ? "학교"
+        cell.querySelector("text").textContent = isStart ? "출발" : isGoal ? "목표"
           : state.walls.has(id) ? "벽" : path.has(id) ? "●" : state.open.has(id) ? f
             : state.closed.has(id) ? "·" : "";
         const [x, y] = point(id);
-        cell.querySelector("title").textContent = `${x + 1}열 ${y + 1}행: ` + (isStart ? "출발" : isGoal ? "학교"
-          : state.walls.has(id) ? "벽" : path.has(id) ? "찾은 길" : state.open.has(id) ? `후보, 점수 ${f}`
-            : state.closed.has(id) ? "살펴본 칸" : "빈 칸");
+        cell.querySelector("title").textContent = `${x + 1}열 ${y + 1}행: ` + (isStart ? "출발" : isGoal ? "목표"
+          : state.walls.has(id) ? "벽" : path.has(id) ? "복원 경로" : state.open.has(id) ? `후보, 평가값 ${f}`
+            : state.closed.has(id) ? "탐색한 칸" : "빈 칸");
       });
       const cost = state.current ? state.costs.get(state.current) : 0;
       const h = state.current ? remaining(state.current, map.goal) : remaining(key(map.start), map.goal);
@@ -149,14 +149,14 @@
       demo.querySelector("[data-search-count]").textContent = state.steps;
       if (state.done) {
         status.textContent = state.path.length
-          ? `도착! 기록한 길을 거꾸로 이었어요. 가장 짧은 길은 ${state.path.length - 1}칸이에요.`
-          : "후보를 모두 살펴봤지만 갈 수 있는 길이 없어요.";
+          ? `탐색 완료. 기록을 역추적해 ${state.path.length - 1}칸의 최단 경로를 복원했다.`
+          : "모든 후보를 확인했지만 목표까지 연결되는 경로가 없다.";
       } else if (!state.steps) {
-        status.textContent = "출발 칸부터 시작해요. ‘한 단계 보기’를 눌러 보세요.";
+        status.textContent = "출발 칸을 후보에 넣었다. ‘한 단계 실행’으로 탐색을 진행한다.";
       } else {
         const best = candidates(state)[0];
         const score = state.costs.get(best) + remaining(best, map.goal);
-        status.textContent = `이 칸의 이웃을 살펴봤어요. 남은 후보 ${state.open.size}개 중 다음은 ${score}점인 칸이에요.`;
+        status.textContent = `이웃 갱신 완료. 남은 후보 ${state.open.size}개 중 다음 최소 평가값은 ${score}이다.`;
       }
       next.disabled = state.done;
       finish.disabled = state.done;
