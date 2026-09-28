@@ -1,224 +1,56 @@
-/* Lecture 3 Visual SLAM practice worksheets and result examples. */
-.result-badge { flex-shrink: 0; color: #fff; font-size: clamp(14px, 1vw, 19px); letter-spacing: .1em; }
-.result-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; min-height: 0; gap: clamp(14px, 1.7vh, 22px); padding: clamp(22px, 2.1vw, 40px); }
-.result-figure { display: grid; min-width: 0; min-height: 0; margin: 0; overflow: auto; border-radius: 10px; background: #fff; }
-.result-figure a { display: block; min-height: 0; height: 100%; }
-.result-figure img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.result-stats > div { display: grid; align-content: start; gap: 6px; padding: 14px 20px; background: #f3f5fa; border-radius: 12px; color: var(--hy-blue); }
-.result-stats span { font-size: clamp(16px, 1.05vw, 20px); font-weight: 600; }
-.result-stats strong { font-size: clamp(25px, 1.95vw, 37px); line-height: 1.2; }
-.result-stats em { font-size: .58em; font-style: normal; }
-.result-stats small { font-size: clamp(14px, .92vw, 18px); color: #51576c; }
-.result-source { margin: 0; padding-top: 12px; border-top: 1px solid #dce0e8; color: #51576c; font-size: clamp(14px, .95vw, 18px); line-height: 1.5; }
-.result-work { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); min-height: 0; gap: 38px; align-items: center; }
-.result-map .result-body, .result-evaluation .result-body { grid-template-rows: auto minmax(0, 1fr) auto; }
-.result-map .result-figure { height: 100%; }
-.result-notes { display: grid; gap: 28px; align-content: center; min-width: 0; }
-.vslam-result .result-notes h3 { font-size: clamp(21px, 1.55vw, 30px); line-height: 1.35; }
-.result-notes p { margin: 9px 0 0; font-size: clamp(18px, 1.22vw, 23px); line-height: 1.6; }
-.result-notes code { font-size: .85em; }
-.result-legend { display: grid; gap: 12px; padding: 0; margin: 0; list-style: none; font-size: clamp(16px, 1.1vw, 21px); }
-.result-legend li { display: flex; align-items: center; gap: 12px; }
-.result-legend span { width: 19px; height: 19px; flex-shrink: 0; border: 1px solid #687086; border-radius: 3px; }
-.map-occupied { background: #1d2475; }.map-free { background: #fff; }.map-unknown { background: #9aa0a6; }
-.result-table-wrap { min-width: 0; }
-.result-table { width: 100%; border-collapse: collapse; font-size: clamp(18px, 1.45vw, 28px); }
-.result-table th, .result-table td { padding: 20px 18px; border-bottom: 1px solid #dce0e8; text-align: left; }
-.result-table thead { color: #fff; background: var(--hy-blue); }
-.result-table tbody th { color: var(--hy-blue); }
-.result-table td:last-child { font-weight: 700; color: #874000; background: #fff1e2; }
-.result-table small { font-size: .72em; font-weight: 400; }
-.result-takeaway { padding: 20px; border-radius: 12px; background: #f3f5fa; }
-.result-takeaway strong { color: var(--hy-blue); font-size: clamp(19px, 1.4vw, 27px); }
-@media (min-width: 801px) and (max-height: 820px) {
-  .result-body { padding: 20px 28px; gap: 12px; }
-  .result-stats { gap: 12px; }
-  .result-stats > div { padding: 10px 14px; gap: 4px; }
-  .result-stats span { font-size: 16px; }
-  .result-stats strong { font-size: 27px; }
-  .result-stats small { font-size: 14px; }
-  .result-source { font-size: 14px; padding-top: 10px; }
-  .result-work { gap: 26px; }
-  .result-notes { gap: 20px; }
-  .vslam-result .result-notes h3 { font-size: 21px; }
-  .result-notes p { font-size: 17px; margin-top: 6px; }
-  .result-legend { font-size: 16px; gap: 10px; }
-  .result-table { font-size: 18px; }
-  .result-table th, .result-table td { padding: 13px 12px; }
-  .result-takeaway { padding: 14px; }
-}
-@media (max-width: 1100px) and (min-width: 801px) {
-  .result-body { padding: 20px; }
-  .result-work { gap: 20px; }
-  .result-stats strong { font-size: 24px; }
-  .result-stats > div { padding: 10px; }
-  .result-table th, .result-table td { padding: 12px 8px; }
-}
-@media (max-width: 800px) {
-  .result-body { grid-template-rows: auto auto auto auto; padding: 24px 20px; gap: 24px; }
-  .result-stats { grid-template-columns: 1fr; gap: 12px; }
-  .result-stats strong { font-size: 30px; }
-  .result-stats > div { padding: 18px 20px; }
-  .result-figure a, .result-figure img { height: auto; }
-  .result-figure[data-horizontal-scroll] img { width: 760px; max-width: none; }
-  .result-work { grid-template-columns: 1fr; gap: 26px; }
-  .result-map .result-body, .result-evaluation .result-body { grid-template-rows: auto auto auto; }
-  .result-map .result-figure { height: auto; }
-  .result-notes { gap: 24px; }
-  .result-source { font-size: 14px; }
-  .result-table { font-size: 15px; }
-  .result-table th, .result-table td { padding: 12px 5px; }
-  .result-table small { font-size: 12px; }
-}
+/* Lecture 3: function goals and visible RViz results. */
 .lecture-3 :is(.vslam-practice, .vslam-result) .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
-.lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { min-height: 76px; padding: 18px 34px; gap: 24px; justify-content: space-between; background: var(--hy-blue); }
+.lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { min-height: 76px; padding: 18px 34px; background: var(--hy-blue); }
 .lecture-3 :is(.vslam-practice, .vslam-result) h2 { color: #fff; font-size: clamp(27px, 2.3vw, 44px); line-height: 1.25; }
-.lab-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: clamp(16px, 1.5vh, 24px); padding: clamp(22px, 2.1vw, 40px); min-height: 0; }
-.lab-concept { margin: 0; font-size: clamp(21px, 1.55vw, 30px); line-height: 1.5; color: var(--hy-blue); font-weight: 600; }
-.lab-work { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 2.5vw, 48px); min-height: 0; align-items: center; }
-.lab-panel { display: grid; align-content: center; gap: 18px; min-width: 0; padding: clamp(20px, 2vw, 38px); border-radius: 16px; background: #f3f5fa; }
-.lab-panel p { margin: 0; }
-.lab-panel .lab-panel-title { color: var(--hy-blue); font-size: clamp(21px, 1.55vw, 30px); font-weight: 700; }
-.lab-panel .lab-caption { font-size: clamp(16px, 1.05vw, 20px); color: #51576c; line-height: 1.55; }
-.lab-inputs { display: grid; gap: 9px; }
-.lab-inputs div { padding: 9px 14px; border-radius: 8px; background: #fff; font-size: clamp(15px, 1.05vw, 20px); }
-.lab-inputs b { display: block; color: var(--hy-blue); }
-.lab-inputs code { font-size: .88em; overflow-wrap: anywhere; }
-.lab-node { padding: 17px; border-radius: 10px; background: var(--hy-blue); color: #fff; text-align: center; font-size: clamp(20px, 1.45vw, 28px); font-weight: 700; }
-.lab-node small { display: block; margin-top: 5px; font-size: .68em; font-weight: 400; color: #fff; }
-.lab-arrow { text-align: center; color: #874000; font-size: 23px; font-weight: 700; line-height: 1; }
-.lab-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(20px, 2.7vh, 32px); counter-reset: lab-step; }
-.lab-steps li { display: grid; grid-template-columns: 33px minmax(0, 1fr); column-gap: 14px; counter-increment: lab-step; align-items: start; }
-.lab-steps li::before { content: counter(lab-step); display: grid; place-items: center; width: 31px; height: 31px; margin-top: 2px; border-radius: 50%; background: #fff1e2; color: #874000; font-size: 18px; font-weight: 700; }
-.vslam-practice .lab-steps h3 { font-size: clamp(21px, 1.5vw, 29px); line-height: 1.35; }
-.lab-steps p { margin: 7px 0 0; font-size: clamp(17px, 1.2vw, 23px); line-height: 1.55; color: #3f3d42; }
-.lab-check { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 15px; padding-top: 16px; border-top: 2px solid #e5e5e5; font-size: clamp(17px, 1.15vw, 22px); line-height: 1.5; color: var(--hy-blue); }
-.lab-check p { margin: 0; }
-.lab-check strong { color: #874000; }
-.lab-formula { display: block; margin: 0; padding: 18px 12px; border-radius: 8px; background: #fff; text-align: center; color: var(--hy-blue); font-size: clamp(17px, 1.28vw, 24px); font-weight: 700; line-height: 1.6; }
-.lab-formula code { font-size: .8em; overflow-wrap: anywhere; }
-.lab-diagram { display: block; width: 100%; height: auto; }
-.lab-diagram text { font-family: inherit; fill: #1d2475; font-size: 22px; font-weight: 600; }
-.lab-diagram .lab-svg-small { font-size: 18px; fill: #51576c; font-weight: 400; }
-.lab-keyframes { display: flex; gap: 14px; }
-.lab-keyframes span { flex: 1; padding: 20px 8px; border-radius: 10px; background: var(--hy-blue); color: #fff; font-size: 25px; text-align: center; font-weight: 700; }
-.lab-keyframes small { display: block; font-size: 15px; font-weight: 400; }
-.lab-mini-table { width: 100%; border-collapse: collapse; font-size: clamp(17px, 1.18vw, 23px); color: var(--hy-blue); }
-.lab-mini-table th, .lab-mini-table td { padding: 14px 8px; border-bottom: 1px solid #d8dce7; text-align: left; }
-.lab-mini-table thead { background: #e5e9f3; }
+.vslam-practice .lab-body { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; gap: 28px; padding: clamp(28px, 2.5vw, 48px); }
+.lab-outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 2.5vw, 48px); align-items: center; min-height: 0; }
+.lab-outcomes > div { min-width: 0; padding: clamp(24px, 2.1vw, 40px); }
+.lab-goal { border-radius: 16px; background: #f3f5fa; }
+.vslam-practice .lab-outcomes h3 { margin: 0 0 28px; font-size: clamp(25px, 1.8vw, 35px); }
+.lab-outcomes ul { display: grid; gap: 24px; margin: 0; padding-left: 1.1em; font-size: clamp(21px, 1.5vw, 29px); line-height: 1.65; word-break: keep-all; overflow-wrap: break-word; }
+.lab-outcomes li::marker { color: var(--hy-blue); }
+.lab-handoff { margin: 0; padding-top: 20px; border-top: 1px solid #dce0e8; color: #51576c; font-size: clamp(17px, 1.1vw, 21px); line-height: 1.5; word-break: keep-all; }
+.vslam-result .result-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; gap: 22px; padding: clamp(22px, 2.1vw, 40px); }
+.result-caption { margin: 0; color: var(--hy-blue); font-size: clamp(21px, 1.55vw, 30px); font-weight: 600; line-height: 1.5; word-break: keep-all; }
+.result-figure { display: grid; min-width: 0; min-height: 0; margin: 0; overflow: auto; border-radius: 8px; background: #f3f5fa; }
+.result-figure a { cursor: zoom-in; display: block; min-height: 0; height: 100%; }
+.result-figure img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.result-figure:focus-visible { outline: 3px solid var(--hy-blue); outline-offset: 3px; }
+.result-source { margin: 0; padding-top: 12px; border-top: 1px solid #dce0e8; color: #51576c; font-size: clamp(14px, .95vw, 18px); line-height: 1.5; }
+.result-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; min-height: 0; min-width: 0; }
+.result-comparison > div { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 14px; min-width: 0; min-height: 0; }
+.vslam-result .result-comparison h3 { font-size: clamp(23px, 1.6vw, 31px); text-align: center; }
 @media (min-width: 801px) and (max-height: 820px) {
   .lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { min-height: 58px; padding: 12px 26px; }
-  .lab-body { padding: 20px 28px; gap: 13px; }
-  .lab-concept { font-size: 21px; }
-  .lab-panel { gap: 9px; padding: 15px 22px; }
-  .lab-panel .lab-panel-title { font-size: 21px; }
-  .lab-panel .lab-caption { font-size: 16px; }
-  .lab-inputs { gap: 6px; }
-  .lab-inputs div { padding: 5px 10px; font-size: 15px; }
-  .lab-node { padding: 10px; font-size: 20px; }
-  .lab-arrow { font-size: 19px; }
-  .lab-steps { gap: 16px; }
-  .vslam-practice .lab-steps h3 { font-size: 21px; }
-  .lab-steps p { font-size: 17px; margin-top: 5px; }
-  .lab-formula { padding: 10px; font-size: 18px; }
-  .lab-check { padding-top: 12px; font-size: 17px; }
-  .lab-diagram { max-height: 170px; }
-  .lab-keyframes span { padding: 12px 8px; font-size: 21px; }
-  .lab-mini-table th, .lab-mini-table td { padding: 10px 8px; }
+  .vslam-practice .lab-body { padding: 24px 28px; gap: 20px; }
+  .lab-outcomes > div { padding: 22px; }
+  .vslam-practice .lab-outcomes h3 { margin-bottom: 20px; font-size: 26px; }
+  .lab-outcomes ul { gap: 18px; font-size: 22px; line-height: 1.55; }
+  .lab-handoff { padding-top: 14px; font-size: 17px; }
+  .vslam-result .result-body { padding: 20px 28px; gap: 14px; }
+  .result-caption { font-size: 21px; }
+  .result-source { padding-top: 10px; font-size: 14px; }
+  .result-comparison { gap: 18px; }
+  .result-comparison > div { gap: 10px; }
 }
 @media (max-width: 1100px) and (min-width: 801px) {
   .lecture-3 :is(.vslam-practice, .vslam-result) { padding-left: 38px; padding-right: 38px; }
-  .lab-body { padding: 20px; }
-  .lab-work { gap: 20px; }
-  .lab-steps li { grid-template-columns: 28px minmax(0, 1fr); column-gap: 9px; }
-  .lab-steps li::before { width: 26px; height: 26px; font-size: 16px; }
+  .lab-outcomes { gap: 20px; }
+  .lab-outcomes > div { padding: 20px; }
 }
 @media (max-width: 800px) {
   .lecture-3 :is(.vslam-practice, .vslam-result) { height: auto; min-height: 100dvh; }
-  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__inner { grid-template-rows: auto auto; }
-  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { align-items: flex-start; flex-direction: column; padding: 24px; gap: 14px; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__inner { grid-template-rows: auto auto; gap: 0; }
+  .lecture-3 :is(.vslam-practice, .vslam-result) .slide__header { padding: 24px; }
   .lecture-3 :is(.vslam-practice, .vslam-result) h2 { font-size: 27px; }
-  .lab-body { display: grid; grid-template-rows: auto auto auto; padding: 24px 20px; gap: 24px; }
-  .lab-work { grid-template-columns: 1fr; gap: 28px; }
-  .lab-panel { padding: 20px 16px; }
-  .lab-diagram { min-height: 120px; }
-  .lab-diagram text { font-size: 28px; }
-  .lab-diagram .lab-svg-small { font-size: 24px; }
-  .lab-inputs code { font-size: 12px; }
-  .lab-check { grid-template-columns: 1fr; gap: 8px; }
-  .lab-steps { gap: 24px; }
-}
-
-/* Concrete submissions share the existing lecture practice header. */
-.result-source a { color: var(--hy-blue); font-weight: 600; text-underline-offset: 3px; }
-.result-source code { overflow-wrap: anywhere; }
-.lab-check code, .lab-steps code { font-size: .88em; overflow-wrap: anywhere; }
-.result-compact-table { width: 100%; border-collapse: collapse; color: var(--hy-blue); font-size: clamp(15px, 1.05vw, 20px); line-height: 1.45; }
-.result-compact-table th, .result-compact-table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid #dce0e8; }
-.result-compact-table thead { background: #f3f5fa; }
-.result-compact-table td:nth-child(3) { font-weight: 700; color: #874000; }
-.result-compact-table td:last-child { color: #51576c; }
-@media (min-width: 801px) and (max-height: 820px) {
-  .result-compact-table { font-size: 14px; }
-  .result-compact-table th, .result-compact-table td { padding: 5px 8px; }
-}
-@media (max-width: 800px) {
-  .result-compact-table { font-size: 13px; }
-  .result-compact-table th, .result-compact-table td { padding: 8px 4px; }
-  .result-compact-table td:last-child { max-width: 100px; }
-}
-
-/* Agent implementation and student verification share one worksheet. */
-.agent-lab-work { grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); align-items: center; }
-.agent-task { min-width: 0; padding: clamp(20px, 1.65vw, 32px); border-radius: 16px; background: #f3f5fa; }
-.agent-task-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
-.agent-lab :is(.agent-task-heading h3, .agent-review-title) { color: var(--hy-blue); font-size: clamp(22px, 1.55vw, 30px); line-height: 1.35; }
-.agent-prompt { color: #3f3d42; font-size: clamp(17px, 1.15vw, 22px); line-height: 1.6; }
-.agent-prompt p { margin: 0 0 16px; }
-.agent-prompt code { font-size: .84em; overflow-wrap: anywhere; }
-.agent-topics { display: grid; gap: 4px; margin: -5px 0 16px; color: var(--hy-blue); }
-.agent-prompt .agent-handoff { margin: 0; padding-top: 13px; border-top: 1px solid #d8dce7; color: var(--hy-blue); font-size: .9em; font-weight: 600; }
-.agent-review { min-width: 0; }
-.agent-lab .agent-review-title { margin: 0 0 20px; }
-.agent-lab .lab-steps { gap: 22px; }
-.agent-lab .lab-steps h3 { font-size: clamp(20px, 1.35vw, 26px); }
-.agent-lab .lab-steps p { font-size: clamp(17px, 1.1vw, 21px); }
-.lab-copy-button { flex-shrink: 0; min-width: 100px; padding: 8px 12px; border: 1px solid #c2c7dc; border-radius: 8px; color: var(--hy-blue); background: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
-.lab-copy-button:hover { background: #e8ecf7; }
-.lab-copy-button:focus-visible { outline: 3px solid #d77600; outline-offset: 3px; }
-.lab-copy-button:disabled { cursor: wait; opacity: .65; }
-.lab-copy-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.agent-lab .lab-check a { color: var(--hy-blue); font-weight: 600; text-underline-offset: 3px; }
-@media (min-width: 801px) and (max-height: 820px) {
-  .agent-task { padding: 16px 20px; }
-  .agent-task-heading { margin-bottom: 12px; }
-  .agent-lab :is(.agent-task-heading h3, .agent-review-title) { font-size: 21px; }
-  .agent-prompt { font-size: 16px; line-height: 1.55; }
-  .agent-prompt p { margin-bottom: 10px; }
-  .agent-topics { gap: 2px; margin: -3px 0 10px; }
-  .agent-prompt .agent-handoff { padding-top: 10px; font-size: 15px; }
-  .agent-review-title { margin-bottom: 13px; }
-  .agent-lab .lab-steps { gap: 14px; }
-  .agent-lab .lab-steps h3 { font-size: 20px; }
-  .agent-lab .lab-steps p { font-size: 16px; margin-top: 4px; }
-  .lab-copy-button { padding: 6px 9px; font-size: 13px; }
-}
-@media (max-width: 1100px) and (min-width: 801px) {
-  .agent-task { padding: 16px; }
-  .agent-task-heading { gap: 8px; }
-  .agent-lab .lab-work { gap: 22px; }
-  .agent-lab .lab-steps h3 { font-size: 19px; }
-}
-@media (max-width: 800px) {
-  .agent-lab-work { grid-template-columns: 1fr; }
-  .agent-task { padding: 22px 16px; }
-  .agent-task-heading { gap: 10px; }
-  .agent-lab :is(.agent-task-heading h3, .agent-review-title) { font-size: 21px; }
-  .agent-prompt { font-size: 17px; }
-  .agent-topics code { font-size: 12px; }
-  .agent-review-title { margin-bottom: 18px; }
-  .agent-lab .lab-steps { gap: 24px; }
-  .agent-lab .lab-steps p { font-size: 17px; }
-  .lab-copy-button { min-width: 98px; padding: 7px 8px; font-size: 13px; }
+  .vslam-practice .lab-body, .vslam-result .result-body { padding: 24px 20px; gap: 24px; grid-template-rows: auto; }
+  .lab-outcomes { grid-template-columns: 1fr; gap: 22px; }
+  .lab-outcomes > div { padding: 22px 18px; }
+  .vslam-practice .lab-outcomes h3 { margin-bottom: 18px; font-size: 25px; }
+  .lab-outcomes ul { font-size: 20px; gap: 18px; }
+  .lab-handoff { font-size: 16px; }
+  .result-figure a, .result-figure img { height: auto; }
+  .result-figure[data-horizontal-scroll] img { width: 100%; max-width: 100%; }
+  .result-comparison { grid-template-columns: 1fr; gap: 24px; }
+  .result-source { font-size: 14px; }
 }
