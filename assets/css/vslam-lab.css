@@ -168,3 +168,57 @@
   .result-compact-table th, .result-compact-table td { padding: 8px 4px; }
   .result-compact-table td:last-child { max-width: 100px; }
 }
+
+/* Agent implementation and student verification share one worksheet. */
+.agent-lab-work { grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr); align-items: center; }
+.agent-task { min-width: 0; padding: clamp(20px, 1.65vw, 32px); border-radius: 16px; background: #f3f5fa; }
+.agent-task-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.agent-lab :is(.agent-task-heading h3, .agent-review-title) { color: var(--hy-blue); font-size: clamp(22px, 1.55vw, 30px); line-height: 1.35; }
+.agent-prompt { color: #3f3d42; font-size: clamp(17px, 1.15vw, 22px); line-height: 1.6; }
+.agent-prompt p { margin: 0 0 16px; }
+.agent-prompt code { font-size: .84em; overflow-wrap: anywhere; }
+.agent-topics { display: grid; gap: 4px; margin: -5px 0 16px; color: var(--hy-blue); }
+.agent-prompt .agent-handoff { margin: 0; padding-top: 13px; border-top: 1px solid #d8dce7; color: var(--hy-blue); font-size: .9em; font-weight: 600; }
+.agent-review { min-width: 0; }
+.agent-lab .agent-review-title { margin: 0 0 20px; }
+.agent-lab .lab-steps { gap: 22px; }
+.agent-lab .lab-steps h3 { font-size: clamp(20px, 1.35vw, 26px); }
+.agent-lab .lab-steps p { font-size: clamp(17px, 1.1vw, 21px); }
+.lab-copy-button { flex-shrink: 0; min-width: 100px; padding: 8px 12px; border: 1px solid #c2c7dc; border-radius: 8px; color: var(--hy-blue); background: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.lab-copy-button:hover { background: #e8ecf7; }
+.lab-copy-button:focus-visible { outline: 3px solid #d77600; outline-offset: 3px; }
+.lab-copy-button:disabled { cursor: wait; opacity: .65; }
+.lab-copy-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.agent-lab .lab-check a { color: var(--hy-blue); font-weight: 600; text-underline-offset: 3px; }
+@media (min-width: 801px) and (max-height: 820px) {
+  .agent-task { padding: 16px 20px; }
+  .agent-task-heading { margin-bottom: 12px; }
+  .agent-lab :is(.agent-task-heading h3, .agent-review-title) { font-size: 21px; }
+  .agent-prompt { font-size: 16px; line-height: 1.55; }
+  .agent-prompt p { margin-bottom: 10px; }
+  .agent-topics { gap: 2px; margin: -3px 0 10px; }
+  .agent-prompt .agent-handoff { padding-top: 10px; font-size: 15px; }
+  .agent-review-title { margin-bottom: 13px; }
+  .agent-lab .lab-steps { gap: 14px; }
+  .agent-lab .lab-steps h3 { font-size: 20px; }
+  .agent-lab .lab-steps p { font-size: 16px; margin-top: 4px; }
+  .lab-copy-button { padding: 6px 9px; font-size: 13px; }
+}
+@media (max-width: 1100px) and (min-width: 801px) {
+  .agent-task { padding: 16px; }
+  .agent-task-heading { gap: 8px; }
+  .agent-lab .lab-work { gap: 22px; }
+  .agent-lab .lab-steps h3 { font-size: 19px; }
+}
+@media (max-width: 800px) {
+  .agent-lab-work { grid-template-columns: 1fr; }
+  .agent-task { padding: 22px 16px; }
+  .agent-task-heading { gap: 10px; }
+  .agent-lab :is(.agent-task-heading h3, .agent-review-title) { font-size: 21px; }
+  .agent-prompt { font-size: 17px; }
+  .agent-topics code { font-size: 12px; }
+  .agent-review-title { margin-bottom: 18px; }
+  .agent-lab .lab-steps { gap: 24px; }
+  .agent-lab .lab-steps p { font-size: 17px; }
+  .lab-copy-button { min-width: 98px; padding: 7px 8px; font-size: 13px; }
+}
