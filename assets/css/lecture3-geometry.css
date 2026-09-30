@@ -1,0 +1,40 @@
+/* Projection and triangulation reuse the introductory lecture 3 layout. */
+.geometry-summary { display: grid; gap: 14px; }
+.geometry-context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  padding-top: 16px;
+  border-top: 2px solid var(--line);
+}
+.geometry-context strong {
+  display: block;
+  color: var(--hy-blue);
+  font-size: clamp(21px, 1.45vw, 28px);
+  line-height: 1.4;
+}
+.geometry-context p {
+  margin-top: 6px;
+  color: var(--hy-gray);
+  font-size: clamp(19px, 1.25vw, 24px);
+  line-height: 1.5;
+}
+.geometry-slide .basics-takeaway { font-size: clamp(23px, 1.8vw, 34px); }
+.geometry-slide .basics-panel { overflow-x: auto; }
+.geometry-slide .basics-svg { flex-basis: 0; }
+.geometry-slide .basics-svg text { font-size: 28px; }
+.geometry-slide .basics-svg .diagram-small { font-size: 24px; }
+.geometry-slide .basics-svg .diagram-emphasis { font-size: 28px; }
+.geometry-slide .basics-svg .diagram-white { fill: #fff; font-size: 26px; }
+@media (min-width: 801px) and (max-height: 850px) {
+  .geometry-summary { gap: 10px; }
+  .geometry-context { padding-top: 10px; gap: 24px; }
+  .geometry-context strong { font-size: 21px; }
+  .geometry-context p { font-size: 18px; line-height: 1.4; }
+  .geometry-slide .basics-takeaway { font-size: 25px; }
+}
+@media (max-width: 800px) {
+  .geometry-context { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .geometry-slide .basics-svg { flex: none; height: auto; min-width: 600px; }
+  .geometry-slide .basics-panel > .basics-caption { min-width: 0; }
+}
