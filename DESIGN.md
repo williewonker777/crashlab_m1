@@ -1,3 +1,87 @@
+# Design
+
+## Source of truth
+
+**Active · 2026-10-07.** 정적 강의 덱 전체의 기존 시각 언어를 유지한다. 이번 변경 범위는
+강의 4의 후반부 15~38p와 해당 진입 정보다. 아래 v3~v88 기록, `DESIGN-SVG.md`,
+`assets/css/deck.css`, 강의 2의 실제 로봇 예제와 강의 3의 입문·실습 페이지를 확인했다.
+현재 구현과 최신 개정 기록을 오래된 페이지 수·예시보다 우선한다.
+
+## Brand
+
+대학 강의용의 명확하고 절제된 설명. 한양 블루와 강의별 악센트, 실물/원본 그림과
+근거가 있는 수치를 사용한다. 광고체·과장·출처 없는 모형 사진·장식용 도형은 피한다.
+
+## Product goals
+
+학생이 자료 → 로봇 모델 → 시뮬레이션 환경 → 검증을 설명하고 재현하게 한다.
+기존 VLA 이론을 대체하거나 로봇 런타임을 변경하는 작업은 아니다.
+성공 기준은 내용 정확성, 기존 1~14p 보존, 화면 가독성과 탐색 유지다.
+
+## Personas and jobs
+
+로봇 모델 작성을 처음 배우는 학생과 프로젝터로 설명하는 강사.
+학생은 원본 자료·짧은 코드·실행 결과를 대조하고, 강사는 한 장에서 한 개념을 설명한다.
+
+## Information architecture
+
+`index.html` → 강의 4. 1~14p는 VLA, 15p는 새 챕터 진입, 16~26p는 자료·URDF,
+27p는 형식 비교, 28~32p는 MuJoCo, 33~35p는 USD·Isaac Sim, 36~38p는 검증·실습·정리다.
+기존 해시 앵커·키보드·진행 표시를 재사용한다.
+
+## Design principles
+
+근거를 먼저 보여 주고 결과를 설명한다. 도면·모델·씬을 구분한다.
+좌우 분할, 표, 실제 그림, 코드, 챕터 표지로 정보 위계를 만들되 새 UI 체계를 만들지 않는다.
+
+## Visual language
+
+기존 `--hy-blue: #1D2475`, 강의 4 보라 `--accent: #7B5EA7`와 회색·보라 틴트를 유지한다.
+Noto Sans KR·반응형 제목/본문·둥근 패널·숫자 단계·짧은 핵심 문장을 재사용한다.
+코드는 고정폭 글꼴의 남색 패널, 긴 줄은 명시적인 가로 스크롤로 처리한다.
+
+## Components
+
+공통 deck/header/navigation은 수정하지 않는다. 신규 `.model-slide`, `.model-chapter`,
+`.model-columns`, `.model-panel`, `.model-steps`, `.model-code`, `.model-table`은
+`assets/css/lecture4-models.css`에서만 정의하고 새 페이지에서만 사용한다.
+SVG는 편집 가능한 네이티브 도식, 과제 그림은 PPTX에서 추출한 원본 PNG다.
+
+## Accessibility
+
+한국어 문서·연속 슬라이드 ID·ARIA 번호·SVG 제목·이미지 대체텍스트를 유지한다.
+표에는 행/열 머리글, 코드에는 키보드 초점과 스크롤 설명을 둔다.
+기존 focus/reduced-motion 처리를 재사용한다. 전면 WCAG 적합성 감사로 주장하지 않는다.
+
+## Responsive behavior
+
+1920×1080·1366×768·1024×768·390×844에서 확인한다.
+800px 이하에서는 세로 배치하며 긴 페이지를 스크롤할 수 있다.
+코드·표·좌표 도식은 내용을 줄여 없애지 않고 패널 안에서 가로로 스크롤한다.
+
+## Interaction states
+
+정적 페이지이므로 별도 로딩·빈 상태 UI는 추가하지 않는다. 기존 탐색·도움말·전체화면을 유지한다.
+미해결 자산은 테스트 실패로 취급한다. Google Fonts를 불러오지 못하면 시스템 글꼴을 사용한다.
+
+## Content voice
+
+기존 강의처럼 “~한다 / ~이다” 서술체를 사용한다. 용어는 첫 등장에 역할을 풀어 쓴다.
+실제 파일 발췌, 교육용 예제, 개념도, 현재 파일의 한계와 미검증 사항을 명확히 구분한다.
+
+## Implementation constraints
+
+빌드 없는 HTML/CSS/JS, 추가 의존성 없음. 공통 CSS·탐색 JS·다른 강의는 변경하지 않는다.
+원본 과제·URDF·MJCF·USD는 읽기 전용이다. 원격 Git/게시/commit은 이 작업에 포함하지 않는다.
+구조·코드·화면·원본 해시 검증을 통과해야 로컬 완료로 보고한다.
+
+## Open questions
+
+- [ ] USD의 리비전 갱신·물리 재검증은 모델 소유자의 별도 작업이다. 현재 강의는 차이를 숨기지 않는다.
+- [ ] GitHub Pages 게시 여부는 사용자의 후속 원격 반영 승인 범위다. 로컬 강의 작성의 완료 조건과 구분한다.
+
+---
+
 # 크래쉬랩 M1 강의 덱 — 디자인 기획서 v3
 2026-08-21. **v1·v2·v2.1 전부 폐기. 이 문서가 유일한 정본이다.**
 
@@ -1226,3 +1310,74 @@ L3 제어 루프(폐루프 블록도)·L3 A·B·C 예시·L5 제어 용어(conce
 - [Zhang, Kaess, Singh — Real-time Depth Enhanced Monocular Odometry](https://www.cs.cmu.edu/~kaess/pub/Zhang14iros.pdf): 단안의 스케일 모호성과 작은 기선에서의 원거리 뎁스 불확실성.
 
 다이어그램은 기존 덱과 같이 편집 가능한 네이티브 SVG이며, 실제 촬영 영상이나 측정 자료를 가장하지 않는다.
+
+
+# v89 — 강의 ④ 과제자료에서 URDF·MJCF·USD 환경 구성까지 확장
+2026-10-07. 사용자 제공 과제와 로봇 파일을 읽고 기존 14장 뒤에 24장을 추가한다.
+
+## 입력 근거와 구성
+
+- `연심실_과제1/DD_GRP_DATA.pptx`: 손목·그리퍼 부품, 73 mm·93.5 mm 간격, 90° RP 조립.
+- `DD_REVISION-GRIPPER_MASS_PROPERTIES.xlsx`: mass(kg), COM(WCS, m), centroidal inertia(WCS 축, kg·m²).
+  메시의 mm→m 스케일과 별개이며 질량표에 0.001을 재적용하지 않는다.
+- `DD_STL/`: WRIST1·WRIST2·INPUT·COUPLER·OUTPUT. `alice_m1_urdf/alice_m1.urdf`는 기존 구조 입력이다.
+- 실제 결과: simulation 저장소의 `alice_urdf/alice_m1/alice_m1_gripper_v1.urdf`,
+  `alice_mjcf/alice_m1/alice_m1_gripper_v1.xml`,
+  `alice_usd/alice_m1/alice_m1_gripper_v1/alice_m1_gripper_v1.usda`와 configuration 레이어들.
+- 강의 예제의 fixed/revolute joint, visual, inertial, mimic, equality/motor 속성을 실제 파일과 대조한다.
+  예시 scene XML은 교육용 신규 파일이며 기존 `scene_alice_m1.xml`(rohand 참조)과 구분한다.
+- `assets/img/lecture4/assignment-arm.png`, `assignment-gripper.png`, `assignment-wrist-rp.png`는
+  PPTX의 `ppt/media/image1.png`, `image2.png`, `image5.png`를 수정 없이 추출한 그림이다.
+
+## 정확성 경계
+
+- XML은 문법이며 URDF와 MJCF는 별도 스키마다. USD는 레이어 합성과 물리 스키마를 사용한다.
+  “URDF → MJCF → USD 자동 변환” 또는 세 파일의 동등한 물리 결과를 주장하지 않는다.
+- URDF tree+mimic과 MJCF joint equality는 이 모델의 연동 표현이다. 실제 핀 연결의 폐루프를
+  완전히 재현한다고 설명하지 않는다. MJCF에는 equality joint 12개와 motor 23개가 있다.
+- 실제 MJCF는 `angle="degree"`; URDF의 rpy는 rad다. mesh scale은 세 축 0.001이다.
+  USD는 작성된 `metersPerUnit=1`, `upAxis="Z"`를 읽는다. USD의 기본 단위가 1 m라고 설명하지 않는다.
+- USD를 실제 composition으로 열어 현재 이전 손목 리비전을 확인했다. WRIST2가 없고
+  INPUT의 localPos0 z는 −0.1505 m, 질량 합계는 약 116.6007 kg이다.
+  현재 URDF/MJCF는 WRIST1+WRIST2, 해당 누적 간격 −0.1665 m, 질량 합계 약 117.4993 kg이다.
+  fixed joint 병합만으로도 이름이 달라질 수 있으므로 숫자와 형상을 함께 대조한다.
+- MJCF WRIST2에는 전용 collision geom이 없고 손가락은 단순화한 충돌 형상이다.
+  URDF의 effort=1000이나 MJCF의 ctrllimited=false는 실기 안전 허용값으로 제시하지 않는다.
+- Isaac UI와 importer 옵션은 버전 의존임을 적는다. 이번 검증은 USD composition 확인이며
+  Isaac Sim Play, 파지 성공, 시뮬레이터 간 동적 동등성이나 실기 안전성 검증이 아니다.
+
+## 공식 참고자료
+
+- [ROS Jazzy — Visual URDF](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/URDF/Building-a-Visual-Robot-Model-with-URDF-from-Scratch.html)
+- [ROS Jazzy — Movable URDF](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/URDF/Building-a-Movable-Robot-Model-with-URDF.html)
+- [ROS Jazzy — Physical and Collision Properties](https://docs.ros.org/en/jazzy/Tutorials/Intermediate/URDF/Adding-Physical-and-Collision-Properties-to-a-URDF-Model.html)
+- [MuJoCo — Modeling](https://mujoco.readthedocs.io/en/stable/modeling.html): body 트리·joint·geom과 모델 구성.
+- [MuJoCo — XML Reference](https://mujoco.readthedocs.io/en/stable/XMLreference.html): compiler·inertial·equality·actuator.
+- [Isaac Sim — URDF Importer](https://docs.isaacsim.omniverse.nvidia.com/latest/importer_exporter/ext_isaacsim_asset_importer_urdf.html): 현재 importer 옵션. 설치 버전과 UI 차이가 있을 수 있다.
+- [Isaac Sim 5.0 — URDF Importer API](https://docs.isaacsim.omniverse.nvidia.com/5.0.0/py/api/classisaacsim_1_1asset_1_1importer_1_1urdf_1_1_urdf_importer.html)
+- [OpenUSD 25.11 — Linear Units](https://openusd.org/25.11/api/group___usd_geom_linear_units__group.html): 작성된 stage 단위와 fallback의 구분.
+
+## 검증 범위
+
+`tools/check-lecture4-content.py`는 38페이지·카운터·목차·ARIA·SVG·자산 참조·코드 구문·개념 구간을
+검사한다. `--baseline`은 기존 1~14p가 ARIA 총수를 제외하고 그대로인지 검사하며,
+`--self-test`는 오류 주입 검사의 검출 여부를 확인한다. 새 씬은 MuJoCo 3.11.0에서
+실제 로드와 100 step을 검증하고, 코드 예제도 같은 작업 디렉터리에서 실행했다.
+화면 검증과 검증 스크립트 실행 결과는 작업 기록에 남긴다.
+
+
+### v89 검토 보완 — 독립적으로 저장할 수 있는 예제
+
+- 22p는 link 안의 visual/collision 구조를 함께 제시하고, 실제 WRIST1·WRIST2와
+  fixed joint를 묶은 `assets/examples/lecture4/wrist_pair.urdf` 다운로드를 연결한다.
+  메시 재배포 없이 원본 URDF 옆에서 같은 meshes/를 참조하며, 전체 로봇과 구분한다.
+- 35p는 `assets/examples/lecture4/scene_gripper_lab.usda`를 로봇 폴더 옆에 놓고 여는 절차를 포함한다.
+  PhysicsScene·로봇 Reference·정적 바닥·0.1 kg 큐브·조명·카메라가 들어 있는 완성 씬이다.
+  OpenUSD에서 참조 7개 레이어, collider/rigid-body/mass 스키마와 카메라 방향을 검증했다.
+  Isaac Sim Play 검증이나 이전 리비전 로봇의 자동 갱신을 뜻하지 않는다.
+
+- 내용 검사기는 XML 발췌도 루트로 감싸 구문을 검사하고, 관절 위치·각도·축·한계,
+  메시 scale, 질량·관성, mimic/equality의 핵심 수치를 명시적으로 고정한다.
+  구문 오류와 73 mm→730 mm, 질량 100배, mimic 방향 반전 등 10개 오류 주입을 검출한다.
+- 390px 모바일의 상단 wordmark·강의 탭 간 겹침은 보존된 기존 14p에서도 재현되는
+  공통 UI 문제다. 이번 후반부의 신규 콘텐츠와 별개이며 공통 탐색 CSS는 변경하지 않는다.

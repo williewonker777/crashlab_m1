@@ -7,8 +7,8 @@
 - `lecture-1.html`: ROS2 로봇 프로그래밍 이론·실습 (60장)
 - `lecture-2.html`: 제어 (66장) — 이론 63 + 실습 준비 1 + 실습 2
 - `lecture-3.html`: VSLAM · 내비게이션 (66장) — 이론 60 + 실습 3 + 결과 예시 3
-- `lecture-4.html`: VLA 이론 (14장)
-- 전체: OT 11장 + 4개 강의 206장, 총 217장
+- `lecture-4.html`: VLA 이론 · 로봇 모델과 시뮬레이션 (38장) — 기존 이론 14 + URDF·MJCF·USD 24
+- 전체: OT 11장 + 4개 강의 230장, 총 241장
 
 강의 1은 PowerPoint 원본의 텍스트·도형·이미지를 네이티브 HTML/CSS로 변환한 덱이다.
 다른 강의와 같은 헤더·서체·색상 토큰을 사용하며, 본문 그리드는 글자 크기에 맞춰 높이가 늘어난다.
@@ -39,3 +39,19 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 강의 ②의 챕터 3은 차동 구동 기구학을 중심으로 오도메트리·좌표계·TF·quaternion을 연결한다. 35페이지에서는 좌우 바퀴 속도에 따른 궤적을, 42페이지에서는 yaw에 따른 quaternion을 조작할 수 있다. 구성과 참고 자료는 [MOBILE_ROBOT.md](MOBILE_ROBOT.md)에 정리했다.
 
 챕터 4 「팔 제어」는 ALICE M1의 7자유도 팔로 물체에 접근하고 잡고 옮기는 매니퓰레이션을 다룬다. 52페이지는 7개 관절의 순기구학 시연, 54페이지는 같은 TCP pose를 유지하는 서로 다른 팔 자세의 역기구학 시연이다. 63페이지에서 관련 개념을 복습하고, 64~65페이지에서는 Pinocchio로 FK·IK를 구현해 로봇 TF와 비교하고 동작으로 연결한다. 실습의 손 기준 프레임은 시연의 교육용 TCP와 구분한다. 로봇 모델·사진·수업 구성은 [ARM_MANIPULATION.md](ARM_MANIPULATION.md)에 정리했다.
+
+강의 ④의 15~38페이지는 `연심실_과제1`의 PPTX·STL·질량표에서 ALICE M1 그리퍼의
+URDF를 작성하고, MuJoCo MJCF와 Isaac Sim USD에서 로봇·환경을 구성하는 과정이다.
+실제 파일의 좌표·질량·관절 코드와 별도 씬 예제를 사용하며, 현재 USD에 이전 손목
+리비전이 남아 있다는 차이를 검증 사례로 설명한다. 원본 로봇 파일은 수정하지 않는다.
+`python3 tools/check-lecture4-content.py --self-test`로 구조·내용·참조를 검사한다.
+
+
+강의 ④의 다운로드 예제는 추가 패키지를 요구하지 않는 텍스트 에셋이다.
+- [두 링크 URDF](assets/examples/lecture4/wrist_pair.urdf): 실제 WRIST1·WRIST2의
+  visual·collision·inertial과 fixed joint를 `<robot>`으로 묶었다. **전체 M1이 아닌 두 링크 예제**다.
+  제공된 원본 URDF와 같은 디렉터리에 두고 `meshes/gripper/`를 함께 유지한다.
+- [USD 씬](assets/examples/lecture4/scene_gripper_lab.usda): `alice_m1_gripper_v1/` 폴더 옆에 두고 연다.
+  상대 경로의 로봇 Reference, PhysicsScene, 정적 바닥, 0.1 kg 큐브, 조명, 카메라가 있다.
+  USD 폴더의 `configuration/`도 함께 필요하다. 기존 USD의 리비전 차이를 먼저 해소해야 하며,
+  이 예제의 검증은 OpenUSD 합성·스키마까지다. Isaac Sim Play·파지 성공을 보장하지 않는다.

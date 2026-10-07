@@ -1,0 +1,63 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+# Place beside alice_m1_gripper_v1/. Keep configuration/ and referenced assets.
+# The supplied older robot revision must be updated/validated before equivalence claims.
+def Xform "World"
+{
+    def PhysicsScene "Physics"
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        float physics:gravityMagnitude = 9.81
+    }
+
+    def Xform "Robot" (
+        prepend references = @./alice_m1_gripper_v1/alice_m1_gripper_v1.usda@
+    )
+    {
+    }
+
+    def Cube "Ground" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        double3 xformOp:translate = (0, 0, -0.05)
+        double3 xformOp:scale = (6, 6, 0.1)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        color3f[] primvars:displayColor = [(0.85, 0.87, 0.92)]
+    }
+
+    def Cube "Cube" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI", "PhysicsMassAPI"]
+    )
+    {
+        double size = 0.08
+        float physics:mass = 0.1
+        double3 xformOp:translate = (0.8, 0, 0.5)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+        color3f[] primvars:displayColor = [(0.8, 0.2, 0.2)]
+    }
+
+    def DistantLight "KeyLight"
+    {
+        float inputs:intensity = 2500
+    }
+
+    def DomeLight "FillLight"
+    {
+        float inputs:intensity = 400
+    }
+
+    def Camera "Overview"
+    {
+        double3 xformOp:translate = (3, -3, 2)
+        double3 xformOp:rotateXYZ = (72.965, 0, 45)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+        float focalLength = 24
+    }
+}
