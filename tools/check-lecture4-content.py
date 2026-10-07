@@ -102,6 +102,8 @@ class DeckParser(HTMLParser):
         self.snippets: list[dict[str, object]] = []
         self._pre_stack: list[dict[str, object]] = []
         self._code_stack: list[dict[str, object]] = []
+        self.labels: list[tuple[str, str]] = []
+        self._label_stack: list[dict[str, object]] = []
 
     def handle_starttag(self, tag: str, attrs_list) -> None:
         attrs = dict(attrs_list)
@@ -111,6 +113,8 @@ class DeckParser(HTMLParser):
             self.sections[element_id] = attrs
         if element_id:
             self.ids.append((element_id, self.current_slide))
+        if tag in {"h2", "h3", "strong"} and self.current_slide:
+            self._label_stack.append({"tag": tag, "slide": self.current_slide, "text": []})
 
         if tag == "main" and "data-deck" in attrs:
             self.deck_count = attrs.get("data-slide-count")
@@ -165,6 +169,9 @@ class DeckParser(HTMLParser):
     handle_startendtag = handle_starttag
 
     def handle_endtag(self, tag: str) -> None:
+        if self._label_stack and self._label_stack[-1]["tag"] == tag:
+            label = self._label_stack.pop()
+            self.labels.append((str(label["slide"]), "".join(label["text"])))
         if tag == "code" and self._code_stack:
             self._code_stack.pop()
         elif tag == "pre" and self._pre_stack:
@@ -177,6 +184,8 @@ class DeckParser(HTMLParser):
             self._in_counter -= 1
 
     def handle_data(self, data: str) -> None:
+        for label in self._label_stack:
+            label["text"].append(data)
         if self.current_slide:
             self.text[self.current_slide].append(data)
         if self._in_counter:
@@ -414,6 +423,18 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     def range_text(start: int, end: int) -> str:
         return " ".join(visible_text(parser, f"slide-{number}") for number in range(start, end + 1))
 
+    for name, source in slide_source(html).items():
+        if int(name.split("-")[1]) > LEGACY_SLIDES:
+            expect(not any(term in source for term in ("연심실", "과제")),
+                   f"Internal source label must not appear in lecture content: {name}")
+    sentence_ending = re.compile(
+        r"(?:한다|된다|는다|인다|있다|없다|아니다|정도다|쓴다|옮긴다|맞춘다|시킨다)[.!?]?$"
+    )
+    for name, label in parser.labels:
+        if int(name.split("-")[1]) > LEGACY_SLIDES:
+            expect(not sentence_ending.search(label.strip()),
+                   f"Heading/stage label must use nominal phrasing: {name}: {label.strip()}")
+
     def require_terms(label: str, text: str, terms: tuple[tuple[str, ...], ...]) -> None:
         folded = text.casefold()
         for alternatives in terms:
@@ -489,7 +510,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
     slides = []
     topics = {
         15: "URDF MJCF USD 로봇 모델 강의",
-        16: "PPTX XLSX STL 과제자료",
+        16: "PPTX XLSX STL 설계자료",
         17: "URDF robot link joint visual collision inertial origin axis limit 좌표계 단위 mm",
         20: "mimic 폐루프",
         27: "URDF MJCF USD 포맷 비교",
@@ -587,6 +608,11 @@ def self_test() -> list[str]:
             "inertial mass value": valid.replace("0.18059836361", "18.059836361", 1),
             "equality polynomial": valid.replace("0 -1 0 0 0", "0 1 0 0 0", 1),
             "malformed XML fragment": valid.replace("&lt;/joint&gt;", "&lt;/jont&gt;", 1),
+            "internal source label": valid.replace("설계자료", "연심실_과제1 자료", 1),
+            "sentence stage label": valid.replace(
+                "URDF MJCF USD 로봇 모델 강의",
+                "<strong>URDF를 작성한다</strong> URDF MJCF USD 로봇 모델 강의", 1,
+            ),
         }
         expected_messages = {
             "count mismatch": "data-slide-count",
@@ -599,6 +625,8 @@ def self_test() -> list[str]:
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
             "equality polynomial": "XML teaching value changed .//equality/joint@polycoef",
             "malformed XML fragment": "XML fragment is not well-formed on slide-20",
+            "internal source label": "Internal source label must not appear",
+            "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
         for label, mutated in mutations.items():
             messages = check(mutated, html_path, baseline)
@@ -624,7 +652,7 @@ def main() -> int:
         if failures:
             print("\n".join(f"FAIL: self-test: {message}" for message in failures), file=sys.stderr)
             return 1
-        print("PASS: lecture 4 checker self-test (10 negative mutations detected)")
+        print("PASS: lecture 4 checker self-test (12 negative mutations detected)")
         return 0
 
     try:
