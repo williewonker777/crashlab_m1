@@ -167,6 +167,8 @@
   .vla-slide .model-table { min-width: 640px; }
   /* Longer loanword labels need readable columns inside the existing scroll panel. */
   .lecture-4 #slide-22 .model-table { min-width: 1050px; }
+  /* Keep the long note clear of the shared counter at the viewport edge. */
+  .lecture-4 #slide-22 .model-note { padding-right: 64px; }
   .vla-timeline ol { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .vla-timeline ol::before { top: 0; bottom: 0; left: 9px; width: 2px; height: auto; }
   .vla-timeline li { padding: 0 0 0 40px; }
@@ -222,8 +224,11 @@
 .vla-module-slide .model-caption { font-size: clamp(15px, 1.05vw, 20px); line-height: 1.4; }
 @media (min-width: 801px) and (max-height: 850px) {
   .lecture-4 #slide-14 .model-copy { gap: 8px; }
-  .lecture-4 #slide-14 .model-table th, .lecture-4 #slide-14 .model-table td { padding-block: 6px; }
+  .lecture-4 #slide-14 .model-table th, .lecture-4 #slide-14 .model-table td { padding-block: 4px; }
   .lecture-4 #slide-14 .model-caption { font-size: 17px; line-height: 1.4; }
+  .lecture-4 #slide-22 .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+  .lecture-4 #slide-22 .model-table { border-spacing: 0 6px; }
+  .lecture-4 #slide-22 .model-table th, .lecture-4 #slide-22 .model-table td { padding-block: 8px; }
   .vla-term-guide .concept-table { font-size: 18px; border-spacing: 0 5px; }
   .vla-term-guide .concept-table th, .vla-term-guide .concept-table td { padding: 6px 16px; }
   .vla-term-guide .concept-table th small { font-size: 14px; line-height: 1.2; }

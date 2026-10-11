@@ -127,6 +127,13 @@ class DeckParser(HTMLParser):
         self._code_stack: list[dict[str, object]] = []
         self.labels: list[tuple[str, str, str]] = []
         self._label_stack: list[dict[str, object]] = []
+        # Only the two definition slides need row/card-local teaching contracts.
+        self.term_rows: list[dict[str, list[str]]] = []
+        self.action_cards: list[dict[str, object]] = []
+        self._term_row = None
+        self._action_card = None
+        self._guide_part = None
+        self._in_guide_figure = False
 
     def handle_starttag(self, tag: str, attrs_list) -> None:
         attrs = dict(attrs_list)
@@ -134,6 +141,25 @@ class DeckParser(HTMLParser):
         if tag == "section" and element_id and re.fullmatch(r"slide-\d+", element_id):
             self.current_slide = element_id
             self.sections[element_id] = attrs
+        if self.current_slide == "slide-12":
+            if tag == "tr":
+                self._term_row = {"th": [], "td": []}
+                self.term_rows.append(self._term_row)
+            elif tag in {"th", "td"} and self._term_row is not None:
+                self._guide_part = (tag, self._term_row[tag])
+        if self.current_slide == "slide-15":
+            if tag == "article" and "vla-card" in (attrs.get("class") or "").split():
+                self._action_card = {"heading": [], "paragraphs": []}
+                self.action_cards.append(self._action_card)
+            elif self._action_card is not None:
+                if tag == "figure":
+                    self._in_guide_figure = True
+                elif tag == "h3":
+                    self._guide_part = (tag, self._action_card["heading"])
+                elif tag == "p" and not self._in_guide_figure and not attrs.get("class"):
+                    paragraph = []
+                    self._action_card["paragraphs"].append(paragraph)
+                    self._guide_part = (tag, paragraph)
         if element_id:
             self.ids.append((element_id, self.current_slide))
         is_summary = tag == "p" and bool(
@@ -195,6 +221,14 @@ class DeckParser(HTMLParser):
     handle_startendtag = handle_starttag
 
     def handle_endtag(self, tag: str) -> None:
+        if self._guide_part is not None and self._guide_part[0] == tag:
+            self._guide_part = None
+        if tag == "tr":
+            self._term_row = None
+        elif tag == "figure":
+            self._in_guide_figure = False
+        elif tag == "article":
+            self._action_card = None
         if self._label_stack and self._label_stack[-1]["tag"] == tag:
             label = self._label_stack.pop()
             self.labels.append((str(label["slide"]), str(label["tag"]), "".join(label["text"])))
@@ -210,6 +244,8 @@ class DeckParser(HTMLParser):
             self._in_counter -= 1
 
     def handle_data(self, data: str) -> None:
+        if self._guide_part is not None:
+            self._guide_part[1].append(data)
         for label in self._label_stack:
             label["text"].append(data)
         if self.current_slide:
@@ -242,6 +278,39 @@ def normalized_model_slide(source: str, number: int) -> str:
     return opening + ">" + remainder
 
 
+# Approved prose edits only: no numeric, markup or whitespace normalization.
+MODEL_TEXT_EDITS = {
+    55: (
+        ('실제 +90° 손목 조립 후에는 부모 손목 기준 축도 달라진다.',
+         '실제로는 손목을 +90° 돌려 조립하므로, 부모 손목 기준으로 보면 축 방향이 달라진다.'),
+    ),
+    56: (
+        ('STL은 표면 형상 · 관절축·질량·조립 관계는 별도 정의',
+         'STL에는 표면 형상만 · 관절축·질량·조립 관계는 따로 정의'),
+        ('두 링크 완성 URDF',
+         '두 링크를 채운 완성 URDF'),
+        ('는 원본 URDF 옆에 놓고',
+         '는 원본 URDF 옆에 두고'),
+    ),
+    57: (
+        ('메시와 함께 0.001을 다시 곱하지 않는다.',
+         '메시처럼 0.001을 곱하지 않는다.'),
+        ('표의 COM은 WCS로 표기돼 있다.',
+         '표의 COM은 WCS(설계 프로그램의 전체 좌표계) 기준이다.'),
+        ('질량만 같아도 질량의 분포가 다르면 회전 운동은 달라진다.',
+         '질량이 같아도 분포가 다르면 회전 운동이 달라진다.'),
+    ),
+    62: (
+        ('이 사례의 MJCF는 시뮬레이션 설정을 별도 작성한 모델이다. 자동 변환 결과라고 가정하지 않는다.',
+         '이 사례의 MJCF는 시뮬레이션 설정을 따로 작성한 모델이며, URDF를 자동 변환한 결과로 보면 안 된다.'),
+    ),
+    64: (
+        ('비볼록 메시 하나로 구멍·오목한 형상이 그대로 충돌한다고 가정하지 않는다.',
+         'MuJoCo는 메시 충돌을 볼록 껍질로 계산하므로, 구멍·오목한 부분이 그대로 충돌한다고 보면 안 된다.'),
+    ),
+}
+
+
 def visible_text(parser: DeckParser, slide: str) -> str:
     return " ".join(" ".join(parser.text.get(slide, [])).split())
 
@@ -249,14 +318,14 @@ def visible_text(parser: DeckParser, slide: str) -> str:
 # Whitespace is ignored because SVG text and inline HTML split visible phrases.
 TERM_GUIDE_PATTERNS = {
     11: {
-        "tokenizer stage": r"토크나이저.*?문장→조각[·ㆍ,]번호",
-        "embedding stage": r"임베딩.*?번호→벡터",
+        "tokenizer stage": r"Tokenizer.*?문장→조각[·ㆍ,]번호",
+        "embedding stage": r"Embedding.*?번호→Vector",
         "image token count": r"(?<![\d.])256개",
         "text token count": r"(?<![\d.])7개",
         "state token count": r"(?<![\d.])1개",
     },
     12: {term: re.escape(term) for term in (
-        "토큰", "벡터", "토크나이저", "임베딩", "비전인코더", "트랜스포머",
+        "Token", "Vector", "Tokenizer", "Embedding", "VisionEncoder", "Transformer",
     )},
     13: {
         **{f"example {value}": rf"(?<![\d.−-]){re.escape(value)}(?![\d.])"
@@ -267,62 +336,141 @@ TERM_GUIDE_PATTERNS = {
         "educational example label": "교육용예시",
     },
     14: {"original action-expert name": r"(?<![A-Za-z])ActionExpert(?![A-Za-z])"},
-    15: {term: re.escape(term) for term in ("행동생성모듈", "액션익스퍼트", "디퓨전트랜스포머")},
+    15: {term: re.escape(term) for term in ("행동생성모듈", "ActionExpert", "DiffusionTransformer")},
 }
 TERM_GUIDE_FIXTURES = {
-    11: " 토크나이저 문장 → 조각 · 번호 임베딩 번호 → 벡터 영상 256개 문장 7개 상태 1개",
-    12: " 토큰 벡터 토크나이저 임베딩 비전 인코더 트랜스포머",
+    11: " Tokenizer 문장 → 조각 · 번호 Embedding 번호 → Vector 영상 256개 문장 7개 상태 1개",
+    12: " Token Vector Tokenizer Embedding Vision Encoder Transformer",
     13: " 교육용 예시 입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10 연결 1152 → 2048 가중치 8,192개",
     14: " Action Expert ·",
-    15: " 행동 생성 모듈 액션 익스퍼트 디퓨전 트랜스포머",
+    15: " 행동 생성 모듈 Action Expert Diffusion Transformer",
 }
 
-# Difficult terms carry a short Korean meaning at their definition page.
+# Standalone difficult terms retain short Korean meanings. Repeated card/table
+# terms are checked through nearby role explanations below, not parentheses.
 GLOSSARY_TERMS = {
-    4: ('폴리시', '에피소드', '신경망'),
-    6: ('프리트레이닝',),
-    7: ('파인튜닝', '파라미터'),
-    8: ('모방학습', '강화학습', '비헤이비어 클로닝'),
-    9: ('디스트리뷰션 시프트', '지도학습', '드리프트'),
-    12: ('토큰', '벡터', '토크나이저', '임베딩', '비전 인코더', '트랜스포머'),
-    13: ('선형 변환',),
-    14: ('VLM', '백본'),
-    15: ('액션 익스퍼트', '디퓨전 트랜스포머', '노이즈', 'MoE'),
-    16: ('액션 스페이스', 'IK', '정규화', '퍼센타일'),
-    17: ('디스크리트 토큰', '리그레션'),
-    19: ('멀티모달 분포',),
-    20: ('플로 매칭',),
-    21: ('액션 청킹', '청크', '인퍼런스'),
-    22: ('크로스 엔트로피', '제곱 오차', 'L1 오차', '포스트트레이닝'),
-    23: ('듀얼 시스템', '레이턴트 표현'),
-    31: ('LoRA', 'GPU'),
-    32: ('학습 파이프라인', '체크포인트'),
+    4: ('Policy', 'Episode', '신경망'),
+    6: ('Pretraining',),
+    7: ('Fine-tuning', 'Parameter'),
+    9: ('지도학습',),
+    14: ('VLM', 'Backbone'),
+    15: ('Noise',),
+    16: ('Action Space', 'IK', '정규화', 'Percentile'),
+    20: ('Flow Matching',),
+    21: ('Action Chunking', 'Chunk', 'Inference'),
+    22: ('Cross Entropy', '제곱 오차', 'L1 오차', 'Post-training'),
+    23: ('Dual System', 'Latent Representation'),
+    32: ('Checkpoint',),
     35: ('동기 실행', '비동기 실행'),
     36: ('Sim-to-Real',),
-    38: ('신뢰구간', '벤치마크'),
-    43: ('리즈닝',),
-    44: ('어드밴티지', 'RECAP'),
+    38: ('신뢰구간', 'Benchmark'),
+    43: ('Reasoning',),
+    44: ('Advantage', 'RECAP'),
     45: ('WAM',),
-    46: ('모바일 매니퓰레이터',),
+    46: ('Mobile Manipulator',),
     47: ('Headless',),
 }
+
+
+# Definitions may live in adjacent prose rather than repeated term parentheses.
+TERM_ROLE_CONTRACTS = {
+    8: {
+        'imitation role': ('모방학습.*?시연', '모방학습은 시연을 따라 배운다.'),
+        'reinforcement role': ('강화학습.*?보상', '강화학습은 보상을 높인다.'),
+        'behavior cloning role': ('BehaviorCloning.*?시연|시연.*?BehaviorCloning', 'Behavior Cloning은 시연을 모사한다.'),
+    },
+    9: {
+        'distribution shift role': ('DistributionShift.*?(?:학습.*?다른|배운적없는상황.*?학습데이터에없)', 'Distribution Shift는 학습 때와 다른 상황이다.'),
+        'drift role': ('Drift.*?오차.*?쌓|오차.*?쌓.*?Drift', 'Drift는 오차가 쌓인다.'),
+    },
+    12: {
+        'token role': ('Token.*?입력조각', 'Token 모델이 읽는 입력 조각이다.'),
+        'vector role': ('Vector.*?숫자목록', 'Vector 순서가 정해진 숫자 목록이다.'),
+        'tokenizer role': ('Tokenizer.*?문장.*?조각.*?번호', 'Tokenizer 문장을 조각으로 잘라 번호를 붙인다.'),
+        'embedding role': ('Embedding.*?번호.*?Vector', 'Embedding 번호를 Vector로 바꾼다.'),
+        'vision encoder role': ('VisionEncoder.*?영상.*?조각.*?Vector', 'Vision Encoder 영상을 조각으로 나눠 Vector를 만든다.'),
+        'transformer role': ('Transformer.*?Token.*?참고.*?정보', 'Transformer Token이 참고할 정보를 계산한다.'),
+    },
+    13: {
+        'linear role': ('길이가다른숫자목록을모델이쓰는길이로바꾸는가장단순한계산이다', '길이가 다른 숫자 목록을 모델이 쓰는 길이로 바꾸는 가장 단순한 계산이다.'),
+    },
+    15: {
+        'action expert role': ('상태[·ㆍ]행동Token만.*?작은가중치', '상태·행동 Token만 맡는 작은 가중치 묶음이다.'),
+        'layerwise VLM reference': ('층마다.*?VLM.*?참고|VLM.*?층마다.*?참고', '층마다 VLM을 참고한다.'),
+        'MoE expansion': ('MoE\\(MixtureofExperts\\)', 'MoE(Mixture of Experts)'),
+        'DiT role': ('무작위값.*?다듬.*?Transformer.*?계산', '무작위 값을 다듬는 과정을 Transformer로 계산하는 구조다.'),
+        'DiT expansion': ('DiT\\(DiffusionTransformer\\)', 'DiT(Diffusion Transformer)'),
+    },
+    17: {
+        'discrete token role': ('DiscreteToken.*?구간.*?번호', 'Discrete Token은 구간 번호로 행동을 나타낸다.'),
+        'regression role': ('Regression.*?한번.*?연속값|Regression.*?연속값.*?한번', 'Regression은 한 번에 연속값을 출력한다.'),
+    },
+    19: {
+        'multimodal meaning': ('여기서Multimodal은입력종류\\(영상·문장\\)가아니라정답이여러갈래라는뜻이다', '여기서 Multimodal은 입력 종류(영상·문장)가 아니라 정답이 여러 갈래라는 뜻이다.'),
+    },
+    31: {
+        'LoRA expansion': ('LoRA\\(Low-RankAdaptation\\)', 'LoRA(Low-Rank Adaptation)'),
+        'consumer fine-tuning': ('소비자용GPU.*?Fine-tuning|Fine-tuning.*?소비자용GPU', '소비자용 GPU에서 Fine-tuning이 가능하다.'),
+    },
+    32: {
+        'pipeline role': ('TrainingPipeline.*?데이터(?:수집|를모으고).*?시간축', 'Training Pipeline은 데이터 수집과 시간축 맞춤으로 시작한다.'),
+    },
+    35: {
+        'RTC expansion': ('RTC\\(Real-TimeChunking\\)', 'RTC(Real-Time Chunking)'),
+    },
+    37: {
+        'co-training name': ('Co-training', 'Co-training'),
+    },
+    44: {
+        'value function role': ('가치함수\\(앞으로받을보상을예측하는함수\\)', '가치 함수(앞으로 받을 보상을 예측하는 함수)'),
+    },
+}
+
+
+# Compact spellings also catch terms split across inline HTML nodes.
+OUTDATED_VLA_TERMS = (
+    '행동전문가', '잡음', '확산트랜스포머', '잠재표현', '미세조정', '사전학습', '후학습', '행동복제', '이산토큰', '전문가혼합',
+    '교차엔트로피', '다봉분포', '분위수', '행동공간', '분포이동', '이중시스템', '폴리시', '노이즈', '액션익스퍼트', '디퓨전트랜스포머',
+    '디퓨전', '레이턴트표현', '파인튜닝', '프리트레이닝', '포스트트레이닝', '비헤이비어클로닝', '디스크리트토큰', '리그레션', '크로스엔트로피',
+    '멀티모달분포', '퍼센타일', '플로매칭', '액션스페이스', '디스트리뷰션시프트', '듀얼시스템', '인퍼런스', '리즈닝', '액션청킹', '월드액션모델',
+    '청킹', '청크', '행동토큰화', '토큰화', '토크나이저', '임베딩', '비전인코더', '트랜스포머', '토큰', '벡터', '백본', '에피소드',
+    '파라미터', '어드밴티지', '학습파이프라인', '파이프라인', '체크포인트', '벤치마크', '모바일매니퓰레이터', '도메인랜덤화', '플래너', '디코딩',
+    '메타데이터', '모델카드', '리더–팔로워', '라이선스', '드리프트',
+)
 
 
 def term_guide_errors(parser: DeckParser) -> list[str]:
     errors = []
     vla_text = "".join(visible_text(parser, f"slide-{n}") for n in range(1, VLA_SLIDES + 1))
     compact = re.sub(r"\s+", "", vla_text)
-    for term in ("행동전문가", "잡음", "확산트랜스포머", "잠재표현", "미세조정",
-                 "사전학습", "후학습", "행동복제", "이산토큰", "전문가혼합",
-                 "교차엔트로피", "다봉분포", "분위수", "행동공간", "분포이동", "이중시스템"):
+    if re.search(r"\b([A-Za-z][A-Za-z -]*?)\(\s*\1\s*\)", vla_text, re.IGNORECASE):
+        errors.append("Repeated English term expansion must be removed")
+    for term in OUTDATED_VLA_TERMS:
         if term in compact:
-            errors.append(f"Outdated VLA translation must use preferred loanword: {term}")
+            errors.append(f"Outdated VLA term must use English spelling: {term}")
     for number, terms in GLOSSARY_TERMS.items():
         text = re.sub(r"\s+", "", visible_text(parser, f"slide-{number}"))
         for term in terms:
             if not re.search(re.escape(term.replace(" ", "")) + r"\([^()]*[가-힣][^()]*\)", text):
                 errors.append(f"Missing short Korean explanation: slide-{number}: {term}")
-    if "인퍼런스" in visible_text(parser, "slide-43"):
+    for number, contracts in TERM_ROLE_CONTRACTS.items():
+        text = re.sub(r"\s+", "", visible_text(parser, f"slide-{number}"))
+        for label, (pattern, _) in contracts.items():
+            candidates = [text]
+            if number == 12:
+                term = dict(zip(contracts, ("Token", "Vector", "Tokenizer", "Embedding", "VisionEncoder", "Transformer")))[label]
+                candidates = [term + re.sub(r"\s+", "", " ".join(row["td"]))
+                              for row in parser.term_rows
+                              if re.sub(r"\s+", "", " ".join(row["th"])) == term]
+            elif number == 15:
+                name = "DiffusionTransformer" if label.startswith("DiT") else "ActionExpert"
+                candidates = [re.sub(r"\s+", "", " ".join(paragraph))
+                              for card in parser.action_cards
+                              if name in re.sub(r"\s+", "", " ".join(card["heading"]))
+                              for paragraph in card["paragraphs"]]
+            if not any(re.search(pattern, candidate) for candidate in candidates):
+                errors.append(f"Missing term role explanation: slide-{number}: {label}")
+    if "Inference" in visible_text(parser, "slide-43"):
         errors.append("Reasoning must not be labelled model inference: slide-43")
     for number, patterns in TERM_GUIDE_PATTERNS.items():
         visible = visible_text(parser, f"slide-{number}").replace("−", "-")
@@ -335,7 +483,7 @@ def term_guide_errors(parser: DeckParser) -> list[str]:
             candidate = numeric_text if number == 13 and label != "educational example label" else text
             if not re.search(pattern, candidate):
                 errors.append(f"Missing term guide contract: slide-{number}: {label}")
-        if number == 11 and "단어조각→벡터" in text:
+        if number == 11 and "단어조각→Vector" in text:
             errors.append("Tokenizer must not conflate pieces with embedding vectors: slide-11")
     return errors
 
@@ -607,10 +755,10 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                                   and urlsplit(href).netloc for href in links),
            "VLA references require at least 21 HTTPS links: slide-48")
     for label, start, end, terms in (
-        ("VLA concept", 3, 9, ("폴리시", "모방", "강화학습", "비헤이비어 클로닝")),
-        ("VLA architecture", 11, 23, ("토큰", "VLM", "플로 매칭", "액션 청킹")),
-        ("VLA training", 25, 32, ("에피소드", "프리트레이닝", "파인튜닝", "LoRA")),
-        ("VLA execution", 34, 38, ("인퍼런스", "청크", "Sim-to-Real", "신뢰구간")),
+        ("VLA concept", 3, 9, ("Policy", "모방", "강화학습", "Behavior Cloning")),
+        ("VLA architecture", 11, 23, ("Token", "VLM", "Flow Matching", "Action Chunking")),
+        ("VLA training", 25, 32, ("Episode", "Pretraining", "Fine-tuning", "LoRA")),
+        ("VLA execution", 34, 38, ("Inference", "Chunk", "Sim-to-Real", "신뢰구간")),
         ("VLA trends", 40, 48, ("RECAP", "WAM", "DreamZero", "기억")),
     ):
         require_terms(label, range_text(start, end), tuple((term,) for term in terms))
@@ -673,16 +821,22 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
             expect(old_name in original, f"Baseline must contain {old_name}")
             expect(new_name in updated, f"Updated deck must contain {new_name}")
             if old_name in original and new_name in updated:
+                approved = original[old_name]
+                for old, new in MODEL_TEXT_EDITS.get(number + MODEL_OFFSET, ()):
+                    approved = approved.replace(old, new)
+                allowed = {
+                    normalized_model_slide(original[old_name], number),
+                    normalized_model_slide(approved, number),
+                }
                 expect(
-                    normalized_model_slide(original[old_name], number)
-                    == normalized_model_slide(updated[new_name], number + MODEL_OFFSET),
-                    f"Robot model slide changed beyond section ID/ARIA numbers: {new_name}",
+                    normalized_model_slide(updated[new_name], number + MODEL_OFFSET) in allowed,
+                    f"Robot model slide contains an unapproved change: {new_name}",
                 )
     return errors
 
 
 def vla_fixture(number: int) -> tuple[str, str]:
-    content = "폴리시 모방 강화학습 비헤이비어 클로닝 토큰 VLM 플로 매칭 액션 청킹 에피소드 프리트레이닝 파인튜닝 LoRA 인퍼런스 청크 Sim-to-Real 신뢰구간 RECAP WAM DreamZero 기억"
+    content = "Policy 모방 강화학습 Behavior Cloning Token VLM Flow Matching Action Chunking Episode Pretraining Fine-tuning LoRA Inference Chunk Sim-to-Real 신뢰구간 RECAP WAM DreamZero 기억"
     if number == 1 or number in QUESTION_STEPS:
         kind = "title" if number == 1 else "question"
         content += f'<ol class="{kind}-index">'
@@ -700,8 +854,23 @@ def vla_fixture(number: int) -> tuple[str, str]:
     if number == 48:
         content += ''.join(f'<a href="https://example.org/{n}">논문</a>' for n in range(21))
     if number == 43:
-        content = content.replace("인퍼런스", "생각")
+        content = content.replace("Inference", "생각")
     content += TERM_GUIDE_FIXTURES.get(number, "")
+    roles = TERM_ROLE_CONTRACTS.get(number, {})
+    if number == 12:
+        content += "<table>" + "".join(
+            f"<tr><th>{term}</th><td>{sample}</td></tr>"
+            for term, (_, sample) in zip(
+                ("Token", "Vector", "Tokenizer", "Embedding", "Vision Encoder", "Transformer"), roles.values())
+        ) + "</table>"
+    elif number == 15:
+        for name, dit in (("Action Expert", False), ("Diffusion Transformer", True)):
+            content += f'<article class="vla-card"><h3>{name}</h3>'
+            content += "".join(f"<p>{sample}</p>" for label, (_, sample) in roles.items()
+                               if label.startswith("DiT") == dit)
+            content += "</article>"
+    else:
+        content += "".join(" " + sample for _, sample in roles.values())
     content += "".join(f" {term}(쉬운 역할 설명)" for term in GLOSSARY_TERMS.get(number, ()))
     return " " + " ".join(sorted(classes)), content
 
@@ -765,6 +934,8 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
                 '<defs><marker id="arrow-28"></marker></defs>'
                 '<path marker-end="url(#arrow-28)"></path></svg>'
             )
+        for _, approved in MODEL_TEXT_EDITS.get(emitted_number, ()):
+            content += f"<p>{approved}</p>"
         if emitted_number <= VLA_SLIDES:
             extra_class, content = vla_fixture(emitted_number)
         number = emitted_number
@@ -782,6 +953,9 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
         .replace(f'슬라이드 {n} / {total}:', f'슬라이드 {n - MODEL_OFFSET} / 38:', 1)
         for n, slide in enumerate(slides, 1) if n > VLA_SLIDES
     )
+    for pairs in MODEL_TEXT_EDITS.values():
+        for old, approved in pairs:
+            baseline = baseline.replace(approved, old)
     html_path = root / "lecture-4.html"
     baseline_path = root / "baseline.html"
     html_path.write_text(html, encoding="utf-8")
@@ -852,7 +1026,7 @@ def self_test() -> list[str]:
             "new duplicate id": "Duplicate ID",
             "missing asset": "Missing local asset",
             "missing fragment": "Missing fragment",
-            "baseline mutation": "Robot model slide changed",
+            "baseline mutation": "Robot model slide contains an unapproved change",
             "required term": "Missing required learning element in slides 51-60 URDF: mimic",
             "fixed origin value": "XML teaching value changed .//joint[@name='l_wrist2']/origin@xyz",
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
@@ -862,12 +1036,12 @@ def self_test() -> list[str]:
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
         guide_mutations = {
-            11: {"tokenizer stage": ("문장 → 조각 · 번호", "문장 → 벡터"),
-                 "embedding stage": ("임베딩 번호 → 벡터", "임베딩 번호 → 목록"),
+            11: {"tokenizer stage": ("문장 → 조각 · 번호", "문장 → Vector"),
+                 "embedding stage": ("Embedding 번호 → Vector", "Embedding 번호 → 목록"),
                  "image token count": ("256개", "255개"),
                  "text token count": ("7개", "5개"),
                  "state token count": ("1개", "2개")},
-            12: {term: (term.replace("비전인코더", "비전 인코더"), "삭제")
+            12: {term: (term.replace("VisionEncoder", "Vision Encoder"), "삭제")
                  for term in TERM_GUIDE_PATTERNS[12]},
             13: {**{f"example {value}": (value.replace("-", "−"), "9.99")
                     for value in ("0.5", "-0.2", "1.0", "0.48", "-0.10")},
@@ -877,8 +1051,8 @@ def self_test() -> list[str]:
                  "educational example label": ("교육용 예시", "실제 모델")},
             14: {"original action-expert name": ("Action Expert", "Action Head")},
             15: {"행동생성모듈": ("행동 생성 모듈", "행동 모듈"),
-                 "액션익스퍼트": ("액션 익스퍼트", "액션 모듈"),
-                 "디퓨전트랜스포머": ("디퓨전 트랜스포머", "디퓨전 모듈")},
+                 "ActionExpert": ("Action Expert", "액션 모듈"),
+                 "DiffusionTransformer": ("Diffusion Transformer", "Diffusion 모듈")},
         }
         sections = slide_source(valid)
         for number, replacements in guide_mutations.items():
@@ -889,15 +1063,23 @@ def self_test() -> list[str]:
                 mutations[key] = valid.replace(section, section.replace(old, new))
                 expected_messages[key] = f"Missing term guide contract: slide-{number}: {label}"
         mutations["literal expert label"] = valid.replace("행동 생성 모듈", "행동 생성 모듈 · 행동 전문가", 1)
-        expected_messages["literal expert label"] = "Outdated VLA translation must use preferred loanword: 행동전문가"
-        mutations["literal noise label"] = valid.replace("노이즈(쉬운 역할 설명)", "잡음(쉬운 역할 설명)", 1)
-        expected_messages["literal noise label"] = "Outdated VLA translation must use preferred loanword: 잡음"
-        mutations["short term explanation"] = valid.replace("액션 익스퍼트(쉬운 역할 설명)", "액션 익스퍼트", 1)
-        expected_messages["short term explanation"] = "Missing short Korean explanation: slide-15: 액션 익스퍼트"
-        mutations["reasoning as inference"] = valid.replace("리즈닝(쉬운 역할 설명)", "인퍼런스(쉬운 역할 설명)", 1)
+        expected_messages["literal expert label"] = "Outdated VLA term must use English spelling: 행동전문가"
+        mutations["literal noise label"] = valid.replace("Noise(쉬운 역할 설명)", "잡음(쉬운 역할 설명)", 1)
+        expected_messages["literal noise label"] = "Outdated VLA term must use English spelling: 잡음"
+        mutations["short term explanation"] = valid.replace("Noise(쉬운 역할 설명)", "Noise", 1)
+        expected_messages["short term explanation"] = "Missing short Korean explanation: slide-15: Noise"
+        mutations["reasoning as inference"] = valid.replace("Reasoning(쉬운 역할 설명)", "Inference(쉬운 역할 설명)", 1)
         expected_messages["reasoning as inference"] = "Reasoning must not be labelled model inference: slide-43"
+        mutations["transliterated policy"] = valid.replace("Policy(쉬운 역할 설명)", "폴리시(쉬운 역할 설명)", 1)
+        expected_messages["transliterated policy"] = "Outdated VLA term must use English spelling: 폴리시"
+        mutations["policy explanation omitted"] = valid.replace("Policy(쉬운 역할 설명)", "Policy", 1)
+        expected_messages["policy explanation omitted"] = "Missing short Korean explanation: slide-4: Policy"
+        mutations["transliterated noise"] = valid.replace("Noise(쉬운 역할 설명)", "노이즈(쉬운 역할 설명)", 1)
+        expected_messages["transliterated noise"] = "Outdated VLA term must use English spelling: 노이즈"
+        mutations["duplicate English expansion"] = valid.replace(" Token Vector", " Token(Token) Vector", 1)
+        expected_messages["duplicate English expansion"] = "Repeated English term expansion must be removed"
         mutations["conflated tokenizer"] = valid.replace(
-            "토크나이저 문장 → 조각 · 번호", "토크나이저 문장 → 조각 · 번호 단어 조각 → 벡터", 1)
+            "Tokenizer 문장 → 조각 · 번호", "Tokenizer 문장 → 조각 · 번호 단어 조각 → Vector", 1)
         expected_messages["conflated tokenizer"] = "Tokenizer must not conflate"
         mutations["guide layout"] = valid.replace("layout-guide vla-slide vla-term-guide", "vla-slide vla-term-guide", 1)
         expected_messages["guide layout"] = "Invalid VLA slide class composition: slide-12"
@@ -908,6 +1090,48 @@ def self_test() -> list[str]:
             section = sections["slide-13"]
             mutations[label] = valid.replace(section, section.replace(old, new))
             expected_messages[label] = "Missing term guide contract: slide-13: example " + old.replace("−", "-")
+        # Every approved robot edit passes in the valid fixture, while extra prose
+        # or a typo on the very same slide must still fail byte preservation.
+        for number, pairs in MODEL_TEXT_EDITS.items():
+            section = sections[f"slide-{number}"]
+            for kind, changed in (
+                ("extra", section.replace("</section>", " 추가 문구</section>")),
+                ("wrong", section.replace(pairs[0][1], pairs[0][1] + "오타", 1)),
+            ):
+                label = f"model approved page {number} {kind}"
+                mutations[label] = valid.replace(section, changed)
+                expected_messages[label] = f"Robot model slide contains an unapproved change: slide-{number}"
+        unchanged_model = valid
+        for pairs in MODEL_TEXT_EDITS.values():
+            for old, approved in pairs:
+                unchanged_model = unchanged_model.replace(approved, old)
+        if check(unchanged_model, html_path, baseline):
+            failures.append("unchanged robot prose fixture was rejected")
+        for number, label in ((19, "multimodal meaning"), (44, "value function role"), (15, "MoE expansion")):
+            sample = TERM_ROLE_CONTRACTS[number][label][1]
+            section = sections[f"slide-{number}"]
+            key = f"term role {number} {label}"
+            mutations[key] = valid.replace(section, section.replace(sample, "삭제"))
+            expected_messages[key] = f"Missing term role explanation: slide-{number}: {label}"
+        # Keep duplicate terms in other rows/SVG/notes so only the local
+        # definition can satisfy the contract being removed.
+        for label, (_, sample) in TERM_ROLE_CONTRACTS[12].items():
+            section = sections["slide-12"]
+            changed = section.replace(f"<td>{sample}</td>", "<td>설명 삭제</td>")
+            changed = changed.replace("</section>", f"<p>{sample}</p></section>")
+            key = f"row-local {label}"
+            mutations[key] = valid.replace(section, changed)
+            expected_messages[key] = f"Missing term role explanation: slide-12: {label}"
+        for label, (_, sample) in TERM_ROLE_CONTRACTS[15].items():
+            section = sections["slide-15"]
+            changed = section.replace(f"<p>{sample}</p>", "<p>설명 삭제</p>")
+            changed = changed.replace("</section>",
+                f'<svg role="img" aria-label="중복 문구" viewBox="0 0 10 10"><text>{sample}</text></svg></section>')
+            key = f"card-local {label}"
+            mutations[key] = valid.replace(section, changed)
+            expected_messages[key] = f"Missing term role explanation: slide-15: {label}"
+        mutations["supervised definition omitted"] = valid.replace("지도학습(쉬운 역할 설명)", "지도학습", 1)
+        expected_messages["supervised definition omitted"] = "Missing short Korean explanation: slide-9: 지도학습"
         adjacent = valid.replace(
             "입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10",
             "입력 <svg><text>0.5</text><text>−0.2</text><text>1.0</text>"
@@ -960,7 +1184,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-38 → 49-72 differ only in section ID/ARIA numbers")
+        print("PASS: robot slides 15-38 → 49-72 preserve bytes except section ID/ARIA numbers and exact approved prose edits")
     return 0
 
 
