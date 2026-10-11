@@ -128,7 +128,7 @@
       executeButtons.forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.chunkExecute) === execute)));
       range.setAttribute("aria-valuetext", `${latency}밀리초`);
       const modeName = mode === "sync" ? "동기" : "비동기";
-      figure.setAttribute("aria-label", `${modeName} 실행, 추론 지연 ${latency}밀리초는 ${plan.delaySteps}개 제어 주기다. 청크마다 ${execute}개 행동을 실행할 때 로봇이 멈춰 있는 시간은 ${pausePercent}%이고, 새 청크에서 이미 지나간 행동 ${plan.discardedPerChunk}개는 실행하지 않는다.`);
+      figure.setAttribute("aria-label", `${modeName} 실행, 인퍼런스 지연 ${latency}밀리초는 ${plan.delaySteps}개 제어 주기다. 청크마다 ${execute}개 행동을 실행할 때 로봇이 멈춰 있는 시간은 ${pausePercent}%이고, 새 청크에서 이미 지나간 행동 ${plan.discardedPerChunk}개는 실행하지 않는다.`);
     };
     range.addEventListener("input", update);
     modeButtons.forEach(button => button.addEventListener("click", () => { mode = button.dataset.chunkMode; update(); }));

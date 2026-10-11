@@ -266,18 +266,64 @@ TERM_GUIDE_PATTERNS = {
         "weight count": r"(?<![\d.,])8,?192(?![\d.,])",
         "educational example label": "교육용예시",
     },
-    15: {term: re.escape(term) for term in ("행동전문가", "확산트랜스포머")},
+    14: {"original action-expert name": r"(?<![A-Za-z])ActionExpert(?![A-Za-z])"},
+    15: {term: re.escape(term) for term in ("행동생성모듈", "액션익스퍼트", "디퓨전트랜스포머")},
 }
 TERM_GUIDE_FIXTURES = {
     11: " 토크나이저 문장 → 조각 · 번호 임베딩 번호 → 벡터 영상 256개 문장 7개 상태 1개",
     12: " 토큰 벡터 토크나이저 임베딩 비전 인코더 트랜스포머",
     13: " 교육용 예시 입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10 연결 1152 → 2048 가중치 8,192개",
-    15: " 행동 전문가 확산 트랜스포머",
+    14: " Action Expert ·",
+    15: " 행동 생성 모듈 액션 익스퍼트 디퓨전 트랜스포머",
+}
+
+# Difficult terms carry a short Korean meaning at their definition page.
+GLOSSARY_TERMS = {
+    4: ('폴리시', '에피소드', '신경망'),
+    6: ('프리트레이닝',),
+    7: ('파인튜닝', '파라미터'),
+    8: ('모방학습', '강화학습', '비헤이비어 클로닝'),
+    9: ('디스트리뷰션 시프트', '지도학습', '드리프트'),
+    12: ('토큰', '벡터', '토크나이저', '임베딩', '비전 인코더', '트랜스포머'),
+    13: ('선형 변환',),
+    14: ('VLM', '백본'),
+    15: ('액션 익스퍼트', '디퓨전 트랜스포머', '노이즈', 'MoE'),
+    16: ('액션 스페이스', 'IK', '정규화', '퍼센타일'),
+    17: ('디스크리트 토큰', '리그레션'),
+    19: ('멀티모달 분포',),
+    20: ('플로 매칭',),
+    21: ('액션 청킹', '청크', '인퍼런스'),
+    22: ('크로스 엔트로피', '제곱 오차', 'L1 오차', '포스트트레이닝'),
+    23: ('듀얼 시스템', '레이턴트 표현'),
+    31: ('LoRA', 'GPU'),
+    32: ('학습 파이프라인', '체크포인트'),
+    35: ('동기 실행', '비동기 실행'),
+    36: ('Sim-to-Real',),
+    38: ('신뢰구간', '벤치마크'),
+    43: ('리즈닝',),
+    44: ('어드밴티지', 'RECAP'),
+    45: ('WAM',),
+    46: ('모바일 매니퓰레이터',),
+    47: ('Headless',),
 }
 
 
 def term_guide_errors(parser: DeckParser) -> list[str]:
     errors = []
+    vla_text = "".join(visible_text(parser, f"slide-{n}") for n in range(1, VLA_SLIDES + 1))
+    compact = re.sub(r"\s+", "", vla_text)
+    for term in ("행동전문가", "잡음", "확산트랜스포머", "잠재표현", "미세조정",
+                 "사전학습", "후학습", "행동복제", "이산토큰", "전문가혼합",
+                 "교차엔트로피", "다봉분포", "분위수", "행동공간", "분포이동", "이중시스템"):
+        if term in compact:
+            errors.append(f"Outdated VLA translation must use preferred loanword: {term}")
+    for number, terms in GLOSSARY_TERMS.items():
+        text = re.sub(r"\s+", "", visible_text(parser, f"slide-{number}"))
+        for term in terms:
+            if not re.search(re.escape(term.replace(" ", "")) + r"\([^()]*[가-힣][^()]*\)", text):
+                errors.append(f"Missing short Korean explanation: slide-{number}: {term}")
+    if "인퍼런스" in visible_text(parser, "slide-43"):
+        errors.append("Reasoning must not be labelled model inference: slide-43")
     for number, patterns in TERM_GUIDE_PATTERNS.items():
         visible = visible_text(parser, f"slide-{number}").replace("−", "-")
         text = re.sub(r"\s+", "", visible)
@@ -561,10 +607,10 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                                   and urlsplit(href).netloc for href in links),
            "VLA references require at least 21 HTTPS links: slide-48")
     for label, start, end, terms in (
-        ("VLA concept", 3, 9, ("정책", "모방", "강화학습", "행동 복제")),
+        ("VLA concept", 3, 9, ("폴리시", "모방", "강화학습", "비헤이비어 클로닝")),
         ("VLA architecture", 11, 23, ("토큰", "VLM", "플로 매칭", "액션 청킹")),
-        ("VLA training", 25, 32, ("에피소드", "사전학습", "미세조정", "LoRA")),
-        ("VLA execution", 34, 38, ("추론", "청크", "Sim-to-Real", "신뢰구간")),
+        ("VLA training", 25, 32, ("에피소드", "프리트레이닝", "파인튜닝", "LoRA")),
+        ("VLA execution", 34, 38, ("인퍼런스", "청크", "Sim-to-Real", "신뢰구간")),
         ("VLA trends", 40, 48, ("RECAP", "WAM", "DreamZero", "기억")),
     ):
         require_terms(label, range_text(start, end), tuple((term,) for term in terms))
@@ -636,7 +682,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
 
 
 def vla_fixture(number: int) -> tuple[str, str]:
-    content = "정책 모방 강화학습 행동 복제 토큰 VLM 플로 매칭 액션 청킹 에피소드 사전학습 미세조정 LoRA 추론 청크 Sim-to-Real 신뢰구간 RECAP WAM DreamZero 기억"
+    content = "폴리시 모방 강화학습 비헤이비어 클로닝 토큰 VLM 플로 매칭 액션 청킹 에피소드 프리트레이닝 파인튜닝 LoRA 인퍼런스 청크 Sim-to-Real 신뢰구간 RECAP WAM DreamZero 기억"
     if number == 1 or number in QUESTION_STEPS:
         kind = "title" if number == 1 else "question"
         content += f'<ol class="{kind}-index">'
@@ -653,7 +699,10 @@ def vla_fixture(number: int) -> tuple[str, str]:
         content += '<div data-chunk-demo></div>'
     if number == 48:
         content += ''.join(f'<a href="https://example.org/{n}">논문</a>' for n in range(21))
+    if number == 43:
+        content = content.replace("인퍼런스", "생각")
     content += TERM_GUIDE_FIXTURES.get(number, "")
+    content += "".join(f" {term}(쉬운 역할 설명)" for term in GLOSSARY_TERMS.get(number, ()))
     return " " + " ".join(sorted(classes)), content
 
 
@@ -826,8 +875,10 @@ def self_test() -> list[str]:
                  "dimension 2048": ("2048", "2049"),
                  "weight count": ("8,192", "8,193"),
                  "educational example label": ("교육용 예시", "실제 모델")},
-            15: {"행동전문가": ("행동 전문가", "행동 모듈"),
-                 "확산트랜스포머": ("확산 트랜스포머", "확산 모듈")},
+            14: {"original action-expert name": ("Action Expert", "Action Head")},
+            15: {"행동생성모듈": ("행동 생성 모듈", "행동 모듈"),
+                 "액션익스퍼트": ("액션 익스퍼트", "액션 모듈"),
+                 "디퓨전트랜스포머": ("디퓨전 트랜스포머", "디퓨전 모듈")},
         }
         sections = slide_source(valid)
         for number, replacements in guide_mutations.items():
@@ -837,6 +888,14 @@ def self_test() -> list[str]:
                 # Replace throughout this slide so generic fixture terms cannot mask deletion.
                 mutations[key] = valid.replace(section, section.replace(old, new))
                 expected_messages[key] = f"Missing term guide contract: slide-{number}: {label}"
+        mutations["literal expert label"] = valid.replace("행동 생성 모듈", "행동 생성 모듈 · 행동 전문가", 1)
+        expected_messages["literal expert label"] = "Outdated VLA translation must use preferred loanword: 행동전문가"
+        mutations["literal noise label"] = valid.replace("노이즈(쉬운 역할 설명)", "잡음(쉬운 역할 설명)", 1)
+        expected_messages["literal noise label"] = "Outdated VLA translation must use preferred loanword: 잡음"
+        mutations["short term explanation"] = valid.replace("액션 익스퍼트(쉬운 역할 설명)", "액션 익스퍼트", 1)
+        expected_messages["short term explanation"] = "Missing short Korean explanation: slide-15: 액션 익스퍼트"
+        mutations["reasoning as inference"] = valid.replace("리즈닝(쉬운 역할 설명)", "인퍼런스(쉬운 역할 설명)", 1)
+        expected_messages["reasoning as inference"] = "Reasoning must not be labelled model inference: slide-43"
         mutations["conflated tokenizer"] = valid.replace(
             "토크나이저 문장 → 조각 · 번호", "토크나이저 문장 → 조각 · 번호 단어 조각 → 벡터", 1)
         expected_messages["conflated tokenizer"] = "Tokenizer must not conflate"
@@ -864,6 +923,8 @@ def self_test() -> list[str]:
             messages = check(mutated, html_path, baseline)
             if not any(expected_messages[label] in message for message in messages):
                 failures.append(f"{label} mutation was not detected as expected")
+    if not failures:
+        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations detected)")
     return failures
 
 
@@ -884,7 +945,6 @@ def main() -> int:
         if failures:
             print("\n".join(f"FAIL: self-test: {message}" for message in failures), file=sys.stderr)
             return 1
-        print("PASS: lecture 4 checker self-test (45 negative mutations detected)")
         return 0
 
     try:
