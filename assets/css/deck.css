@@ -1686,6 +1686,27 @@ button { color: inherit; }
   .shortcut-help dd { margin-bottom: 12px; }
 }
 
+/* Narrow-screen chrome uses the two-row layout already present in lecture 1. */
+@media screen and (max-width: 600px) {
+  .deck-page .deck-wordmark { top: 76px; left: 12px; }
+  .deck-page .lecture-nav { left: 12px; transform: none; }
+  .deck-page .deck-tools { right: 12px; gap: 4px; }
+  .deck-page .slide { padding-top: 132px; }
+
+  /* Keep lecture 1's existing mobile rendering unchanged. The counter is a
+     read-only status, not a touch control; compact it near the safe edge. */
+  .deck-page:not(.lecture-1) .deck-counter {
+    right: max(4px, env(safe-area-inset-right));
+    bottom: max(4px, env(safe-area-inset-bottom));
+    min-width: 0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    box-shadow: none;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
