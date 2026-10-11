@@ -15,24 +15,25 @@ from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 
-EXPECTED_SLIDES = 69
-MODEL_OFFSET = 31
+EXPECTED_SLIDES = 72
+MODEL_OFFSET = 34
 ORIGINAL_MODEL_START = 15
 ORIGINAL_MODEL_END = 38
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
-QUESTION_STEPS = {2: "01", 10: "02", 21: "03", 30: "04", 36: "05"}
+QUESTION_STEPS = {2: "01", 10: "02", 24: "03", 33: "04", 39: "05"}
 # Existing layouts retained from the original introductory material.
 LEGACY_VLA_CLASSES = {
     3: {"visual-full", "layout-diagram"}, 5: {"layout-split"},
     7: {"layout-compare"}, 8: {"layout-compare"},
     11: {"visual-full", "layout-diagram"},
-    22: {"photo-timeline", "layout-diagram"},
-    23: {"photo-timeline", "layout-split"},
-    24: {"photo-timeline", "layout-diagram"},
-    25: {"photo-timeline", "layout-split"},
-    27: {"visual-wide", "layout-diagram"}, 29: {"layout-split"},
-    31: {"visual-full", "layout-diagram"}, 33: {"layout-split"},
-    34: {"layout-compare", "layout-guide"},
+    12: {"vla-slide", "layout-compare", "layout-guide", "vla-term-guide"},
+    25: {"photo-timeline", "layout-diagram"},
+    26: {"photo-timeline", "layout-split"},
+    27: {"photo-timeline", "layout-diagram"},
+    28: {"photo-timeline", "layout-split"},
+    30: {"visual-wide", "layout-diagram"}, 32: {"layout-split"},
+    34: {"visual-full", "layout-diagram"}, 36: {"layout-split"},
+    37: {"layout-compare", "layout-guide"},
 }
 SNIPPET_KINDS = {"fragment", "document", "command"}
 SNIPPET_LANGUAGES = {"language-xml", "language-python", "language-bash", "language-usda"}
@@ -245,6 +246,54 @@ def visible_text(parser: DeckParser, slide: str) -> str:
     return " ".join(" ".join(parser.text.get(slide, [])).split())
 
 
+# Whitespace is ignored because SVG text and inline HTML split visible phrases.
+TERM_GUIDE_PATTERNS = {
+    11: {
+        "tokenizer stage": r"토크나이저.*?문장→조각[·ㆍ,]번호",
+        "embedding stage": r"임베딩.*?번호→벡터",
+        "image token count": r"(?<![\d.])256개",
+        "text token count": r"(?<![\d.])7개",
+        "state token count": r"(?<![\d.])1개",
+    },
+    12: {term: re.escape(term) for term in (
+        "토큰", "벡터", "토크나이저", "임베딩", "비전인코더", "트랜스포머",
+    )},
+    13: {
+        **{f"example {value}": rf"(?<![\d.−-]){re.escape(value)}(?![\d.])"
+           for value in ("0.5", "-0.2", "1.0", "0.48", "-0.10")},
+        **{f"dimension {value}": rf"(?<![\d.,]){value}(?![\d.,])"
+           for value in ("1152", "2048")},
+        "weight count": r"(?<![\d.,])8,?192(?![\d.,])",
+        "educational example label": "교육용예시",
+    },
+    15: {term: re.escape(term) for term in ("행동전문가", "확산트랜스포머")},
+}
+TERM_GUIDE_FIXTURES = {
+    11: " 토크나이저 문장 → 조각 · 번호 임베딩 번호 → 벡터 영상 256개 문장 7개 상태 1개",
+    12: " 토큰 벡터 토크나이저 임베딩 비전 인코더 트랜스포머",
+    13: " 교육용 예시 입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10 연결 1152 → 2048 가중치 8,192개",
+    15: " 행동 전문가 확산 트랜스포머",
+}
+
+
+def term_guide_errors(parser: DeckParser) -> list[str]:
+    errors = []
+    for number, patterns in TERM_GUIDE_PATTERNS.items():
+        visible = visible_text(parser, f"slide-{number}").replace("−", "-")
+        text = re.sub(r"\s+", "", visible)
+        # Preserve separators between adjacent SVG numeric labels (0.48 −0.10).
+        # Only join decimal/grouping punctuation split across inline text nodes.
+        numeric_text = re.sub(r"(?<=\d[.,])\s+(?=\d)", "", visible)
+        numeric_text = re.sub(r"(-)\s+(?=\d)", r"\1", numeric_text)
+        for label, pattern in patterns.items():
+            candidate = numeric_text if number == 13 and label != "educational example label" else text
+            if not re.search(pattern, candidate):
+                errors.append(f"Missing term guide contract: slide-{number}: {label}")
+        if number == 11 and "단어조각→벡터" in text:
+            errors.append("Tokenizer must not conflate pieces with embedding vectors: slide-11")
+    return errors
+
+
 def parse_xml_snippet(source: str, kind: str) -> ET.Element:
     """Parse documents directly and fragments beneath a neutral synthetic root."""
     return ET.fromstring(source if kind == "document" else f"<root>{source}</root>")
@@ -362,7 +411,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     model_chapters = [name for name, attrs in parser.sections.items()
                       if "model-chapter" in (attrs.get("class") or "").split()]
     expect(model_chapters == [f"slide-{VLA_SLIDES + 1}"],
-           "Robot model chapter must begin at slide-46")
+           f"Robot model chapter must begin at slide-{ORIGINAL_MODEL_START + MODEL_OFFSET}")
     model_start = int(model_chapters[0].split("-")[1]) if model_chapters else total + 1
 
     for number, name in enumerate(slide_names, 1):
@@ -466,7 +515,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     )
     # Exact legacy sentence retained from original slide 9; new sentences are checked.
     legacy_label_exceptions = {
-        ("slide-24", "관절 값과 영상은 같은 시각에 맞춰야 한다."),
+        ("slide-27", "관절 값과 영상은 같은 시각에 맞춰야 한다."),
     }
     for name, tag, label in parser.labels:
         if (name, label.strip()) in legacy_label_exceptions:
@@ -504,21 +553,23 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                            raw_slides.get("slide-1", ""), re.S)
     expect(bool(title_menu) and len(re.findall(r'<li\b', title_menu[1])) == 6,
            "Title index must contain six items: slide-1")
-    for number, hook in ((15, "data-token-demo"), (32, "data-chunk-demo")):
+    for number, hook in ((18, "data-token-demo"), (35, "data-chunk-demo")):
         expect(bool(re.search(rf'<[^>]+\s{hook}(?:\s|=|>)', raw_slides.get(f"slide-{number}", ""))),
                f"Missing VLA demo hook {hook}: slide-{number}")
-    links = [href for href, slide in parser.anchors if slide == "slide-45"]
+    links = [href for href, slide in parser.anchors if slide == "slide-48"]
     expect(len(links) >= 21 and all(urlsplit(href).scheme == "https"
                                   and urlsplit(href).netloc for href in links),
-           "VLA references require at least 21 HTTPS links: slide-45")
+           "VLA references require at least 21 HTTPS links: slide-48")
     for label, start, end, terms in (
         ("VLA concept", 3, 9, ("정책", "모방", "강화학습", "행동 복제")),
-        ("VLA architecture", 11, 20, ("토큰", "VLM", "플로 매칭", "액션 청킹")),
-        ("VLA training", 22, 29, ("에피소드", "사전학습", "미세조정", "LoRA")),
-        ("VLA execution", 31, 35, ("추론", "청크", "Sim-to-Real", "신뢰구간")),
-        ("VLA trends", 37, 45, ("RECAP", "WAM", "DreamZero", "기억")),
+        ("VLA architecture", 11, 23, ("토큰", "VLM", "플로 매칭", "액션 청킹")),
+        ("VLA training", 25, 32, ("에피소드", "사전학습", "미세조정", "LoRA")),
+        ("VLA execution", 34, 38, ("추론", "청크", "Sim-to-Real", "신뢰구간")),
+        ("VLA trends", 40, 48, ("RECAP", "WAM", "DreamZero", "기억")),
     ):
         require_terms(label, range_text(start, end), tuple((term,) for term in terms))
+
+    errors.extend(term_guide_errors(parser))
 
     def model_text(start: int, end: int) -> str:
         return range_text(start + MODEL_OFFSET, end + MODEL_OFFSET)
@@ -596,12 +647,13 @@ def vla_fixture(number: int) -> tuple[str, str]:
         classes = {f"slide--{kind}", f"layout-{kind}"}
     else:
         classes = LEGACY_VLA_CLASSES.get(number, {"vla-slide"})
-    if number == 15:
+    if number == 18:
         content += '<div data-token-demo></div>'
-    if number == 32:
+    if number == 35:
         content += '<div data-chunk-demo></div>'
-    if number == 45:
+    if number == 48:
         content += ''.join(f'<a href="https://example.org/{n}">논문</a>' for n in range(21))
+    content += TERM_GUIDE_FIXTURES.get(number, "")
     return " " + " ".join(sorted(classes)), content
 
 
@@ -709,8 +761,8 @@ def self_test() -> list[str]:
             "reference protocol": valid.replace("https://example.org/0", "http://example.org/0", 1),
             "VLA nominal summary": valid.replace('<div data-token-demo>', '<p class="model-takeaway">행동을 만든다</p><div data-token-demo>', 1),
             "question nominal summary": valid.replace(
-                'aria-label="슬라이드 10 / 69: 제목 10">',
-                'aria-label="슬라이드 10 / 69: 제목 10"><p class="key-line">행동을 만든다</p>',
+                'aria-label="슬라이드 10 / 72: 제목 10">',
+                'aria-label="슬라이드 10 / 72: 제목 10"><p class="key-line">행동을 만든다</p>',
                 1,
             ),
             "question nominal index": valid.replace(
@@ -752,14 +804,62 @@ def self_test() -> list[str]:
             "missing asset": "Missing local asset",
             "missing fragment": "Missing fragment",
             "baseline mutation": "Robot model slide changed",
-            "required term": "Missing required learning element in slides 48-57 URDF: mimic",
+            "required term": "Missing required learning element in slides 51-60 URDF: mimic",
             "fixed origin value": "XML teaching value changed .//joint[@name='l_wrist2']/origin@xyz",
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
             "equality polynomial": "XML teaching value changed .//equality/joint@polycoef",
-            "malformed XML fragment": "XML fragment is not well-formed on slide-51",
+            "malformed XML fragment": "XML fragment is not well-formed on slide-54",
             "internal source label": "Internal source label must not appear",
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
+        guide_mutations = {
+            11: {"tokenizer stage": ("문장 → 조각 · 번호", "문장 → 벡터"),
+                 "embedding stage": ("임베딩 번호 → 벡터", "임베딩 번호 → 목록"),
+                 "image token count": ("256개", "255개"),
+                 "text token count": ("7개", "5개"),
+                 "state token count": ("1개", "2개")},
+            12: {term: (term.replace("비전인코더", "비전 인코더"), "삭제")
+                 for term in TERM_GUIDE_PATTERNS[12]},
+            13: {**{f"example {value}": (value.replace("-", "−"), "9.99")
+                    for value in ("0.5", "-0.2", "1.0", "0.48", "-0.10")},
+                 "dimension 1152": ("1152", "1153"),
+                 "dimension 2048": ("2048", "2049"),
+                 "weight count": ("8,192", "8,193"),
+                 "educational example label": ("교육용 예시", "실제 모델")},
+            15: {"행동전문가": ("행동 전문가", "행동 모듈"),
+                 "확산트랜스포머": ("확산 트랜스포머", "확산 모듈")},
+        }
+        sections = slide_source(valid)
+        for number, replacements in guide_mutations.items():
+            section = sections[f"slide-{number}"]
+            for label, (old, new) in replacements.items():
+                key = f"guide {number} {label}"
+                # Replace throughout this slide so generic fixture terms cannot mask deletion.
+                mutations[key] = valid.replace(section, section.replace(old, new))
+                expected_messages[key] = f"Missing term guide contract: slide-{number}: {label}"
+        mutations["conflated tokenizer"] = valid.replace(
+            "토크나이저 문장 → 조각 · 번호", "토크나이저 문장 → 조각 · 번호 단어 조각 → 벡터", 1)
+        expected_messages["conflated tokenizer"] = "Tokenizer must not conflate"
+        mutations["guide layout"] = valid.replace("layout-guide vla-slide vla-term-guide", "vla-slide vla-term-guide", 1)
+        expected_messages["guide layout"] = "Invalid VLA slide class composition: slide-12"
+        for label, old, new in (
+            ("numeric prefix boundary", "0.48", "10.48"),
+            ("numeric suffix boundary", "−0.10", "−0.100"),
+        ):
+            section = sections["slide-13"]
+            mutations[label] = valid.replace(section, section.replace(old, new))
+            expected_messages[label] = "Missing term guide contract: slide-13: example " + old.replace("−", "-")
+        adjacent = valid.replace(
+            "입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10",
+            "입력 <svg><text>0.5</text><text>−0.2</text><text>1.0</text>"
+            "<text>0.48</text><text>−0.10</text></svg>",
+        ).replace("<svg><text>", '<svg role="img" aria-label="계산 예시" viewBox="0 0 10 10"><text>')
+        if check(adjacent, html_path, baseline):
+            failures.append("adjacent SVG numeric labels were rejected")
+        # Inline splits, ASCII minus and an ungrouped count are equivalent visible values.
+        spaced = valid.replace("0.48", "<span>0.</span><span>48</span>").replace("−", "-").replace("8,192", "8192")
+        if check(spaced, html_path, baseline):
+            failures.append("inline-split numeric fixture was rejected")
         for label, mutated in mutations.items():
             messages = check(mutated, html_path, baseline)
             if not any(expected_messages[label] in message for message in messages):
@@ -784,7 +884,7 @@ def main() -> int:
         if failures:
             print("\n".join(f"FAIL: self-test: {message}" for message in failures), file=sys.stderr)
             return 1
-        print("PASS: lecture 4 checker self-test (19 negative mutations detected)")
+        print("PASS: lecture 4 checker self-test (45 negative mutations detected)")
         return 0
 
     try:
@@ -800,7 +900,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-38 → 46-69 differ only in section ID/ARIA numbers")
+        print("PASS: robot slides 15-38 → 49-72 differ only in section ID/ARIA numbers")
     return 0
 
 
