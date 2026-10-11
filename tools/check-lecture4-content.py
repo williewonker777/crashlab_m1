@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate lecture 4's robot-description extension without third-party packages."""
+"""Validate lecture 4's VLA theory and robot-description chapters without third-party packages."""
 
 from __future__ import annotations
 
@@ -15,8 +15,25 @@ from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 
-EXPECTED_SLIDES = 38
-LEGACY_SLIDES = 14
+EXPECTED_SLIDES = 69
+MODEL_OFFSET = 31
+ORIGINAL_MODEL_START = 15
+ORIGINAL_MODEL_END = 38
+VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
+QUESTION_STEPS = {2: "01", 10: "02", 21: "03", 30: "04", 36: "05"}
+# Existing layouts retained from the original introductory material.
+LEGACY_VLA_CLASSES = {
+    3: {"visual-full", "layout-diagram"}, 5: {"layout-split"},
+    7: {"layout-compare"}, 8: {"layout-compare"},
+    11: {"visual-full", "layout-diagram"},
+    22: {"photo-timeline", "layout-diagram"},
+    23: {"photo-timeline", "layout-split"},
+    24: {"photo-timeline", "layout-diagram"},
+    25: {"photo-timeline", "layout-split"},
+    27: {"visual-wide", "layout-diagram"}, 29: {"layout-split"},
+    31: {"visual-full", "layout-diagram"}, 33: {"layout-split"},
+    34: {"layout-compare", "layout-guide"},
+}
 SNIPPET_KINDS = {"fragment", "document", "command"}
 SNIPPET_LANGUAGES = {"language-xml", "language-python", "language-bash", "language-usda"}
 
@@ -82,6 +99,11 @@ XML_SNIPPET_CONTRACTS = {
     ),
 }
 
+XML_SNIPPET_CONTRACTS = {
+    f"slide-{int(name.split('-')[1]) + MODEL_OFFSET}": rules
+    for name, rules in XML_SNIPPET_CONTRACTS.items()
+}
+
 
 class DeckParser(HTMLParser):
     """Collect only the HTML facts needed by the checker."""
@@ -102,7 +124,7 @@ class DeckParser(HTMLParser):
         self.snippets: list[dict[str, object]] = []
         self._pre_stack: list[dict[str, object]] = []
         self._code_stack: list[dict[str, object]] = []
-        self.labels: list[tuple[str, str]] = []
+        self.labels: list[tuple[str, str, str]] = []
         self._label_stack: list[dict[str, object]] = []
 
     def handle_starttag(self, tag: str, attrs_list) -> None:
@@ -113,7 +135,10 @@ class DeckParser(HTMLParser):
             self.sections[element_id] = attrs
         if element_id:
             self.ids.append((element_id, self.current_slide))
-        if tag in {"h2", "h3", "strong"} and self.current_slide:
+        is_summary = tag == "p" and bool(
+            {"key-line", "model-takeaway"} & set((attrs.get("class") or "").split())
+        )
+        if (tag in {"h2", "h3", "strong"} or is_summary) and self.current_slide:
             self._label_stack.append({"tag": tag, "slide": self.current_slide, "text": []})
 
         if tag == "main" and "data-deck" in attrs:
@@ -171,7 +196,7 @@ class DeckParser(HTMLParser):
     def handle_endtag(self, tag: str) -> None:
         if self._label_stack and self._label_stack[-1]["tag"] == tag:
             label = self._label_stack.pop()
-            self.labels.append((str(label["slide"]), "".join(label["text"])))
+            self.labels.append((str(label["slide"]), str(label["tag"]), "".join(label["text"])))
         if tag == "code" and self._code_stack:
             self._code_stack.pop()
         elif tag == "pre" and self._pre_stack:
@@ -204,9 +229,16 @@ def slide_source(html: str) -> dict[str, str]:
     return result
 
 
-def normalized_legacy_slide(source: str, number: int) -> str:
-    pattern = rf'(aria-label\s*=\s*["\']슬라이드\s+{number}\s*/\s*)\d+(\s*:)'
-    return re.sub(pattern, rf"\g<1>{{TOTAL}}\g<2>", source, count=1)
+def normalized_model_slide(source: str, number: int) -> str:
+    """Normalize only the section ID and its ARIA number/total, not body bytes."""
+    opening, remainder = source.split(">", 1)
+    opening = re.sub(rf'(\bid=["\'])slide-{number}(["\'])',
+                     r"\1{SLIDE}\2", opening, count=1)
+    opening = re.sub(
+        rf'(aria-label=["\']슬라이드\s+){number}(\s*/\s*)\d+(\s*:)',
+        r"\1{NUMBER}\2{TOTAL}\3", opening, count=1,
+    )
+    return opening + ">" + remainder
 
 
 def visible_text(parser: DeckParser, slide: str) -> str:
@@ -327,12 +359,18 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     expect(bool(re.search(rf"\b1\s*/\s*{total}\b", counter)),
            f"Visible deck counter must start at 1 / {total}")
 
+    model_chapters = [name for name, attrs in parser.sections.items()
+                      if "model-chapter" in (attrs.get("class") or "").split()]
+    expect(model_chapters == [f"slide-{VLA_SLIDES + 1}"],
+           "Robot model chapter must begin at slide-46")
+    model_start = int(model_chapters[0].split("-")[1]) if model_chapters else total + 1
+
     for number, name in enumerate(slide_names, 1):
         attrs = parser.sections[name]
         label = attrs.get("aria-label", "") or ""
         expect(bool(re.match(rf"^슬라이드\s+{number}\s*/\s*{total}\s*:", label)),
                f"Invalid slide aria-label: {name}")
-        if number > LEGACY_SLIDES:
+        if number >= model_start:
             classes = set((attrs.get("class", "") or "").split())
             expect(bool(classes & {"model-slide", "model-chapter"}),
                    f"New slide requires model-slide or model-chapter class: {name}")
@@ -343,11 +381,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     for element_id, locations in id_locations.items():
         if len(locations) < 2:
             continue
-        legacy_only = all(
-            location and int(location.split("-")[1]) <= LEGACY_SLIDES
-            for location in locations
-        )
-        expect(legacy_only, f"Duplicate ID introduced outside legacy slides: {element_id}")
+        expect(False, f"Duplicate ID: {element_id}")
 
     ids = set(id_locations)
     raw_url_refs = set(re.findall(r"url\(\s*#([^\s\)]+)\s*\)", html))
@@ -424,16 +458,24 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
         return " ".join(visible_text(parser, f"slide-{number}") for number in range(start, end + 1))
 
     for name, source in slide_source(html).items():
-        if int(name.split("-")[1]) > LEGACY_SLIDES:
+        if int(name.split("-")[1]) >= model_start:
             expect(not any(term in source for term in ("연심실", "과제")),
                    f"Internal source label must not appear in lecture content: {name}")
     sentence_ending = re.compile(
-        r"(?:한다|된다|는다|인다|있다|없다|아니다|정도다|쓴다|옮긴다|맞춘다|시킨다)[.!?]?$"
+        r"(?:한다|된다|는다|인다|있다|없다|아니다|정도다|쓴다|옮긴다|맞춘다|시킨다|만든다)[.!?]?$"
     )
-    for name, label in parser.labels:
-        if int(name.split("-")[1]) > LEGACY_SLIDES:
-            expect(not sentence_ending.search(label.strip()),
-                   f"Heading/stage label must use nominal phrasing: {name}: {label.strip()}")
+    # Exact legacy sentence retained from original slide 9; new sentences are checked.
+    legacy_label_exceptions = {
+        ("slide-24", "관절 값과 영상은 같은 시각에 맞춰야 한다."),
+    }
+    for name, tag, label in parser.labels:
+        if (name, label.strip()) in legacy_label_exceptions:
+            continue
+        # Only the question heading is exempt, not its index or summary labels.
+        if tag == "h2" and name in {f"slide-{n}" for n in QUESTION_STEPS}:
+            continue
+        expect(not sentence_ending.search(label.strip()),
+               f"Heading/stage label must use nominal phrasing: {name}: {label.strip()}")
 
     def require_terms(label: str, text: str, terms: tuple[tuple[str, ...], ...]) -> None:
         folded = text.casefold()
@@ -441,11 +483,51 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
             expect(any(term.casefold() in folded for term in alternatives),
                    f"Missing required learning element in {label}: {' / '.join(alternatives)}")
 
-    require_terms("slide 15 chapter", range_text(15, 15), (("URDF",), ("MJCF",), ("USD",)))
-    require_terms("slide 16 sources", range_text(16, 16), (("PPTX",), ("XLSX",), ("STL",)))
+    raw_slides = slide_source(html)
+    for number in range(1, VLA_SLIDES + 1):
+        name = f"slide-{number}"
+        classes = set((parser.sections.get(name, {}).get("class") or "").split())
+        required = ({"slide--title", "layout-title"} if number == 1 else
+                    {"slide--question", "layout-question"} if number in QUESTION_STEPS else
+                    LEGACY_VLA_CLASSES.get(number, {"vla-slide"}))
+        expect({"slide"} | required <= classes and not classes & {"model-chapter", "model-slide"},
+               f"Invalid VLA slide class composition: {name}")
+    for number, step in QUESTION_STEPS.items():
+        source = raw_slides.get(f"slide-{number}", "")
+        menu = re.search(r'<ol\b[^>]*class="question-index"[^>]*>(.*?)</ol>', source, re.S)
+        items = re.findall(r'<li\b([^>]*)>(.*?)</li>', menu[1], re.S) if menu else []
+        current = [body for attrs, body in items if re.search(r'aria-current="step"', attrs)]
+        expect(len(items) == 6 and len(current) == 1
+               and bool(re.search(rf'<span>\s*{step}\s*</span>', current[0])),
+               f"Question index must select step {step}: slide-{number}")
+    title_menu = re.search(r'<ol\b[^>]*class="title-index"[^>]*>(.*?)</ol>',
+                           raw_slides.get("slide-1", ""), re.S)
+    expect(bool(title_menu) and len(re.findall(r'<li\b', title_menu[1])) == 6,
+           "Title index must contain six items: slide-1")
+    for number, hook in ((15, "data-token-demo"), (32, "data-chunk-demo")):
+        expect(bool(re.search(rf'<[^>]+\s{hook}(?:\s|=|>)', raw_slides.get(f"slide-{number}", ""))),
+               f"Missing VLA demo hook {hook}: slide-{number}")
+    links = [href for href, slide in parser.anchors if slide == "slide-45"]
+    expect(len(links) >= 21 and all(urlsplit(href).scheme == "https"
+                                  and urlsplit(href).netloc for href in links),
+           "VLA references require at least 21 HTTPS links: slide-45")
+    for label, start, end, terms in (
+        ("VLA concept", 3, 9, ("정책", "모방", "강화학습", "행동 복제")),
+        ("VLA architecture", 11, 20, ("토큰", "VLM", "플로 매칭", "액션 청킹")),
+        ("VLA training", 22, 29, ("에피소드", "사전학습", "미세조정", "LoRA")),
+        ("VLA execution", 31, 35, ("추론", "청크", "Sim-to-Real", "신뢰구간")),
+        ("VLA trends", 37, 45, ("RECAP", "WAM", "DreamZero", "기억")),
+    ):
+        require_terms(label, range_text(start, end), tuple((term,) for term in terms))
+
+    def model_text(start: int, end: int) -> str:
+        return range_text(start + MODEL_OFFSET, end + MODEL_OFFSET)
+
+    require_terms(f"slide {15 + MODEL_OFFSET} chapter", model_text(15, 15), (("URDF",), ("MJCF",), ("USD",)))
+    require_terms(f"slide {16 + MODEL_OFFSET} sources", model_text(16, 16), (("PPTX",), ("XLSX",), ("STL",)))
     require_terms(
-        "slides 17-26 URDF",
-        range_text(17, 26),
+        f"slides {17 + MODEL_OFFSET}-{26 + MODEL_OFFSET} URDF",
+        model_text(17, 26),
         (
             ("URDF",), ("link", "링크"), ("joint", "조인트", "관절"),
             ("visual", "시각 형상"), ("collision", "충돌"), ("inertial", "관성"),
@@ -454,54 +536,73 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
             ("단위", "mm", "m 단위"), ("좌표", "좌표계"),
         ),
     )
-    require_terms("slide 27 formats", range_text(27, 27), (("URDF",), ("MJCF",), ("USD",)))
+    require_terms(f"slide {27 + MODEL_OFFSET} formats", model_text(27, 27), (("URDF",), ("MJCF",), ("USD",)))
     require_terms(
-        "slides 28-32 MJCF",
-        range_text(28, 32),
+        f"slides {28 + MODEL_OFFSET}-{32 + MODEL_OFFSET} MJCF",
+        model_text(28, 32),
         (("MJCF",), ("actuator", "액추에이터", "drive", "드라이브"), ("collision", "충돌")),
     )
     require_terms(
-        "slides 33-35 USD",
-        range_text(33, 35),
+        f"slides {33 + MODEL_OFFSET}-{35 + MODEL_OFFSET} USD",
+        model_text(33, 35),
         (("USD", "USDA"), ("stage", "스테이지", "scene", "씬", "시뮬레이션 환경")),
     )
     require_terms(
-        "slide 36 revision validation",
-        range_text(36, 36),
+        f"slide {36 + MODEL_OFFSET} revision validation",
+        model_text(36, 36),
         (
             ("이전 리비전", "revision", "리비전"), ("USD",), ("URDF",), ("MJCF",),
             ("wrist2",),
             ("116.6007",), ("117.4993",), ("검증", "validation"),
         ),
     )
-    revision_text = range_text(36, 36)
+    revision_text = model_text(36, 36)
     wrist2_absence = re.search(
         r"(?:wrist2.{0,32}(?:없|미포함|제외)|(?:없|미포함|제외).{0,32}wrist2)",
         revision_text,
         re.IGNORECASE,
     )
-    expect(bool(wrist2_absence), "Slide 36 must state that wrist2 is absent from the older USD revision")
-    require_terms("slide 37 practice", range_text(37, 37), (("실습",), ("결과물", "제출")))
-    require_terms("slide 38 references", range_text(38, 38), (("공식",), ("문서", "documentation")))
+    expect(bool(wrist2_absence), f"Slide {36 + MODEL_OFFSET} must state that wrist2 is absent from the older USD revision")
+    require_terms(f"slide {37 + MODEL_OFFSET} practice", model_text(37, 37), (("실습",), ("결과물", "제출")))
+    require_terms(f"slide {38 + MODEL_OFFSET} references", model_text(38, 38), (("공식",), ("문서", "documentation")))
 
     errors.extend(check_index(root, total))
 
     if baseline is not None:
         original = slide_source(baseline)
         updated = slide_source(html)
-        expected_legacy = {f"slide-{number}" for number in range(1, LEGACY_SLIDES + 1)}
-        expect(expected_legacy <= set(original), "Baseline must contain original slides 1-14")
-        expect(expected_legacy <= set(updated), "Updated deck must retain slides 1-14")
-        for number in range(1, LEGACY_SLIDES + 1):
-            name = f"slide-{number}"
-            if name not in original or name not in updated:
-                continue
-            expect(
-                normalized_legacy_slide(original[name], number)
-                == normalized_legacy_slide(updated[name], number),
-                f"Legacy slide changed beyond aria-label total: {name}",
-            )
+        for number in range(ORIGINAL_MODEL_START, ORIGINAL_MODEL_END + 1):
+            old_name, new_name = f"slide-{number}", f"slide-{number + MODEL_OFFSET}"
+            expect(old_name in original, f"Baseline must contain {old_name}")
+            expect(new_name in updated, f"Updated deck must contain {new_name}")
+            if old_name in original and new_name in updated:
+                expect(
+                    normalized_model_slide(original[old_name], number)
+                    == normalized_model_slide(updated[new_name], number + MODEL_OFFSET),
+                    f"Robot model slide changed beyond section ID/ARIA numbers: {new_name}",
+                )
     return errors
+
+
+def vla_fixture(number: int) -> tuple[str, str]:
+    content = "정책 모방 강화학습 행동 복제 토큰 VLM 플로 매칭 액션 청킹 에피소드 사전학습 미세조정 LoRA 추론 청크 Sim-to-Real 신뢰구간 RECAP WAM DreamZero 기억"
+    if number == 1 or number in QUESTION_STEPS:
+        kind = "title" if number == 1 else "question"
+        content += f'<ol class="{kind}-index">'
+        for step in range(1, 7):
+            selected = ' aria-current="step"' if QUESTION_STEPS.get(number) == f"{step:02}" else ""
+            content += f'<li{selected}><span>{step:02}</span>단원</li>'
+        content += "</ol>"
+        classes = {f"slide--{kind}", f"layout-{kind}"}
+    else:
+        classes = LEGACY_VLA_CLASSES.get(number, {"vla-slide"})
+    if number == 15:
+        content += '<div data-token-demo></div>'
+    if number == 32:
+        content += '<div data-chunk-demo></div>'
+    if number == 45:
+        content += ''.join(f'<a href="https://example.org/{n}">논문</a>' for n in range(21))
+    return " " + " ".join(sorted(classes)), content
 
 
 def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
@@ -541,8 +642,9 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             'polycoef="0 -1 0 0 0"/></equality><actuator><motor name="l_gripper_input" '
             'joint="l_gripper_input" ctrllimited="false"/></actuator>',
     }
-    for number in range(1, total + 1):
-        extra_class = " model-slide" if number > LEGACY_SLIDES else ""
+    for emitted_number in range(1, total + 1):
+        number = emitted_number - MODEL_OFFSET
+        extra_class = " model-chapter" if number == 15 else " model-slide"
         content = topics.get(number, f"내용 {number}")
         if number == 17:
             content += (
@@ -562,6 +664,9 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
                 '<defs><marker id="arrow-28"></marker></defs>'
                 '<path marker-end="url(#arrow-28)"></path></svg>'
             )
+        if emitted_number <= VLA_SLIDES:
+            extra_class, content = vla_fixture(emitted_number)
+        number = emitted_number
         slides.append(
             f'<section class="slide{extra_class}" id="slide-{number}" '
             f'aria-label="슬라이드 {number} / {total}: 제목 {number}">{content}</section>'
@@ -571,7 +676,11 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
         f'<div data-counter>1 / {total}</div><main data-deck data-slide-count="{total}">'
         + "".join(slides) + "</main></body></html>"
     )
-    baseline = re.sub(rf" / {total}:", " / 14:", "".join(slides[:LEGACY_SLIDES]))
+    baseline = "".join(
+        slide.replace(f'id="slide-{n}"', f'id="slide-{n - MODEL_OFFSET}"', 1)
+        .replace(f'슬라이드 {n} / {total}:', f'슬라이드 {n - MODEL_OFFSET} / 38:', 1)
+        for n, slide in enumerate(slides, 1) if n > VLA_SLIDES
+    )
     html_path = root / "lecture-4.html"
     baseline_path = root / "baseline.html"
     html_path.write_text(html, encoding="utf-8")
@@ -589,10 +698,26 @@ def self_test() -> list[str]:
         html_path, baseline_path = fixture(root)
         valid = html_path.read_text(encoding="utf-8")
         baseline = baseline_path.read_text(encoding="utf-8")
-        if check(valid, html_path, baseline):
-            failures.append("valid fixture was rejected")
+        valid_errors = check(valid, html_path, baseline)
+        if valid_errors:
+            failures.append("valid fixture was rejected: " + "; ".join(valid_errors))
 
         mutations = {
+            "VLA class": valid.replace('class="slide vla-slide"', 'class="slide"', 1),
+            "question step": valid.replace('<li aria-current="step"><span>01</span>', '<li><span>01</span>', 1),
+            "demo hook": valid.replace("data-token-demo", "data-missing-demo", 1),
+            "reference protocol": valid.replace("https://example.org/0", "http://example.org/0", 1),
+            "VLA nominal summary": valid.replace('<div data-token-demo>', '<p class="model-takeaway">행동을 만든다</p><div data-token-demo>', 1),
+            "question nominal summary": valid.replace(
+                'aria-label="슬라이드 10 / 69: 제목 10">',
+                'aria-label="슬라이드 10 / 69: 제목 10"><p class="key-line">행동을 만든다</p>',
+                1,
+            ),
+            "question nominal index": valid.replace(
+                '<li aria-current="step"><span>02</span>단원',
+                '<li aria-current="step"><span>02</span><strong>행동을 만든다</strong>',
+                1,
+            ),
             "count mismatch": valid.replace(f'data-slide-count="{EXPECTED_SLIDES}"', 'data-slide-count="99"'),
             "new duplicate id": valid.replace(
                 f'id="slide-{EXPECTED_SLIDES}"', f'id="slide-{EXPECTED_SLIDES}" data-test-id="x"'
@@ -602,7 +727,7 @@ def self_test() -> list[str]:
             ),
             "missing asset": valid.replace('src="asset.svg"', 'src="missing.svg"'),
             "missing fragment": valid.replace('url(#arrow-28)', 'url(#missing-arrow)'),
-            "baseline mutation": valid.replace("내용 7", "변경된 내용 7"),
+            "baseline mutation": valid.replace("내용 18", "변경된 내용 18"),
             "required term": valid.replace("mimic", "coupling"),
             "fixed origin value": valid.replace("-0.073", "-0.730", 1),
             "inertial mass value": valid.replace("0.18059836361", "18.059836361", 1),
@@ -615,16 +740,23 @@ def self_test() -> list[str]:
             ),
         }
         expected_messages = {
+            "VLA class": "Invalid VLA slide class composition",
+            "question step": "Question index must select step 01",
+            "demo hook": "Missing VLA demo hook",
+            "reference protocol": "VLA references require at least 21 HTTPS",
+            "VLA nominal summary": "Heading/stage label must use nominal phrasing",
+            "question nominal summary": "Heading/stage label must use nominal phrasing: slide-10",
+            "question nominal index": "Heading/stage label must use nominal phrasing: slide-10",
             "count mismatch": "data-slide-count",
             "new duplicate id": "Duplicate ID",
             "missing asset": "Missing local asset",
             "missing fragment": "Missing fragment",
-            "baseline mutation": "Legacy slide changed",
-            "required term": "Missing required learning element in slides 17-26 URDF: mimic",
+            "baseline mutation": "Robot model slide changed",
+            "required term": "Missing required learning element in slides 48-57 URDF: mimic",
             "fixed origin value": "XML teaching value changed .//joint[@name='l_wrist2']/origin@xyz",
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
             "equality polynomial": "XML teaching value changed .//equality/joint@polycoef",
-            "malformed XML fragment": "XML fragment is not well-formed on slide-20",
+            "malformed XML fragment": "XML fragment is not well-formed on slide-51",
             "internal source label": "Internal source label must not appear",
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
@@ -643,7 +775,7 @@ def main() -> int:
         type=Path,
         default=Path(__file__).resolve().parents[1] / "lecture-4.html",
     )
-    parser.add_argument("--baseline", type=Path, help="Original 14-slide lecture-4 HTML")
+    parser.add_argument("--baseline", type=Path, help="Original 38-slide lecture-4 HTML (robot slides 15-38)")
     parser.add_argument("--self-test", action="store_true", help="Run isolated negative tests")
     args = parser.parse_args()
 
@@ -652,12 +784,12 @@ def main() -> int:
         if failures:
             print("\n".join(f"FAIL: self-test: {message}" for message in failures), file=sys.stderr)
             return 1
-        print("PASS: lecture 4 checker self-test (12 negative mutations detected)")
+        print("PASS: lecture 4 checker self-test (19 negative mutations detected)")
         return 0
 
     try:
-        html = args.html.read_text(encoding="utf-8")
-        baseline = args.baseline.read_text(encoding="utf-8") if args.baseline else None
+        html = args.html.read_bytes().decode("utf-8")
+        baseline = args.baseline.read_bytes().decode("utf-8") if args.baseline else None
     except (OSError, UnicodeError) as exc:
         print(f"FAIL: cannot read input: {exc}", file=sys.stderr)
         return 2
@@ -668,7 +800,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: legacy slides 1-14 differ only in aria-label totals")
+        print("PASS: robot slides 15-38 → 46-69 differ only in section ID/ARIA numbers")
     return 0
 
 

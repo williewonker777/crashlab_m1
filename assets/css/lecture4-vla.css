@@ -1,0 +1,187 @@
+/* Lecture 4 VLA theory: reuse deck tokens and lecture 4 model components; header and navigation unchanged. */
+.lecture-4 .vla-slide .slide__inner {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(18px, 2.4vh, 28px);
+}
+.vla-slide .slide__header { gap: 8px; }
+.vla-slide .slide__header::after { margin-top: 5px; }
+.vla-slide h2 { font-size: clamp(34px, 3.15vw, 60px); line-height: 1.2; }
+.vla-slide p, .vla-slide figure { margin: 0; }
+.vla-slide h3 { font-size: clamp(25px, 1.9vw, 36px); line-height: 1.3; }
+.vla-slide .model-columns { min-height: 0; }
+.vla-slide .model-panel { justify-content: center; }
+.vla-slide .model-steps strong { font-size: clamp(22px, 1.7vw, 32px); }
+.vla-slide .model-steps p { font-size: clamp(19px, 1.3vw, 25px); }
+.vla-slide .model-table-wrap { width: 100%; }
+.vla-slide .model-table { font-size: clamp(18px, 1.25vw, 24px); }
+.vla-slide .model-table th, .vla-slide .model-table td { padding: 14px 22px; }
+.vla-slide .model-table tbody th { width: auto; white-space: nowrap; }
+.vla-slide .model-table td small { color: var(--muted); }
+/* Defaults sit on the svg element and are inherited, so per-text font-size attributes still apply. */
+.vla-svg { display: block; width: 100%; height: 0; min-height: 0; flex: 1 1 0; fill: var(--hy-blue); font-size: 26px; font-weight: 600; }
+.vla-svg text { font-family: inherit; dominant-baseline: central; }
+.vla-svg .small { font-size: 21px; font-weight: 400; fill: var(--hy-gray); }
+.vla-svg .white { fill: #fff; }
+.vla-svg .muted { fill: var(--muted); }
+.vla-svg .chip rect { fill: #fff; stroke: #D8DEE9; stroke-width: 1; }
+.vla-svg .chip text { fill: var(--hy-blue); font-size: 21px; font-weight: 500; }
+.vla-svg .chip--lg text { font-size: 23px; }
+.vla-chunk-diagram .small { font-size: 26px; }
+.vla-chunk-diagram .chip text { font-size: 26px; }
+.vla-mini { flex: none; height: clamp(96px, 14vh, 150px); margin: 4px 0 2px; }
+.vla-button-row { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.lecture-4 .concept-table td small { white-space: nowrap; }
+.vla-math { font-family: "Noto Sans KR", system-ui, sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vla-stack { display: grid; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: clamp(14px, 2vh, 24px); }
+.vla-stack--figure-first { grid-template-rows: minmax(0, 1fr) auto; }
+.vla-stack > .model-panel { min-height: 0; }
+.vla-links a { font-size: clamp(17px, 1.2vw, 23px); line-height: 1.35; }
+.vla-links--two { display: block; columns: 2; column-gap: 28px; }
+.vla-links--two a { display: block; margin-bottom: clamp(8px, 1.3vh, 16px); break-inside: avoid; }
+
+/* Cards: reasons, generation styles, collection methods and trends. */
+.vla-cards { display: grid; min-height: 0; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 28px); }
+.vla-cards--2 { --cols: 2; }
+.vla-cards--4 { --cols: 4; }
+.vla-card { display: flex; min-width: 0; min-height: 0; flex-direction: column; gap: clamp(10px, 1.4vh, 18px); padding: clamp(20px, 1.9vw, 36px); border-radius: 22px; background: var(--bg-tint); }
+.vla-card--tint { background: var(--accent-tint); }
+.vla-card__label { color: var(--accent-ink); font-size: clamp(16px, 1.05vw, 20px); font-weight: 700; letter-spacing: .08em; }
+.vla-card h3 { color: var(--hy-blue); }
+.vla-card > p { color: var(--hy-gray); font-size: clamp(19px, 1.3vw, 25px); line-height: 1.55; }
+.vla-card__example { margin-top: auto !important; padding-top: 12px; border-top: 2px solid #D8DEE9; color: var(--hy-blue) !important; font-size: clamp(17px, 1.12vw, 21px) !important; font-weight: 600; line-height: 1.5 !important; }
+.vla-cards--2 .vla-card { padding: clamp(18px, 1.6vw, 30px) clamp(20px, 1.9vw, 36px); }
+
+/* Navy formula band, the same treatment as the PID overview in lecture 2. */
+.vla-banner { display: grid; gap: 8px; padding: clamp(16px, 2.2vh, 26px) clamp(24px, 2.2vw, 40px); border-radius: 18px; background: var(--hy-blue); color: #fff; }
+.vla-banner .vla-math { font-size: clamp(24px, 1.95vw, 37px); font-weight: 600; }
+.vla-banner small { color: #d6d9ee; font-size: clamp(16px, 1.05vw, 20px); }
+.vla-banner__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 22px; }
+.vla-banner__row > span:first-child { min-width: 3.2em; color: var(--accent-on-blue); font-size: clamp(17px, 1.15vw, 22px); font-weight: 700; letter-spacing: .08em; }
+
+/* Lineage timeline. */
+.vla-timeline { display: grid; align-content: center; gap: clamp(22px, 3.4vh, 40px); min-height: 0; }
+.vla-timeline ol { position: relative; display: grid; margin: 0; padding: 0; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: clamp(14px, 1.4vw, 26px); list-style: none; }
+.vla-timeline ol::before { position: absolute; top: 15px; right: 0; left: 0; height: 2px; background: var(--accent); content: ""; opacity: .55; }
+.vla-timeline li { position: relative; display: grid; align-content: start; gap: 6px; padding-top: 40px; }
+.vla-timeline li::before { position: absolute; top: 6px; left: 0; width: 20px; height: 20px; border: 4px solid var(--accent); border-radius: 50%; background: #fff; content: ""; }
+.vla-timeline time { color: var(--accent-ink); font-size: clamp(16px, 1.05vw, 20px); font-weight: 700; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.vla-timeline strong { color: var(--hy-blue); font-size: clamp(22px, 1.6vw, 31px); line-height: 1.25; }
+.vla-timeline span { color: var(--hy-gray); font-size: clamp(17px, 1.12vw, 21px); line-height: 1.5; }
+.vla-timeline li.is-key::before { background: var(--accent); }
+
+/* Interactive demos: tokenization and chunk execution. */
+.vla-demo { gap: clamp(10px, 1.6vh, 18px); }
+.vla-control { display: grid; gap: 8px; }
+.vla-control label { display: flex; justify-content: space-between; gap: 12px; color: var(--hy-blue); font-size: clamp(19px, 1.35vw, 26px); font-weight: 700; }
+.vla-control input { width: 100%; min-height: 26px; margin: 2px 0; accent-color: var(--accent-ink); cursor: pointer; }
+.vla-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.vla-buttons > span { margin-right: 4px; color: var(--hy-gray); font-size: clamp(16px, 1.05vw, 20px); font-weight: 600; }
+.vla-buttons button { padding: 8px 16px; border: 2px solid #d5daea; border-radius: 10px; background: #fff; color: var(--hy-blue); font: inherit; font-size: clamp(16px, 1.08vw, 21px); font-weight: 600; cursor: pointer; }
+.vla-buttons button[aria-pressed="true"] { border-color: var(--hy-blue); background: var(--hy-blue); color: #fff; }
+.vla-buttons button:hover { border-color: var(--accent-ink); }
+.vla-readout { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 16px; padding: 14px 20px; border-radius: 14px; background: var(--accent-tint); }
+.vla-readout > div > span { display: block; color: var(--hy-gray); font-size: clamp(15px, 1.02vw, 19px); }
+.vla-readout strong { display: block; color: var(--hy-blue); font-size: clamp(24px, 2vw, 38px); font-variant-numeric: tabular-nums; line-height: 1.2; white-space: nowrap; }
+.vla-readout strong small { font-size: .55em; }
+.vla-demo .vla-svg { flex: 1 1 0; min-height: 120px; }
+.vla-bin { fill: #fff; stroke: #cfd5e6; stroke-width: 1; }
+.vla-bin.is-active { fill: var(--accent-tint); stroke: var(--accent-ink); stroke-width: 2; }
+.vla-run { fill: var(--hy-blue); }
+.vla-run--next { fill: var(--accent); }
+.vla-wait { fill: #F7931E; }
+.vla-infer { fill: #CDB8F0; }
+
+/* Lecture 4 chapter questions use the same index as the title, like lecture 2. */
+.lecture-4 .question-index { display: grid; grid-column: 1 / -1; grid-row: 2; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
+.lecture-4 .question-index li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; gap: 12px; padding-top: 16px; border-top: 3px solid #D8DEE9; color: #626774; }
+.lecture-4 .question-index li > span { padding-top: 3px; font-size: clamp(16px, 1.1vw, 21px); font-weight: 600; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.lecture-4 .question-index strong { display: block; font-size: clamp(19px, 1.3vw, 25px); font-weight: 500; line-height: 1.3; }
+.lecture-4 .question-index small { display: block; margin-top: 6px; color: #626774; font-size: clamp(15px, .95vw, 18px); line-height: 1.4; word-break: keep-all; }
+.lecture-4 .question-index li[aria-current="step"] { border-color: var(--hy-blue); color: var(--hy-blue); }
+.lecture-4 .question-index li[aria-current="step"] strong { font-weight: 700; }
+.lecture-4 .question-index li[aria-current="step"] > span { color: var(--accent-ink); }
+.lecture-4 .slide--title .title-index { gap: 18px; }
+.lecture-4 .slide--title .title-index li { padding-top: 11px; }
+
+/* Legacy VLA comparison pages keep their content and use lecture-local sizing. */
+.lecture-4 #slide-34 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
+.lecture-4 #slide-34 .concept-table { align-self: center; }
+@media (min-width: 801px) and (max-width: 1400px) {
+  .lecture-4 .slide--title .slide__inner { grid-template-columns: 120px minmax(0, 1fr) 300px; gap: 28px; }
+  .lecture-4 .slide--title .slide__inner > div:first-child { padding-left: 28px; }
+  .lecture-4 .slide--title .title-robot { display: none; }
+  .lecture-4 .slide--title .title-number { font-size: clamp(72px, 7vw, 100px); }
+}
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-4 #slide-7 .slide__inner { grid-template-rows: auto minmax(0, 1fr); gap: 24px; }
+  .lecture-4 #slide-7 .comparison-card { padding: 28px 30px; gap: 20px; }
+  .lecture-4 #slide-7 .comparison-card ul { gap: 16px; }
+  .lecture-4 #slide-7 .comparison-card li { font-size: 20px; }
+  .lecture-4 #slide-34 .concept-table { font-size: 19px; border-spacing: 0 8px; }
+  .lecture-4 #slide-34 .concept-table th, .lecture-4 #slide-34 .concept-table td { padding: 14px 20px; }
+  .lecture-4 #slide-34 .concept-table td small { font-size: 16px; }
+  .lecture-4 .vla-slide { padding-top: 78px; padding-bottom: 64px; }
+  .lecture-4 .vla-slide .slide__inner { gap: 14px; }
+  .vla-slide .slide__eyebrow { font-size: 14px; }
+  .vla-slide h2 { font-size: clamp(32px, 3vw, 44px); }
+  .vla-slide h3 { font-size: 24px; }
+  .vla-slide .model-steps strong { font-size: 21px; }
+  .vla-slide .model-steps p { font-size: 17px; }
+  .vla-slide .model-table { font-size: 17px; }
+  .vla-slide .model-table th, .vla-slide .model-table td { padding: 9px 16px; }
+  .vla-card { padding: 16px 20px; gap: 8px; }
+  .vla-card > p { font-size: 17px; line-height: 1.45; }
+  .vla-card__example { padding-top: 8px; font-size: 15px !important; }
+  .vla-banner { padding: 12px 22px; gap: 4px; }
+  .vla-banner .vla-math { font-size: 23px; }
+  .vla-timeline { gap: 18px; }
+  .vla-timeline li { padding-top: 34px; }
+  .vla-timeline strong { font-size: 21px; }
+  .vla-timeline span { font-size: 15px; line-height: 1.4; }
+  .vla-control label { font-size: 18px; }
+  .vla-buttons button { padding: 5px 11px; font-size: 15px; }
+  .vla-readout { padding: 10px 14px; }
+  .vla-readout strong { font-size: 25px; }
+  .lecture-4 .question-index { gap: 16px; }
+  .lecture-4 .question-index strong { font-size: 18px; }
+  .lecture-4 .question-index small { font-size: 14px; }
+  .lecture-4 .slide--title .title-index { gap: 12px; }
+  .lecture-4 .slide--title .title-index li { padding-top: 8px; }
+}
+@media (max-width: 1100px) and (min-width: 801px) {
+  .vla-cards--4 { --cols: 2; }
+  .vla-card > p { font-size: 18px; }
+  .vla-timeline span { font-size: 15px; }
+}
+@media (max-width: 800px) {
+  .lecture-4 .vla-slide { height: auto; min-height: 100dvh; overflow: visible; }
+  .lecture-4 .vla-slide .slide__inner { grid-template-rows: auto; gap: 24px; }
+  .vla-slide h2 { font-size: clamp(30px, 7.8vw, 45px); }
+  .vla-cards, .vla-cards--2, .vla-cards--4 { --cols: 1; }
+  .vla-svg { flex: none; height: auto; min-width: 520px; }
+  .vla-demo .vla-svg, .vla-mini { min-width: 0; }
+  .vla-mini { width: 100%; }
+  .vla-chunk-diagram { min-width: 1050px; }
+  .vla-slide .model-panel { overflow-x: auto; }
+  .vla-slide .model-table { min-width: 640px; }
+  .vla-timeline ol { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .vla-timeline ol::before { top: 0; bottom: 0; left: 9px; width: 2px; height: auto; }
+  .vla-timeline li { padding: 0 0 0 40px; }
+  .vla-timeline li::before { top: 4px; }
+  .vla-readout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vla-banner .vla-math { white-space: normal; font-size: 22px; }
+  .lecture-4 #slide-34 .slide__inner { grid-template-rows: auto; }
+  .lecture-4 #slide-34 .concept-table { display: block; font-size: 20px; }
+  .lecture-4 #slide-34 .concept-table tbody { display: grid; gap: 16px; }
+  .lecture-4 #slide-34 .concept-table tr { display: grid; }
+  .lecture-4 #slide-34 .concept-table th, .lecture-4 #slide-34 .concept-table td { width: auto; padding: 14px 18px; }
+  .lecture-4 #slide-34 .concept-table th { border-radius: 16px 16px 0 0; }
+  .lecture-4 #slide-34 .concept-table td { border-radius: 0 0 16px 16px; }
+  .lecture-4 #slide-34 .concept-table td small { display: block; margin-left: 0; white-space: normal; font-size: 16px; }
+  .lecture-4 .question-index { grid-column: 1; grid-row: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; }
+}
+@media print {
+  .lecture-4 .vla-slide { height: auto; min-height: 100vh; break-after: page; }
+  .vla-buttons, .vla-control input { display: none; }
+}
