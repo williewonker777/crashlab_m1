@@ -104,7 +104,7 @@
 
 - [Figure Helix](https://www.figure.ai/news/helix): Helix 구조·속도 공개값.
 - [Gemini Robotics ER 2](https://blog.google/innovation-and-ai/models-and-research/google-deepmind/gemini-robotics-er-2/): 계획·진행 판단과 하위 VLA 실행의 Google DeepMind 설명.
-- [Gemini Robotics 2 보도](https://www.therobotreport.com/google-deepmind-says-gemini-robotics-2-enables-full-body-control/): Gemini Robotics 2의 전신 제어 보도.
+- [Gemini Robotics 2](https://deepmind.google/blog/gemini-robotics-2-brings-whole-body-intelligence-to-robots/): 2026-07-30 Google DeepMind 발표. 휴머노이드 전신 동작·여러 엔드 이펙터의 손 조작·다중 로봇 협업과, 계획을 맡는 ER 2와 동작을 실행하는 VLA의 역할 구분.
 - [NVIDIA GTC 2026 보도자료](https://nvidianews.nvidia.com/news/nvidia-expands-open-model-families-to-power-the-next-wave-of-agentic-physical-and-healthcare-ai): 2026-03-16 GR00T N2 예고.
 - [NVIDIA WAM 기술 블로그](https://developer.nvidia.com/blog/pretrained-to-imagine-fine-tuned-to-act-the-rise-of-world-action-models/): WAM 지연 비교와 2026-06-15 게시일.
 - [GR00T N1.6 모델 카드](https://huggingface.co/nvidia/GR00T-N1.6-3B): 공개 모델의 크기·배포 정보.
