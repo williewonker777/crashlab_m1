@@ -15,25 +15,25 @@ from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 
-EXPECTED_SLIDES = 72
-MODEL_OFFSET = 34
+EXPECTED_SLIDES = 74
+MODEL_OFFSET = 36
 ORIGINAL_MODEL_START = 15
 ORIGINAL_MODEL_END = 38
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
-QUESTION_STEPS = {2: "01", 10: "02", 24: "03", 33: "04", 39: "05"}
+QUESTION_STEPS = {2: "01", 10: "02", 25: "03", 35: "04", 41: "05"}
 # Existing layouts retained from the original introductory material.
 LEGACY_VLA_CLASSES = {
     3: {"visual-full", "layout-diagram"}, 5: {"layout-split"},
     7: {"layout-compare"}, 8: {"layout-compare"},
     11: {"visual-full", "layout-diagram"},
     12: {"vla-slide", "layout-compare", "layout-guide", "vla-term-guide"},
-    25: {"photo-timeline", "layout-diagram"},
-    26: {"photo-timeline", "layout-split"},
-    27: {"photo-timeline", "layout-diagram"},
-    28: {"photo-timeline", "layout-split"},
-    30: {"visual-wide", "layout-diagram"}, 32: {"layout-split"},
-    34: {"visual-full", "layout-diagram"}, 36: {"layout-split"},
-    37: {"layout-compare", "layout-guide"},
+    26: {"photo-timeline", "layout-diagram"},
+    27: {"photo-timeline", "layout-split"},
+    28: {"photo-timeline", "layout-diagram"},
+    29: {"photo-timeline", "layout-split"},
+    32: {"visual-wide", "layout-diagram"}, 34: {"layout-split"},
+    36: {"vla-slide"}, 38: {"layout-split"},
+    39: {"layout-compare", "layout-guide"},
 }
 SNIPPET_KINDS = {"fragment", "document", "command"}
 SNIPPET_LANGUAGES = {"language-xml", "language-python", "language-bash", "language-usda"}
@@ -280,11 +280,11 @@ def normalized_model_slide(source: str, number: int) -> str:
 
 # Approved prose edits only: no numeric, markup or whitespace normalization.
 MODEL_TEXT_EDITS = {
-    55: (
+    57: (
         ('실제 +90° 손목 조립 후에는 부모 손목 기준 축도 달라진다.',
          '실제로는 손목을 +90° 돌려 조립하므로, 부모 손목 기준으로 보면 축 방향이 달라진다.'),
     ),
-    56: (
+    58: (
         ('STL은 표면 형상 · 관절축·질량·조립 관계는 별도 정의',
          'STL에는 표면 형상만 · 관절축·질량·조립 관계는 따로 정의'),
         ('두 링크 완성 URDF',
@@ -292,7 +292,7 @@ MODEL_TEXT_EDITS = {
         ('는 원본 URDF 옆에 놓고',
          '는 원본 URDF 옆에 두고'),
     ),
-    57: (
+    59: (
         ('메시와 함께 0.001을 다시 곱하지 않는다.',
          '메시처럼 0.001을 곱하지 않는다.'),
         ('표의 COM은 WCS로 표기돼 있다.',
@@ -300,14 +300,22 @@ MODEL_TEXT_EDITS = {
         ('질량만 같아도 질량의 분포가 다르면 회전 운동은 달라진다.',
          '질량이 같아도 분포가 다르면 회전 운동이 달라진다.'),
     ),
-    62: (
+    64: (
         ('이 사례의 MJCF는 시뮬레이션 설정을 별도 작성한 모델이다. 자동 변환 결과라고 가정하지 않는다.',
          '이 사례의 MJCF는 시뮬레이션 설정을 따로 작성한 모델이며, URDF를 자동 변환한 결과로 보면 안 된다.'),
     ),
-    64: (
+    66: (
         ('비볼록 메시 하나로 구멍·오목한 형상이 그대로 충돌한다고 가정하지 않는다.',
          'MuJoCo는 메시 충돌을 볼록 껍질로 계산하므로, 구멍·오목한 부분이 그대로 충돌한다고 보면 안 된다.'),
     ),
+    53: (("URDF의 역할: 제어 프로그램이 아닌 로봇 구조와 물성의 기술",
+          "URDF의 역할: 제어 프로그램이 아니라 TF·IK·시뮬레이터가 읽는 로봇 구조와 물성의 기술"),),
+    65: (("이 모델은 motor를 사용한다. 위치 목표 추종은 별도의 제어기가 필요하다.",
+          "이 모델의 motor는 ctrl에 gear를 곱한 값을 관절 토크로 바로 쓴다. 관절 목표각을 따라가려면 PD로 토크를 계산하는 제어기를 붙이거나, 목표와의 차이로 힘을 내는 position actuator를 쓴다."),),
+    69: (("drive: stiffness·damping·힘 제한이 목적에 맞는가?",
+          "drive: 관절 목표를 따라가는 stiffness(kp)·damping(kd)과 힘 제한이 목적에 맞는가?"),),
+    67: (('<li><strong>씬별 로봇 참조 확인</strong><p>현재 scene_alice_m1.xml은 rohand 모델을 참조한다. 그리퍼 실습에는 위의 새 씬을 사용한다.</p></li>',
+          '<li><strong>씬별 로봇 참조 확인</strong><p>현재 scene_alice_m1.xml은 rohand 모델을 참조한다. 그리퍼 실습에는 위의 새 씬을 사용한다.</p></li><li><strong>option · 물리 계산 주기</strong><p>timestep 0.002 s는 1초에 물리 계산 500번이다. 행동을 50 Hz로 보내면 물리 계산 10번마다 행동이 한 번 바뀐다.</p></li>'),),
 }
 
 
@@ -353,22 +361,22 @@ GLOSSARY_TERMS = {
     6: ('Pretraining',),
     7: ('Fine-tuning', 'Parameter'),
     9: ('지도학습',),
-    14: ('VLM', 'Backbone'),
+    14: ('VLM', 'Backbone', 'Action Head'),
     15: ('Noise',),
-    16: ('Action Space', 'IK', '정규화', 'Percentile'),
-    20: ('Flow Matching',),
-    21: ('Action Chunking', 'Chunk', 'Inference'),
-    22: ('Cross Entropy', '제곱 오차', 'L1 오차', 'Post-training'),
-    23: ('Dual System', 'Latent Representation'),
-    32: ('Checkpoint',),
-    35: ('동기 실행', '비동기 실행'),
-    36: ('Sim-to-Real',),
-    38: ('신뢰구간', 'Benchmark'),
-    43: ('Reasoning',),
-    44: ('Advantage', 'RECAP'),
-    45: ('WAM',),
-    46: ('Mobile Manipulator',),
-    47: ('Headless',),
+    17: ('Action Space', 'IK', '정규화', 'Percentile'),
+    21: ('Flow Matching',),
+    22: ('Action Chunking', 'Chunk', 'Inference'),
+    23: ('Cross Entropy', '제곱 오차', 'L1 오차', 'Post-training'),
+    24: ('Dual System', 'Latent Representation'),
+    34: ('Checkpoint',),
+    37: ('동기 실행', '비동기 실행'),
+    38: ('Sim-to-Real',),
+    40: ('신뢰구간', 'Benchmark'),
+    45: ('Reasoning',),
+    46: ('Advantage', 'RECAP'),
+    47: ('WAM',),
+    48: ('Mobile Manipulator',),
+    49: ('Headless',),
 }
 
 
@@ -401,30 +409,122 @@ TERM_ROLE_CONTRACTS = {
         'DiT role': ('무작위값.*?다듬.*?Transformer.*?계산', '무작위 값을 다듬는 과정을 Transformer로 계산하는 구조다.'),
         'DiT expansion': ('DiT\\(DiffusionTransformer\\)', 'DiT(Diffusion Transformer)'),
     },
-    17: {
+    18: {
         'discrete token role': ('DiscreteToken.*?구간.*?번호', 'Discrete Token은 구간 번호로 행동을 나타낸다.'),
         'regression role': ('Regression.*?한번.*?연속값|Regression.*?연속값.*?한번', 'Regression은 한 번에 연속값을 출력한다.'),
     },
-    19: {
+    20: {
         'multimodal meaning': ('여기서Multimodal은입력종류\\(영상·문장\\)가아니라정답이여러갈래라는뜻이다', '여기서 Multimodal은 입력 종류(영상·문장)가 아니라 정답이 여러 갈래라는 뜻이다.'),
     },
-    31: {
+    33: {
         'LoRA expansion': ('LoRA\\(Low-RankAdaptation\\)', 'LoRA(Low-Rank Adaptation)'),
         'consumer fine-tuning': ('소비자용GPU.*?Fine-tuning|Fine-tuning.*?소비자용GPU', '소비자용 GPU에서 Fine-tuning이 가능하다.'),
     },
-    32: {
+    34: {
         'pipeline role': ('TrainingPipeline.*?데이터(?:수집|를모으고).*?시간축', 'Training Pipeline은 데이터 수집과 시간축 맞춤으로 시작한다.'),
     },
-    35: {
+    37: {
         'RTC expansion': ('RTC\\(Real-TimeChunking\\)', 'RTC(Real-Time Chunking)'),
     },
-    37: {
+    39: {
         'co-training name': ('Co-training', 'Co-training'),
     },
-    44: {
+    46: {
         'value function role': ('가치함수\\(앞으로받을보상을예측하는함수\\)', '가치 함수(앞으로 받을 보상을 예측하는 함수)'),
     },
 }
+
+
+ACTION_PIPELINE_FIXTURES = {
+    11: '<svg role="img" aria-label="구조" viewBox="0 0 10 10"><text>Action Head</text></svg>',
+    14: '<svg role="img" aria-label="실행과 학습" viewBox="0 0 10 10"><text>Action Head 제어기 실선 실행 때 흐름 점선 학습 때만 쓰는 데이터</text><path stroke-dasharray="4 2"/></svg>',
+    16: '<svg role="img" aria-label="수집 학습 실행" viewBox="0 0 10 10"><text>수집 사람 리더 팔 관절 목표 제어기 학습 저장된 관측 기록된 행동 정답 로봇 없음 실행 VLA Action Head</text></svg>',
+    30: '<table><tbody>'
+        '<tr><th scope="row">시각</th><td>기록 시각</td><td><code>frame_index</code> 62 · <code>timestamp</code> 1.24 s</td></tr>'
+        '<tr><th scope="row">영상</th><td>이미지</td><td><code>observation.images.*</code></td></tr>'
+        '<tr><th scope="row">관절 상태</th><td>측정한 관절각</td><td><code>observation.state</code> · 숫자 8개</td></tr>'
+        '<tr><th scope="row">행동</th><td>제어기로 보낸 목표</td><td><code>action</code> · 숫자 8개</td></tr>'
+        '<tr><th scope="row">명령</th><td>작업 문장</td><td><code>task</code></td></tr></tbody></table>',
+    36: '<svg role="img" aria-label="실행" viewBox="0 0 10 10"><text>원래 단위 Chunk 하나씩 보내기 관절 제어기 드라이버 모터</text></svg>',
+    47: '<svg role="img" aria-label="비교" viewBox="0 0 10 10"><text>Action Head</text></svg>',
+}
+
+
+# Prose and diagrams are independently required: SVG labels cannot replace the
+# explanation of what is recorded, learned, dispatched, or controlled.
+ACTION_PIPELINE_PROSE = {
+    16: {
+        "collection": (r"리더팔.*?관절각.*?목표.*?행동.*?관측.*?저장", "리더 팔의 관절각이 목표가 되고 행동과 관측을 저장한다."),
+        "training": (r"로봇없이.*?ActionHead.*?기록된행동.*?차이.*?가중치", "로봇 없이 Action Head와 기록된 행동의 차이로 가중치를 고친다."),
+        "deployment": (r"사람.*?VLA.*?같은형식.*?같은제어기", "사람 대신 VLA가 같은 형식의 목표를 같은 제어기로 보낸다."),
+    },
+    36: {
+        "output units": (r"ActionHead.*?정규화.*?통계.*?원래단위.*?현재관절각.*?목표각", "Action Head의 정규화된 출력을 통계로 원래 단위로 되돌리고 현재 관절각을 더해 목표각을 만든다."),
+        "chunk dispatch": (r"Chunk.*?제어주기.*?하나씩.*?50Hz.*?25개", "Chunk를 제어 주기마다 하나씩 보내며 50 Hz로 25개를 실행한다."),
+        "controller": (r"제어기.*?목표.*?현재각도.*?차이.*?토크.*?드라이버.*?전류", "제어기가 목표와 현재 각도의 차이로 토크를 정하고 드라이버가 전류를 맞춘다."),
+    },
+}
+
+
+def action_pipeline_errors(raw_slides: dict[str, str]) -> list[str]:
+    errors = []
+
+    def text(source: str) -> str:
+        fragment = DeckParser()
+        fragment.current_slide = "fragment"
+        fragment.feed(source)
+        return re.sub(r"\s+", "", " ".join(part for parts in fragment.text.values() for part in parts))
+
+    def svg(number: int) -> str:
+        return " ".join(re.findall(r"<svg\b.*?</svg>", raw_slides.get(f"slide-{number}", ""), re.S))
+
+    for number in (11, 14, 47):
+        labels = text(svg(number))
+        if "ActionHead" not in labels or "행동출력" in labels:
+            errors.append(f"Action Head diagram node required without old output label: slide-{number}")
+    source = svg(14)
+    labels = text(source)
+    legend = text(raw_slides.get("slide-14", ""))
+    if "제어기" not in labels or not all(term in legend for term in ("실선", "점선")) or not re.search(r'stroke-dasharray=["\']', source):
+        errors.append("Action Head diagram must distinguish controller execution and training: slide-14")
+    labels = text(svg(16))
+    if not all(term in labels for term in ("수집", "학습", "실행", "리더팔", "관절목표", "기록된행동", "정답", "로봇없음", "제어기", "ActionHead")):
+        errors.append("Action Head requires collection, training and deployment rows: slide-16")
+    rows = re.findall(r"<tr\b[^>]*>(.*?)</tr>", raw_slides.get("slide-30", ""), re.S)
+    row_data = {}
+    scoped_row_count = 0
+    for row in rows:
+        heading = re.search(r'<th\b[^>]*scope="row"[^>]*>(.*?)</th>', row, re.S)
+        if heading:
+            scoped_row_count += 1
+            row_data[text(heading[1])] = row
+    expected = {"시각": ("frame_index", "timestamp"), "영상": ("observation.images.*",),
+                "관절상태": ("observation.state",), "행동": ("action",), "명령": ("task",)}
+    if len(row_data) != 5 or scoped_row_count != 5:
+        errors.append("Frame table requires five scoped data rows: slide-30")
+    for label, names in expected.items():
+        codes = [text(code) for code in re.findall(r"<code\b[^>]*>(.*?)</code>", row_data.get(label, ""), re.S)]
+        if not all(name in codes for name in names):
+            errors.append(f"Frame row requires exact LeRobot code: slide-30: {label}")
+    for label, required in (("관절상태", "측정"), ("행동", "목표")):
+        if required not in text(row_data.get(label, "")):
+            errors.append(f"Frame row must distinguish measured state and sent target: slide-30: {label}")
+    if not all(value in text(row_data.get("시각", "")) for value in ("frame_index62", "timestamp1.24s")):
+        errors.append("Frame example must retain frame 62 at 1.24 s: slide-30")
+    for label in ("관절상태", "행동"):
+        if "숫자8개" not in text(row_data.get(label, "")):
+            errors.append(f"Frame example must retain eight values: slide-30: {label}")
+    labels = text(svg(36))
+    if not all(term in labels for term in ("원래단위", "Chunk", "하나씩", "제어기", "모터")):
+        errors.append("Inference diagram requires units, chunk dispatch and controller stages: slide-36")
+    for number, contracts in ACTION_PIPELINE_PROSE.items():
+        # Scope to individual body paragraphs, independent of current cards/steps layout.
+        paragraphs = [text(body) for body in re.findall(
+            r"<p\b[^>]*>(.*?)</p>", raw_slides.get(f"slide-{number}", ""), re.S)]
+        for label, (pattern, _) in contracts.items():
+            if not any(re.search(pattern, paragraph) for paragraph in paragraphs):
+                errors.append(f"Action pipeline prose explanation required: slide-{number}: {label}")
+    return errors
 
 
 # Compact spellings also catch terms split across inline HTML nodes.
@@ -470,8 +570,8 @@ def term_guide_errors(parser: DeckParser) -> list[str]:
                               for paragraph in card["paragraphs"]]
             if not any(re.search(pattern, candidate) for candidate in candidates):
                 errors.append(f"Missing term role explanation: slide-{number}: {label}")
-    if "Inference" in visible_text(parser, "slide-43"):
-        errors.append("Reasoning must not be labelled model inference: slide-43")
+    if "Inference" in visible_text(parser, "slide-45"):
+        errors.append("Reasoning must not be labelled model inference: slide-45")
     for number, patterns in TERM_GUIDE_PATTERNS.items():
         visible = visible_text(parser, f"slide-{number}").replace("−", "-")
         text = re.sub(r"\s+", "", visible)
@@ -709,7 +809,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     )
     # Exact legacy sentence retained from original slide 9; new sentences are checked.
     legacy_label_exceptions = {
-        ("slide-27", "관절 값과 영상은 같은 시각에 맞춰야 한다."),
+        ("slide-28", "관절 상태·행동과 영상은 같은 시각에 맞춰야 한다."),
     }
     for name, tag, label in parser.labels:
         if (name, label.strip()) in legacy_label_exceptions:
@@ -747,23 +847,24 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                            raw_slides.get("slide-1", ""), re.S)
     expect(bool(title_menu) and len(re.findall(r'<li\b', title_menu[1])) == 6,
            "Title index must contain six items: slide-1")
-    for number, hook in ((18, "data-token-demo"), (35, "data-chunk-demo")):
+    for number, hook in ((19, "data-token-demo"), (37, "data-chunk-demo")):
         expect(bool(re.search(rf'<[^>]+\s{hook}(?:\s|=|>)', raw_slides.get(f"slide-{number}", ""))),
                f"Missing VLA demo hook {hook}: slide-{number}")
-    links = [href for href, slide in parser.anchors if slide == "slide-48"]
+    links = [href for href, slide in parser.anchors if slide == "slide-50"]
     expect(len(links) >= 21 and all(urlsplit(href).scheme == "https"
                                   and urlsplit(href).netloc for href in links),
-           "VLA references require at least 21 HTTPS links: slide-48")
+           "VLA references require at least 21 HTTPS links: slide-50")
     for label, start, end, terms in (
         ("VLA concept", 3, 9, ("Policy", "모방", "강화학습", "Behavior Cloning")),
-        ("VLA architecture", 11, 23, ("Token", "VLM", "Flow Matching", "Action Chunking")),
-        ("VLA training", 25, 32, ("Episode", "Pretraining", "Fine-tuning", "LoRA")),
-        ("VLA execution", 34, 38, ("Inference", "Chunk", "Sim-to-Real", "신뢰구간")),
-        ("VLA trends", 40, 48, ("RECAP", "WAM", "DreamZero", "기억")),
+        ("VLA architecture", 11, 24, ("Token", "VLM", "Flow Matching", "Action Chunking")),
+        ("VLA training", 26, 34, ("Episode", "Pretraining", "Fine-tuning", "LoRA")),
+        ("VLA execution", 36, 40, ("Inference", "Chunk", "Sim-to-Real", "신뢰구간")),
+        ("VLA trends", 42, 50, ("RECAP", "WAM", "DreamZero", "기억")),
     ):
         require_terms(label, range_text(start, end), tuple((term,) for term in terms))
 
     errors.extend(term_guide_errors(parser))
+    errors.extend(action_pipeline_errors(raw_slides))
 
     def model_text(start: int, end: int) -> str:
         return range_text(start + MODEL_OFFSET, end + MODEL_OFFSET)
@@ -847,15 +948,17 @@ def vla_fixture(number: int) -> tuple[str, str]:
         classes = {f"slide--{kind}", f"layout-{kind}"}
     else:
         classes = LEGACY_VLA_CLASSES.get(number, {"vla-slide"})
-    if number == 18:
+    if number == 19:
         content += '<div data-token-demo></div>'
-    if number == 35:
+    if number == 37:
         content += '<div data-chunk-demo></div>'
-    if number == 48:
+    if number == 50:
         content += ''.join(f'<a href="https://example.org/{n}">논문</a>' for n in range(21))
-    if number == 43:
+    if number == 45:
         content = content.replace("Inference", "생각")
     content += TERM_GUIDE_FIXTURES.get(number, "")
+    content += ACTION_PIPELINE_FIXTURES.get(number, "")
+    content += "".join(f"<p>{sample}</p>" for _, sample in ACTION_PIPELINE_PROSE.get(number, {}).values())
     roles = TERM_ROLE_CONTRACTS.get(number, {})
     if number == 12:
         content += "<table>" + "".join(
@@ -935,7 +1038,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
                 '<path marker-end="url(#arrow-28)"></path></svg>'
             )
         for _, approved in MODEL_TEXT_EDITS.get(emitted_number, ()):
-            content += f"<p>{approved}</p>"
+            content += f"<ol>{approved}</ol>" if approved.startswith("<li>") else f"<p>{approved}</p>"
         if emitted_number <= VLA_SLIDES:
             extra_class, content = vla_fixture(emitted_number)
         number = emitted_number
@@ -984,8 +1087,8 @@ def self_test() -> list[str]:
             "reference protocol": valid.replace("https://example.org/0", "http://example.org/0", 1),
             "VLA nominal summary": valid.replace('<div data-token-demo>', '<p class="model-takeaway">행동을 만든다</p><div data-token-demo>', 1),
             "question nominal summary": valid.replace(
-                'aria-label="슬라이드 10 / 72: 제목 10">',
-                'aria-label="슬라이드 10 / 72: 제목 10"><p class="key-line">행동을 만든다</p>',
+                'aria-label="슬라이드 10 / 74: 제목 10">',
+                'aria-label="슬라이드 10 / 74: 제목 10"><p class="key-line">행동을 만든다</p>',
                 1,
             ),
             "question nominal index": valid.replace(
@@ -1027,11 +1130,11 @@ def self_test() -> list[str]:
             "missing asset": "Missing local asset",
             "missing fragment": "Missing fragment",
             "baseline mutation": "Robot model slide contains an unapproved change",
-            "required term": "Missing required learning element in slides 51-60 URDF: mimic",
+            "required term": "Missing required learning element in slides 53-62 URDF: mimic",
             "fixed origin value": "XML teaching value changed .//joint[@name='l_wrist2']/origin@xyz",
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
             "equality polynomial": "XML teaching value changed .//equality/joint@polycoef",
-            "malformed XML fragment": "XML fragment is not well-formed on slide-54",
+            "malformed XML fragment": "XML fragment is not well-formed on slide-56",
             "internal source label": "Internal source label must not appear",
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
@@ -1069,7 +1172,7 @@ def self_test() -> list[str]:
         mutations["short term explanation"] = valid.replace("Noise(쉬운 역할 설명)", "Noise", 1)
         expected_messages["short term explanation"] = "Missing short Korean explanation: slide-15: Noise"
         mutations["reasoning as inference"] = valid.replace("Reasoning(쉬운 역할 설명)", "Inference(쉬운 역할 설명)", 1)
-        expected_messages["reasoning as inference"] = "Reasoning must not be labelled model inference: slide-43"
+        expected_messages["reasoning as inference"] = "Reasoning must not be labelled model inference: slide-45"
         mutations["transliterated policy"] = valid.replace("Policy(쉬운 역할 설명)", "폴리시(쉬운 역할 설명)", 1)
         expected_messages["transliterated policy"] = "Outdated VLA term must use English spelling: 폴리시"
         mutations["policy explanation omitted"] = valid.replace("Policy(쉬운 역할 설명)", "Policy", 1)
@@ -1107,7 +1210,7 @@ def self_test() -> list[str]:
                 unchanged_model = unchanged_model.replace(approved, old)
         if check(unchanged_model, html_path, baseline):
             failures.append("unchanged robot prose fixture was rejected")
-        for number, label in ((19, "multimodal meaning"), (44, "value function role"), (15, "MoE expansion")):
+        for number, label in ((20, "multimodal meaning"), (46, "value function role"), (15, "MoE expansion")):
             sample = TERM_ROLE_CONTRACTS[number][label][1]
             section = sections[f"slide-{number}"]
             key = f"term role {number} {label}"
@@ -1132,6 +1235,28 @@ def self_test() -> list[str]:
             expected_messages[key] = f"Missing term role explanation: slide-15: {label}"
         mutations["supervised definition omitted"] = valid.replace("지도학습(쉬운 역할 설명)", "지도학습", 1)
         expected_messages["supervised definition omitted"] = "Missing short Korean explanation: slide-9: 지도학습"
+        for number, label, old, new, diagnostic in (
+            (14, "controller", "제어기", "처리기", "Action Head diagram must distinguish"),
+            (16, "training row", "로봇 없음", "온라인", "Action Head requires collection"),
+            (30, "state code", "<code>observation.state</code>", "<code>action</code>", "Frame row requires exact LeRobot code: slide-30: 관절상태"),
+            (30, "action code", "<code>action</code>", "<code>observation.state</code>", "Frame row requires exact LeRobot code: slide-30: 행동"),
+            (30, "frame time", "1.24 s", "1.25 s", "Frame example must retain frame 62"),
+            (36, "controller stage", "관절 제어기", "관절 처리기", "Inference diagram requires"),
+            (47, "old output node", "Action Head", "행동 출력", "Action Head diagram node required"),
+        ):
+            section = sections[f"slide-{number}"]
+            key = f"action pipeline {number} {label}"
+            mutations[key] = valid.replace(section, section.replace(old, new))
+            expected_messages[key] = diagnostic
+        for number, label in ((16, "training"), (36, "output units")):
+            sample = ACTION_PIPELINE_PROSE[number][label][1]
+            section = sections[f"slide-{number}"]
+            changed = section.replace(f"<p>{sample}</p>", "<p>설명 삭제</p>")
+            changed = changed.replace("</section>",
+                f'<svg role="img" aria-label="중복 문구" viewBox="0 0 10 10"><text>{sample}</text></svg></section>')
+            key = f"pipeline prose separate from SVG {number}"
+            mutations[key] = valid.replace(section, changed)
+            expected_messages[key] = f"Action pipeline prose explanation required: slide-{number}: {label}"
         adjacent = valid.replace(
             "입력 0.5 · −0.2 · 1.0 출력 0.48 · −0.10",
             "입력 <svg><text>0.5</text><text>−0.2</text><text>1.0</text>"
@@ -1184,7 +1309,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-38 → 49-72 preserve bytes except section ID/ARIA numbers and exact approved prose edits")
+        print("PASS: robot slides 15-38 → 51-74 preserve bytes except section ID/ARIA numbers and exact approved prose edits")
     return 0
 
 

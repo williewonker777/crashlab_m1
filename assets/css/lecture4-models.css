@@ -131,3 +131,10 @@
   .lecture-4 .model-slide { height: auto; min-height: 100vh; break-after: page; }
   .model-code, .model-panel, .model-table-wrap { overflow: visible; }
 }
+
+/* TASK-351: reserve the fixed counter's edge in the observed mobile text/code rows. */
+@media (max-width: 800px) {
+  .lecture-4 :is(#slide-57, #slide-64) .model-code { margin-right: 64px; }
+  .lecture-4 #slide-58 .model-steps li:first-child p,
+  .lecture-4 #slide-65 .model-steps li:nth-child(2) p { padding-right: 64px; }
+}

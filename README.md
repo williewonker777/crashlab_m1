@@ -7,8 +7,8 @@
 - `lecture-1.html`: ROS2 로봇 프로그래밍 이론·실습 (60장)
 - `lecture-2.html`: 제어 (66장) — 이론 63 + 실습 준비 1 + 실습 2
 - `lecture-3.html`: VSLAM · 내비게이션 (66장) — 이론 60 + 실습 3 + 결과 예시 3
-- `lecture-4.html`: VLA 이론 · 로봇 모델과 시뮬레이션 (72장) — VLA 이론 48 + URDF·MJCF·USD 24
-- 전체: OT 11장 + 4개 강의 264장, 총 275장
+- `lecture-4.html`: VLA 이론 · 로봇 모델과 시뮬레이션 (74장) — VLA 이론 50 + URDF·MJCF·USD 24
+- 전체: OT 11장 + 4개 강의 266장, 총 277장
 
 강의 1은 PowerPoint 원본의 텍스트·도형·이미지를 네이티브 HTML/CSS로 변환한 덱이다.
 다른 강의와 같은 헤더·서체·색상 토큰을 사용하며, 본문 그리드는 글자 크기에 맞춰 높이가 늘어난다.
@@ -40,23 +40,27 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 
 챕터 4 「팔 제어」는 ALICE M1의 7자유도 팔로 물체에 접근하고 잡고 옮기는 매니퓰레이션을 다룬다. 52페이지는 7개 관절의 순기구학 시연, 54페이지는 같은 TCP pose를 유지하는 서로 다른 팔 자세의 역기구학 시연이다. 63페이지에서 관련 개념을 복습하고, 64~65페이지에서는 Pinocchio로 FK·IK를 구현해 로봇 TF와 비교하고 동작으로 연결한다. 실습의 손 기준 프레임은 시연의 교육용 TCP와 구분한다. 로봇 모델·사진·수업 구성은 [ARM_MANIPULATION.md](ARM_MANIPULATION.md)에 정리했다.
 
-강의 ④의 1~48페이지는 VLA의 Policy·Token·행동 생성·데이터와 학습·실행과 평가·최근 경향을
-다룬다. 18페이지의 Action Tokenization 시연은 연속 관절 목표를 8·32·256개 균일 구간으로 바꾸고,
-35페이지의 Chunk 실행 시연은 50 Hz 제어와 H=50에서 동기·비동기 Inference 지연을 비교한다.
-11~15페이지는 Tokenizer와 Embedding의 역할, 선형 변환, 행동 생성 모듈의 두 구조를 구분한다.
-애매한 한글 음역 대신 Policy·Action Expert·Noise·Fine-tuning 등 실제 영문 원어를 쓴다. 어려운 용어는 `단어(짧은 뜻)` 또는 인접 설명으로 풀고, 카드 제목과 같은 말을 본문에서 반복하지 않는다.
-계산 가정, 슬라이드 수치와 출처는 [VLA_THEORY.md](VLA_THEORY.md)에 정리했다.
+강의 ④의 1~50페이지는 VLA의 Policy·Token·Action Head·행동 생성·데이터와 학습·실행과 평가·최근 경향을
+다룬다. 16페이지는 수집·학습·실행에서 Action Head가 사람이 보내던 관절 목표를 대신 만드는 위치를,
+30페이지는 한 Frame에 기록하는 관측·행동·명령을, 36페이지는 모델 출력이 제어기와 모터까지 가는 Inference Pipeline을 설명한다.
+19페이지의 Action Tokenization 시연은 연속 관절 목표를 8·32·256개 균일 구간으로 바꾸고,
+37페이지의 Chunk 실행 시연은 50 Hz 제어와 H=50에서 동기·비동기 Inference 지연을 비교한다.
+11~17페이지는 Tokenizer와 Embedding의 역할, 선형 변환, VLM Backbone, Action Head, 행동 생성 모듈의 두 구조와 Action Space를 구분한다.
+애매한 한글 음역 대신 Policy·Action Head·Noise·Fine-tuning 등 실제 영문 원어를 쓴다. 어려운 용어는 `단어(짧은 뜻)` 또는 인접 설명으로 풀고, 카드 제목과 같은 말을 본문에서 반복하지 않는다.
+계산 가정, Action Head·데이터 기록·실행 계층의 근거, 슬라이드 수치와 출처는 [VLA_THEORY.md](VLA_THEORY.md)에 정리했다.
 
-강의 ④의 49~72페이지는 조립도·STL·질량표에서 ALICE M1 그리퍼의
+강의 ④의 51~74페이지는 조립도·STL·질량표에서 ALICE M1 그리퍼의
 URDF를 작성하고, MuJoCo MJCF와 Isaac Sim USD에서 로봇·환경을 구성하는 과정이다.
 실제 파일의 좌표·질량·관절 코드와 별도 씬 예제를 사용하며, 현재 USD에 이전 손목
 리비전이 남아 있다는 차이를 검증 사례로 설명한다. 원본 로봇 파일은 수정하지 않는다.
-다음 명령으로 VLA 계산과 강의 ④의 구조·내용·참조 검사를 실행한다.
+다음 명령으로 VLA 계산과 강의 ④의 구조·내용·참조 검사를 실행한다. 38장 원본과 로봇 모델 구간의 보존 비교는 `--baseline`으로 실행한다.
 
 ```bash
 node tools/check-vla-model.cjs
 python3 tools/check-lecture4-content.py
 python3 tools/check-lecture4-content.py --self-test
+git show 72e4027:lecture-4.html > /tmp/lecture-4.orig.html
+python3 tools/check-lecture4-content.py --baseline /tmp/lecture-4.orig.html
 ```
 
 
