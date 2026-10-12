@@ -1,8 +1,8 @@
-# 강의 ④ 1~50p — VLA 이론
+# 강의 ④ 1~51p — VLA 이론
 
-확인일 2026-10-12. 강의 ④는 총 74장이다. 이 문서는 그중 VLA 이론 50장에 쓴
-구성, Action Head·데이터 기록·실행 계층의 근거, 교육용 시연의 계산 가정, 수치의 출처와 보고 주체를 기록한다. 뒤의 로봇 모델
-24장(51~74p)은 기존 URDF·MJCF·USD 단원이며, 그 근거는 `DESIGN.md` v89에 남긴다. 기존 수치와 원문 확인일은 2026-10-11의 기록을 유지하고, 이번 보강의 원문·코드 확인일만 2026-10-12로 구분한다.
+확인일 2026-10-12. 강의 ④는 총 75장이다. 이 문서는 그중 VLA 이론 51장에 쓴
+구성, Action Head·Noise 학습·데이터 기록·실행 계층의 근거, 교육용 시연의 계산 가정, 수치의 출처와 보고 주체를 기록한다. 뒤의 로봇 모델
+24장(52~75p)은 기존 URDF·MJCF·USD 단원이며, 그 근거는 `DESIGN.md` v89에 남긴다. 기존 수치와 원문 확인일은 2026-10-11의 기록을 유지하고, 이번 보강의 원문·코드 확인일만 2026-10-12로 구분한다.
 
 논문 성능값은 해당 논문 **저자 보고값**이다. 기업 뉴스룸·블로그·Model Card·저장소의
 성능과 사양은 해당 **기업 또는 프로젝트의 공개 보고값**이다. 어느 값도 이 강의에서
@@ -13,13 +13,13 @@
 | 단원 | 페이지 | 핵심 내용 |
 |---|---:|---|
 | 개념 | 1~9 | VLA, Policy, 모듈형 방식, Behavior Cloning과 누적 오차 |
-| 구조 | 10~24 | Token, Tokenizer와 Embedding, 선형 변환, VLM Backbone, Action Head, 행동 생성 모듈의 두 구조, Action Space, Token·Flow Matching·Regression, Action Chunking, Dual System |
-| 데이터와 학습 | 25~34 | Episode, Frame 기록, 수집, 시간 정렬, Pretraining과 Fine-tuning |
-| 실행과 평가 | 35~40 | Inference Pipeline, Inference 지연, 동기·비동기 Chunk 실행, Sim-to-Real, Wilson 신뢰구간 |
-| 최신 경향 | 41~50 | 2022~2026 계보, 공개 모델, 계획, RECAP, World Action Model, 기억·경량화, 참고 링크 |
+| 구조 | 10~25 | Token, Tokenizer와 Embedding, 선형 변환, VLM Backbone, Action Head, 행동 생성 모듈의 두 구조, Action Space, Noise 학습, Token·Flow Matching·Regression, Action Chunking, Dual System |
+| 데이터와 학습 | 26~35 | Episode, Frame 기록, 수집, 시간 정렬, Pretraining과 Fine-tuning |
+| 실행과 평가 | 36~41 | Inference Pipeline, Inference 지연, 동기·비동기 Chunk 실행, Sim-to-Real, Wilson 신뢰구간 |
+| 최신 경향 | 42~51 | 2022~2026 계보, 공개 모델, 계획, RECAP, World Action Model, 기억·경량화, 참고 링크 |
 
-각 단원 질문 장은 2·10·25·35·41p다. 교육용 시연은 19p Action Tokenization과 37p Chunk 실행이다.
-50p는 슬라이드에서 인용한 논문과 기업 발표의 원문 링크를 모은다.
+각 단원 질문 장은 2·10·26·36·42p다. 교육용 시연은 19p Action Tokenization과 38p Chunk 실행이다.
+51p는 슬라이드에서 인용한 논문과 기업 발표의 원문 링크를 모은다.
 
 ## 용어와 근거
 
@@ -41,6 +41,7 @@ MoE·LoRA·RTC 등은 정식 영문 이름을 괄호에 쓰고, 같은 문장에
 | Distribution Shift | 학습 때와 다른 상황 |
 | Action Expert | π0의 상태·행동 Token만 맡는 작은 가중치 묶음 |
 | Noise | 데이터에 섞는 무작위 값 |
+| Diffusion | 섞은 Noise 자체를 맞히는 생성 모델 |
 | Diffusion Transformer | 무작위 값 다듬기를 Transformer로 계산하는 구조 |
 | Action Space | 행동값의 형식과 범위 |
 | Discrete Token | 행동값을 구간 번호로 바꾼 조각 |
@@ -54,7 +55,7 @@ MoE·LoRA·RTC 등은 정식 영문 이름을 괄호에 쓰고, 같은 문장에
 | Dual System | 느린 판단과 빠른 실행의 분업 |
 | Reasoning | 단계적으로 생각하기 |
 
-Inference는 모델을 실행해 결과를 계산하는 과정이고, 45p Reasoning은 계획을 세우는
+Inference는 모델을 실행해 결과를 계산하는 과정이고, 46p Reasoning은 계획을 세우는
 단계적 사고다. Multimodal Distribution은 행동 정답의 여러 갈래이며 영상·문장 입력을 함께
 쓰는 Multimodal과 구분한다. 1~99 Percentile은 원래 1~99 분위수의 같은 구간 표기다.
 Token·Vector·Tokenizer·Embedding·Vision Encoder·Transformer는 12p 표에서 한국어 역할을
@@ -102,12 +103,35 @@ Gemma-2B가 쓰는 길이 2048에 맞춘다. π0와 SmolVLA는 상태를 선형 
 π0는 한 Transformer 안에서 영상·문장 Token에는
 VLM 가중치, 상태·행동 Token에는 별도 Action Expert 가중치를 쓴다. Action Expert는 폭 1024,
 약 3억 Parameter이며 전체는 33억 Parameter로 보고됐다. π0는 영상·문장 쪽 키·값을 저장하고
-작은 Action Expert만 10단계 다시 계산해, RTX 4090에서 전체 73 ms 중 행동 10단계가 27 ms라고
+작은 Action Expert만 10번 다시 계산해, RTX 4090에서 전체 73 ms 중 행동 다듬기 10번이 27 ms라고
 보고했다.
 
-GR00T N1의 Diffusion Transformer는 DiT 변형이다. VLM Token을 Cross Attention으로 참고하고 Flow Matching으로 학습하며, Noise 섞인 행동을 4단계로 다듬는다. DiT는 2022년 이미지 생성에서
+GR00T N1의 Diffusion Transformer는 DiT 변형이다. VLM Token을 Cross Attention으로 참고하고 Flow Matching으로 학습하며, Noise 섞인 행동을 4번 다듬는다. DiT는 2022년 이미지 생성에서
 U-Net 대신 Transformer를 쓴 구조로 제안됐다. Diffusion이라는 이름은 비평형 통계물리의 확산 과정에서 왔다.
-Diffusion 모델은 Noise를 섞는 과정을 거꾸로 배워 데이터를 만든다.
+Diffusion 모델은 섞은 Noise 자체를 맞히고, Flow Matching은 섞은 점에서 행동 쪽 방향을 맞힌다. 두 방식 모두 학습에서는 행동에 Noise를 섞고, 실행에서는 Noise에서 출발해 여러 번 다듬는다.
+
+### Noise를 섞어 배우는 방법
+
+21p는 Diffusion·Flow Matching의 학습과 실행을 한 관절의 **교육용 예시**로 분리해 설명한다. 아래 원문·코드 위치와 commit은 Claude가 2026-10-12에 확인했다고 TASK-352에 기록한 자료이다. 이 문서를 고칠 때 원문과 코드를 독립적으로 다시 읽거나 실행하지 않았으며, 수치와 흐름을 모든 로봇의 성능이나 동작 보장으로 사용하지 않는다.
+
+| 구분 | 강의에 반영한 내용 | 출처·보고 구분 |
+|---|---|---|
+| π0 학습 | 시연 행동 묶음과 같은 크기의 정규분포 Noise 및 시간 하나를 뽑고, 섞은 점에서 방향 하나를 예측해 제곱 오차를 계산한다. 코드의 `t`는 Beta(1.5, 1)로 Noise 쪽을 더 자주 뽑는다. | [π0 §IV](https://arxiv.org/abs/2410.24164)는 저자 보고, [openpi `compute_loss`](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/models/pi0.py)는 `215abfb` 코드 확인 기록이다. |
+| π0·GR00T N1 실행 | π0는 Noise에서 출발해 10번, GR00T N1은 4번 반복해 행동을 다듬는다. | [π0](https://arxiv.org/abs/2410.24164)·[GR00T N1 §2](https://arxiv.org/abs/2503.14734)는 저자 보고, [openpi `sample_actions`](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/models/pi0.py)는 `num_steps=10` 코드 확인 기록이다. |
+| Flow Matching | 섞은 점에서 정답 쪽 방향을 맞히며, 이 강의는 Noise와 행동 사이의 직선 경로를 쓴다. | [Flow Matching](https://arxiv.org/abs/2210.02747), [Rectified Flow](https://arxiv.org/abs/2209.03003), 논문 저자 보고. |
+| Diffusion | 섞은 Noise `ε` 자체를 맞히는 ε 예측을 쓴다. | [DDPM](https://arxiv.org/abs/2006.11239), 논문 저자 보고. |
+
+#### 기호와 코드의 방향
+
+강의의 기호는 `τ=0`을 Noise, `τ=1`을 정답 행동으로 두고 `x=(1−τ)ε+τa`, 정답 방향을 `a−ε`로 둔다. openpi 코드는 반대로 `t=1`을 Noise, `t=0`을 정답으로 두며 목표 방향도 `ε−a`이다. `τ=1−t`로 바꾸면 같은 경로이다. 코드의 `dt=−0.1`도 `x + (−0.1)(ε−a) = x + 0.1(a−ε)`이므로 강의에서 행동 쪽으로 0.1씩 가는 계산과 같다.
+
+#### 교육용 계산과 평균
+
+21p의 값은 실제 장비 측정값이 아닌 **교육용 예시**다. 한 관절의 정규화한 정답 행동을 `a=0.6`, Noise를 `ε=−1.0`, 섞는 비율을 `τ=0.25`로 놓는다. 그러면 `x=0.75×(−1.0)+0.25×0.6=−0.60`이고, 정답 방향은 `a−ε=1.6`이다. 모델 예측이 `1.2`이면 손실은 `(1.2−1.6)²=0.16`이다. 학습에서는 시연·Noise·`τ`를 새로 뽑아 이 계산을 한 번 수행한다.
+
+실행 예시는 새 Noise `−0.4`에서 예측 방향 `1.0`을 받아 한 번에 `0.1`씩 10번 움직여 `0.6`에 이른다. 이는 정답이 하나이고 예측이 맞는다고 둔 교육용 가정이다. 여러 정답이 있거나 예측이 불완전한 실제 문제에 이 유한 반복이 항상 올바른 답을 보장한다는 뜻이 아니다.
+
+제곱 오차에서 최적 예측은 조건부 기댓값이다. 관측과 명령을 고정하고 `τ=0`을 보면 `x=ε`이며 `ε`은 `a`와 독립이다. 따라서 최적 방향은 `E[a−ε | x]=E[a]−x`이다. 한 번에 `δ=1`만큼 가면 `x+(E[a]−x)=E[a]`가 되어 Regression의 평균 답에 이른다. 작은 여러 단계에서는 현재 점에서 방향을 다시 계산하므로, 출발한 Noise에 따라 서로 다른 정답 쪽으로 갈 수 있다.
 
 ### Action Head·데이터 기록·실행 계층
 
@@ -129,7 +153,7 @@ Action Head가 내보내는 것은 제어기가 따라갈 목표값이며, 모�
 
 #### Frame 기록과 행동의 의미
 
-30p는 Episode를 제어 주기마다 남긴 Frame의 연속으로 설명한다. 교육용 예시의 `frame_index` 62와
+31p는 Episode를 제어 주기마다 남긴 Frame의 연속으로 설명한다. 교육용 예시의 `frame_index` 62와
 `timestamp` 1.24 s는 50 Hz 기록에서 62 × 0.02 s로 계산한 값이다. 한 팔 7관절과 그리퍼의 숫자 8개도
 교육용 예시이며, 실제 로봇의 관절 순서와 단위는 사용한 설정을 따른다.
 
@@ -147,14 +171,14 @@ Action Head가 내보내는 것은 제어기가 따라갈 목표값이며, 모�
 
 #### Inference Pipeline과 제어기
 
-36p의 Inference Pipeline은 VLA가 목표를 만들고 로봇 쪽 프로그램이 그 목표를 실행 가능한 명령으로
+37p의 Inference Pipeline은 VLA가 목표를 만들고 로봇 쪽 프로그램이 그 목표를 실행 가능한 명령으로
 바꾸는 경계를 보여 준다. 모델 쪽에서는 입력을 정리하고 VLA가 정규화된 행동 Chunk를 계산한다. 로봇 쪽에서는
 저장한 통계로 원래 단위로 되돌리고, 관절 한계와 이동량을 확인한 뒤 제어 주기마다 하나씩 제어기로 보낸다.
 관절 변화량으로 학습한 경우에는 현재 관절각을 더해 목표각을 만든다.
 
 Action Head의 결과는 관절 목표이고, 제어기는 목표와 현재 각도의 차이로 토크를 정한다. 드라이버가 그
 토크에 맞게 전류를 조절한다. 모델을 GPU 컴퓨터에서 실행하는 경우 로봇 프로그램은 관측을 보내고 행동 Chunk를
-받으므로, 네트워크 통신 시간도 Inference 지연에 더해진다. 36p의 `50×8`과 0.5 s는 화면에서 `예` 또는
+받으므로, 네트워크 통신 시간도 Inference 지연에 더해진다. 37p의 `50×8`과 0.5 s는 화면에서 `예` 또는
 교육용 예시로 표시한다. 20 ms와 50 Hz는 ALOHA 예제의 `max_hz=50`과 그에 대응하는 제어 주기다.
 
 ### Action Head·기록·실행의 원문과 코드 근거
@@ -170,7 +194,7 @@ Action Head의 결과는 관절 목표이고, 제어기는 목표와 현재 각�
 | 실행 처리 | 실행은 전처리 → `policy.select_action` → 후처리·역정규화 → 행동 큐·보간 → `robot_action_processor` → `send_action` 순서다. MEAN_STD 역변환은 `tensor * std + mean`이다. | [LeRobot 동기 실행](https://github.com/huggingface/lerobot/blob/b9cb121/src/lerobot/rollout/inference/sync.py), [전략](https://github.com/huggingface/lerobot/blob/b9cb121/src/lerobot/rollout/strategies/core.py), [정규화](https://github.com/huggingface/lerobot/blob/b9cb121/src/lerobot/processor/normalize_processor.py), `b9cb121` |
 | SmolVLA·π0 | SmolVLA 설정은 `chunk_size`·`n_action_steps` 50과 STATE·ACTION MEAN_STD를 둔다. π0는 Action Expert 폭 1024와 `Linear(width → action_dim)` 출력층을 쓴다. | [SmolVLA](https://arxiv.org/abs/2506.01844), [LeRobot SmolVLA 설정](https://github.com/huggingface/lerobot/blob/b9cb121/src/lerobot/policies/smolvla/configuration_smolvla.py), [π0](https://arxiv.org/abs/2410.24164), [openpi π0](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/models/pi0.py), 논문 저자 보고·`b9cb121`·`215abfb` |
 | 학습 범위 | OpenVLA는 Vision Encoder까지 포함한 전체 가중치 학습을 기본으로 보고한다. SmolVLA는 VLM을 고정하고 Action Expert만 학습한다. OpenVLA의 행동은 기존 언어 어휘 256개를 구간 번호에 사용한다. | [OpenVLA §3.2·3.4·5.2](https://arxiv.org/abs/2406.09246), [SmolVLA §4.3](https://arxiv.org/abs/2506.01844), 논문 저자 보고 |
-| Training Pipeline | openpi 기본 설정은 `batch_size` 32와 `num_train_steps` 30,000이다. 학습 전에 정규화 통계를 계산하고 Checkpoint의 assets에 복제한다. 34p의 「한 번에 32개씩 3만 번」은 이 코드 설정을 풀어 쓴 말이다. | [openpi 학습 설정](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/training/config.py), [README](https://github.com/Physical-Intelligence/openpi/blob/215abfb/README.md), `215abfb` |
+| Training Pipeline | openpi 기본 설정은 `batch_size` 32와 `num_train_steps` 30,000이다. 학습 전에 정규화 통계를 계산하고 Checkpoint의 assets에 복제한다. 35p의 「한 번에 32개씩 3만 번」은 이 코드 설정을 풀어 쓴 말이다. | [openpi 학습 설정](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/training/config.py), [README](https://github.com/Physical-Intelligence/openpi/blob/215abfb/README.md), `215abfb` |
 | 원격 Inference·출력 처리 | openpi는 GPU 서버에서 모델을 돌리고 로봇 클라이언트가 관측을 보내 `(action_horizon, action_dim)` Chunk를 받는다. 출력은 원래 단위로 되돌린 뒤 현재 상태와 합쳐 목표로 바꾼다. ALOHA 예제는 `ActionChunkBroker(action_horizon=25)`와 `max_hz=50`을 쓴다. | [openpi 원격 Inference](https://github.com/Physical-Intelligence/openpi/blob/215abfb/docs/remote_inference.md), [ALOHA 실행](https://github.com/Physical-Intelligence/openpi/blob/215abfb/examples/aloha_real/main.py), [변환](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/transforms.py), [출력 처리 설정](https://github.com/Physical-Intelligence/openpi/blob/215abfb/src/openpi/policies/policy_config.py), `215abfb` |
 | 모터·물리 주기 | MuJoCo `motor`는 direct-drive이고, position actuator는 목표와 현재 상태의 차이로 힘을 낸다. 기본 timestep은 0.002 s이다. Isaac Lab의 decimation은 Policy 한 번당 물리 step 수다. | [MuJoCo XML Reference](https://mujoco.readthedocs.io/en/stable/XMLreference.html), [Isaac Lab Actuators](https://isaac-sim.github.io/IsaacLab/main/source/how-to/write_articulation_cfg.html), [Isaac Lab 환경 설정](https://isaac-sim.github.io/IsaacLab/main/source/api/lab/isaaclab.envs.html) |
 
@@ -211,7 +235,7 @@ Token k = min(N − 1, floor((a − (−90)) / w))
 
 ### Inference 지연과 Chunk 실행
 
-37p는 50 Hz 제어, 즉 한 제어 주기 20 ms와 Chunk 길이 `H=50`을 가정한다. 화면은 3초,
+38p는 50 Hz 제어, 즉 한 제어 주기 20 ms와 Chunk 길이 `H=50`을 가정한다. 화면은 3초,
 150제어 주기를 표시한다. Inference 지연 `L`의 주기 수는 `d = ceil(L × 50 / 1000)`이다.
 실행 길이는 10·25·40 행동 중 하나로 고른다.
 
@@ -238,7 +262,7 @@ Token k = min(N − 1, floor((a − (−90)) / w))
 | Diffusion Policy | 12개 작업 평균 46.9% 향상 | [Diffusion Policy](https://arxiv.org/abs/2303.04137), 논문 저자 보고 |
 | Octo | 80만 궤적 | [Octo](https://arxiv.org/abs/2405.12213), 논문 저자 보고 |
 | OpenVLA | 7B, 97만 시연, RT-2-X 대비 +16.5%p, 약 6 Hz | [OpenVLA](https://arxiv.org/abs/2406.09246), 논문 저자 보고 |
-| π0 | PaliGemma 3B + Action Expert 약 300M, H=50, 최대 50 Hz, 10단계, 약 1만 시간·7구성·68작업 | [π0](https://arxiv.org/abs/2410.24164), 논문 저자 보고 |
+| π0 | PaliGemma 3B + Action Expert 약 300M, H=50, 최대 50 Hz, 다듬기 10번, 약 1만 시간·7구성·68작업 | [π0](https://arxiv.org/abs/2410.24164), 논문 저자 보고 |
 | FAST | 학습 시간 최대 5배 단축 | [FAST](https://arxiv.org/abs/2501.09747), 논문 저자 보고 |
 | OpenVLA-OFT | LIBERO 76.5%→97.1%, 행동 생성 처리량 26배 | [OpenVLA-OFT](https://arxiv.org/abs/2502.19645), 논문 저자 보고 |
 | Helix | 7B VLM 7~9 Hz, 80M Policy 200 Hz, 상체 35자유도 | [Figure Helix 발표](https://www.figure.ai/news/helix), Figure 보고 |
@@ -280,8 +304,8 @@ Token k = min(N − 1, floor((a − (−90)) / w))
 
 2026-10-12 사용자 후속 지시에 따라 영어 이름을 유지하면서 반복 풀이와 빠진 주어·목적어를
 보정한다. 7p의 1~3 Hz는 같은 빈도를 「1초에 1~3번」으로 풀어 쓴 것이며 새 성능값이 아니다.
-20p는 Multimodal의 뜻이 여러 입력이 아니라 여러 정답 갈래임을 명시한다. 24p는 System 2가
-내부 숫자 목록으로 System 1에 정보를 넘기는 방향, 38p는 실물 센서의 Noise가 만드는 차이를
+20p는 Multimodal의 뜻이 여러 입력이 아니라 여러 정답 갈래임을 명시한다. 25p는 System 2가
+내부 숫자 목록으로 System 1에 정보를 넘기는 방향, 39p는 실물 센서의 Noise가 만드는 차이를
 분명히 한다. LoRA·MoE·DiT·RTC의 영문 확장과 설명을 구분한다. 수치·출처·도식의 연결 구조와
 두 시연의 계산 가정은 바꾸지 않는다. 원문 확인일은 계속 2026-10-11이다.
 

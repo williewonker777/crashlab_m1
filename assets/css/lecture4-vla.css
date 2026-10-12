@@ -105,8 +105,8 @@
 .lecture-4 .slide--title .title-index li { padding-top: 11px; }
 
 /* Legacy VLA comparison pages keep their content and use lecture-local sizing. */
-.lecture-4 #slide-39 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
-.lecture-4 #slide-39 .concept-table { align-self: center; }
+.lecture-4 #slide-40 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
+.lecture-4 #slide-40 .concept-table { align-self: center; }
 @media (min-width: 801px) and (max-width: 1400px) {
   .lecture-4 .slide--title .slide__inner { grid-template-columns: 120px minmax(0, 1fr) 300px; gap: 28px; }
   .lecture-4 .slide--title .slide__inner > div:first-child { padding-left: 28px; }
@@ -118,9 +118,9 @@
   .lecture-4 :is(#slide-7, #slide-8) .comparison-card { padding: 28px 30px; gap: 20px; }
   .lecture-4 :is(#slide-7, #slide-8) .comparison-card ul { gap: 16px; }
   .lecture-4 :is(#slide-7, #slide-8) .comparison-card li { font-size: 20px; }
-  .lecture-4 #slide-39 .concept-table { font-size: 19px; border-spacing: 0 8px; }
-  .lecture-4 #slide-39 .concept-table th, .lecture-4 #slide-39 .concept-table td { padding: 14px 20px; }
-  .lecture-4 #slide-39 .concept-table td small { font-size: 16px; }
+  .lecture-4 #slide-40 .concept-table { font-size: 19px; border-spacing: 0 8px; }
+  .lecture-4 #slide-40 .concept-table th, .lecture-4 #slide-40 .concept-table td { padding: 14px 20px; }
+  .lecture-4 #slide-40 .concept-table td small { font-size: 16px; }
   .lecture-4 .vla-slide { padding-top: 78px; padding-bottom: 64px; }
   .lecture-4 .vla-slide .slide__inner { gap: 14px; }
   .vla-slide .slide__eyebrow { font-size: 14px; }
@@ -166,23 +166,23 @@
   .vla-slide .model-panel { overflow-x: auto; }
   .vla-slide .model-table { min-width: 640px; }
   /* Longer loanword labels need readable columns inside the existing scroll panel. */
-  .lecture-4 #slide-23 .model-table { min-width: 1050px; }
+  .lecture-4 #slide-24 .model-table { min-width: 1050px; }
   /* Keep the long note clear of the shared counter at the viewport edge. */
-  .lecture-4 #slide-23 .model-note { padding-right: 64px; }
+  .lecture-4 #slide-24 .model-note { padding-right: 64px; }
   .vla-timeline ol { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .vla-timeline ol::before { top: 0; bottom: 0; left: 9px; width: 2px; height: auto; }
   .vla-timeline li { padding: 0 0 0 40px; }
   .vla-timeline li::before { top: 4px; }
   .vla-readout { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .vla-banner .vla-math { white-space: normal; font-size: 22px; }
-  .lecture-4 #slide-39 .slide__inner { grid-template-rows: auto; }
-  .lecture-4 #slide-39 .concept-table { display: block; font-size: 20px; }
-  .lecture-4 #slide-39 .concept-table tbody { display: grid; gap: 16px; }
-  .lecture-4 #slide-39 .concept-table tr { display: grid; }
-  .lecture-4 #slide-39 .concept-table th, .lecture-4 #slide-39 .concept-table td { width: auto; padding: 14px 18px; }
-  .lecture-4 #slide-39 .concept-table th { border-radius: 16px 16px 0 0; }
-  .lecture-4 #slide-39 .concept-table td { border-radius: 0 0 16px 16px; }
-  .lecture-4 #slide-39 .concept-table td small { display: block; margin-left: 0; white-space: normal; font-size: 16px; }
+  .lecture-4 #slide-40 .slide__inner { grid-template-rows: auto; }
+  .lecture-4 #slide-40 .concept-table { display: block; font-size: 20px; }
+  .lecture-4 #slide-40 .concept-table tbody { display: grid; gap: 16px; }
+  .lecture-4 #slide-40 .concept-table tr { display: grid; }
+  .lecture-4 #slide-40 .concept-table th, .lecture-4 #slide-40 .concept-table td { width: auto; padding: 14px 18px; }
+  .lecture-4 #slide-40 .concept-table th { border-radius: 16px 16px 0 0; }
+  .lecture-4 #slide-40 .concept-table td { border-radius: 0 0 16px 16px; }
+  .lecture-4 #slide-40 .concept-table td small { display: block; margin-left: 0; white-space: normal; font-size: 16px; }
   .lecture-4 .question-index { grid-column: 1; grid-row: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 18px; }
 }
 @media print {
@@ -226,9 +226,9 @@
   .lecture-4 #slide-14 .model-copy { gap: 8px; }
   .lecture-4 #slide-14 .model-table th, .lecture-4 #slide-14 .model-table td { padding-block: 4px; }
   .lecture-4 #slide-14 .model-caption { font-size: 17px; line-height: 1.4; }
-  .lecture-4 #slide-23 .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto auto; }
-  .lecture-4 #slide-23 .model-table { border-spacing: 0 6px; }
-  .lecture-4 #slide-23 .model-table th, .lecture-4 #slide-23 .model-table td { padding-block: 8px; }
+  .lecture-4 #slide-24 .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+  .lecture-4 #slide-24 .model-table { border-spacing: 0 6px; }
+  .lecture-4 #slide-24 .model-table th, .lecture-4 #slide-24 .model-table td { padding-block: 8px; }
   .vla-term-guide .concept-table { font-size: 18px; border-spacing: 0 5px; }
   .vla-term-guide .concept-table th, .vla-term-guide .concept-table td { padding: 6px 16px; }
   .vla-term-guide .concept-table th small { font-size: 14px; line-height: 1.2; }
@@ -271,12 +271,12 @@
 .vla-process-slide .model-note { font-size: 16px; line-height: 1.4; padding: 10px 14px; }
 .vla-frame-table code { font-size: .82em; overflow-wrap: anywhere; }
 .vla-nowrap { white-space: nowrap; }
-.lecture-4 :is(#slide-26, #slide-27, #slide-28, #slide-29) .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; }
-.lecture-4 :is(#slide-26, #slide-27, #slide-28, #slide-29) .slide__visual { display: flex; min-width: 0; min-height: 0; overflow-x: auto; }
+.lecture-4 :is(#slide-27, #slide-28, #slide-29, #slide-30) .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; }
+.lecture-4 :is(#slide-27, #slide-28, #slide-29, #slide-30) .slide__visual { display: flex; min-width: 0; min-height: 0; overflow-x: auto; }
 .vla-episode-diagram { flex: none; height: 100%; min-width: 720px; }
 .vla-episode-diagram .chip text { font-size: 24px; }
 @media (min-width: 801px) and (max-height: 850px) {
-  .lecture-4 :is(#slide-26, #slide-27, #slide-28, #slide-29) { padding-top: 78px; padding-bottom: 64px; }
+  .lecture-4 :is(#slide-27, #slide-28, #slide-29, #slide-30) { padding-top: 78px; padding-bottom: 64px; }
   .vla-head-panel { padding: 12px 16px; }
   .vla-head-panel figcaption { font-size: 13px; }
   .vla-process-figure { padding: 8px; gap: 4px; }
@@ -290,9 +290,9 @@
   .vla-frame-slide .model-table { border-spacing: 0 6px; line-height: 1.35; }
   .vla-frame-slide .model-table th, .vla-frame-slide .model-table td { padding: 5px 12px; }
   .vla-frame-slide .model-caption { font-size: 14px; line-height: 1.4; }
-  .lecture-4 #slide-34 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
-  .lecture-4 #slide-34 .slide-bullets { gap: 16px; }
-  .lecture-4 #slide-34 .slide-bullets li { font-size: 20px; line-height: 1.4; }
+  .lecture-4 #slide-35 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
+  .lecture-4 #slide-35 .slide-bullets { gap: 16px; }
+  .lecture-4 #slide-35 .slide-bullets li { font-size: 20px; line-height: 1.4; }
 }
 @media (min-width: 801px) and (max-width: 1300px) and (max-height: 850px) {
   .vla-process-body { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
@@ -315,22 +315,22 @@
 }
 
 /* Readability and local counter clearance found in the final screenshot pass. */
-.lecture-4 #slide-34 .slide__visual { display: flex; align-items: center; overflow-x: auto; }
-.lecture-4 #slide-34 .deck-svg { position: static; inset: auto; flex: none; width: 100%; min-width: 720px; height: auto; }
+.lecture-4 #slide-35 .slide__visual { display: flex; align-items: center; overflow-x: auto; }
+.lecture-4 #slide-35 .deck-svg { position: static; inset: auto; flex: none; width: 100%; min-width: 720px; height: auto; }
 @media (min-width: 801px) {
-  .lecture-4 #slide-31 .vla-card { padding: 20px 28px; gap: 8px; }
-  .lecture-4 #slide-31 .vla-card > p:not(.vla-card__label):not(.vla-card__example) { font-size: clamp(17px, 1.15vw, 22px); line-height: 1.45; }
-  .lecture-4 #slide-31 .vla-card__label { font-size: 18px; line-height: 1.3; }
+  .lecture-4 #slide-32 .vla-card { padding: 20px 28px; gap: 8px; }
+  .lecture-4 #slide-32 .vla-card > p:not(.vla-card__label):not(.vla-card__example) { font-size: clamp(17px, 1.15vw, 22px); line-height: 1.45; }
+  .lecture-4 #slide-32 .vla-card__label { font-size: 18px; line-height: 1.3; }
 }
 @media (min-width: 801px) and (max-height: 850px) {
-  .lecture-4 #slide-31 .vla-card { padding: 8px 20px; gap: 4px; }
+  .lecture-4 #slide-32 .vla-card { padding: 8px 20px; gap: 4px; }
 }
 @media (max-width: 800px) {
   .lecture-4 #slide-11 .key-line,
   .lecture-4 #slide-17 .model-steps li:first-child p,
-  .lecture-4 #slide-30 .model-caption,
-  .lecture-4 #slide-47 .model-steps li:nth-child(3) p,
-  .lecture-4 #slide-34 .slide-bullets li { padding-right: 64px; }
+  .lecture-4 #slide-31 .model-caption,
+  .lecture-4 #slide-48 .model-steps li:nth-child(3) p,
+  .lecture-4 #slide-35 .slide-bullets li { padding-right: 64px; }
 }
 
 /* Projector view: fit the complete diagram; horizontal scrolling is mobile-only. */
@@ -342,8 +342,8 @@
   .lecture-4 .vla-head-panel .vla-flow-svg,
   .lecture-4 .vla-process-figure .vla-flow-svg { flex: 1 1 0; min-width: 0; height: 0; }
   .lecture-4 .vla-episode-diagram { min-width: 0; }
-  .lecture-4 #slide-34 .deck-svg { min-width: 0; }
-  .lecture-4 #slide-34 .svg-small { font-size: 24px; }
+  .lecture-4 #slide-35 .deck-svg { min-width: 0; }
+  .lecture-4 #slide-35 .svg-small { font-size: 24px; }
 }
 @media (min-width: 801px) and (max-width: 1100px) {
   .lecture-4 #slide-14 .model-columns { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; }
@@ -353,8 +353,8 @@
   /* Keep the three-line nodes separated when their labels grow at narrow desktop widths. */
   .lecture-4 .vla-process-figure text[font-size="20"]:is([y="95"], [y="295"], [y="375"], [y="485"]) { transform: translateY(-3px); }
   .lecture-4 .vla-process-figure text[font-size="20"]:is([y="155"], [y="355"], [y="435"], [y="545"]) { transform: translateY(3px); }
-  .lecture-4 #slide-34 .svg-small { font-size: 28px; }
-  .lecture-4 #slide-34 .svg-title { font-size: 32px; }
+  .lecture-4 #slide-35 .svg-small { font-size: 28px; }
+  .lecture-4 #slide-35 .svg-title { font-size: 32px; }
 }
 @media (min-width: 1600px) {
   .lecture-4 :is(#slide-14, #slide-16) .slide__inner { row-gap: 32px; }
@@ -367,4 +367,153 @@
   .lecture-4 #slide-14 .model-copy { gap: 16px; }
   .lecture-4 #slide-14 .model-table th,
   .lecture-4 #slide-14 .model-table td { padding-block: 10px; }
+}
+
+/* Noise learning: native number lines and the existing numbered explanations. */
+.lecture-4 .vla-noise-slide .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.vla-noise-slide .model-columns { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-rows: minmax(0, 1fr); gap: 24px; }
+.vla-noise-figure { padding: 12px; gap: 10px; overflow-x: auto; }
+.vla-noise-diagram { font-size: 32px; }
+.vla-noise-copy { gap: 12px; }
+.vla-noise-copy .model-steps { gap: 18px; }
+.vla-noise-copy .model-steps p { font-size: clamp(17px, 1.13vw, 22px); line-height: 1.45; }
+.vla-noise-slide .model-note { font-size: clamp(16px, 1.1vw, 21px); line-height: 1.4; padding: 10px 14px; }
+.lecture-4 #slide-15 .vla-module-diagram text[font-size="20"] { font-size: 22px; }
+.lecture-4 #slide-18 .vla-mini text[font-size="19"],
+.lecture-4 #slide-18 .vla-mini text[font-size="20"] { font-size: 21px; }
+@media (min-width: 801px) and (max-height: 950px) {
+  .lecture-4 #slide-15 .vla-card { padding: 12px 16px; gap: 8px; }
+  .lecture-4 #slide-15 .vla-card > p { font-size: 16px; line-height: 1.35; }
+  .lecture-4 #slide-15 .vla-module-figure { height: 170px; }
+  .lecture-4 #slide-15 .model-note { font-size: 15px; padding: 8px 12px; }
+  .lecture-4 #slide-15 .model-caption { font-size: 14px; line-height: 1.4; }
+  .lecture-4 #slide-18 .vla-card > p:not(.vla-card__example) { font-size: 16px; line-height: 1.4; }
+  .vla-noise-slide .model-columns { gap: 20px; }
+  .vla-noise-figure { padding: 8px; gap: 6px; }
+  .vla-noise-figure .model-caption { font-size: 13px; line-height: 1.35; }
+  .vla-noise-copy .model-steps { gap: 10px; }
+  .vla-noise-copy .model-steps li { padding-left: 38px; }
+  .vla-noise-copy .model-steps li::before { font-size: 21px; }
+  .vla-noise-copy .model-steps strong { font-size: 20px; }
+  .vla-noise-copy .model-steps p { font-size: 15px; line-height: 1.35; }
+  .vla-noise-slide .model-note { font-size: 14px; padding: 8px 12px; }
+  .vla-noise-slide .model-takeaway { font-size: 24px; }
+}
+@media (max-width: 800px) {
+  .lecture-4 .vla-noise-slide .slide__inner { grid-template-rows: auto; }
+  .vla-noise-slide .model-columns { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .lecture-4 .vla-noise-figure { margin-right: 64px; }
+  .vla-noise-diagram { flex: none; height: auto; min-width: 950px; }
+  .vla-noise-copy .model-steps p { font-size: 19px; }
+}
+
+/* Laptop viewports between the former 850px cutoff and projector sizing. */
+@media (min-width: 801px) and (max-width: 1700px) and (min-height: 851px) and (max-height: 950px) {
+  .lecture-4 :is(#slide-7, #slide-8) .slide__inner { grid-template-rows: auto minmax(0, 1fr); gap: 24px; }
+  .lecture-4 :is(#slide-7, #slide-8) .comparison-card { padding: 28px 30px; gap: 20px; }
+  .lecture-4 :is(#slide-7, #slide-8) .comparison-card ul { gap: 16px; }
+  .lecture-4 :is(#slide-7, #slide-8) .comparison-card li { font-size: 20px; }
+  .lecture-4 #slide-40 .concept-table { font-size: 19px; border-spacing: 0 8px; }
+  .lecture-4 #slide-40 .concept-table th, .lecture-4 #slide-40 .concept-table td { padding: 14px 20px; }
+  .lecture-4 #slide-40 .concept-table td small { font-size: 16px; }
+  .lecture-4 .vla-slide { padding-top: 78px; padding-bottom: 64px; }
+  .lecture-4 .vla-slide .slide__inner { gap: 14px; }
+  .vla-slide .slide__eyebrow { font-size: 14px; }
+  .vla-slide h2 { font-size: clamp(32px, 3vw, 44px); }
+  .vla-slide h3 { font-size: 24px; }
+  .vla-slide .model-steps strong { font-size: 21px; }
+  .vla-slide .model-steps p { font-size: 17px; }
+  .vla-slide .model-table { font-size: 17px; }
+  .vla-slide .model-table th, .vla-slide .model-table td { padding: 9px 16px; }
+  .vla-card { padding: 16px 20px; gap: 8px; }
+  .vla-card > p { font-size: 17px; line-height: 1.45; }
+  .vla-card__example { padding-top: 8px; font-size: 15px !important; }
+  .vla-banner { padding: 12px 22px; gap: 4px; }
+  .vla-banner .vla-math { font-size: 23px; }
+  .vla-timeline { gap: 18px; }
+  .vla-timeline li { padding-top: 34px; }
+  .vla-timeline strong { font-size: 21px; }
+  .vla-timeline span { font-size: 15px; line-height: 1.4; }
+  .vla-control label { font-size: 18px; }
+  .vla-buttons button { padding: 5px 11px; font-size: 15px; }
+  .vla-readout { padding: 10px 14px; }
+  .vla-readout strong { font-size: 25px; }
+  .lecture-4 .question-index { gap: 16px; }
+  .lecture-4 .question-index strong { font-size: 18px; }
+  .lecture-4 .question-index small { font-size: 14px; }
+  .lecture-4 .slide--title .title-index { gap: 12px; }
+  .lecture-4 .slide--title .title-index li { padding-top: 8px; }
+  .lecture-4 #slide-11 { padding-top: 78px; padding-bottom: 64px; }
+  .lecture-4 #slide-11 .slide__inner { gap: 14px; }
+  .lecture-4 #slide-11 .slide__eyebrow { font-size: 14px; }
+  .lecture-4 #slide-11 .slide__header::after { margin-top: 5px; }
+  .lecture-4 #slide-11 .key-line { font-size: 25px; line-height: 1.4; }
+  .lecture-4 #slide-14 .model-copy { gap: 8px; }
+  .lecture-4 #slide-14 .model-table th, .lecture-4 #slide-14 .model-table td { padding-block: 4px; }
+  .lecture-4 #slide-14 .model-caption { font-size: 17px; line-height: 1.4; }
+  .lecture-4 #slide-24 .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+  .lecture-4 #slide-24 .model-table { border-spacing: 0 6px; }
+  .lecture-4 #slide-24 .model-table th, .lecture-4 #slide-24 .model-table td { padding-block: 8px; }
+  .vla-term-guide .concept-table { font-size: 18px; border-spacing: 0 5px; }
+  .vla-term-guide .concept-table th, .vla-term-guide .concept-table td { padding: 6px 16px; }
+  .vla-term-guide .concept-table th small { font-size: 14px; line-height: 1.2; }
+  .vla-term-guide .model-note { font-size: 16px; padding: 9px 14px; }
+  .vla-module-slide .vla-card { padding: 14px 18px; gap: 10px; }
+  .vla-module-slide .vla-card > p { font-size: 17px; }
+  .vla-module-figure { height: 190px; }
+  .vla-module-slide .model-note { font-size: 16px; padding: 8px 14px; }
+  .vla-module-slide .model-caption { font-size: 14px; }
+  .lecture-4 :is(#slide-27, #slide-28, #slide-29, #slide-30) { padding-top: 78px; padding-bottom: 64px; }
+  .vla-head-panel { padding: 12px 16px; }
+  .vla-head-panel figcaption { font-size: 13px; }
+  .vla-process-figure { padding: 8px; gap: 4px; }
+  .vla-process-figure figcaption { font-size: 13px; line-height: 1.4; }
+  .vla-flow-explanation .model-steps { gap: 10px; }
+  .vla-flow-explanation .model-steps strong { font-size: 21px; }
+  .vla-flow-explanation .model-steps p { font-size: 16px; line-height: 1.35; }
+  .vla-flow-tag { font-size: 13px; }
+  .vla-process-slide .model-note { font-size: 14px; padding: 7px 10px; }
+  .vla-frame-slide .model-copy { gap: 8px; }
+  .vla-frame-slide .model-table { border-spacing: 0 6px; line-height: 1.35; }
+  .vla-frame-slide .model-table th, .vla-frame-slide .model-table td { padding: 5px 12px; }
+  .vla-frame-slide .model-caption { font-size: 14px; line-height: 1.4; }
+  .lecture-4 #slide-35 .slide__inner { grid-template-rows: auto minmax(0, 1fr); }
+  .lecture-4 #slide-35 .slide-bullets { gap: 16px; }
+  .lecture-4 #slide-35 .slide-bullets li { font-size: 20px; line-height: 1.4; }
+  .lecture-4 #slide-32 .vla-card { padding: 8px 20px; gap: 4px; }
+}
+
+@media (min-width: 801px) and (max-width: 1700px) and (max-height: 950px) {
+  .lecture-4 :is(#slide-14, #slide-16) .slide__inner { row-gap: 14px; }
+  .lecture-4 #slide-14 .model-copy { gap: 8px; }
+  .lecture-4 #slide-14 .model-table th,
+  .lecture-4 #slide-14 .model-table td { padding-block: 4px; }
+  .lecture-4 :is(#slide-27, #slide-28, #slide-29, #slide-30) { padding-bottom: 88px; }
+}
+
+/* Narrow projector view: reserve readable module figures before flex shrinking. */
+@media (min-width: 801px) and (max-width: 1300px) and (max-height: 950px) {
+  .lecture-4 #slide-15 .vla-module-body { gap: 8px; }
+  .lecture-4 #slide-15 .vla-card { padding: 10px 16px; gap: 6px; }
+  .lecture-4 #slide-15 .vla-card > p { font-size: 15.5px; }
+  .lecture-4 #slide-15 .vla-module-figure { height: 122px; min-height: 122px; flex: none; }
+  .lecture-4 #slide-15 .vla-module-diagram text[font-size="20"] { font-size: 24px; }
+  .lecture-4 #slide-15 .model-note { font-size: 14px; }
+  .lecture-4 #slide-15 .model-caption { font-size: 13px; line-height: 1.35; }
+}
+@media (min-width: 801px) and (max-height: 850px) {
+  .lecture-4 #slide-5 .slide__header { align-self: start; }
+}
+@media (min-width: 801px) and (max-width: 1100px) and (max-height: 850px) {
+  .lecture-4 #slide-14 .model-table th,
+  .lecture-4 #slide-14 .model-table td { padding-block: 3px; }
+}
+@media (max-width: 800px) {
+  .lecture-4 #slide-5 .slide-bullets li:nth-child(3),
+  .lecture-4 #slide-20 .model-steps li:nth-child(3) p,
+  .lecture-4 #slide-43 .vla-timeline > ol:first-child li:nth-child(4) span,
+  .lecture-4 #slide-44 .vla-timeline > ol:first-child li:nth-child(4) span,
+  .lecture-4 #slide-49 .vla-card:nth-child(2) > p { padding-right: 64px; }
+  .lecture-4 #slide-45 .model-table-wrap { width: calc(100% - 64px); }
+  .lecture-4 :is(#slide-28, #slide-30) .slide__visual { width: calc(100% - 64px); }
 }
