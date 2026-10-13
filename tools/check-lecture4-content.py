@@ -29,7 +29,7 @@ MODEL_SLIDE_NUMBERS = {
     38: 73,  # Unchanged recap precedes the two hands-on exercises.
 }
 PRACTICE_ZIP = "assets/data/lecture4/crashlab-urdf.zip"
-PRACTICE_IMAGES = tuple(f"assets/img/lecture4/gripper-data-slide-{n}.png" for n in (2, 3))
+PRACTICE_IMAGES = ("assets/img/lecture4/gripper-data-slide-2.png",)
 
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
 QUESTION_STEPS = {2: "01", 10: "02", 26: "03", 36: "04", 42: "05"}
@@ -135,6 +135,7 @@ class DeckParser(HTMLParser):
         self.local_urls: list[tuple[str, str, str | None]] = []
         self.anchors: list[tuple[str, str | None]] = []
         self.downloads: list[tuple[str, str | None, str | None]] = []
+        self.practice_selectors: list[str] = []
         self.snippets: list[dict[str, object]] = []
         self._pre_stack: list[dict[str, object]] = []
         self._code_stack: list[dict[str, object]] = []
@@ -154,6 +155,10 @@ class DeckParser(HTMLParser):
         if tag == "section" and element_id and re.fullmatch(r"slide-\d+", element_id):
             self.current_slide = element_id
             self.sections[element_id] = attrs
+        if self.current_slide == "slide-74" and (
+            (tag == "input" and (attrs.get("type") or "").lower() == "radio") or tag == "select"
+        ):
+            self.practice_selectors.append(tag)
         if self.current_slide == "slide-12":
             if tag == "tr":
                 self._term_row = {"th": [], "td": []}
@@ -341,6 +346,41 @@ MODEL_TEXT_EDITS = {
     68: (('<li><strong>씬별 로봇 참조 확인</strong><p>현재 scene_alice_m1.xml은 rohand 모델을 참조한다. 그리퍼 실습에는 위의 새 씬을 사용한다.</p></li>',
           '<li><strong>씬별 로봇 참조 확인</strong><p>현재 scene_alice_m1.xml은 rohand 모델을 참조한다. 그리퍼 실습에는 위의 새 씬을 사용한다.</p></li><li><strong>option · 물리 계산 주기</strong><p>timestep 0.002 s는 1초에 물리 계산 500번이다. 행동을 50 Hz로 보내면 물리 계산 10번마다 행동이 한 번 바뀐다.</p></li>'),),
 }
+
+
+# Mandatory, exact CAD-image replacements and slide-53 description removals.
+# SVG viewBox and clip rectangles preserve the original page-2 raster pixels.
+MODEL_SOURCE_EDITS = {53: (('<img class="model-image" src="assets/img/lecture4/assignment-arm.png" alt="설계자료의 PPTX에 포함된 ALICE M1 팔과 '
+       '리비전 그리퍼 CAD 조립도">',
+       '<svg class="model-image model-source-crop" viewBox="90 0 600 1080" role="img" aria-label="PPTX 2페이지의 '
+       '팔·그리퍼 조립도: SHOULDER·ELBOW·WRIST1·WRIST2·INPUT·COUPLER·OUTPUT" data-source-crop="arm" '
+       'overflow="hidden"><title>PPTX 2페이지의 팔·그리퍼 조립도: '
+       'SHOULDER·ELBOW·WRIST1·WRIST2·INPUT·COUPLER·OUTPUT</title><defs><clipPath id="model-source-53-clip"><rect '
+       'x="90" y="0" width="600" height="1080"/></clipPath></defs><image '
+       'href="assets/img/lecture4/gripper-data-slide-2.png" x="0" y="0" width="1920" height="1080" '
+       'clip-path="url(#model-source-53-clip)"/></svg>'),
+      ('<p><span class="model-file">DD_GRP_DATA.pptx</span>의 조립도에서 73 mm·93.5 mm 간격과 손목의 90° 회전을 읽는다.</p>', ''),
+      ('<p><span class="model-file">DD_STL/</span>의 WRIST1·WRIST2·INPUT·COUPLER·OUTPUT을 사용한다.</p>', ''),
+      ('<p><span class="model-file">DD_REVISION-GRIPPER_MASS_PROPERTIES.xlsx</span>에서 질량·질량중심·관성을 읽는다.</p>', ''),
+      ('제공 PPTX의 원본 그림.', '제공 PPTX 2페이지에서 잘라낸 팔·그리퍼 조립도.')),
+ 62: (('<img class="model-image" src="assets/img/lecture4/assignment-gripper.png" alt="INPUT, COUPLER, OUTPUT으로 '
+       '구성된 리비전 그리퍼의 원본 CAD 형상">',
+       '<svg class="model-image model-source-crop" viewBox="1050 500 670 480" role="img" aria-label="PPTX 2페이지의 '
+       '그리퍼 연결부: INPUT·COUPLER·OUTPUT과 조인트 중심 위치" data-source-crop="linkage" overflow="hidden"><title>PPTX 2페이지의 '
+       '그리퍼 연결부: INPUT·COUPLER·OUTPUT과 조인트 중심 위치</title><defs><clipPath id="model-source-62-clip"><rect x="1050" '
+       'y="500" width="670" height="480"/></clipPath></defs><image '
+       'href="assets/img/lecture4/gripper-data-slide-2.png" x="0" y="0" width="1920" height="1080" '
+       'clip-path="url(#model-source-62-clip)"/></svg>'),
+      ('설계자료의 PPTX 원본 형상과 실제 URDF mimic 발췌.', 'PPTX 2페이지에서 잘라낸 그리퍼 연결부와 실제 URDF mimic 발췌.')),
+ 67: (('<img class="model-image" src="assets/img/lecture4/assignment-wrist-rp.png" alt="설계자료의 PPTX에 포함된 손목 RP와 '
+       '회전축 CAD 그림">',
+       '<svg class="model-image model-source-crop" viewBox="1050 90 680 890" role="img" aria-label="PPTX 2페이지의 '
+       '손목·그리퍼 조립도: WRIST1·WRIST2와 73 mm·93.5 mm 간격" data-source-crop="wrist-gripper" '
+       'overflow="hidden"><title>PPTX 2페이지의 손목·그리퍼 조립도: WRIST1·WRIST2와 73 mm·93.5 mm 간격</title><defs><clipPath '
+       'id="model-source-67-clip"><rect x="1050" y="90" width="680" height="890"/></clipPath></defs><image '
+       'href="assets/img/lecture4/gripper-data-slide-2.png" x="0" y="0" width="1920" height="1080" '
+       'clip-path="url(#model-source-67-clip)"/></svg>'),)}
+SOURCE_HEADINGS = ("PPTX · 조립 관계와 치수", "STL · 구성 요소의 형상", "XLSX · 질량과 물성")
 
 
 def visible_text(parser: DeckParser, slide: str) -> str:
@@ -821,8 +861,16 @@ def check_practices(parser: DeckParser, root: Path) -> list[str]:
     for path in PRACTICE_IMAGES:
         if ("img", path, "slide-74") not in parser.local_urls:
             errors.append(f"Gripper practice requires source image: {path}")
+    if any(slide == "slide-74" and "gripper-data-slide-3.png" in unquote(url)
+           for _, url, slide in parser.local_urls):
+        errors.append("Gripper practice must not reference the removed PPTX page 3 image")
+    gripper = visible_text(parser, "slide-74")
+    if re.search(r"(?<!\d)3\s*(?:p\b|페이지)|PPTX.{0,12}(?:page\s*3|3[- ]*page)", gripper, re.I):
+        errors.append("Gripper practice must not include removed PPTX page 3 instructions")
+    if parser.practice_selectors:
+        errors.append("Gripper practice page 2 must be static without page selectors")
     contracts = {
-        74: ("실습", "DD_GRP_DATA.pptx", "2p", "3p", "73 mm", "93.5 mm", "90°",
+        74: ("실습", "DD_GRP_DATA.pptx", "2p", "73 mm", "93.5 mm",
              "WRIST1", "WRIST2", "INPUT", "COUPLER", "OUTPUT", "URDF", "RViz", "meshes/", "결과물|제출", "자료 받기"),
         75: ("ALICE M1", "VR", "텔레오퍼레이션", "비상정지", "조교|담당자", "확인",
              "기준 자세|기준자세", "작업 공간|작업공간", "저속", "테스트|저속 동작", "목표물", "결과 영상|결과영상|목표물 이동 영상"),
@@ -848,6 +896,22 @@ def check_practices(parser: DeckParser, root: Path) -> list[str]:
                 errors.append("Practice ZIP is missing alice_m1.urdf")
     except (OSError, zipfile.BadZipFile, RuntimeError) as exc:
         errors.append(f"Practice ZIP is missing or invalid: {exc}")
+    return errors
+
+
+def check_model_sources(slides: dict[str, str]) -> list[str]:
+    errors = []
+    for number, pairs in MODEL_SOURCE_EDITS.items():
+        source = slides.get(f"slide-{number}", "")
+        old_image, approved_crop = pairs[0]
+        old_path = re.search(r'src="([^"]+)"', old_image).group(1)
+        if source.count(approved_crop) != 1 or old_path in unquote(source):
+            errors.append(f"Model source crop must match approved PPTX page-2 SVG: slide-{number}")
+    source = slides.get("slide-53", "")
+    steps = re.findall(r'<ol class="model-steps">(.*?)</ol>', source, re.S)
+    expected = "".join(f"<li><strong>{heading}</strong></li>" for heading in SOURCE_HEADINGS)
+    if len(steps) != 1 or re.sub(r">\s+<", "><", steps[0].strip()) != expected:
+        errors.append("Slide-53 source list requires exactly three headings without descriptions")
     return errors
 
 
@@ -1064,6 +1128,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
         (("USD", "USDA"), ("stage", "스테이지", "scene", "씬", "시뮬레이션 환경")),
     )
     errors.extend(check_practices(parser, root))
+    errors.extend(check_model_sources(raw_slides))
     require_terms("slide 73 references", model_text(38, 38), (("공식",), ("문서", "documentation")))
 
     expect("이번학기일정" not in re.sub(r"\s+", "", visible_text(parser, "slide-50")),
@@ -1104,6 +1169,9 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                     approved = approved.replace(old, new)
                     if "부품" in old:
                         required_wording = required_wording.replace(old, new)
+                for old, new in MODEL_SOURCE_EDITS.get(emitted_number, ()):
+                    approved = approved.replace(old, new)
+                    required_wording = required_wording.replace(old, new)
                 allowed = {
                     normalized_model_slide(required_wording, number),
                     normalized_model_slide(approved, number),
@@ -1244,10 +1312,21 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             content += f"<ol>{approved}</ol>" if approved.startswith("<li>") else f"<p>{approved}</p>"
         if emitted_number <= VLA_SLIDES:
             extra_class, content = vla_fixture(emitted_number)
+        if emitted_number in MODEL_SOURCE_EDITS:
+            pairs = MODEL_SOURCE_EDITS[emitted_number]
+            content += pairs[0][0]
+            if emitted_number == 53:
+                content += '<ol class="model-steps">' + "".join(
+                    f"<li><strong>{heading}</strong>{pair[0]}</li>"
+                    for heading, pair in zip(SOURCE_HEADINGS, pairs[1:4])
+                ) + '</ol>'
+                content += pairs[4][0]
+            elif emitted_number == 62:
+                content += pairs[1][0]
         if emitted_number == 74:
             extra_class += " gripper-practice"
             content = (
-                '실습 결과물 제출 DD_GRP_DATA.pptx 2p 3p 73 mm 93.5 mm 90° '
+                '실습 결과물 제출 DD_GRP_DATA.pptx 2p 73 mm 93.5 mm '
                 'WRIST1 WRIST2 INPUT COUPLER OUTPUT URDF RViz meshes/ '
                 f'<a href="{PRACTICE_ZIP}" download="크래쉬랩_urdf.zip">자료 받기</a>'
                 + "".join(f'<img src="{name}" alt="원본 자료">' for name in PRACTICE_IMAGES)
@@ -1276,6 +1355,9 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
     for pairs in MODEL_TEXT_EDITS.values():
         for old, approved in pairs:
             baseline = baseline.replace(approved, old)
+    for pairs in MODEL_SOURCE_EDITS.values():
+        for old, approved in pairs:
+            html = html.replace(old, approved)
     html_path = root / "lecture-4.html"
     baseline_path = root / "baseline.txt"
     html_path.write_text(html, encoding="utf-8")
@@ -1384,7 +1466,7 @@ def self_test() -> list[str]:
                                         "Gripper practice requires the exact ZIP download"),
             "missing source image": (valid.replace(PRACTICE_IMAGES[0], "asset.svg"),
                                      "Gripper practice requires source image"),
-            "missing gripper recipe": (valid.replace("2p 3p 73 mm", "2p 3p"),
+            "missing gripper recipe": (valid.replace("2p 73 mm", "2p"),
                                        "Missing practice instruction on slide-74: 73 mm"),
             "missing VR safety": (valid.replace("비상정지", "비상"),
                                   "Missing practice instruction on slide-75: 비상정지"),
@@ -1394,9 +1476,26 @@ def self_test() -> list[str]:
                             .replace("model-slide gripper-practice", "model-slide gripper-practice vr-practice"),
                             "Practice placement requires vr-practice only on slide-75"),
         }
+        for label, markup, message in (
+            ("removed page 3 image", '<img src="assets/img/lecture4/gripper-data-slide-3.png">',
+             "Gripper practice must not reference the removed PPTX page 3 image"),
+            ("removed page 3 link", '<a href="assets/img/lecture4/gripper-data-slide-3.png">원본</a>',
+             "Gripper practice must not reference the removed PPTX page 3 image"),
+            ("removed page 3 caption", '<p>3p · 조립 방향</p>',
+             "Gripper practice must not include removed PPTX page 3 instructions"),
+            ("removed page 3 lead", '<p>PPTX 3페이지 조립 방향</p>',
+             "Gripper practice must not include removed PPTX page 3 instructions"),
+            ("removed page selector", '<input name="gripper-reference" type="radio">',
+             "Gripper practice page 2 must be static without page selectors"),
+        ):
+            practice_mutations[label] = (
+                valid.replace('제목 74">', '제목 74">' + markup, 1), message)
         for label, (mutated, message) in practice_mutations.items():
             mutations[label] = mutated
             expected_messages[label] = message
+        other_page_reference = valid.replace('제목 1">', '제목 1"><p>PPTX 3페이지 참고</p>', 1)
+        if check(other_page_reference, html_path, baseline):
+            failures.append("page 3 wording outside slide-74 was incorrectly rejected")
         archive_path = root / PRACTICE_ZIP
         archive_bytes = archive_path.read_bytes()
         for label in ("missing", "corrupt", "manifest"):
@@ -1414,7 +1513,7 @@ def self_test() -> list[str]:
             if not all(any(expected in message for message in messages) for expected in expected_zip_messages):
                 failures.append(f"{label} practice ZIP mutation was not detected")
             archive_path.write_bytes(archive_bytes)
-        image_path = root / PRACTICE_IMAGES[1]
+        image_path = root / PRACTICE_IMAGES[0]
         image_bytes = image_path.read_bytes()
         image_path.unlink()
         if not any("Missing local asset" in message for message in check(valid, html_path, baseline)):
@@ -1423,6 +1522,35 @@ def self_test() -> list[str]:
         missing_practice_baseline = baseline.replace('id="slide-37"', 'id="omitted-37"')
         if "Baseline must contain slide-37" not in check(valid, html_path, missing_practice_baseline):
             failures.append("missing original practice baseline was not detected")
+        for number, pairs in MODEL_SOURCE_EDITS.items():
+            old_image, crop = pairs[0]
+            for label, changed in {
+                "wrong crop viewport": crop.replace('viewBox="', 'viewBox="1 ', 1),
+                "wrong crop clip": crop.replace('<rect x="', '<rect x="1', 1),
+                "wrong crop source": crop.replace("gripper-data-slide-2.png", "gripper-data-slide-3.png"),
+                "old CAD image": old_image,
+                "wrong clip ID": crop.replace(f'model-source-{number}-clip', 'other-clip'),
+            }.items():
+                key = f"source crop {number} {label}"
+                mutations[key] = valid.replace(crop, changed, 1)
+                expected_messages[key] = f"Model source crop must match approved PPTX page-2 SVG: slide-{number}"
+        old_path = re.search(r'src="([^"]+)"', MODEL_SOURCE_EDITS[53][0][0]).group(1)
+        crop = MODEL_SOURCE_EDITS[53][0][1]
+        appended_old_image = valid.replace(crop, crop + f'<img src="{old_path}" alt="different">', 1)
+        mutations["appended old CAD image with different alt"] = appended_old_image
+        expected_messages["appended old CAD image with different alt"] = (
+            "Model source crop must match approved PPTX page-2 SVG: slide-53")
+        if expected_messages["appended old CAD image with different alt"] not in check(
+            appended_old_image, html_path
+        ):
+            failures.append("appended old CAD image escaped standalone source guard")
+        for label, old, new in (
+            ("source heading removed", '<li><strong>PPTX · 조립 관계와 치수</strong></li>', ""),
+            ("source description restored", '<strong>PPTX · 조립 관계와 치수</strong>',
+             '<strong>PPTX · 조립 관계와 치수</strong>' + MODEL_SOURCE_EDITS[53][1][0]),
+        ):
+            mutations[label] = valid.replace(old, new, 1)
+            expected_messages[label] = "Slide-53 source list requires exactly three headings without descriptions"
         deletion_mutations = {
             "deleted schedule": (
                 valid.replace(" 행동 정의 데이터 모델 실행 평가",
@@ -1671,7 +1799,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-35 → 52-72 and 38 → 73 preserve bytes except section ID/ARIA numbers and exact approved prose edits; original slide 36 omitted; original slide 37 replaced by validated practice 74 and VR practice 75 added")
+        print("PASS: robot slides 15-35 → 52-72 and 38 → 73 preserve bytes except section ID/ARIA numbers and exact approved prose/source edits; original slide 36 omitted; original slide 37 replaced by validated practice 74 and VR practice 75 added")
     return 0
 
 
