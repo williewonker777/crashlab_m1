@@ -7,8 +7,8 @@
 - `lecture-1.html`: ROS2 로봇 프로그래밍 이론·실습 (60장)
 - `lecture-2.html`: 제어 (66장) — 이론 63 + 실습 준비 1 + 실습 2
 - `lecture-3.html`: VSLAM · 내비게이션 (66장) — 이론 60 + 실습 3 + 결과 예시 3
-- `lecture-4.html`: VLA 이론 · 로봇 모델과 시뮬레이션 (75장) — VLA 이론 51 + URDF·MJCF·USD 24
-- 전체: OT 11장 + 4개 강의 267장, 총 278장
+- `lecture-4.html`: VLA 이론 · 로봇 모델과 시뮬레이션 (74장) — VLA 이론 51 + URDF·MJCF·USD 23
+- 전체: OT 11장 + 4개 강의 266장, 총 277장
 
 강의 1은 PowerPoint 원본의 텍스트·도형·이미지를 네이티브 HTML/CSS로 변환한 덱이다.
 다른 강의와 같은 헤더·서체·색상 토큰을 사용하며, 본문 그리드는 글자 크기에 맞춰 높이가 늘어난다.
@@ -49,7 +49,7 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 애매한 한글 음역 대신 Policy·Action Head·Noise·Fine-tuning 등 실제 영문 원어를 쓴다. 어려운 용어는 `단어(짧은 뜻)` 또는 인접 설명으로 풀고, 카드 제목과 같은 말을 본문에서 반복하지 않는다.
 계산 가정, Action Head·데이터 기록·실행 계층의 근거, 슬라이드 수치와 출처는 [VLA_THEORY.md](VLA_THEORY.md)에 정리했다.
 
-강의 ④의 52~75페이지는 조립도·STL·질량표에서 ALICE M1 그리퍼의
+강의 ④의 52~74페이지는 조립도·STL·질량표에서 ALICE M1 그리퍼의
 URDF를 작성하고, MuJoCo MJCF와 Isaac Sim USD에서 로봇·환경을 구성하는 과정이다.
 실제 파일의 좌표·질량·관절 코드와 별도 씬 예제를 사용하며, 현재 USD에 이전 손목
 리비전이 남아 있다는 차이를 검증 사례로 설명한다. 원본 로봇 파일은 수정하지 않는다.

@@ -16,10 +16,17 @@ from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 
-EXPECTED_SLIDES = 75
+EXPECTED_SLIDES = 74
 MODEL_OFFSET = 37
 ORIGINAL_MODEL_START = 15
 ORIGINAL_MODEL_END = 38
+REMOVED_ORIGINAL_MODEL_SLIDE = 36
+# Original slide 36 (formerly deck slide 73) alone is intentionally omitted.
+MODEL_SLIDE_NUMBERS = {
+    number: number + MODEL_OFFSET - (number > REMOVED_ORIGINAL_MODEL_SLIDE)
+    for number in range(ORIGINAL_MODEL_START, ORIGINAL_MODEL_END + 1)
+    if number != REMOVED_ORIGINAL_MODEL_SLIDE
+}
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
 QUESTION_STEPS = {2: "01", 10: "02", 26: "03", 36: "04", 42: "05"}
 # Existing layouts retained from the original introductory material.
@@ -377,7 +384,6 @@ GLOSSARY_TERMS = {
     47: ('Advantage', 'RECAP'),
     48: ('WAM',),
     49: ('Mobile Manipulator',),
-    50: ('Headless',),
 }
 
 
@@ -957,7 +963,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     errors.extend(noise_training_errors(raw_slides))
 
     def model_text(start: int, end: int) -> str:
-        return range_text(start + MODEL_OFFSET, end + MODEL_OFFSET)
+        return range_text(MODEL_SLIDE_NUMBERS[start], MODEL_SLIDE_NUMBERS[end])
 
     require_terms(f"slide {15 + MODEL_OFFSET} chapter", model_text(15, 15), (("URDF",), ("MJCF",), ("USD",)))
     require_terms(f"slide {16 + MODEL_OFFSET} sources", model_text(16, 16), (("PPTX",), ("XLSX",), ("STL",)))
@@ -983,24 +989,21 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
         model_text(33, 35),
         (("USD", "USDA"), ("stage", "스테이지", "scene", "씬", "시뮬레이션 환경")),
     )
-    require_terms(
-        f"slide {36 + MODEL_OFFSET} revision validation",
-        model_text(36, 36),
-        (
-            ("이전 리비전", "revision", "리비전"), ("USD",), ("URDF",), ("MJCF",),
-            ("wrist2",),
-            ("116.6007",), ("117.4993",), ("검증", "validation"),
-        ),
-    )
-    revision_text = model_text(36, 36)
-    wrist2_absence = re.search(
-        r"(?:wrist2.{0,32}(?:없|미포함|제외)|(?:없|미포함|제외).{0,32}wrist2)",
-        revision_text,
-        re.IGNORECASE,
-    )
-    expect(bool(wrist2_absence), f"Slide {36 + MODEL_OFFSET} must state that wrist2 is absent from the older USD revision")
-    require_terms(f"slide {37 + MODEL_OFFSET} practice", model_text(37, 37), (("실습",), ("결과물", "제출")))
-    require_terms(f"slide {38 + MODEL_OFFSET} references", model_text(38, 38), (("공식",), ("문서", "documentation")))
+    require_terms("slide 73 practice", model_text(37, 37), (("실습",), ("결과물", "제출")))
+    require_terms("slide 74 references", model_text(38, 38), (("공식",), ("문서", "documentation")))
+
+    expect("이번학기일정" not in re.sub(r"\s+", "", visible_text(parser, "slide-50")),
+           "Deleted semester schedule must not remain on slide-50")
+    expect("수치를인용할때함께확인할출처와조건" not in
+           re.sub(r"\s+", "", visible_text(parser, "slide-51")),
+           "Deleted reference takeaway must not remain on slide-51")
+    for name in slide_names:
+        text = visible_text(parser, name)
+        expect("로봇 모델 리비전 비교" not in text and
+               not ("116.6007" in text and "117.4993" in text),
+               f"Deleted model revision comparison must not remain: {name}")
+    require_terms("slide 50 project checklist", range_text(50, 50),
+                  (("행동 정의",), ("데이터",), ("모델",), ("실행",), ("평가",)))
 
     errors.extend(check_index(root, total))
 
@@ -1008,19 +1011,23 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
         original = slide_source(baseline)
         updated = slide_source(html)
         for number in range(ORIGINAL_MODEL_START, ORIGINAL_MODEL_END + 1):
-            old_name, new_name = f"slide-{number}", f"slide-{number + MODEL_OFFSET}"
+            old_name = f"slide-{number}"
             expect(old_name in original, f"Baseline must contain {old_name}")
+            if number == REMOVED_ORIGINAL_MODEL_SLIDE:
+                continue
+            emitted_number = MODEL_SLIDE_NUMBERS[number]
+            new_name = f"slide-{emitted_number}"
             expect(new_name in updated, f"Updated deck must contain {new_name}")
             if old_name in original and new_name in updated:
                 approved = original[old_name]
-                for old, new in MODEL_TEXT_EDITS.get(number + MODEL_OFFSET, ()):
+                for old, new in MODEL_TEXT_EDITS.get(emitted_number, ()):
                     approved = approved.replace(old, new)
                 allowed = {
                     normalized_model_slide(original[old_name], number),
                     normalized_model_slide(approved, number),
                 }
                 expect(
-                    normalized_model_slide(updated[new_name], number + MODEL_OFFSET) in allowed,
+                    normalized_model_slide(updated[new_name], emitted_number) in allowed,
                     f"Robot model slide contains an unapproved change: {new_name}",
                 )
     return errors
@@ -1077,6 +1084,8 @@ def vla_fixture(number: int) -> tuple[str, str]:
             content += "</article>"
     else:
         content += "".join(" " + sample for _, sample in roles.values())
+    if number == 50:
+        content += " 행동 정의 데이터 모델 실행 평가"
     content += "".join(f" {term}(쉬운 역할 설명)" for term in GLOSSARY_TERMS.get(number, ()))
     return " " + " ".join(sorted(classes)), content
 
@@ -1119,7 +1128,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             'joint="l_gripper_input" ctrllimited="false"/></actuator>',
     }
     for emitted_number in range(1, total + 1):
-        number = emitted_number - MODEL_OFFSET
+        number = emitted_number - MODEL_OFFSET + (emitted_number >= 73)
         extra_class = " model-chapter" if number == 15 else " model-slide"
         content = topics.get(number, f"내용 {number}")
         if number == 17:
@@ -1134,7 +1143,6 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             )
         if number == 33:
             content += '<img src="asset.svg" alt="fixture">'
-        if number == 36:
             content += (
                 '<svg role="img" aria-label="검증 흐름" viewBox="0 0 10 10">'
                 '<defs><marker id="arrow-28"></marker></defs>'
@@ -1155,10 +1163,11 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
         + "".join(slides) + "</main></body></html>"
     )
     baseline = "".join(
-        slide.replace(f'id="slide-{n}"', f'id="slide-{n - MODEL_OFFSET}"', 1)
-        .replace(f'슬라이드 {n} / {total}:', f'슬라이드 {n - MODEL_OFFSET} / 38:', 1)
-        for n, slide in enumerate(slides, 1) if n > VLA_SLIDES
+        slides[emitted - 1].replace(f'id="slide-{emitted}"', f'id="slide-{original}"', 1)
+        .replace(f'슬라이드 {emitted} / {total}:', f'슬라이드 {original} / 38:', 1)
+        for original, emitted in MODEL_SLIDE_NUMBERS.items()
     )
+    baseline += '<section id="slide-36">' + topics[36] + '</section>'
     for pairs in MODEL_TEXT_EDITS.values():
         for old, approved in pairs:
             baseline = baseline.replace(approved, old)
@@ -1190,8 +1199,8 @@ def self_test() -> list[str]:
             "reference protocol": valid.replace("https://example.org/0", "http://example.org/0", 1),
             "VLA nominal summary": valid.replace('<div data-token-demo>', '<p class="model-takeaway">행동을 만든다</p><div data-token-demo>', 1),
             "question nominal summary": valid.replace(
-                'aria-label="슬라이드 10 / 75: 제목 10">',
-                'aria-label="슬라이드 10 / 75: 제목 10"><p class="key-line">행동을 만든다</p>',
+                'aria-label="슬라이드 10 / 74: 제목 10">',
+                'aria-label="슬라이드 10 / 74: 제목 10"><p class="key-line">행동을 만든다</p>',
                 1,
             ),
             "question nominal index": valid.replace(
@@ -1241,6 +1250,54 @@ def self_test() -> list[str]:
             "internal source label": "Internal source label must not appear",
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
+        deletion_mutations = {
+            "deleted schedule": (
+                valid.replace(" 행동 정의 데이터 모델 실행 평가",
+                              " 행동 정의 데이터 모델 실행 평가<h3>이번 학기 일정</h3>", 1),
+                "Deleted semester schedule must not remain on slide-50",
+            ),
+            "deleted reference takeaway": (
+                valid.replace(
+                    '제목 51">',
+                    '제목 51"><p>수치를 인용할 때 함께 확인할 출처와 조건</p>', 1),
+                "Deleted reference takeaway must not remain on slide-51",
+            ),
+            "deleted revision section": (
+                valid.replace("실습 결과물 제출", "로봇 모델 리비전 비교 " +
+                              "USD 116.6007 URDF MJCF 117.4993 실습 결과물 제출", 1),
+                "Deleted model revision comparison must not remain: slide-73",
+            ),
+            "extra slide": (
+                valid.replace("</main>", '<section id="slide-75"></section></main>', 1),
+                "Deck must contain exactly 74 slides",
+            ),
+            "tail slide ID": (
+                valid.replace('id="slide-74"', 'id="slide-75"', 1),
+                "Slides must be consecutively ordered",
+            ),
+            "tail ARIA count": (
+                valid.replace("슬라이드 74 / 74:", "슬라이드 74 / 75:", 1),
+                "Invalid slide aria-label: slide-74",
+            ),
+            "project checklist preservation": (
+                valid.replace(" 행동 정의 데이터 모델 실행 평가", " 데이터 모델 실행 평가", 1),
+                "Missing required learning element in slide 50 project checklist: 행동 정의",
+            ),
+            "practice preservation": (
+                valid.replace("실습 결과물 제출", "실습 결과물 제출 변경", 1),
+                "Robot model slide contains an unapproved change: slide-73",
+            ),
+            "recap preservation": (
+                valid.replace("공식 문서 documentation 링크", "공식 문서 documentation 링크 변경", 1),
+                "Robot model slide contains an unapproved change: slide-74",
+            ),
+        }
+        for label, (mutated, message) in deletion_mutations.items():
+            mutations[label] = mutated
+            expected_messages[label] = message
+        missing_baseline = baseline.replace('<section id="slide-36">', '<section id="omitted-36">', 1)
+        if "Baseline must contain slide-36" not in check(valid, html_path, missing_baseline):
+            failures.append("incomplete original baseline was not detected")
         guide_mutations = {
             11: {"tokenizer stage": ("문장 → 조각 · 번호", "문장 → Vector"),
                  "embedding stage": ("Embedding 번호 → Vector", "Embedding 번호 → 목록"),
@@ -1416,7 +1473,7 @@ def main() -> int:
         type=Path,
         default=Path(__file__).resolve().parents[1] / "lecture-4.html",
     )
-    parser.add_argument("--baseline", type=Path, help="Original 38-slide lecture-4 HTML (robot slides 15-38)")
+    parser.add_argument("--baseline", type=Path, help="Original 38-slide lecture-4 HTML (robot slides 15-38; only slide 36 omitted)")
     parser.add_argument("--self-test", action="store_true", help="Run isolated negative tests")
     args = parser.parse_args()
 
@@ -1440,7 +1497,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-38 → 52-75 preserve bytes except section ID/ARIA numbers and exact approved prose edits")
+        print("PASS: robot slides 15-35 → 52-72 and 37-38 → 73-74 preserve bytes except section ID/ARIA numbers and exact approved prose edits; original slide 36 omitted")
     return 0
 
 
