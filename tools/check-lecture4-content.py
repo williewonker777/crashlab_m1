@@ -288,6 +288,12 @@ def normalized_model_slide(source: str, number: int) -> str:
 
 # Approved prose edits only: no numeric, markup or whitespace normalization.
 MODEL_TEXT_EDITS = {
+    52: (("부품의 형상·좌표·질량 확인", "구성 요소의 형상·좌표·질량 확인"),),
+    53: (("STL · 부품의 형상", "STL · 구성 요소의 형상"),),
+    57: (("WRIST2는 손목에 고정된 부품이다.", "WRIST2는 손목에 고정된 구성 요소다."),),
+    61: (("미러 부품의 좌표·관성 부호", "미러 손가락의 좌표·관성 부호"),),
+    62: (("여러 손가락 부품의 움직임과 독립 구동 관절의 구분",
+          "그리퍼 구성 요소의 움직임과 독립 구동 관절의 구분"),),
     58: (
         ('실제 +90° 손목 조립 후에는 부모 손목 기준 축도 달라진다.',
          '실제로는 손목을 +90° 돌려 조립하므로, 부모 손목 기준으로 보면 축 방향이 달라진다.'),
@@ -307,17 +313,21 @@ MODEL_TEXT_EDITS = {
          '표의 COM은 WCS(설계 프로그램의 전체 좌표계) 기준이다.'),
         ('질량만 같아도 질량의 분포가 다르면 회전 운동은 달라진다.',
          '질량이 같아도 분포가 다르면 회전 운동이 달라진다.'),
+        ('내보낸 부품 좌표계와 링크 좌표계', '내보낸 구성 요소의 좌표계와 링크 좌표계'),
     ),
     65: (
         ('이 사례의 MJCF는 시뮬레이션 설정을 별도 작성한 모델이다. 자동 변환 결과라고 가정하지 않는다.',
          '이 사례의 MJCF는 시뮬레이션 설정을 따로 작성한 모델이며, URDF를 자동 변환한 결과로 보면 안 된다.'),
+        ('body · 부품의 위치와 방향', 'body · 구성 요소의 위치와 방향'),
     ),
     67: (
         ('비볼록 메시 하나로 구멍·오목한 형상이 그대로 충돌한다고 가정하지 않는다.',
          'MuJoCo는 메시 충돌을 볼록 껍질로 계산하므로, 구멍·오목한 부분이 그대로 충돌한다고 보면 안 된다.'),
     ),
     54: (("URDF의 역할: 제어 프로그램이 아닌 로봇 구조와 물성의 기술",
-          "URDF의 역할: 제어 프로그램이 아니라 TF·IK·시뮬레이터가 읽는 로봇 구조와 물성의 기술"),),
+          "URDF의 역할: 제어 프로그램이 아니라 TF·IK·시뮬레이터가 읽는 로봇 구조와 물성의 기술"),
+         ("몸통·팔·손가락처럼 함께 움직이는 부품 단위다.",
+          "몸통·팔·손가락처럼 함께 움직이는 강체 단위다."),),
     66: (("이 모델은 motor를 사용한다. 위치 목표 추종은 별도의 제어기가 필요하다.",
           "이 모델의 motor는 ctrl에 gear를 곱한 값을 관절 토크로 바로 쓴다. 관절 목표각을 따라가려면 PD로 토크를 계산하는 제어기를 붙이거나, 목표와의 차이로 힘을 내는 position actuator를 쓴다."),),
     70: (("drive: stiffness·damping·힘 제한이 목적에 맞는가?",
@@ -777,6 +787,20 @@ def check_index(root: Path, total: int) -> list[str]:
     return []
 
 
+def check_course_wording(html: str, html_path: Path) -> list[str]:
+    """Check source text too, so ARIA labels and data-title cannot retain old wording."""
+    root = html_path.resolve().parent
+    sources = {html_path.resolve(): html}
+    paths = set(root.glob("*.html")) | {
+        root / name for name in ("DESIGN.md", "DESIGN-SVG.md", "VLA_THEORY.md")
+    }
+    for path in sorted(paths):
+        if path.resolve() != html_path.resolve() and path.is_file():
+            sources[path] = path.read_text(encoding="utf-8")
+    return [f"Outdated course wording '부품': {path.name}"
+            for path, source in sources.items() if "부품" in unescape(source)]
+
+
 def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     parser = DeckParser()
     parser.feed(html)
@@ -1006,6 +1030,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
                   (("행동 정의",), ("데이터",), ("모델",), ("실행",), ("평가",)))
 
     errors.extend(check_index(root, total))
+    errors.extend(check_course_wording(html, html_path))
 
     if baseline is not None:
         original = slide_source(baseline)
@@ -1020,10 +1045,14 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
             expect(new_name in updated, f"Updated deck must contain {new_name}")
             if old_name in original and new_name in updated:
                 approved = original[old_name]
+                # Terminology is mandatory; earlier exact prose improvements remain optional.
+                required_wording = original[old_name]
                 for old, new in MODEL_TEXT_EDITS.get(emitted_number, ()):
                     approved = approved.replace(old, new)
+                    if "부품" in old:
+                        required_wording = required_wording.replace(old, new)
                 allowed = {
-                    normalized_model_slide(original[old_name], number),
+                    normalized_model_slide(required_wording, number),
                     normalized_model_slide(approved, number),
                 }
                 expect(
@@ -1172,7 +1201,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
         for old, approved in pairs:
             baseline = baseline.replace(approved, old)
     html_path = root / "lecture-4.html"
-    baseline_path = root / "baseline.html"
+    baseline_path = root / "baseline.txt"
     html_path.write_text(html, encoding="utf-8")
     baseline_path.write_text(baseline, encoding="utf-8")
     (root / "index.html").write_text(
@@ -1250,6 +1279,24 @@ def self_test() -> list[str]:
             "internal source label": "Internal source label must not appear",
             "sentence stage label": "Heading/stage label must use nominal phrasing",
         }
+        for label, markup in {
+            "visible wording": "<p>부품</p>",
+            "ARIA wording": '<span aria-label="부품"></span>',
+            "data-title wording": '<span data-title="부품"></span>',
+            "encoded wording": "<p>&#48512;&#54408;</p>",
+        }.items():
+            mutations[label] = valid.replace("</main>", markup + "</main>", 1)
+            expected_messages[label] = "Outdated course wording '부품': lecture-4.html"
+        for name in ("lecture-1.html", "orientation.html", "DESIGN.md", "DESIGN-SVG.md", "VLA_THEORY.md"):
+            path = root / name
+            path.write_text("구성 요소", encoding="utf-8")
+            if check(valid, html_path, baseline):
+                failures.append(f"clean sibling course file was rejected: {name}")
+            path.write_text("부품", encoding="utf-8")
+            messages = check(valid, html_path, baseline)
+            if f"Outdated course wording '부품': {name}" not in messages:
+                failures.append(f"sibling course wording mutation was not detected: {name}")
+            path.unlink()
         deletion_mutations = {
             "deleted schedule": (
                 valid.replace(" 행동 정의 데이터 모델 실행 평가",
@@ -1367,7 +1414,8 @@ def self_test() -> list[str]:
         unchanged_model = valid
         for pairs in MODEL_TEXT_EDITS.values():
             for old, approved in pairs:
-                unchanged_model = unchanged_model.replace(approved, old)
+                if "부품" not in old:
+                    unchanged_model = unchanged_model.replace(approved, old)
         if check(unchanged_model, html_path, baseline):
             failures.append("unchanged robot prose fixture was rejected")
         for number, label in ((20, "multimodal meaning"), (47, "value function role"), (15, "MoE expansion")):
@@ -1461,7 +1509,7 @@ def self_test() -> list[str]:
             if not any(expected_messages[label] in message for message in messages):
                 failures.append(f"{label} mutation was not detected as expected")
     if not failures:
-        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations detected)")
+        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations and 5 sibling-file wording mutations detected)")
     return failures
 
 

@@ -72,7 +72,7 @@ Tokenizer를 “단어 조각 → Vector”라고 쓰지 않는다. PaliGemma는
 Tokenizer와 어휘 Embedding 층을 별도로 사용한다고 설명한다.
 
 영상과 로봇 상태도 한 줄에서 모델이 읽는 Vector가 되므로 Token이라 부른다. 다만 영상의
-Token Vector를 만드는 부품은 Vision Encoder이고, 상태의 Token Vector를 만드는 부품은 선형 변환이다. PaliGemma의
+Token Vector를 만드는 구성 요소는 Vision Encoder이고, 상태의 Token Vector를 만드는 구성 요소는 선형 변환이다. PaliGemma의
 224×224 영상은 14×14 조각 256개가 되고, Vision Encoder의 폭 1152는 선형 연결 층 하나로
 Gemma-2B가 쓰는 길이 2048에 맞춘다. π0와 SmolVLA는 상태를 선형 변환으로 Token 하나에
 투영한다.
@@ -98,7 +98,7 @@ Gemma-2B가 쓰는 길이 2048에 맞춘다. π0와 SmolVLA는 상태를 선형 
 ### 행동 모듈의 근거
 
 15p는 **Action Expert**를 π0의 상태·행동 Token만 맡는 작은 가중치 묶음으로 설명한다.
-π0·SmolVLA 계열의 특정 부품을 뜻한다. 별도 DiT까지 Action Expert라고 묶지 않는다.
+π0·SmolVLA 계열의 특정 모듈을 뜻한다. 별도 DiT까지 Action Expert라고 묶지 않는다.
 두 구조를 아우르는 제목은 「행동 생성 모듈의 두 가지 구조」다.
 π0는 한 Transformer 안에서 영상·문장 Token에는
 VLM 가중치, 상태·행동 Token에는 별도 Action Expert 가중치를 쓴다. Action Expert는 폭 1024,
