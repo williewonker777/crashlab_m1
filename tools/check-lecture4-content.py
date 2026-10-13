@@ -12,21 +12,25 @@ from pathlib import Path
 import re
 import sys
 import tempfile
+import zipfile
 from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
 
 
-EXPECTED_SLIDES = 74
+EXPECTED_SLIDES = 75
 MODEL_OFFSET = 37
 ORIGINAL_MODEL_START = 15
 ORIGINAL_MODEL_END = 38
 REMOVED_ORIGINAL_MODEL_SLIDE = 36
 # Original slide 36 (formerly deck slide 73) alone is intentionally omitted.
 MODEL_SLIDE_NUMBERS = {
-    number: number + MODEL_OFFSET - (number > REMOVED_ORIGINAL_MODEL_SLIDE)
-    for number in range(ORIGINAL_MODEL_START, ORIGINAL_MODEL_END + 1)
-    if number != REMOVED_ORIGINAL_MODEL_SLIDE
+    **{number: number + MODEL_OFFSET for number in range(15, 36)},
+    37: 74,  # Replaced by the gripper hands-on exercise, checked separately.
+    38: 73,  # Unchanged recap precedes the two hands-on exercises.
 }
+PRACTICE_ZIP = "assets/data/lecture4/crashlab-urdf.zip"
+PRACTICE_IMAGES = tuple(f"assets/img/lecture4/gripper-data-slide-{n}.png" for n in (2, 3))
+
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
 QUESTION_STEPS = {2: "01", 10: "02", 26: "03", 36: "04", 42: "05"}
 # Existing layouts retained from the original introductory material.
@@ -130,6 +134,7 @@ class DeckParser(HTMLParser):
         self.references: list[tuple[str, str | None]] = []
         self.local_urls: list[tuple[str, str, str | None]] = []
         self.anchors: list[tuple[str, str | None]] = []
+        self.downloads: list[tuple[str, str | None, str | None]] = []
         self.snippets: list[dict[str, object]] = []
         self._pre_stack: list[dict[str, object]] = []
         self._code_stack: list[dict[str, object]] = []
@@ -195,6 +200,7 @@ class DeckParser(HTMLParser):
         if tag == "a":
             href = attrs.get("href", "") or ""
             self.anchors.append((href, self.current_slide))
+            self.downloads.append((href, attrs.get("download"), self.current_slide))
 
         url_attrs = {
             "a": ("href",),
@@ -801,6 +807,50 @@ def check_course_wording(html: str, html_path: Path) -> list[str]:
             for path, source in sources.items() if "부품" in unescape(source)]
 
 
+def check_practices(parser: DeckParser, root: Path) -> list[str]:
+    errors = []
+    for number, kind in ((74, "gripper-practice"), (75, "vr-practice")):
+        matches = [name for name, attrs in parser.sections.items()
+                   if kind in (attrs.get("class") or "").split()]
+        if matches != [f"slide-{number}"]:
+            errors.append(f"Practice placement requires {kind} only on slide-{number}")
+    if list(parser.sections)[-1:] != ["slide-75"]:
+        errors.append("VR practice must be the final slide-75")
+    if (PRACTICE_ZIP, "크래쉬랩_urdf.zip", "slide-74") not in parser.downloads:
+        errors.append("Gripper practice requires the exact ZIP download link and filename")
+    for path in PRACTICE_IMAGES:
+        if ("img", path, "slide-74") not in parser.local_urls:
+            errors.append(f"Gripper practice requires source image: {path}")
+    contracts = {
+        74: ("실습", "DD_GRP_DATA.pptx", "2p", "3p", "73 mm", "93.5 mm", "90°",
+             "WRIST1", "WRIST2", "INPUT", "COUPLER", "OUTPUT", "URDF", "RViz", "meshes/", "결과물|제출", "자료 받기"),
+        75: ("ALICE M1", "VR", "텔레오퍼레이션", "비상정지", "조교|담당자", "확인",
+             "기준 자세|기준자세", "작업 공간|작업공간", "저속", "테스트|저속 동작", "목표물", "결과 영상|결과영상|목표물 이동 영상"),
+    }
+    for number, terms in contracts.items():
+        text = visible_text(parser, f"slide-{number}")
+        for term in terms:
+            if not any(option in text for option in term.split("|")):
+                errors.append(f"Missing practice instruction on slide-{number}: {term}")
+    vr = visible_text(parser, "slide-75")
+    if not re.search(r"(?:연결|추적).{0,60}(?:끊|끊김|상실|끊어).{0,60}정지", vr):
+        errors.append("VR practice requires stop on connection or tracking loss")
+    try:
+        with zipfile.ZipFile(root / PRACTICE_ZIP) as archive:
+            names = archive.namelist()
+            if archive.testzip() is not None:
+                errors.append("Practice ZIP has corrupt members")
+            if not any(Path(name).name == "DD_GRP_DATA.pptx" for name in names):
+                errors.append("Practice ZIP is missing DD_GRP_DATA.pptx")
+            if not any("meshes" in Path(name).parts and name.lower().endswith(".stl") for name in names):
+                errors.append("Practice ZIP is missing mesh files")
+            if not any(Path(name).name == "alice_m1.urdf" for name in names):
+                errors.append("Practice ZIP is missing alice_m1.urdf")
+    except (OSError, zipfile.BadZipFile, RuntimeError) as exc:
+        errors.append(f"Practice ZIP is missing or invalid: {exc}")
+    return errors
+
+
 def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
     parser = DeckParser()
     parser.feed(html)
@@ -1013,8 +1063,8 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
         model_text(33, 35),
         (("USD", "USDA"), ("stage", "스테이지", "scene", "씬", "시뮬레이션 환경")),
     )
-    require_terms("slide 73 practice", model_text(37, 37), (("실습",), ("결과물", "제출")))
-    require_terms("slide 74 references", model_text(38, 38), (("공식",), ("문서", "documentation")))
+    errors.extend(check_practices(parser, root))
+    require_terms("slide 73 references", model_text(38, 38), (("공식",), ("문서", "documentation")))
 
     expect("이번학기일정" not in re.sub(r"\s+", "", visible_text(parser, "slide-50")),
            "Deleted semester schedule must not remain on slide-50")
@@ -1043,6 +1093,9 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
             emitted_number = MODEL_SLIDE_NUMBERS[number]
             new_name = f"slide-{emitted_number}"
             expect(new_name in updated, f"Updated deck must contain {new_name}")
+            # Original practice 37 is intentionally replaced; check_practices owns its contract.
+            if number == 37:
+                continue
             if old_name in original and new_name in updated:
                 approved = original[old_name]
                 # Terminology is mandatory; earlier exact prose improvements remain optional.
@@ -1123,6 +1176,16 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
     """Create a compact valid deck and baseline for mutation-based self-tests."""
     (root / "asset.svg").write_text("<svg/>", encoding="utf-8")
     slides = []
+    zip_path = root / PRACTICE_ZIP
+    zip_path.parent.mkdir(parents=True)
+    with zipfile.ZipFile(zip_path, "w") as archive:
+        archive.writestr("DD_GRP_DATA.pptx", "fixture presentation")
+        archive.writestr("meshes/WRIST1.stl", "fixture mesh")
+        archive.writestr("alice_m1_urdf/alice_m1.urdf", "<robot/>")
+    for name in PRACTICE_IMAGES:
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"fixture image")
     topics = {
         15: "URDF MJCF USD 로봇 모델 강의",
         16: "PPTX XLSX STL 설계자료",
@@ -1157,7 +1220,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             'joint="l_gripper_input" ctrllimited="false"/></actuator>',
     }
     for emitted_number in range(1, total + 1):
-        number = emitted_number - MODEL_OFFSET + (emitted_number >= 73)
+        number = {73: 38, 74: 37, 75: 39}.get(emitted_number, emitted_number - MODEL_OFFSET)
         extra_class = " model-chapter" if number == 15 else " model-slide"
         content = topics.get(number, f"내용 {number}")
         if number == 17:
@@ -1181,6 +1244,18 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             content += f"<ol>{approved}</ol>" if approved.startswith("<li>") else f"<p>{approved}</p>"
         if emitted_number <= VLA_SLIDES:
             extra_class, content = vla_fixture(emitted_number)
+        if emitted_number == 74:
+            extra_class += " gripper-practice"
+            content = (
+                '실습 결과물 제출 DD_GRP_DATA.pptx 2p 3p 73 mm 93.5 mm 90° '
+                'WRIST1 WRIST2 INPUT COUPLER OUTPUT URDF RViz meshes/ '
+                f'<a href="{PRACTICE_ZIP}" download="크래쉬랩_urdf.zip">자료 받기</a>'
+                + "".join(f'<img src="{name}" alt="원본 자료">' for name in PRACTICE_IMAGES)
+            )
+        elif emitted_number == 75:
+            extra_class += " vr-practice"
+            content = ('ALICE M1 VR 텔레오퍼레이션 비상정지 조교 확인 기준 자세 작업 공간 '
+                       '저속 테스트 목표물 옮기기 결과 영상 연결 또는 추적 끊김 시 정지')
         number = emitted_number
         slides.append(
             f'<section class="slide{extra_class}" id="slide-{number}" '
@@ -1194,8 +1269,9 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
     baseline = "".join(
         slides[emitted - 1].replace(f'id="slide-{emitted}"', f'id="slide-{original}"', 1)
         .replace(f'슬라이드 {emitted} / {total}:', f'슬라이드 {original} / 38:', 1)
-        for original, emitted in MODEL_SLIDE_NUMBERS.items()
+        for original, emitted in MODEL_SLIDE_NUMBERS.items() if original != 37
     )
+    baseline += '<section id="slide-37">실습 결과물 제출</section>'
     baseline += '<section id="slide-36">' + topics[36] + '</section>'
     for pairs in MODEL_TEXT_EDITS.values():
         for old, approved in pairs:
@@ -1228,8 +1304,8 @@ def self_test() -> list[str]:
             "reference protocol": valid.replace("https://example.org/0", "http://example.org/0", 1),
             "VLA nominal summary": valid.replace('<div data-token-demo>', '<p class="model-takeaway">행동을 만든다</p><div data-token-demo>', 1),
             "question nominal summary": valid.replace(
-                'aria-label="슬라이드 10 / 74: 제목 10">',
-                'aria-label="슬라이드 10 / 74: 제목 10"><p class="key-line">행동을 만든다</p>',
+                'aria-label="슬라이드 10 / 75: 제목 10">',
+                'aria-label="슬라이드 10 / 75: 제목 10"><p class="key-line">행동을 만든다</p>',
                 1,
             ),
             "question nominal index": valid.replace(
@@ -1297,6 +1373,56 @@ def self_test() -> list[str]:
             if f"Outdated course wording '부품': {name}" not in messages:
                 failures.append(f"sibling course wording mutation was not detected: {name}")
             path.unlink()
+        practice_mutations = {
+            "missing download": (valid.replace(f'<a href="{PRACTICE_ZIP}" download="크래쉬랩_urdf.zip">자료 받기</a>', "자료 받기"),
+                                 "Gripper practice requires the exact ZIP download"),
+            "wrong download path": (valid.replace(PRACTICE_ZIP, "assets/data/other.zip"),
+                                    "Gripper practice requires the exact ZIP download"),
+            "missing download attribute": (valid.replace(' download="크래쉬랩_urdf.zip"', ""),
+                                           "Gripper practice requires the exact ZIP download"),
+            "wrong download filename": (valid.replace('download="크래쉬랩_urdf.zip"', 'download="other.zip"'),
+                                        "Gripper practice requires the exact ZIP download"),
+            "missing source image": (valid.replace(PRACTICE_IMAGES[0], "asset.svg"),
+                                     "Gripper practice requires source image"),
+            "missing gripper recipe": (valid.replace("2p 3p 73 mm", "2p 3p"),
+                                       "Missing practice instruction on slide-74: 73 mm"),
+            "missing VR safety": (valid.replace("비상정지", "비상"),
+                                  "Missing practice instruction on slide-75: 비상정지"),
+            "missing tracking stop": (valid.replace("연결 또는 추적 끊김 시 정지", "연결 또는 추적 끊김 시 계속"),
+                                      "VR practice requires stop on connection or tracking loss"),
+            "VR not last": (valid.replace("model-slide vr-practice", "model-slide")
+                            .replace("model-slide gripper-practice", "model-slide gripper-practice vr-practice"),
+                            "Practice placement requires vr-practice only on slide-75"),
+        }
+        for label, (mutated, message) in practice_mutations.items():
+            mutations[label] = mutated
+            expected_messages[label] = message
+        archive_path = root / PRACTICE_ZIP
+        archive_bytes = archive_path.read_bytes()
+        for label in ("missing", "corrupt", "manifest"):
+            if label == "missing":
+                archive_path.unlink()
+            elif label == "corrupt":
+                archive_path.write_bytes(b"not a ZIP")
+            else:
+                with zipfile.ZipFile(archive_path, "w") as archive:
+                    archive.writestr("unrelated.txt", "not the practice materials")
+            messages = check(valid, html_path, baseline)
+            expected_zip_messages = (["Practice ZIP is missing or invalid"] if label != "manifest" else
+                                     ["Practice ZIP is missing DD_GRP_DATA.pptx",
+                                      "Practice ZIP is missing mesh files", "Practice ZIP is missing alice_m1.urdf"])
+            if not all(any(expected in message for message in messages) for expected in expected_zip_messages):
+                failures.append(f"{label} practice ZIP mutation was not detected")
+            archive_path.write_bytes(archive_bytes)
+        image_path = root / PRACTICE_IMAGES[1]
+        image_bytes = image_path.read_bytes()
+        image_path.unlink()
+        if not any("Missing local asset" in message for message in check(valid, html_path, baseline)):
+            failures.append("missing practice image file was not detected")
+        image_path.write_bytes(image_bytes)
+        missing_practice_baseline = baseline.replace('id="slide-37"', 'id="omitted-37"')
+        if "Baseline must contain slide-37" not in check(valid, html_path, missing_practice_baseline):
+            failures.append("missing original practice baseline was not detected")
         deletion_mutations = {
             "deleted schedule": (
                 valid.replace(" 행동 정의 데이터 모델 실행 평가",
@@ -1312,31 +1438,31 @@ def self_test() -> list[str]:
             "deleted revision section": (
                 valid.replace("실습 결과물 제출", "로봇 모델 리비전 비교 " +
                               "USD 116.6007 URDF MJCF 117.4993 실습 결과물 제출", 1),
-                "Deleted model revision comparison must not remain: slide-73",
+                "Deleted model revision comparison must not remain: slide-74",
             ),
             "extra slide": (
-                valid.replace("</main>", '<section id="slide-75"></section></main>', 1),
-                "Deck must contain exactly 74 slides",
+                valid.replace("</main>", '<section id="slide-76"></section></main>', 1),
+                "Deck must contain exactly 75 slides",
             ),
             "tail slide ID": (
-                valid.replace('id="slide-74"', 'id="slide-75"', 1),
+                valid.replace('id="slide-75"', 'id="slide-76"', 1),
                 "Slides must be consecutively ordered",
             ),
             "tail ARIA count": (
-                valid.replace("슬라이드 74 / 74:", "슬라이드 74 / 75:", 1),
-                "Invalid slide aria-label: slide-74",
+                valid.replace("슬라이드 75 / 75:", "슬라이드 75 / 74:", 1),
+                "Invalid slide aria-label: slide-75",
             ),
             "project checklist preservation": (
                 valid.replace(" 행동 정의 데이터 모델 실행 평가", " 데이터 모델 실행 평가", 1),
                 "Missing required learning element in slide 50 project checklist: 행동 정의",
             ),
             "practice preservation": (
-                valid.replace("실습 결과물 제출", "실습 결과물 제출 변경", 1),
-                "Robot model slide contains an unapproved change: slide-73",
+                valid.replace("실습 결과물 제출", "결과물 제출", 1),
+                "Missing practice instruction on slide-74: 실습",
             ),
             "recap preservation": (
                 valid.replace("공식 문서 documentation 링크", "공식 문서 documentation 링크 변경", 1),
-                "Robot model slide contains an unapproved change: slide-74",
+                "Robot model slide contains an unapproved change: slide-73",
             ),
         }
         for label, (mutated, message) in deletion_mutations.items():
@@ -1509,7 +1635,7 @@ def self_test() -> list[str]:
             if not any(expected_messages[label] in message for message in messages):
                 failures.append(f"{label} mutation was not detected as expected")
     if not failures:
-        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations and 5 sibling-file wording mutations detected)")
+        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations and 5 sibling-file wording mutations plus practice asset mutations detected)")
     return failures
 
 
@@ -1521,7 +1647,7 @@ def main() -> int:
         type=Path,
         default=Path(__file__).resolve().parents[1] / "lecture-4.html",
     )
-    parser.add_argument("--baseline", type=Path, help="Original 38-slide lecture-4 HTML (robot slides 15-38; only slide 36 omitted)")
+    parser.add_argument("--baseline", type=Path, help="Original 38-slide lecture-4 HTML (robot slides 15-38; slide 36 omitted, slide 37 replaced)")
     parser.add_argument("--self-test", action="store_true", help="Run isolated negative tests")
     args = parser.parse_args()
 
@@ -1545,7 +1671,7 @@ def main() -> int:
     slide_count = len(parsed_sections(html))
     print(f"PASS: lecture 4 — {slide_count} slides, content, accessibility and references")
     if baseline is not None:
-        print("PASS: robot slides 15-35 → 52-72 and 37-38 → 73-74 preserve bytes except section ID/ARIA numbers and exact approved prose edits; original slide 36 omitted")
+        print("PASS: robot slides 15-35 → 52-72 and 38 → 73 preserve bytes except section ID/ARIA numbers and exact approved prose edits; original slide 36 omitted; original slide 37 replaced by validated practice 74 and VR practice 75 added")
     return 0
 
 
