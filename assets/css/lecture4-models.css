@@ -204,13 +204,20 @@
 .gripper-practice-copy .model-steps { gap: 24px; }
 .gripper-practice-copy .model-steps strong { font-size: 30px; }
 .gripper-practice-copy .model-steps p { font-size: 22px; line-height: 1.45; }
-.gripper-deliverable, .vr-deliverable { border-top: 2px solid #d8dee9; padding-top: 14px; }
-.gripper-deliverable h3, .vr-deliverable h3 { margin-bottom: 8px; }
-.gripper-deliverable p, .vr-deliverable p { color: var(--hy-gray); font-size: 22px; line-height: 1.5; }
-.vr-practice-safety { gap: 16px; }
-.vr-practice-safety .model-checks { gap: 12px; }
-.vr-practice-safety .model-checks li { font-size: 24px; }
-.vr-practice-safety .model-note { font-size: 21px; }
+.gripper-deliverable { border-top: 2px solid #d8dee9; padding-top: 14px; }
+.gripper-deliverable h3 { margin-bottom: 8px; }
+.gripper-deliverable p { color: var(--hy-gray); font-size: 22px; line-height: 1.5; }
+.vr-practice-body { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.teleop-reference { display: flex; flex-direction: column; gap: 10px; min-width: 0; min-height: 0; margin: 0; }
+.teleop-reference-image { display: flex; flex: 1 1 0; min-width: 0; min-height: 0; border-radius: 16px; background: var(--bg-tint); overflow: hidden; }
+.teleop-reference-image img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.teleop-reference figcaption { color: var(--hy-gray); font-size: 18px; line-height: 1.4; }
+.teleop-reference figcaption span { display: block; font-size: 16px; }
+.vr-practice-copy .model-steps { gap: clamp(14px, 2vh, 24px); }
+.vr-practice-copy .model-steps strong { font-size: clamp(22px, 1.6vw, 28px); }
+.vr-practice-copy .model-steps p { font-size: clamp(18px, 1.2vw, 22px); line-height: 1.4; }
+.vr-practice-note { padding-top: 12px; padding-right: 70px; border-top: 2px solid #d8dee9; color: var(--hy-gray); font-size: clamp(16px, 1vw, 19px); line-height: 1.4; }
+.vr-practice-note strong { color: var(--hy-blue); }
 
 @media (min-width: 801px) and (max-height: 950px) {
   .gripper-heading { gap: 20px; }
@@ -225,16 +232,14 @@
   .gripper-practice-copy .model-steps { gap: 10px; }
   .gripper-practice-copy .model-steps strong { font-size: 21px; }
   .gripper-practice-copy .model-steps p { font-size: 17px; line-height: 1.45; }
-  .gripper-deliverable, .vr-deliverable { padding-top: 10px; }
-  .gripper-deliverable p, .vr-deliverable p { font-size: 18px; }
-  .vr-practice .model-steps { gap: 14px; }
-  .vr-practice .model-steps strong { font-size: 21px; }
-  .vr-practice .model-steps p { font-size: 17px; line-height: 1.45; }
-  .vr-practice-safety { padding: 18px 22px; gap: 10px; }
-  .vr-practice-safety .model-checks { gap: 8px; }
-  .vr-practice-safety .model-checks li { font-size: 18px; }
-  .vr-practice-safety .model-note { font-size: 16px; padding: 10px 14px; }
-  .vr-practice-safety .model-caption { font-size: 13px; }
+  .gripper-deliverable { padding-top: 10px; }
+  .gripper-deliverable p { font-size: 18px; }
+  .teleop-reference figcaption { font-size: 15px; }
+  .teleop-reference figcaption span { font-size: 13px; }
+  .vr-practice-copy .model-steps { gap: 12px; }
+  .vr-practice-copy .model-steps strong { font-size: 21px; }
+  .vr-practice-copy .model-steps p { font-size: 17px; line-height: 1.4; }
+  .vr-practice-note { padding-top: 8px; font-size: 15px; line-height: 1.35; }
 }
 @media (max-width: 800px) {
   .gripper-heading { flex-direction: column; gap: 16px; }
@@ -249,8 +254,13 @@
   .gripper-reference-page figcaption span { font-size: 14px; }
   .gripper-practice-copy .model-steps p { font-size: 19px; }
   .gripper-practice-copy .model-steps strong { font-size: 24px; }
-  .gripper-deliverable p, .vr-deliverable p { font-size: 19px; }
-  .vr-practice-safety .model-checks li { font-size: 21px; }
-  .vr-practice-safety .model-note { font-size: 19px; }
-  .vr-practice .model-steps li:last-child p { padding-right: 64px; }
+  .gripper-deliverable p { font-size: 19px; }
+  .vr-practice-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+  .teleop-reference-image { flex: none; }
+  .teleop-reference-image img { height: auto; }
+  .teleop-reference figcaption { font-size: 16px; }
+  .teleop-reference figcaption span { font-size: 14px; }
+  .vr-practice-copy .model-steps strong { font-size: 24px; }
+  .vr-practice-copy .model-steps p { font-size: 19px; }
+  .vr-practice-note { font-size: 16px; }
 }

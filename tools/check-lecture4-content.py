@@ -30,6 +30,7 @@ MODEL_SLIDE_NUMBERS = {
 }
 PRACTICE_ZIP = "assets/data/lecture4/crashlab-urdf.zip"
 PRACTICE_IMAGES = ("assets/img/lecture4/gripper-data-slide-2.png",)
+TELEOP_IMAGE = "assets/img/lecture4/m1-teleoperation-box.png"
 
 VLA_SLIDES = ORIGINAL_MODEL_START + MODEL_OFFSET - 1
 QUESTION_STEPS = {2: "01", 10: "02", 26: "03", 36: "04", 42: "05"}
@@ -136,6 +137,10 @@ class DeckParser(HTMLParser):
         self.anchors: list[tuple[str, str | None]] = []
         self.downloads: list[tuple[str, str | None, str | None]] = []
         self.practice_selectors: list[str] = []
+        self.teleop_images: list[dict[str, str | None]] = []
+        self.teleop_parts: dict[str, list[str]] = defaultdict(list)
+        self._teleop_stack: list[tuple[str, set[str]]] = []
+        self._teleop_body_count = 0
         self.snippets: list[dict[str, object]] = []
         self._pre_stack: list[dict[str, object]] = []
         self._code_stack: list[dict[str, object]] = []
@@ -155,6 +160,26 @@ class DeckParser(HTMLParser):
         if tag == "section" and element_id and re.fullmatch(r"slide-\d+", element_id):
             self.current_slide = element_id
             self.sections[element_id] = attrs
+        if self.current_slide == "slide-75":
+            if tag == "img":
+                self.teleop_images.append(attrs)
+            regions = set(self._teleop_stack[-1][1]) if self._teleop_stack else set()
+            classes = (attrs.get("class") or "").split()
+            if tag == "ol" and "model-steps" in classes:
+                regions.add("steps")
+            # Keep ordered actions inside one step paragraph; headings and adjacent
+            # steps must not supply a missing spatial or temporal relationship.
+            if tag == "p" and "steps" in regions and any(
+                parent_tag == "li" for parent_tag, _ in self._teleop_stack
+            ):
+                self._teleop_body_count += 1
+                regions.add(f"step-body-{self._teleop_body_count}")
+            if "vr-practice-note" in classes:
+                regions.add("safety")
+            if tag == "figcaption":
+                regions.add("caption")
+            if tag not in {"img", "br", "hr", "input", "source", "meta", "link", "wbr"}:
+                self._teleop_stack.append((tag, regions))
         if self.current_slide == "slide-74" and (
             (tag == "input" and (attrs.get("type") or "").lower() == "radio") or tag == "select"
         ):
@@ -240,6 +265,8 @@ class DeckParser(HTMLParser):
     handle_startendtag = handle_starttag
 
     def handle_endtag(self, tag: str) -> None:
+        if self._teleop_stack and self._teleop_stack[-1][0] == tag:
+            self._teleop_stack.pop()
         if self._guide_part is not None and self._guide_part[0] == tag:
             self._guide_part = None
         if tag == "tr":
@@ -263,6 +290,9 @@ class DeckParser(HTMLParser):
             self._in_counter -= 1
 
     def handle_data(self, data: str) -> None:
+        if self._teleop_stack:
+            for region in self._teleop_stack[-1][1]:
+                self.teleop_parts[region].append(data)
         if self._guide_part is not None:
             self._guide_part[1].append(data)
         for label in self._label_stack:
@@ -872,17 +902,47 @@ def check_practices(parser: DeckParser, root: Path) -> list[str]:
     contracts = {
         74: ("실습", "DD_GRP_DATA.pptx", "2p", "73 mm", "93.5 mm",
              "WRIST1", "WRIST2", "INPUT", "COUPLER", "OUTPUT", "URDF", "RViz", "meshes/", "결과물|제출", "자료 받기"),
-        75: ("ALICE M1", "VR", "텔레오퍼레이션", "비상정지", "조교|담당자", "확인",
-             "기준 자세|기준자세", "작업 공간|작업공간", "저속", "테스트|저속 동작", "목표물", "결과 영상|결과영상|목표물 이동 영상"),
+        75: ("M1", "VR", "텔레오퍼레이션", "비상정지", "결과 영상|결과영상"),
     }
     for number, terms in contracts.items():
         text = visible_text(parser, f"slide-{number}")
         for term in terms:
             if not any(option in text for option in term.split("|")):
                 errors.append(f"Missing practice instruction on slide-{number}: {term}")
-    vr = visible_text(parser, "slide-75")
-    if not re.search(r"(?:연결|추적).{0,60}(?:끊|끊김|상실|끊어).{0,60}정지", vr):
-        errors.append("VR practice requires stop on connection or tracking loss")
+    images = [attrs for attrs in parser.teleop_images if attrs.get("src") == TELEOP_IMAGE]
+    if not images:
+        errors.append("M1 practice requires supplied image on slide-75")
+    elif not all(all(term in (attrs.get("alt") or "") for term in ("M1", "박스"))
+                 for attrs in images):
+        errors.append("M1 practice image requires descriptive alt text")
+    regions = {name: re.sub(r"\s+", " ", " ".join(parts))
+               for name, parts in parser.teleop_parts.items()}
+    caption = regions.get("caption", "")
+    if not all(term in caption for term in ("사용자 제공", "시뮬레이션 화면")):
+        errors.append("M1 practice caption must identify the supplied simulation screen")
+    steps = regions.get("steps", "")
+    for term in ("담당자", "M1", "VR", "기준 자세", "작업 공간", "저속"):
+        if term not in steps:
+            errors.append(f"Missing M1 procedural instruction: {term}")
+    bodies = [text for name, text in regions.items() if name.startswith("step-body-")]
+    for label, pattern in (
+        ("pick object", r"(?:물체.{0,30}집|그리퍼.{0,20}닫고.{0,20}들어 올)"),
+        ("place inside box", r"(?:박스 안|안쪽)[^.:]{0,30}(?:낮추고|내린 뒤).{0,40}(?:놓|넣)"),
+        ("lower before release", r"(?:박스 안|안쪽)[^.:]{0,30}(?:낮추고|내린 뒤).{0,20}그리퍼.{0,20}(?:열|연)"),
+        ("check after hand withdrawal", r"손.{0,20}(?:뺀|빼).{0,40}물체.{0,20}박스 안.{0,20}남.{0,20}확인"),
+    ):
+        if not any(re.search(pattern, text) for text in bodies):
+            errors.append(f"M1 practice steps require {label}")
+    safety = regions.get("safety", "")
+    for label, pattern in (
+        ("emergency stop", r"비상정지"),
+        ("connection and tracking loss stop", r"연결[^.]{0,12}추적[^.]{0,20}끊김[^.]{0,30}정지"),
+        ("no assumed automatic stop", r"자동 정지.{0,10}가정하지 않"),
+        ("two-person physical operation", r"실물.{0,100}(?:2인 1조|두 명)"),
+        ("outside motion zone", r"동작 구역 밖"),
+    ):
+        if not re.search(pattern, safety):
+            errors.append(f"M1 practice safety requires {label}")
     try:
         with zipfile.ZipFile(root / PRACTICE_ZIP) as archive:
             names = archive.namelist()
@@ -1250,7 +1310,7 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
         archive.writestr("DD_GRP_DATA.pptx", "fixture presentation")
         archive.writestr("meshes/WRIST1.stl", "fixture mesh")
         archive.writestr("alice_m1_urdf/alice_m1.urdf", "<robot/>")
-    for name in PRACTICE_IMAGES:
+    for name in (*PRACTICE_IMAGES, TELEOP_IMAGE):
         path = root / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(b"fixture image")
@@ -1333,8 +1393,18 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             )
         elif emitted_number == 75:
             extra_class += " vr-practice"
-            content = ('ALICE M1 VR 텔레오퍼레이션 비상정지 조교 확인 기준 자세 작업 공간 '
-                       '저속 테스트 목표물 옮기기 결과 영상 연결 또는 추적 끊김 시 정지')
+            content = (
+                '<h2>실습 2 · M1 텔레오퍼레이션</h2>'
+                '<p>책상 위 물체를 집어 박스 안에 넣기</p>'
+                '<ol class="model-steps"><li>담당자 M1 VR 기준 자세 작업 공간 저속 확인</li>'
+                '<li><strong>물체 집기</strong><p>캔이나 그릇 하나에 저속으로 접근해 그리퍼를 닫고 들어 올린다.</p></li><li><strong>박스 안에 놓기</strong><p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p></li>'
+                '<li><p>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</p></li></ol>'
+                f'<figure><img src="{TELEOP_IMAGE}" alt="M1 앞 물체와 박스">'
+                '<figcaption>사용자 제공 시뮬레이션 화면</figcaption></figure>'
+                '<p class="vr-practice-note">실물 M1은 2인 1조로 동작 구역 밖에서 조작. '
+                '비상정지 확인. 연결·추적 끊김 때 정지. 자동 정지를 가정하지 않는다.</p>'
+                '<p>결과 영상</p>'
+            )
         number = emitted_number
         slides.append(
             f'<section class="slide{extra_class}" id="slide-{number}" '
@@ -1470,12 +1540,62 @@ def self_test() -> list[str]:
                                        "Missing practice instruction on slide-74: 73 mm"),
             "missing VR safety": (valid.replace("비상정지", "비상"),
                                   "Missing practice instruction on slide-75: 비상정지"),
-            "missing tracking stop": (valid.replace("연결 또는 추적 끊김 시 정지", "연결 또는 추적 끊김 시 계속"),
-                                      "VR practice requires stop on connection or tracking loss"),
+            "missing tracking stop": (valid.replace("연결·추적 끊김 때 정지", "연결·추적 끊김 때 계속"),
+                                      "M1 practice safety requires connection and tracking loss stop"),
             "VR not last": (valid.replace("model-slide vr-practice", "model-slide")
                             .replace("model-slide gripper-practice", "model-slide gripper-practice vr-practice"),
                             "Practice placement requires vr-practice only on slide-75"),
         }
+        for label, old, new, expected in (
+            ("missing box objective", "<li><strong>박스 안에 놓기</strong><p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p></li>",
+             "<li>지정한 곳으로 옮긴다.</li>", "M1 practice steps require place inside box"),
+            ("missing object grasp", "그리퍼를 닫고 들어 올린다.", "팔을 움직인다.",
+             "M1 practice steps require pick object"),
+            ("release without lowering", "낮추고 그리퍼를 열어", "그리퍼를 열어",
+             "M1 practice steps require lower before release"),
+            ("release outside box", "안쪽으로 낮추고", "박스 밖으로 낮추고",
+             "M1 practice steps require lower before release"),
+            ("release relation split across steps", "안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+             "안쪽으로 낮추고</p></li><li><p>그리퍼를 열어 놓는다.",
+             "M1 practice steps require lower before release"),
+            ("release relation only in heading", "<p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p>",
+             "<strong>안쪽으로 낮추고 그리퍼를 열어 놓는다.</strong><p>박스 밖으로 낮추고 그리퍼를 열어 놓는다.</p>",
+             "M1 practice steps require lower before release"),
+            ("success relation split across steps", "손을 뺀 뒤 물체가", "손을 뺀 뒤</p></li><li><p>물체가",
+             "M1 practice steps require check after hand withdrawal"),
+            ("grasp relation split across steps", "그리퍼를 닫고 들어 올린다.",
+             "그리퍼를 닫고</p></li><li><p>들어 올린다.",
+             "M1 practice steps require pick object"),
+            ("placement body removed", "물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+             "물체를 옮긴다.", "M1 practice steps require place inside box"),
+            ("success relation only in heading", "<p>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</p>",
+             "<strong>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</strong><p>결과 기록</p>",
+             "M1 practice steps require check after hand withdrawal"),
+            ("missing success check", "손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.", "결과 기록",
+             "M1 practice steps require check after hand withdrawal"),
+            ("wrong teleop image", TELEOP_IMAGE, "asset.svg", "M1 practice requires supplied image on slide-75"),
+            ("missing image alt", 'alt="M1 앞 물체와 박스"', 'alt="이미지"',
+             "M1 practice image requires descriptive alt text"),
+            ("missing simulation provenance", "사용자 제공 시뮬레이션 화면", "완료 화면",
+             "M1 practice caption must identify the supplied simulation screen"),
+            ("assumed automatic stop", "자동 정지를 가정하지 않는다", "자동 정지된다",
+             "M1 practice safety requires no assumed automatic stop"),
+            ("missing observer", "2인 1조", "혼자", "M1 practice safety requires two-person physical operation"),
+            ("inside motion zone", "동작 구역 밖", "동작 구역 안", "M1 practice safety requires outside motion zone"),
+            ("steps only in heading", '<ol class="model-steps"><li>담당자 M1 VR',
+             '<ol><li>담당자 M1 VR', "Missing M1 procedural instruction: 담당자"),
+            ("safety only elsewhere", 'class="vr-practice-note"', 'class="model-caption"',
+             "M1 practice safety requires emergency stop"),
+        ):
+            practice_mutations[label] = (valid.replace(old, new), expected)
+        teleop_img = f'<img src="{TELEOP_IMAGE}" alt="M1 앞 물체와 박스">'
+        for label, markup in (
+            ("missing teleop image", valid.replace(teleop_img, "")),
+            ("image on wrong slide", valid.replace(teleop_img, "").replace(
+                f'<a href="{PRACTICE_ZIP}"', teleop_img + f'<a href="{PRACTICE_ZIP}"')),
+            ("image as link only", valid.replace(teleop_img, f'<a href="{TELEOP_IMAGE}">화면</a>')),
+        ):
+            practice_mutations[label] = (markup, "M1 practice requires supplied image on slide-75")
         for label, markup, message in (
             ("removed page 3 image", '<img src="assets/img/lecture4/gripper-data-slide-3.png">',
              "Gripper practice must not reference the removed PPTX page 3 image"),
@@ -1519,6 +1639,13 @@ def self_test() -> list[str]:
         if not any("Missing local asset" in message for message in check(valid, html_path, baseline)):
             failures.append("missing practice image file was not detected")
         image_path.write_bytes(image_bytes)
+        teleop_path = root / TELEOP_IMAGE
+        teleop_bytes = teleop_path.read_bytes()
+        teleop_path.unlink()
+        if not any("Missing local asset" in message and TELEOP_IMAGE in message
+                   for message in check(valid, html_path, baseline)):
+            failures.append("missing supplied teleoperation image file was not detected")
+        teleop_path.write_bytes(teleop_bytes)
         missing_practice_baseline = baseline.replace('id="slide-37"', 'id="omitted-37"')
         if "Baseline must contain slide-37" not in check(valid, html_path, missing_practice_baseline):
             failures.append("missing original practice baseline was not detected")
@@ -1763,7 +1890,7 @@ def self_test() -> list[str]:
             if not any(expected_messages[label] in message for message in messages):
                 failures.append(f"{label} mutation was not detected as expected")
     if not failures:
-        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations and 5 sibling-file wording mutations plus practice asset mutations detected)")
+        print(f"PASS: lecture 4 checker self-test ({len(mutations)} negative mutations, {len(practice_mutations)} practice mutations, 5 sibling-file wording mutations and practice asset mutations detected)")
     return failures
 
 
