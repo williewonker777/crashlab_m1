@@ -471,6 +471,7 @@ GLOSSARY_TERMS = {
     48: ('WAM',),
     49: ('Mobile Manipulator',),
 }
+ACTION_SPACE_G = "g · 그리퍼 개폐 명령값"
 
 
 # Definitions may live in adjacent prose rather than repeated term parentheses.
@@ -734,6 +735,9 @@ def term_guide_errors(parser: DeckParser) -> list[str]:
         for term in terms:
             if not re.search(re.escape(term.replace(" ", "")) + r"\([^()]*[가-힣][^()]*\)", text):
                 errors.append(f"Missing short Korean explanation: slide-{number}: {term}")
+    action_space_text = re.sub(r"\s+", "", visible_text(parser, "slide-17"))
+    if ACTION_SPACE_G.replace(" ", "") not in action_space_text:
+        errors.append("Action Space must explain g as the gripper open/close command value")
     for number, contracts in TERM_ROLE_CONTRACTS.items():
         text = re.sub(r"\s+", "", visible_text(parser, f"slide-{number}"))
         for label, (pattern, _) in contracts.items():
@@ -1297,6 +1301,8 @@ def vla_fixture(number: int) -> tuple[str, str]:
     if number == 50:
         content += " 행동 정의 데이터 모델 실행 평가"
     content += "".join(f" {term}(쉬운 역할 설명)" for term in GLOSSARY_TERMS.get(number, ()))
+    if number == 17:
+        content += " " + ACTION_SPACE_G
     return " " + " ".join(sorted(classes)), content
 
 
@@ -1476,6 +1482,7 @@ def self_test() -> list[str]:
             "missing fragment": valid.replace('url(#arrow-28)', 'url(#missing-arrow)'),
             "baseline mutation": valid.replace("내용 18", "변경된 내용 18"),
             "required term": valid.replace("mimic", "coupling"),
+            "missing g explanation": valid.replace(ACTION_SPACE_G, "g"),
             "fixed origin value": valid.replace("-0.073", "-0.730", 1),
             "inertial mass value": valid.replace("0.18059836361", "18.059836361", 1),
             "equality polynomial": valid.replace("0 -1 0 0 0", "0 1 0 0 0", 1),
@@ -1500,6 +1507,7 @@ def self_test() -> list[str]:
             "missing fragment": "Missing fragment",
             "baseline mutation": "Robot model slide contains an unapproved change",
             "required term": "Missing required learning element in slides 54-63 URDF: mimic",
+            "missing g explanation": "Action Space must explain g as the gripper open/close command value",
             "fixed origin value": "XML teaching value changed .//joint[@name='l_wrist2']/origin@xyz",
             "inertial mass value": "XML teaching value changed .//inertial/mass@value",
             "equality polynomial": "XML teaching value changed .//equality/joint@polycoef",
