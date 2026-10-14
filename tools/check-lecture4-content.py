@@ -906,7 +906,10 @@ def check_practices(parser: DeckParser, root: Path) -> list[str]:
     contracts = {
         74: ("실습", "DD_GRP_DATA.pptx", "2p", "73 mm", "93.5 mm",
              "WRIST1", "WRIST2", "INPUT", "COUPLER", "OUTPUT", "URDF", "RViz", "meshes/", "결과물|제출", "자료 받기"),
-        75: ("M1", "VR", "텔레오퍼레이션", "비상정지", "결과 영상|결과영상"),
+        75: ("M1", "VR", "텔레오퍼레이션", "비상정지", "결과 영상|결과영상",
+             "LeRobot v2.0", "Data Studio", "info.json", "modality.json", "episodes.jsonl",
+             "tasks.jsonl", "stats.json", "episode_000000.parquet",
+             "observation.images.left_view", "raw 데이터", "같은 규격", "100개"),
     }
     for number, terms in contracts.items():
         text = visible_text(parser, f"slide-{number}")
@@ -1402,11 +1405,17 @@ def fixture(root: Path, *, total: int = EXPECTED_SLIDES) -> tuple[Path, Path]:
             content = (
                 '<h2>실습 2 · M1 텔레오퍼레이션</h2>'
                 '<p>책상 위 물체를 집어 박스 안에 넣기</p>'
-                '<ol class="model-steps"><li>담당자 M1 VR 기준 자세 작업 공간 저속 확인</li>'
-                '<li><strong>물체 집기</strong><p>캔이나 그릇 하나에 저속으로 접근해 그리퍼를 닫고 들어 올린다.</p></li><li><strong>박스 안에 놓기</strong><p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p></li>'
-                '<li><p>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</p></li></ol>'
+                '<ol class="model-steps"><li><strong>입력 확인</strong><p>담당자와 M1·VR 기준 자세·입력 방향·작업 공간을 확인한다.</p></li>'
+                '<li><strong>물체 집기</strong><p>캔이나 그릇 하나에 저속 접근해 그리퍼를 닫고 들어 올린다.</p></li>'
+                '<li><strong>박스에 놓고 확인</strong><p>박스 안쪽으로 낮추고 그리퍼를 열어 놓는다. 손을 뺀 뒤 물체가 박스 안에 남는지 확인하고 결과 영상을 기록한다.</p></li></ol>'
                 f'<figure><img src="{TELEOP_IMAGE}" alt="M1 앞 물체와 박스">'
                 '<figcaption>사용자 제공 시뮬레이션 화면</figcaption></figure>'
+                '<div class="vr-practice-dataset" role="group"><h3>Data Studio 전처리 결과 · LeRobot v2.0 + GR00T</h3>'
+                '<div><code>meta/ info.json · modality.json · episodes.jsonl · tasks.jsonl · stats.json ← GR00T가 학습 때 계산 '
+                'data/chunk-000/episode_000000.parquet '
+                'videos/chunk-000/observation.images.left_view/episode_000000.mp4</code></div>'
+                '<p>info.json 버전·프레임·열, episodes/tasks.jsonl 회차·길이·태스크 문장, modality.json GR00T 상태·행동 구간.</p>'
+                '<p>episode마다 한 쌍, 설정한 묶음(예: 100개)마다 chunk-001, 002로 이동. Data Studio를 쓰지 않으면 raw 데이터도 같은 규격으로 전처리한다.</p></div>'
                 '<p class="vr-practice-note">실물 M1은 2인 1조로 동작 구역 밖에서 조작. '
                 '비상정지 확인. 연결·추적 끊김 때 정지. 자동 정지를 가정하지 않는다.</p>'
                 '<p>결과 영상</p>'
@@ -1555,31 +1564,31 @@ def self_test() -> list[str]:
                             "Practice placement requires vr-practice only on slide-75"),
         }
         for label, old, new, expected in (
-            ("missing box objective", "<li><strong>박스 안에 놓기</strong><p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p></li>",
-             "<li>지정한 곳으로 옮긴다.</li>", "M1 practice steps require place inside box"),
+            ("missing box objective", "박스 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+             "박스 밖으로 물체를 옮겨 놓는다.", "M1 practice steps require place inside box"),
             ("missing object grasp", "그리퍼를 닫고 들어 올린다.", "팔을 움직인다.",
              "M1 practice steps require pick object"),
             ("release without lowering", "낮추고 그리퍼를 열어", "그리퍼를 열어",
              "M1 practice steps require lower before release"),
-            ("release outside box", "안쪽으로 낮추고", "박스 밖으로 낮추고",
+            ("release outside box", "박스 안쪽으로 낮추고", "박스 밖으로 낮추고",
              "M1 practice steps require lower before release"),
-            ("release relation split across steps", "안쪽으로 낮추고 그리퍼를 열어 놓는다.",
-             "안쪽으로 낮추고</p></li><li><p>그리퍼를 열어 놓는다.",
+            ("release relation split across steps", "박스 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+             "박스 안쪽으로 낮추고</p></li><li><p>그리퍼를 열어 놓는다.",
              "M1 practice steps require lower before release"),
-            ("release relation only in heading", "<p>물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.</p>",
-             "<strong>안쪽으로 낮추고 그리퍼를 열어 놓는다.</strong><p>박스 밖으로 낮추고 그리퍼를 열어 놓는다.</p>",
+            ("release relation only in heading", "박스 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+             "</p><strong>박스 안쪽으로 낮추고 그리퍼를 열어 놓는다.</strong><p>박스 밖으로 놓는다.",
              "M1 practice steps require lower before release"),
-            ("success relation split across steps", "손을 뺀 뒤 물체가", "손을 뺀 뒤</p></li><li><p>물체가",
+            ("success relation split across steps", "손을 뺀 뒤 물체가 박스 안에 남는지", "손을 뺀 뒤</p></li><li><p>물체가 박스 안에 남는지",
              "M1 practice steps require check after hand withdrawal"),
             ("grasp relation split across steps", "그리퍼를 닫고 들어 올린다.",
              "그리퍼를 닫고</p></li><li><p>들어 올린다.",
              "M1 practice steps require pick object"),
-            ("placement body removed", "물체를 박스 위로 옮긴 뒤 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
+            ("placement body removed", "박스 안쪽으로 낮추고 그리퍼를 열어 놓는다.",
              "물체를 옮긴다.", "M1 practice steps require place inside box"),
-            ("success relation only in heading", "<p>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</p>",
-             "<strong>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</strong><p>결과 기록</p>",
+            ("success relation only in heading", "손을 뺀 뒤 물체가 박스 안에 남는지 확인하고 결과 영상을 기록한다.",
+             "</p><strong>손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.</strong><p>결과 기록",
              "M1 practice steps require check after hand withdrawal"),
-            ("missing success check", "손을 뺀 뒤 물체가 박스 안에 남는지 확인한다.", "결과 기록",
+            ("missing success check", "손을 뺀 뒤 물체가 박스 안에 남는지", "결과 기록",
              "M1 practice steps require check after hand withdrawal"),
             ("wrong teleop image", TELEOP_IMAGE, "asset.svg", "M1 practice requires supplied image on slide-75"),
             ("missing image alt", 'alt="M1 앞 물체와 박스"', 'alt="이미지"',
@@ -1590,10 +1599,17 @@ def self_test() -> list[str]:
              "M1 practice safety requires no assumed automatic stop"),
             ("missing observer", "2인 1조", "혼자", "M1 practice safety requires two-person physical operation"),
             ("inside motion zone", "동작 구역 밖", "동작 구역 안", "M1 practice safety requires outside motion zone"),
-            ("steps only in heading", '<ol class="model-steps"><li>담당자 M1 VR',
-             '<ol><li>담당자 M1 VR', "Missing M1 procedural instruction: 담당자"),
+            ("steps only in heading", '<ol class="model-steps">',
+             '<ol>', "Missing M1 procedural instruction: 담당자"),
             ("safety only elsewhere", 'class="vr-practice-note"', 'class="model-caption"',
              "M1 practice safety requires emergency stop"),
+        ):
+            practice_mutations[label] = (valid.replace(old, new), expected)
+        for label, old, new, expected in (
+            ("missing dataset version", "LeRobot v2.0", "LeRobot", "Missing practice instruction on slide-75: LeRobot v2.0"),
+            ("missing GR00T modality map", "modality.json", "modality file", "Missing practice instruction on slide-75: modality.json"),
+            ("missing raw-data path", "Data Studio를 쓰지 않으면 raw 데이터도 같은 규격으로 전처리한다.", "Data Studio만 사용한다.", "Missing practice instruction on slide-75: raw 데이터"),
+            ("missing camera video path", "observation.images.left_view", "observation.images", "Missing practice instruction on slide-75: observation.images.left_view"),
         ):
             practice_mutations[label] = (valid.replace(old, new), expected)
         teleop_img = f'<img src="{TELEOP_IMAGE}" alt="M1 앞 물체와 박스">'

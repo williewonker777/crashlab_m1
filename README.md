@@ -53,7 +53,7 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 URDF를 작성하고, MuJoCo MJCF와 Isaac Sim USD에서 로봇·환경을 구성하는 과정이다.
 실제 파일의 좌표·질량·관절 코드와 별도 씬 예제를 사용하며, 현재 USD에 이전 손목
 리비전이 남아 있다는 차이를 검증 사례로 설명한다. 원본 로봇 파일은 수정하지 않는다.
-73페이지는 정리, 74페이지는 그리퍼 조립·URDF 작성 실습, 마지막 75페이지는 M1 텔레오퍼레이션으로 물체를 집어 박스 안에 넣는 실습이다.
+73페이지는 정리, 74페이지는 그리퍼 조립·URDF 작성 실습, 마지막 75페이지는 M1 텔레오퍼레이션으로 물체를 박스 안에 넣고 LeRobot v2.0·GR00T 데이터 구조와 raw 데이터 전처리 경로를 살펴보는 실습이다.
 74페이지의 「자료 받기」는 제공된 [URDF 실습 ZIP](assets/data/lecture4/crashlab-urdf.zip)을 그대로 내려받는다.
 53·62·67페이지의 CAD 그림은 제공 PPTX 2페이지의 팔·그리퍼·손목 영역을 잘라 표시한다.
 inline SVG의 viewBox와 clipPath가 같은 PNG를 재사용하며, 픽셀이나 도면 수치를 새로 만들지 않는다.
