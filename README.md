@@ -45,7 +45,7 @@ python3 tools/pptx_to_native_html.py "/path/to/theory.pptx" . --append "/path/to
 31페이지는 한 Frame에 기록하는 관측·행동·명령을, 37페이지는 모델 출력이 제어기와 모터까지 가는 Inference Pipeline을 설명한다.
 19페이지의 Action Tokenization 시연은 연속 관절 목표를 8·32·256개 균일 구간으로 바꾸고,
 38페이지의 Chunk 실행 시연은 50 Hz 제어와 H=50에서 동기·비동기 Inference 지연을 비교한다.
-11~17페이지는 Tokenizer와 Embedding의 역할, 선형 변환, VLM Backbone, Action Head, 행동 생성 모듈의 두 구조와 Action Space를 구분한다. 21페이지는 Noise를 섞은 학습 한 번과 여러 번 나누어 실행하는 과정을 교육용 수치로 따라간다.
+11~17페이지는 Tokenizer와 Embedding의 역할, 선형 변환, VLM Backbone, Action Head, 행동 생성 모듈의 두 구조와 Action Space를 구분한다. 20페이지는 정답이 두 갈래일 때 제곱 오차의 최솟값이 평균(장애물 정면)임을 유도하고, 21페이지는 같은 두 정답으로 Noise와 시연을 잇는 직선의 기울기 학습과 한 번·10번 실행의 차이를 교육용 수치로 따라간다.
 애매한 한글 음역 대신 Policy·Action Head·Noise·Fine-tuning 등 실제 영문 원어를 쓴다. 어려운 용어는 `단어(짧은 뜻)` 또는 인접 설명으로 풀고, 카드 제목과 같은 말을 본문에서 반복하지 않는다.
 계산 가정, Action Head·데이터 기록·실행 계층의 근거, 슬라이드 수치와 출처는 [VLA_THEORY.md](VLA_THEORY.md)에 정리했다.
 
