@@ -371,10 +371,10 @@
   .lecture-4 #slide-14 .model-table td { padding-block: 10px; }
 }
 
-/* Mean-action trap (20p): the scene and the loss curve share one action axis. */
+/* Mean-action trap (20p): the scene and the turning-direction line share one axis. */
 .vla-mean-diagram .chip text { font-size: 24px; }
 
-/* Noise learning (21p): one training line and the execution flow on the same τ axis. */
+/* Noise learning (21p): one training line and the execution flows, without formulas. */
 .lecture-4 .vla-noise-slide .slide__inner { grid-template-rows: auto minmax(0, 1fr) auto; }
 .vla-noise-slide .model-columns { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-rows: minmax(0, 1fr); gap: 24px; }
 .vla-noise-figure { padding: 12px; gap: 10px; overflow-x: auto; }
@@ -541,7 +541,7 @@
   .lecture-4 #slide-31 .model-takeaway { font-size: 19px; line-height: 1.2; }
 }
 
-/* Short desktop viewports: compact the two derivation slides before the takeaway collides. */
+/* Short desktop viewports: compact slides 20-21 before the takeaway collides. */
 @media (min-width: 801px) and (max-width: 1700px) and (max-height: 650px) {
   .lecture-4 :is(#slide-20, #slide-21) .slide__inner { gap: 8px; }
   .lecture-4 :is(#slide-20, #slide-21) .slide__header { gap: 4px; }

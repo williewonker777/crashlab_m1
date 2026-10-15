@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
-from decimal import Decimal
 from html import escape, unescape
 from html.parser import HTMLParser
 import math
@@ -624,7 +623,7 @@ def action_pipeline_errors(raw_slides: dict[str, str]) -> list[str]:
 
 # Body explanations and SVG examples are independent teaching contracts. An
 # accessible name or a duplicate value elsewhere must not mask a missing label.
-# Slide 20 derives the squared-error mean; slide 21 reuses its two answers.
+# Slides 20-21 explain the mean trap and Noise training without formulas.
 NOISE_PROSE = {
     15: {
         "learning note": (r"학습때는시연행동에Noise를섞어놓고원래행동쪽으로돌아가는방향을맞히게한다", "학습 때는 시연 행동에 Noise를 섞어 놓고 원래 행동 쪽으로 돌아가는 방향을 맞히게 한다."),
@@ -636,47 +635,37 @@ NOISE_PROSE = {
         "B learning target": (r"학습때는시연행동에Noise를섞고원래행동쪽방향이나섞은Noise를맞힌다", "학습 때는 시연 행동에 Noise를 섞고 원래 행동 쪽 방향이나 섞은 Noise를 맞힌다."),
     },
     20: {
-        "two answers": (r"같은관측·명령에서시연절반은왼쪽\(a=-1\),절반은오른쪽\(a=\+1\)", "같은 관측·명령에서 시연 절반은 왼쪽(a = −1), 절반은 오른쪽(a = +1)으로 피했다."),
-        "single output": (r"Regression은이관측에출력â하나를낸다", "Regression은 이 관측에 출력 â 하나를 낸다."),
-        "loss expansion": (r"½\(â\+1\)²\+½\(â-1\)²=â²\+1", "두 시연과의 오차 제곱 평균은 ½(â + 1)² + ½(â − 1)² = â² + 1이다."),
-        "minimum": (r"dL/dâ=2â=0에서â=0", "dL/dâ = 2â = 0에서 â = 0이다."),
-        "mean beats answers": (r"정답±1의손실2보다평균의손실1이작다", "정답 ±1의 손실 2보다 평균의 손실 1이 작다."),
-        "general mean": (r"제곱오차를가장작게하는출력은정답의평균E\[a\]다", "일반적으로 제곱 오차를 가장 작게 하는 출력은 정답의 평균 E[a]다."),
+        "two answers": (r"같은상황에서시연A는왼쪽,시연B는오른쪽으로피했다", "같은 상황에서 시연 A는 왼쪽, 시연 B는 오른쪽으로 피했다."),
+        "single output": (r"Regression은한상황에행동하나만낸다", "Regression은 한 상황에 행동 하나만 낸다."),
+        "middle output": (r"두정답과의오차를함께줄이려다보니두정답의가운데를출력한다", "두 정답과의 오차를 함께 줄이려다 보니 두 정답의 가운데를 출력한다."),
+        "middle collides": (r"가운데행동은어느시연에도없고장애물에부딪힌다", "가운데 행동은 어느 시연에도 없고 장애물에 부딪힌다."),
+        "choose one": (r"정답이여럿이면평균이아니라하나를골라야한다", "정답이 여럿이면 평균이 아니라 하나를 골라야 한다."),
     },
     21: {
-        "mixing formula": (r"x=\(1-τ\)ε\+τa", "섞기 · x = (1 − τ)ε + τa"),
-        "mixing endpoints": (r"τ=0이면무작위Noiseε,1이면시연행동a", "τ = 0이면 무작위 Noise ε, 1이면 시연 행동 a이고 그 사이는 두 점을 잇는 직선 위다."),
-        "mixing example": (r"0\.75×\(-0\.6\)\+0\.25×1=-0\.20", "예: 0.75 × (−0.6) + 0.25 × 1 = −0.20"),
-        "slope derivation": (r"τ가0에서1로갈때x는a-ε만큼변하므로dx/dτ=a-ε=1\.6", "τ가 0에서 1로 갈 때 x는 a − ε만큼 변하므로 dx/dτ = a − ε = 1.6이다."),
-        "model inputs": (r"a·ε를모른채x·τ와관측·명령만보고이기울기를맞힌다", "모델은 a·ε를 모른 채 x·τ와 관측·명령만 보고 이 기울기를 맞힌다."),
-        "diffusion target": (r"Diffusion모델은기울기대신섞은Noise자체를맞힌다", "Diffusion 모델은 기울기 대신 섞은 Noise 자체를 맞힌다."),
-        "loss example": (r"예측1\.2면\(1\.2-1\.6\)²=0\.16", "예측 1.2면 (1.2 − 1.6)² = 0.16이다."),
-        "mean slope": (r"학습마다시연·Noise·τ를새로뽑으므로모델은한점을지나는여러직선의평균기울기를배운다", "학습마다 시연·Noise·τ를 새로 뽑으므로 모델은 한 점을 지나는 여러 직선의 평균 기울기를 배운다."),
-        "execution": (r"x←x\+0\.1×예측을반복한다\(π0\)", "Noise에서 x ← x + 0.1 × 예측을 반복한다(π0)."),
-        "start mean": (r"기울기-1-x와1-x의평균-x가0을가리켜", "출발점에서는 기울기 −1 − x와 1 − x의 평균 −x가 0을 가리켜,"),
-        "one step mean": (r"한번에가면x\+\(-x\)=0에멈춘다", "한 번에 가면 x + (−x) = 0에 멈춘다."),
-        "split steps": (r"나눠가며다시계산하면치우친쪽정답으로간다", "나눠 가며 다시 계산하면 치우친 쪽 정답으로 간다."),
-        "educational scope": (r"교육용예시.*?정규분포Noise.*?50시점×8개", "교육용 예시. 왼쪽 −1·오른쪽 +1 두 시연, 정규분포 Noise, 학습이 잘 된 예측(평균 기울기)을 가정했다. 실제로는 행동 묶음 전체(예: 50시점 × 8개)에 같은 계산을 한다."),
+        "mix noise": (r"시연행동에무작위Noise를섞어일부러흐트러뜨린다", "시연 행동에 무작위 Noise를 섞어 일부러 흐트러뜨린다."),
+        "mix varies": (r"섞는정도는매번다르다", "섞는 정도는 매번 다르다."),
+        "predict direction": (r"흐트러진행동만보고원래행동으로돌아가는방향을맞힌다", "모델은 흐트러진 행동만 보고 원래 행동으로 돌아가는 방향을 맞힌다."),
+        "diffusion target": (r"Diffusion모델은방향대신섞인Noise를맞힌다", "Diffusion 모델은 방향 대신 섞인 Noise를 맞힌다."),
+        "execution": (r"새Noise에서출발해예측한방향으로조금씩옮기기를10번반복한다\(π0\)", "새 Noise에서 출발해 예측한 방향으로 조금씩 옮기기를 10번 반복한다(π0)."),
+        "start middle": (r"처음에는어느정답인지몰라방향이두정답의가운데를가리킨다", "처음에는 어느 정답인지 몰라 방향이 두 정답의 가운데를 가리킨다."),
+        "one step middle": (r"한번에가면가운데에멈추", "한 번에 가면 가운데에 멈추지만,"),
+        "split steps": (r"조금씩가며다시판단하면한쪽정답으로정해진다", "조금씩 가며 다시 판단하면 한쪽 정답으로 정해진다."),
+        "educational scope": (r"교육용개념도.*?행동묶음전체를같은방식으로다듬는다", "교육용 개념도. 20p의 왼쪽·오른쪽 두 정답을 다시 썼다. 실제로는 행동 묶음 전체를 같은 방식으로 다듬는다."),
     },
 }
 NOISE_OUTPUT_LABELS = ("행동 묶음 50개 · 다듬기 10번", "행동 묶음 · 다듬기 4번")
 # Each label is one SVG <text>; no label may contain another one.
 NOISE_SVG_LABELS = {
     18: ("Noise → 여러 번 다듬기 → 행동 묶음",),
-    20: ("시연 A", "a = −1", "시연 B", "a = +1", "충돌", "출발",
-         "L(â) = ½(â + 1)² + ½(â − 1)²", "= â² + 1", "정답 L = 2", "â = 0 · L = 1 최소"),
-    21: ("학습 한 번", "손실 (1.2 − 1.6)² = 0.16", "ε = −0.6", "a = +1", "x = −0.20",
-         "예측 1.2", "a − ε = 1.6", "τ = 0.25", "실행 10번", "Noise 0.5", "Noise −0.5",
-         "+1 오른쪽", "−1 왼쪽", "평균 0·충돌", "0.1씩 10번", "한 번에 이동 → 0",
-         "τ: 0 → 1 · 한 칸 0.1"),
+    20: ("목표", "장애물", "충돌", "출발할 때 트는 방향", "왼쪽 · 시연 A", "가운데 · 평균", "오른쪽 · 시연 B"),
+    21: ("학습 한 번", "Noise", "섞인 행동", "시연 행동", "정답 쪽 방향", "모델이 맞히는 값", "실행 10번",
+         "조금씩 10번", "한 번에 가면", "오른쪽 정답", "왼쪽 정답", "가운데 · 충돌"),
 }
+# Requested 2026-10-15: these two slides use pictures and words, not equations.
+FORMULA_FREE_SLIDES = (20, 21)
+FORMULA_TOKENS = ("=", "²", "½", "τ", "ε", "â", "←", "×", "±", "dx/", "dL/", "E[")
 # SVG coordinates are written with one decimal place.
 PLOT_TOLERANCE = 0.06
-
-
-def mean_loss(output: float) -> float:
-    """Squared error against the two equally likely answers −1 and +1."""
-    return 0.5 * (output + 1) ** 2 + 0.5 * (output - 1) ** 2
 
 
 def ideal_flow(start: float, steps: int = 10) -> list[float]:
@@ -705,23 +694,6 @@ def svg_points(value: str) -> list[tuple[float, float]]:
 def plot_errors(number: int, source: str) -> list[str]:
     """Recompute plotted teaching curves instead of trusting their labels."""
     errors = []
-    if number == 20:
-        curves = [svg_attributes(tag) for tag in re.findall(r"<polyline\b[^>]*\bdata-loss-map=[^>]*>", source)]
-        if len(curves) != 1:
-            return ["Mean-action loss curve requires one mapped polyline: slide-20"]
-        x0, xs, y0, ys = map(float, curves[0]["data-loss-map"].split())
-        points = svg_points(curves[0].get("points", ""))
-        outputs = [(x - x0) / xs for x, _ in points]
-        if (len(points) < 20 or min(outputs) > -1.2 or max(outputs) < 1.2
-                or any(abs(y - (y0 - ys * mean_loss(a))) > PLOT_TOLERANCE for a, (_, y) in zip(outputs, points))):
-            errors.append("Mean-action loss curve must match L(â) = â² + 1: slide-20")
-        circles = {(round(float(cx), 1), round(float(cy), 1)) for cx, cy in re.findall(
-            r'<circle\b[^>]*\bcx="([^"]+)"[^>]*\bcy="([^"]+)"', source)}
-        for output in (-1, 0, 1):
-            marker = (round(x0 + xs * output, 1), round(y0 - ys * mean_loss(output), 1))
-            if marker not in circles:
-                errors.append(f"Mean-action loss markers must sit on L(±1) = 2 and L(0) = 1: slide-20")
-                break
     if number == 21:
         flows = [svg_attributes(tag) for tag in re.findall(r"<polyline\b[^>]*\bdata-flow-start=[^>]*>", source)]
         starts = sorted(float(flow["data-flow-start"]) for flow in flows)
@@ -767,8 +739,8 @@ def noise_training_errors(raw_slides: dict[str, str]) -> list[str]:
             if not re.search(pattern, body):
                 errors.append(f"Noise prose contract missing: slide-{number}: {label}")
         svgs = " ".join(re.findall(r"<svg\b.*?</svg>", source, re.S))
-        # <title> is an accessible description, not a visible numeric label. Each
-        # <text> stays separate so adjacent badges cannot extend a number.
+        # <title> is an accessible description, not a visible label. Each <text>
+        # stays separate so neighbouring labels cannot merge into a false match.
         labels = "|".join(compact(text) for text in re.findall(
             r"<text\b[^>]*>(.*?)</text>", re.sub(r"<(title|desc)\b.*?</\1>", "", svgs, flags=re.S), re.S))
         for label in NOISE_SVG_LABELS.get(number, ()):
@@ -782,40 +754,15 @@ def noise_training_errors(raw_slides: dict[str, str]) -> list[str]:
             for index, label in enumerate(NOISE_OUTPUT_LABELS):
                 if index >= len(outputs) or len(outputs[index]) != 1 or compact(outputs[index][0]) != compact(label):
                     errors.append(f"Noise module output contract missing: slide-15: {label}")
-        if number == 20:
-            values = [re.search(pattern, labels) for pattern in (r"정답L=(\d+)", r"â=0·L=(\d+)최소")]
-            if not all(values) or (Decimal(values[0][1]), Decimal(values[1][1])) != (
-                    Decimal(str(mean_loss(1))), Decimal(str(mean_loss(0)))) or mean_loss(-1) != mean_loss(1):
-                errors.append("Mean-action loss labels must equal L(±1) = 2 and L(0) = 1: slide-20")
-            errors.extend(plot_errors(number, source))
         if number == 21:
             if 'vla-noise-slide' not in source or 'model-columns' not in source or 'vla-noise-diagram' not in svgs:
                 errors.append("Noise example requires its scoped two-column diagram: slide-21")
-            # Parse the displayed equations, then independently recompute them. This
-            # catches internally inconsistent teaching arithmetic, not just tokens.
-            found = {
-                "mixing": re.search(r"(\d+\.\d+)×\((-\d+\.\d+)\)\+(\d+\.\d+)×(\d+(?:\.\d+)?)=(-\d+\.\d+)", body),
-                "slope prose": re.search(r"dx/dτ=a-ε=(\d+(?:\.\d+)?)", body),
-                "loss": re.search(r"손실\((\d+\.\d+)-(\d+\.\d+)\)²=(\d+\.\d+)", labels),
-                "noise": re.search(r"(?:^|\|)ε=(-\d+(?:\.\d+)?)(?:\||$)", labels),
-                "action": re.search(r"(?:^|\|)a=\+?(\d+(?:\.\d+)?)(?:\||$)", labels),
-                "mixed": re.search(r"(?:^|\|)x=(-\d+\.\d+)(?:\||$)", labels),
-                "slope": re.search(r"(?:^|\|)a-ε=(\d+(?:\.\d+)?)(?:\||$)", labels),
-                "prediction": re.search(r"(?:^|\|)예측(\d+\.\d+)(?:\||$)", labels),
-            }
-            if not all(found.values()):
-                errors.append("Noise arithmetic equation missing: slide-21")
-            else:
-                weight, epsilon, tau, action, mixed = map(Decimal, found["mixing"].groups())
-                prediction, direction, squared_error = map(Decimal, found["loss"].groups())
-                if not (weight + tau == 1 and weight * epsilon + tau * action == mixed
-                        and Decimal(found["noise"][1]) == epsilon and Decimal(found["action"][1]) == action
-                        and Decimal(found["mixed"][1]) == mixed
-                        and action - epsilon == direction == Decimal(found["slope"][1]) == Decimal(found["slope prose"][1])
-                        and Decimal(found["prediction"][1]) == prediction
-                        and (prediction - direction) ** 2 == squared_error):
-                    errors.append("Noise example arithmetic invariant failed: slide-21")
             errors.extend(plot_errors(number, source))
+        if number in FORMULA_FREE_SLIDES:
+            visible = compact(source)
+            for token in FORMULA_TOKENS:
+                if token in visible:
+                    errors.append(f"Slides 20-21 must stay formula-free: slide-{number}: {token}")
     return errors
 
 
@@ -1361,13 +1308,7 @@ def check(html: str, html_path: Path, baseline: str | None = None) -> list[str]:
 
 
 def plot_fixture(number: int) -> str:
-    """Valid mapped curves for slides 20 and 21, generated from the same models."""
-    if number == 20:
-        points = " ".join(f"{360 + 200 * a:.1f},{590 - 70 * mean_loss(a):.1f}"
-                          for a in (i / 20 for i in range(-26, 27)))
-        markers = "".join(f'<circle cx="{360 + 200 * a:.1f}" cy="{590 - 70 * mean_loss(a):.1f}" r="10"/>'
-                          for a in (-1, 0, 1))
-        return f'<polyline points="{points}" data-loss-map="360 200 590 70"/>' + markers
+    """Valid mapped execution flows for slide 21, generated from the same model."""
     if number == 21:
         markup = ""
         for start in (0.5, -0.5):
@@ -2025,12 +1966,10 @@ def self_test() -> list[str]:
             mutations[key] = valid.replace(section, changed)
             expected_messages[key] = f"Noise module output contract missing: slide-15: {label}"
         section = sections["slide-21"]
-        mutations["noise arithmetic"] = valid.replace(section, section.replace("² = 0.16", "² = 0.17"))
-        expected_messages["noise arithmetic"] = "Noise example arithmetic invariant failed"
-        mutations["noise mixing arithmetic"] = valid.replace(section, section.replace("= −0.20</p>", "= −0.30</p>"))
-        expected_messages["noise mixing arithmetic"] = "Noise example arithmetic invariant failed"
-        mutations["noise slope label"] = valid.replace(section, section.replace("<text>a − ε = 1.6</text>", "<text>a − ε = 1.7</text>"))
-        expected_messages["noise slope label"] = "Noise example arithmetic invariant failed"
+        for number in FORMULA_FREE_SLIDES:
+            changed = sections[f"slide-{number}"].replace("</section>", "<p>x = 0.75 × a</p></section>")
+            mutations[f"formula-free {number}"] = valid.replace(sections[f"slide-{number}"], changed)
+            expected_messages[f"formula-free {number}"] = f"Slides 20-21 must stay formula-free: slide-{number}"
         flow = re.search(r'points="([^"]+)" data-flow-start="0.5"', section)
         moved = flow[1].split()
         moved[5] = moved[5].split(",")[0] + "," + f"{float(moved[5].split(',')[1]) + 1:.1f}"
@@ -2040,16 +1979,6 @@ def self_test() -> list[str]:
         expected_messages["noise flow one sign"] = "Noise execution requires one flow from each Noise sign: slide-21"
         mutations["noise one-step line"] = valid.replace(section, section.replace('x2="710" y2="482"', 'x2="710" y2="377"'))
         expected_messages["noise one-step line"] = "Noise one-step line must end at the mean 0: slide-21"
-        section = sections["slide-20"]
-        curve = re.search(r'points="([^"]+)" data-loss-map', section)
-        bent = curve[1].split()
-        bent[10] = bent[10].split(",")[0] + "," + f"{float(bent[10].split(',')[1]) - 2:.1f}"
-        mutations["mean loss curve"] = valid.replace(section, section.replace(curve[1], " ".join(bent)))
-        expected_messages["mean loss curve"] = "Mean-action loss curve must match L(â) = â² + 1: slide-20"
-        mutations["mean loss marker"] = valid.replace(section, section.replace('cy="520.0"', 'cy="510.0"'))
-        expected_messages["mean loss marker"] = "Mean-action loss markers must sit on L(±1) = 2 and L(0) = 1: slide-20"
-        mutations["mean loss label"] = valid.replace(section, section.replace("<text>정답 L = 2</text>", "<text>정답 L = 3</text>"))
-        expected_messages["mean loss label"] = "Mean-action loss labels must equal L(±1) = 2 and L(0) = 1: slide-20"
         mutations["noise layout"] = valid.replace('class="model-columns"', 'class="other-layout"', 1)
         expected_messages["noise layout"] = "Noise example requires its scoped two-column diagram"
         adjacent = valid.replace(
